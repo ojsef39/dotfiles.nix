@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "pinDigests": true
+    }
+  ],
+  "dependencyDashboard": true,
+  "reviewers": ["ojsef39"],
+  "schedule": ["every weekend"]
+}
