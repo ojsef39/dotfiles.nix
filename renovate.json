@@ -1,16 +1,7 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "nix": {
     "enabled": true
   },
-  "packageRules": [
-    {
-      "matchManagers": ["github-actions"],
-      "groupName": "GitHub Actions",
-      "pinDigests": true
-    }
-  ],
-  "dependencyDashboard": true,
   "reviewers": ["@ojsef39"],
   "schedule": ["at any time"]
 }
