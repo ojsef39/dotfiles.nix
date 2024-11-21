@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, vars, ... }:
 
 {
   programs.kitty = {
@@ -96,7 +96,7 @@
     # Keybindings
     keybindings = {
       "ctrl+shift+-" = "launch --location=hsplit --cwd=current";
-      "ctrl+shift+=" = "launch --location=vsplit --cwd=current";
+      "ctrl+shift++" = "launch --location=vsplit --cwd=current";
       "f4" = "launch --location=split";
       "f1" = "launch --stdin-source=@screen_scrollback --stdin-add-formatting less +G -R";
       "ctrl+shift+h" = "move_window left";
@@ -107,17 +107,21 @@
       "ctrl+k" = "kitten ~/.config/kitty/scripts/pass_keys.py top    ctrl+k";
       "ctrl+h" = "kitten ~/.config/kitty/scripts/pass_keys.py left   ctrl+h";
       "ctrl+l" = "kitten ~/.config/kitty/scripts/pass_keys.py right  ctrl+l";
-      "ctrl+shift+left" = "resize_windo wider 5";
+      "ctrl+shift+left" = "resize_window wider 5";
       "ctrl+shift+right" = "resize_window narrower 5";
       "ctrl+shift+up" = "resize_window taller";
       "ctrl+shift+down" = "resize_window shorter";
       "ctrl+shift+x" = "close_window";
-      "ctrl+shift+m" = "launch --type=tab --cwd=current --copy-env --title Yazi -- zsh -il -c \"yazi\"";
-      "ctrl+shift+p" = "launch --title \"Project Selector\" --copy-env --type=overlay zsh -il -c \"~/.config/kitty/scripts/project_selector.sh\"";
-      "cmd+left" = "send_text all \\x01";
-      "cmd+right" = "send_text all \\x05";
-      "alt+left" = "send_text all \\x1b[1;3D";
-      "alt+right" = "send_text all \\x1b[1;3C";
+      "ctrl+shift+m" = "launch --type=tab --cwd=current --copy-env --title Yazi -- env SKIP_FF=1 zsh -il -c \"yazi\"";
+      "ctrl+shift+p" = "launch --title 'Project Selector' --copy-env --type=overlay env SKIP_FF=1  sh -il ~/.config/kitty/scripts/project_selector.sh";
+      "cmd+left" = "previous_tab";
+      "cmd+right" = "next_tab";
+      ## SET F9 to forward and F10 to back button in Logitech app
+      "f9" = "next_tab";
+      "f10" = "previous_tab";
+      ##
+      "alt+left" = "send_text all \\x1bb";
+      "alt+right" = "send_text all \\x1bf";
       "cmd+1" = "goto_tab 1";
       "cmd+2" = "goto_tab 2";
       "cmd+3" = "goto_tab 3";
@@ -128,25 +132,72 @@
       "cmd+8" = "goto_tab 8";
       "cmd+9" = "goto_tab 9";
       "cmd+0" = "goto_tab 10";
+      # Preserve Option/Alt +  combinations for special characters
+      "opt+5" = "send_text all [";
+      "opt+6" = "send_text all ]";
+      "opt+7" = "send_text all |";
+      "opt+8" = "send_text all {";
+      "opt+9" = "send_text all }";
+      "opt+n" = "send_text all ~";
+      "opt+l" = "send_text all @";
+      "opt+-" = "send_text all –";  # en dash
+      "opt+shift+7" = "send_text all \\\\";  # backslash
+      "opt+shift+-" = "send_text all —";  # em dash
     };
-
-    # Extra configuration to ensure catpuccin theme is included
-    # extraConfig = ''
-    #   include ${config.xdg.configHome}/kitty/themes/catpuccin.conf
-    # '';
   };
 
   xdg.configFile = {
-    # Copy pass_keys.py
-    "kitty/scripts/pass_keys.py".source = ./scripts/pass_keys.py;
-
     # Copy theme
     "kitty/themes/catpuccin.conf".source = ./themes/catpuccin.conf;
 
     # Copy icon
-    "kitty/themes/kitty.app.png".source = ./themes/kitty.app.png;
+    "kitty/kitty.app.png".source = ./themes/kitty.app.png;
 
-    # If you have a project selector script
-    "kitty/scripts/project_selector.sh".source = ./scripts/project_selector.sh;
+    # Executable scripts
+    "kitty/scripts" = {
+      source = ./scripts;
+      recursive = true;
+    };
+
+    "kitty/scripts/project_selector.sh" = {
+      text = ''
+        #!/bin/bash
+        ghq_root=~/${vars.git.ghq}
+        project_dirs=(${vars.kitty.project_selector})
+
+        # Function to find git repositories under the ghq root path
+        git_repos() {
+          find "$ghq_root" -type d -name ".git" | sed 's/\/.git$//'
+        }
+
+        # Display the git repositories and subfolders of the project directories
+        projects() {
+          git_repos
+          for dir in "$project_dirs[@]"; do
+            find "$dir" -maxdepth 1 -type d | tail -n +2 # List subdirectories only, excluding the base directory itself
+          done
+        }
+
+        # Select a project directory using fzf
+        project_selector() {
+          local project
+          project=$(projects | fzf --height 100%)
+
+          if [ -n "$project" ]; then
+            {
+              kitten @ launch --type=tab --cwd="$project" -- env SKIP_FF=1 zsh -il -c "nvim ."
+              echo "Changed to $project"
+            } || {
+              echo "Failed to change directory to $project"
+              exit 1
+            }
+          else
+            echo "No project selected."
+          fi
+        }
+
+        project_selector
+      '';
+    };
   };
 }

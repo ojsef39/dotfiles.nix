@@ -30,69 +30,55 @@
       plugins = [ "git" "node" "npm" "github" ];
     };
 
-    # Install and configure plugins separately
-    plugins = [
-      {
-        name = "zsh-fzf-tab";
-        src = pkgs.zsh-fzf-tab;
-        file = "share/fzf-tab/fzf-tab.plugin.zsh";
-      }
-      {
-        name = "spaceship-prompt";
-        src = pkgs.spaceship-prompt;
-        file = "share/zsh/site-functions/prompt_spaceship_setup";
-      }
-    ];
-
     # Environment variables
     sessionVariables = {
       PATH = lib.concatStringsSep ":" [
         "/opt/homebrew/bin"
         "$HOME/Library/Python/3.12/bin"
-        "$HOME/CodeProjects/github.com/ojsef39/commit-oracle"
+        "/Users/${vars.user}/${vars.git.ghq}/github.com/ojsef39/commit-oracle"
         "$PATH"
       ];
       PYTHON = "/usr/bin/python3";
       GCL_TIMESTAMPS = "true";
       GCL_MAX_JOB_NAME_PADDING = "30";
+      # Initialize spaceship prompt
+      SPACESHIP_CHAR_SYMBOL="🚀 ";
+      SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true;
+      SPACESHIP_DIR_PREFIX="🗂  ";
+      SPACESHIP_GIT_BRANCH_PREFIX="⚡";
+      SPACESHIP_PROMPT_SUFFIXES_SHOW=false;
+      SPACESHIP_PROMPT_DEFAULT_PREFIX=" - ";
+      SPACESHIP_EXEC_TIME_SHOW=false;
+      SPACESHIP_GIT_PREFIX=" on ";
+      SPACESHIP_DOCKER_PREFIX=" on ";
+      SPACESHIP_PACKAGE_PREFIX=" is ";
+      SPACESHIP_GIT_STATUS_SHOW="false";
     };
 
+    ##TODO: Improve TMUX function (move away from tmux + make session name more readable)
     initExtra = ''
-      # Initialize spaceship prompt
-      source ${pkgs.spaceship-prompt}/share/zsh/site-functions/prompt_spaceship_setup
       autoload -U promptinit; promptinit
       bindkey -r "^j"
 
-      SPACESHIP_CHAR_SYMBOL="🚀 "
-      SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
-      SPACESHIP_DIR_PREFIX="🗂  "
-      SPACESHIP_GIT_BRANCH_PREFIX="⚡"
-      SPACESHIP_PROMPT_SUFFIXES_SHOW=false
-      SPACESHIP_PROMPT_DEFAULT_PREFIX=" - "
-      SPACESHIP_EXEC_TIME_SHOW=false
-      SPACESHIP_GIT_PREFIX=" on "
-      SPACESHIP_DOCKER_PREFIX=" on "
-      SPACESHIP_PACKAGE_PREFIX=" is "
-      SPACESHIP_GIT_STATUS_SHOW="false"
-
       # TMUX function
-      n() {
-       local session_name=$(echo "$PWD" | rev | cut -d'/' -f1-5 | rev | tr '/' '-' | tr '.' '-' | tr ':' '-')
-       # local session_name="$(basename "$PWD")"
-        if [ -z "$TMUX" ]; then
-          if tmux has-session -t "$session_name" 2>/dev/null; then
-              tmux attach-session -t "$session_name"
-          else
-              tmux new-session -s "$session_name" "nvim $*"
-          fi
-        else
-          nvim "$@"
-        fi
-      }
-      compdef _files n
+      # n() {
+      #  local session_name=$(echo "$PWD" | rev | cut -d'/' -f1-5 | rev | tr '/' '-' | tr '.' '-' | tr ':' '-')
+      #  # local session_name="$(basename "$PWD")"
+      #   if [ -z "$TMUX" ]; then
+      #     if tmux has-session -t "$session_name" 2>/dev/null; then
+      #         tmux attach-session -t "$session_name"
+      #     else
+      #         tmux new-session -s "$session_name" "nvim $*"
+      #     fi
+      #   else
+      #     nvim "$@"
+      #   fi
+      # }
+      # compdef _files n
 
       t() {
-          local session_name=$(echo "$PWD" | rev | cut -d'/' -f1-5 | rev | tr '/' '-' | tr '.' '-' | tr ':' '-')
+          # local session_name=$(echo "$PWD" | rev | cut -d'/' -f1-5 | rev | tr '/' '-' | tr '.' '-' | tr ':' '-')
+          local session_name="$(basename "$PWD")"
           if [ -z "$TMUX" ]; then
               if tmux has-session -t "$session_name" 2>/dev/null; then
                   tmux attach-session -t "$session_name"
@@ -103,6 +89,18 @@
             echo "Already in a tmux session"
           fi
       }
+
+      # diff function with default flags
+      diffc() {
+        diff -u -a "$@"
+      }
+      compdef _diff diffc
+
+      # diff function using nvim
+      diffn() {
+        nvim -d "$@"
+      }
+      compdef _diff diffnV
 
       check_repos() {
         find . -type d -name ".git" | while read gitdir; do
@@ -119,16 +117,53 @@
           source $file
         done
       fi
-      fastfetch
+
+      # Ensure fastfetch doesnt get on my nerves
+      if [[ -z "$SKIP_FF" ]]; then
+          if [ ! -f /tmp/fastfetch.lock ]; then
+              # Create lock file with current kitty session PID
+              echo $KITTY_PID > /tmp/fastfetch.lock
+              fastfetch
+          fi
+
+          cleanup_fastfetch_lock() {
+              if [ -f /tmp/fastfetch.lock ]; then
+                  # Check if any kitty windows are still running
+                  if ! pgrep -x kitty >/dev/null; then
+                      rm /tmp/fastfetch.lock
+                  fi
+              fi
+          }
+
+          zshexit() {
+              cleanup_fastfetch_lock
+          }
+      fi
       tmux list-sessions
     '';
 
     # Aliases
     shellAliases = {
+      update-nix = "make -C ${vars.git.nix} update";
       please = "sudo";
       ls = "eza --icons --git --header";
+      n = "nvim";
       x = "exit";
     };
+    
+    # Install and configure plugins separately
+    plugins = [
+      {
+        name = "zsh-fzf-tab";
+        src = pkgs.zsh-fzf-tab;
+        file = "share/fzf-tab/fzf-tab.plugin.zsh";
+      }
+      {
+        name = "spaceship-prompt";
+        src = pkgs.spaceship-prompt;
+        file = "share/zsh/site-functions/prompt_spaceship_setup";
+      }
+    ];
   };
 
   # Additional program configurations
@@ -139,7 +174,7 @@
       defaultCommand = "fd --type f";  # Faster than find
       defaultOptions = [
         "--height 40%"
-        # "--layout=reverse"
+        "--layout=reverse"
         "--color=spinner:#f4dbd6,hl:#ed8796"
         "--color=fg:#cad3f5,header:#cad3f5,info:#c6a0f6,pointer:#f4dbd6"
         "--color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796"
@@ -158,10 +193,42 @@
     yazi = {
       enable = true;
       enableZshIntegration = true;
-      # package = pkgs.yazi.override {
-      #   _7zz = pkgs._7zz.override {
-      #     useUasm = pkgs.stdenv.isLinux;
-      #   };
+      settings = {
+        manager = {
+          layout = [
+            1
+            4
+            3
+          ];
+          sort_by = "natural";
+          sort_sensitive = false;
+          sort_reverse = false;
+          sort_dir_first = true;
+          linemode = "size_and_mtime";
+          show_hidden = true;
+          show_symlink = true;
+        };
+        preview = {
+          image_filter = "lanczos3";
+          image_quality = 90;
+          tab_size = 1;
+          max_width = 600;
+          max_height = 900;
+          cache_dir = "";
+          ueberzug_scale = 1;
+          ueberzug_offset = [
+            0
+            0
+            0
+            0
+          ];
+        };
+        tasks = {
+          micro_workers = 5;
+          macro_workers = 10;
+          bizarre_retry = 5;
+        };
+      };
     };
     tmux = {
       enable = lib.mkDefault true;

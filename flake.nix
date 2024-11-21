@@ -2,33 +2,53 @@
   description = "ojsef39 base nix configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    darwin.url = "github:lnl7/nix-darwin/master";
-    yuki.url = "github:frostplexx/yuki";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    darwin = {
+      url = "github:lnl7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    yuki = {
+      url = "github:frostplexx/yuki/dev";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixcord = {
+      url = "github:kaylorben/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ { self, nixpkgs, home-manager, darwin, yuki, ... }:
   {
     sharedModules = [
       ./nix/core.nix
-##TODO: Do i need homemanager again here or is it sufficient if its called by the parent?
       home-manager.darwinModules.home-manager
+      yuki.nixosModules.default
+      ({ config, pkgs, ... }: {
+        nixpkgs.config.allowUnfree = true;
+      })
       ({ vars, system, ... }: {  # system is now available here
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
           backupFileExtension = "backup";
           extraSpecialArgs = { inherit vars inputs; };
-          users.${vars.user} = import ./hosts/shared/import.nix;
+          users.${vars.user} = import ./hosts/shared/import-hm.nix;
+          sharedModules = [
+            inputs.nixcord.homeManagerModules.nixcord
+          ];
         };
-        environment.systemPackages = [ yuki.packages.${system.darwin.aarch}.default ];
       })
-      ({ config, pkgs, ... }: {
-        nixpkgs.config.allowUnfree = true;
-      })
+      ./hosts/shared/import-sys.nix
     ];
 
     macModules = [
-      home-manager.darwinModules.home-manager
+      inputs.stylix.darwinModules.stylix
       ./hosts/darwin/import.nix
       ./hosts/darwin/homebrew.nix
     ];

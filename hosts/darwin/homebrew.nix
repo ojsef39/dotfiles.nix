@@ -22,25 +22,30 @@
     brews = [
       "ca-certificates"
       "coreutils"
-      "helm"
       "hashicorp/tap/vault"
+      "helm"
       "keyring"
       "mas"
       "ncdu"
+      "renovate"
+      "yazi"
     ];
 
     # macOS-specific apps and those not available/stable in nixpkgs
     casks = [
       "1password"
       "1password-cli"
-      "caffeine"
       "ChatGPT"
       "Lens"
+      "arc"
+      "caffeine"
       "kitty"
+      "logi-options+"
       "mac-mouse-fix"
       "poe"
       "scroll-reverser"
-      # "orbstack"
+      "shottr"
+      "yubico-authenticator"
     ];
   };
 }

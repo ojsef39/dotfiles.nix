@@ -62,16 +62,12 @@
       dock = {
         magnification = true;
         largesize = 62;
-        show-recents = false;
+        show-recents = true;
         tilesize = 54;
         wvous-bl-corner = 11;
         wvous-br-corner = 14;
         wvous-tl-corner = 5;
         wvous-tr-corner = 5; # https://daiderd.com/nix-darwin/manual/index.html#opt-system.defaults.dock.wvous-tl-corner
-
-        persistent-others = [
-          "/Users/${vars.user}/Downloads"
-        ];
       };
       WindowManager = {
         GloballyEnabled = true;
@@ -83,7 +79,7 @@
       alf.stealthenabled = 1; ##TODO: Move to personal
 
       menuExtraClock = {
-        ShowDate = 2;
+        ShowDate = 1;
         ShowSeconds = true;
       };
 

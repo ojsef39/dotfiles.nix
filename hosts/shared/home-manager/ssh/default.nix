@@ -4,7 +4,6 @@
     
     includes = [
       ##TODO: Reconfigure this when i know what i want to use where
-      "~/.orbstack/ssh/config"
       "/Users/${vars.user}/.colima/ssh_config"
     ];
 

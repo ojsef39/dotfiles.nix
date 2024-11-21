@@ -6,7 +6,8 @@
     act
     aichat
     btop
-    fastfetch
+    cargo
+    gh
     ghq
     gitlab-ci-local
     go
@@ -25,7 +26,6 @@
     yamllint
 
     # GUI Applications
-    discord         ##TODO: Add vencord
     obsidian        # Note-taking
     raycast         # Spotlight replacement
     stats
