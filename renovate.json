@@ -2,6 +2,6 @@
   "nix": {
     "enabled": true
   },
-  "reviewers": ["@ojsef39"],
+  "reviewers": ["ojsef39"],
   "schedule": ["at any time"]
 }
