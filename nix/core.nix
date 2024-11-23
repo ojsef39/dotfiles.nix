@@ -2,12 +2,13 @@
 { pkgs, ... }:
 
 {
-  nix.settings = {
-    # enable flakes globally
-    experimental-features = ["nix-command" "flakes"];
+  nix = {
+    settings = {
+      # enable flakes globally
+      experimental-features = ["nix-command" "flakes"];
+    };
+    package = pkgs.nix;
   };
-
-
   nixpkgs.config.allowBroken = true;
 
   # TODO: Idk why this has to be set to 5
@@ -15,5 +16,4 @@
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
-  nix.package = pkgs.nix;
 }

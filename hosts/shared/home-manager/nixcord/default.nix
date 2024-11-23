@@ -102,7 +102,7 @@ in
       ${themePath} = {
         source = builtins.fetchurl {
           url = themeUrl;
-          sha256 = "17k26qv8f87ryqz9c04ra96122b4kqijv4mnbakgrng4ji3himgn";
+          sha256 = "0gwb46zq1kbz7xvmhwcr8ib5zfzjl00yz97507k9l7vli1q0mw52";
         };
         force = true;
       };

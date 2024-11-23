@@ -173,7 +173,7 @@
         # Display the git repositories and subfolders of the project directories
         projects() {
           git_repos
-          for dir in "$project_dirs[@]"; do
+          for dir in "$project_dirs"; do
             find "$dir" -maxdepth 1 -type d | tail -n +2 # List subdirectories only, excluding the base directory itself
           done
         }

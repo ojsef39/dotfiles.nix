@@ -361,15 +361,19 @@
     };
   };
     
-  home.file = {
-    ".zsh_scripts/keep.zsh".text = "";  # Creates an empty .keep file to ensure directory exists
-  };
-
   # Ensure tmux plugin manager is installed
-  home.file.".tmux/plugins/tpm".source = pkgs.fetchgit {
-    url= "https://github.com/tmux-plugins/tpm";
-    rev = "v3.1.0";
-    sha256 = "sha256-IxguT6YgQNG9sE5773FIVgkddc2pGge/rLRDzopeBag=";
-    leaveDotGit = false;
+  home = {
+    file.".tmux/plugins/tpm".source = pkgs.fetchgit {
+      url= "https://github.com/tmux-plugins/tpm";
+      rev = "v3.1.0";
+      sha256 = "sha256-IxguT6YgQNG9sE5773FIVgkddc2pGge/rLRDzopeBag=";
+      leaveDotGit = false;
+    };
+    file = {
+      ".zsh_scripts/" = {
+        recursive = true;
+        source = ./zsh_scripts;
+      };
+    };
   };
 }
