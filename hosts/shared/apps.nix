@@ -4,5 +4,6 @@
     podman
     podman-compose
     podman-desktop
+    vscode
   ];
 }
