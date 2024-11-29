@@ -39,7 +39,7 @@
         "$PATH"
       ];
       PYTHON = "/usr/bin/python3";
-      NODE_EXTRA_CA_CERTS="$(brew --prefix)/etc/ca-certificates/cert.pem";
+      NODE_EXTRA_CA_CERTS="/opt/homebrew/etc/ca-certificates/cert.pem";
       # GITLAB-CI-LOCAL
       GCL_TIMESTAMPS = "true";
       GCL_MAX_JOB_NAME_PADDING = "30";
