@@ -39,12 +39,12 @@
         "$PATH"
       ];
       PYTHON = "/usr/bin/python3";
-      GCL_TIMESTAMPS = "true";
-      GCL_MAX_JOB_NAME_PADDING = "30";
       NODE_EXTRA_CA_CERTS="$(brew --prefix)/etc/ca-certificates/cert.pem";
       # GITLAB-CI-LOCAL
-      GLC_CONTAINER_EXECUTEABLE = "podman";
-      # Initialize spaceship prompt
+      GCL_TIMESTAMPS = "true";
+      GCL_MAX_JOB_NAME_PADDING = "30";
+      GCL_CONTAINER_EXECUTABLE="podman";
+     # Initialize spaceship prompt
       SPACESHIP_CHAR_SYMBOL="🚀 ";
       SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true;
       SPACESHIP_DIR_PREFIX="🗂  ";
