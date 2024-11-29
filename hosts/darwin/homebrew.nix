@@ -45,6 +45,7 @@
       "poe"
       "scroll-reverser"
       "shottr"
+      "the-unarchiver"
       "yubico-authenticator"
     ];
   };
