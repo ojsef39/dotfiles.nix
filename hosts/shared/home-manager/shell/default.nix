@@ -56,7 +56,7 @@
       SPACESHIP_DOCKER_PREFIX=" on ";
       SPACESHIP_PACKAGE_PREFIX=" is ";
       SPACESHIP_GIT_STATUS_SHOW="false";
-      SSL_CERT_FILE="$(/opt/homebrew/bin/brew --prefix)/etc/openssl@?/cert.pem"; # ? = version
+      SSL_CERT_FILE="$(/opt/homebrew/bin/brew --prefix)/etc/ca-certificates/cert.pem";
     };
 
     ##TODO: Improve TMUX function (move away from tmux + make session name more readable)
