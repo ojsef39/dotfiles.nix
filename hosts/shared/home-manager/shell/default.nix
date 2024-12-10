@@ -46,16 +46,18 @@
       GCL_CONTAINER_EXECUTABLE="podman";
       # Initialize spaceship prompt
       SPACESHIP_CHAR_SYMBOL="🚀 ";
-      SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true;
       SPACESHIP_DIR_PREFIX="🗂  ";
-      SPACESHIP_GIT_BRANCH_PREFIX="⚡";
-      SPACESHIP_PROMPT_SUFFIXES_SHOW=false;
-      SPACESHIP_PROMPT_DEFAULT_PREFIX=" - ";
-      SPACESHIP_EXEC_TIME_SHOW=false;
-      SPACESHIP_GIT_PREFIX=" on ";
+      SPACESHIP_DIR_TRUNC="3";
+      SPACESHIP_DIR_TRUNC_REPO=false;
       SPACESHIP_DOCKER_PREFIX=" on ";
+      SPACESHIP_EXEC_TIME_SHOW=false;
+      SPACESHIP_GIT_BRANCH_PREFIX="⚡";
+      SPACESHIP_GIT_PREFIX=" on ";
+      SPACESHIP_GIT_STATUS_SHOW="true";
       SPACESHIP_PACKAGE_PREFIX=" is ";
-      SPACESHIP_GIT_STATUS_SHOW="false";
+      SPACESHIP_PROMPT_DEFAULT_PREFIX=" - ";
+      SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true;
+      SPACESHIP_PROMPT_SUFFIXES_SHOW=false;
       SSL_CERT_FILE="$(/opt/homebrew/bin/brew --prefix)/etc/ca-certificates/cert.pem";
     };
 
