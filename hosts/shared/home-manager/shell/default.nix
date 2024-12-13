@@ -153,6 +153,7 @@
       update-nix = "make -C ${vars.git.nix} update";
       please = "sudo";
       ls = "eza --icons --git --header";
+      lg = "lazygit";
       n = "nvim";
       x = "exit";
     };
