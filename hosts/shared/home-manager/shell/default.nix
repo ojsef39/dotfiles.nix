@@ -117,6 +117,14 @@
         done
       }
 
+      cat() {
+        if [ $# -eq 0 ]; then
+          /bin/cat "$(fzf)"
+        else
+          /bin/cat "$@"
+        fi
+      }
+
       # Source additional scripts
       if [ -d $HOME/.zsh_scripts ]; then
         for file in $HOME/.zsh_scripts/*.zsh; do
