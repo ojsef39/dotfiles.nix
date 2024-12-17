@@ -11,6 +11,7 @@
     nodejs
     python3
     tmux
+    tree
     yarn
     zoxide
   ];
@@ -117,14 +118,6 @@
         done
       }
 
-      catf() {
-        if [ $# -eq 0 ]; then
-          cat "$(fzf)"
-        else
-          cat "$@"
-        fi
-      }
-
       # Source additional scripts
       if [ -d $HOME/.zsh_scripts ]; then
         for file in $HOME/.zsh_scripts/*.zsh; do
@@ -161,6 +154,8 @@
       update-nix = "make -C ${vars.git.nix} update";
       please = "sudo";
       ls = "eza --icons --git --header";
+      cat = "bat --theme=base16-256";
+      tree = "eza --icons --git --header --tree";
       lg = "lazygit";
       n = "nvim";
       x = "exit";
@@ -203,6 +198,9 @@
     eza = {
       enable = true;
       enableZshIntegration = true;
+    };
+    bat = {
+      enable = true;
     };
     # Terminal file manager
     yazi = {
