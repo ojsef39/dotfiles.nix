@@ -117,11 +117,11 @@
         done
       }
 
-      cat() {
+      catf() {
         if [ $# -eq 0 ]; then
-          /bin/cat "$(fzf)"
+          cat "$(fzf)"
         else
-          /bin/cat "$@"
+          cat "$@"
         fi
       }
 
