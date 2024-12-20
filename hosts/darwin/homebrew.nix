@@ -22,6 +22,7 @@
     brews = [
       "ca-certificates"
       "coreutils"
+      "goreleaser"
       "hashicorp/tap/vault"
       "helm"
       "keyring"
