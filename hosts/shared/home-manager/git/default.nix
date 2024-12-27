@@ -1,7 +1,19 @@
 { pkgs, lib, vars, ...}: {
-  home.activation.removeExistingGitconfig = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
-    rm -f ~/.gitconfig
-  '';
+  home = {
+    activation.removeExistingGitconfig = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
+      rm -f ~/.gitconfig
+    '';
+    file."Library/Application Support/lazygit/config.yml".text = ''
+      # yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+      customCommands:
+      - key: <c-g>
+        description: Pick LLM commit
+        loadingText: "waiting for LLM to generate commit messages..."
+        command: export EDITOR=nvim && commit-oracle.sh
+        context: files
+        subprocess: true
+    '';
+  };
 
   programs.git = {
     enable = lib.mkDefault true;
