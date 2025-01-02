@@ -9,7 +9,7 @@
       - key: <c-g>
         description: Pick LLM commit
         loadingText: "waiting for LLM to generate commit messages..."
-        command: export EDITOR=nvim && commit-oracle.sh
+        command: clear && export EDITOR=nvim && commit-oracle.sh
         context: files
         subprocess: true
     '';
