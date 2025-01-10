@@ -4,14 +4,14 @@
   home.activation = {
     ghqGetRepos = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
       export PATH=$PATH:/usr/bin
-      ${pkgs.ghq}/bin/ghq get https://github.com/ojsef39/commit-oracle
-      ${pkgs.ghq}/bin/ghq get https://github.com/ojsef39/nix-base
+      ${pkgs.ghq}/bin/ghq get -u https://github.com/ojsef39/commit-oracle || true
+      ${pkgs.ghq}/bin/ghq get -u https://github.com/ojsef39/nix-base || true
       export PATH=$PATH:/bin/hostname
       hostname=$(/bin/hostname)
       if [[ $hostname == L???-* ]]; then
-        ${pkgs.ghq}/bin/ghq get https://${vars.git.url}/${vars.user}/nix-work
+        ${pkgs.ghq}/bin/ghq get -u https://${vars.git.url}/${vars.user}/nix-work || true 
       else
-        ${pkgs.ghq}/bin/ghq get https://github.com/ojsef39/nix-personal
+        ${pkgs.ghq}/bin/ghq get -u https://github.com/ojsef39/nix-personal || true 
       fi
     '';
   };
