@@ -10,6 +10,7 @@
       hostname=$(/bin/hostname)
       if [[ $hostname == L???-* ]]; then
         ${pkgs.ghq}/bin/ghq get -u https://${vars.git.url}/${vars.user}/nix-work 2>&1 | grep -E "update|error:" || true
+        ${pkgs.ghq}/bin/ghq get -u https://${vars.git.url}/${vars.user}/renovate-dependency-summary 2>&1 | grep -E "update|error:" || true
       else
         ${pkgs.ghq}/bin/ghq get -u https://github.com/ojsef39/nix-personal 2>&1 | grep -E "update|error:" || true
       fi
