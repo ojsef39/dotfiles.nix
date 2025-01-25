@@ -7,21 +7,31 @@ let
   # Define theme path based on operating system
   themePath =
     if pkgs.stdenv.isDarwin
-    then "/Users/${vars.user}/Library/Application Support/Vencord/themes/${themeFile}"
+    then "/Users/${vars.user}/Library/Application Support/vesktop/themes/${themeFile}"
     else "${config.xdg.configHome}/vesktop/themes/${themeFile}";
-in
-{
+in {
   stylix.targets.vesktop.enable = false; # Deactivate stylix because it doesnt work on macos
   programs.nixcord = {
     enable = true;
     discord = {
       enable = true;
       vencord = {
-        enable = true;
+        enable = false;
         package = pkgs.vencord;
       };
     };
-    vesktop.enable = false;
+    vesktop = {
+      enable = true;
+      package = pkgs.vesktop.overrideAttrs (previousAttrs: {
+        patches = previousAttrs.patches ++ [
+          (pkgs.fetchpatch {
+            name = "micfix-8fdb10b95fa4309d475ce4a47efa4bf2cba4264e.patch";
+            url = "https://gist.githubusercontent.com/ojsef39/b8d8190008869b8a868b998494e3f95d/raw/8fdb10b95fa4309d475ce4a47efa4bf2cba4264e/micfix.patch";
+            sha256 = "sha256-jJyg5b8D+zTpLKKpiwKRWhJZ+YXgYNxMd/7Tjjkf1N4=";
+          })
+        ];
+      });
+    };
     config = {
       useQuickCss = false;
       disableMinSize = true;
@@ -97,34 +107,35 @@ in
   };
 
   # Download theme file
-  home = {
-    file = {
-      ${themePath} = {
-        source = builtins.fetchurl {
-          url = themeUrl;
-          sha256 = "0gwb46zq1kbz7xvmhwcr8ib5zfzjl00yz97507k9l7vli1q0mw52";
-        };
-        force = true;
+  home.file = {
+    ${themePath} = {
+      source = builtins.fetchurl {
+        url = themeUrl;
+        sha256 = "0gwb46zq1kbz7xvmhwcr8ib5zfzjl00yz97507k9l7vli1q0mw52";
       };
-      # Settings configuration
-      "${config.programs.nixcord.vesktop.configDir}/settings.json" = {
-        text = builtins.toJSON {
-          discordBranch = "stable";
-          minimizeToTray = true;
-          arRPC = true;
-          customTitleBar = if pkgs.stdenv.isDarwin then true else false;
-        };
-        force = true;
+      force = true;
+    };
+    # Settings configuration
+    "${config.programs.nixcord.vesktop.configDir}/settings.json" = {
+      text = builtins.toJSON {
+        discordBranch = "stable";
+        minimizeToTray = true;
+        arRPC = true;
+        customTitleBar =
+          if pkgs.stdenv.isDarwin
+          then true
+          else false;
       };
-      # Quick CSS configuration
-      "${config.programs.nixcord.vesktop.configDir}/settings/quickCss.css" = {
-        text = ''
-          .titleBar_a934d8 {
-            display: none !important;
-          }
-        '';
-        force = true;
-      };
+      force = true;
+    };
+    # Quick CSS configuration
+    "${config.programs.nixcord.vesktop.configDir}/settings/quickCss.css" = {
+      text = ''
+        .titleBar_a934d8 {
+          display: none !important;
+        }
+      '';
+      force = true;
     };
   };
 }
