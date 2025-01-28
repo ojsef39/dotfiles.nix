@@ -72,7 +72,10 @@ in {
         fixImagesQuality.enable = true;
         fullSearchContext.enable = true;
         gameActivityToggle.enable = true;
-        imageZoom.enable = true;
+        imageZoom = {
+          enable = true;
+          size = 200.0;
+        };
         memberCount.enable = true;
         mentionAvatars.enable = true;
         messageClickActions.enable = true;
