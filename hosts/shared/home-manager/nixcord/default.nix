@@ -66,7 +66,10 @@ in {
           remainInIdle = true;
         };
         crashHandler.enable = true;
-        experiments.enable = true;
+        experiments = {
+          enable = true;
+          toolbarDevMenu = true;
+        };
         favoriteEmojiFirst.enable = true;
         favoriteGifSearch.enable = true;
         fixImagesQuality.enable = true;
