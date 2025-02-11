@@ -27,7 +27,6 @@
 
     # GUI Applications
     obsidian        # Note-taking
-    raycast         # Spotlight replacement
     stats
     utm             # Virtualization
   ];

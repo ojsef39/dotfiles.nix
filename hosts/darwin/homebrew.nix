@@ -44,6 +44,7 @@
       "logi-options+"
       "mac-mouse-fix"
       "poe"
+      "raycast"
       "scroll-reverser"
       "shottr"
       "the-unarchiver"
