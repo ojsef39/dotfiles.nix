@@ -25,9 +25,9 @@ in {
       package = pkgs.vesktop.overrideAttrs (previousAttrs: {
         patches = previousAttrs.patches ++ [
           (pkgs.fetchpatch {
-            name = "micfix-8fdb10b95fa4309d475ce4a47efa4bf2cba4264e.patch";
-            url = "https://gist.githubusercontent.com/ojsef39/b8d8190008869b8a868b998494e3f95d/raw/8fdb10b95fa4309d475ce4a47efa4bf2cba4264e/micfix.patch";
-            sha256 = "sha256-jJyg5b8D+zTpLKKpiwKRWhJZ+YXgYNxMd/7Tjjkf1N4=";
+            name = "micfix-68c19662909621f421bc4a896e9225e21d62b3ed.patch";
+            url = "https://gist.githubusercontent.com/ojsef39/b8d8190008869b8a868b998494e3f95d/raw/68c19662909621f421bc4a896e9225e21d62b3ed/micfix.patch";
+            sha256 = "sha256-orMoR0NmHKirNG/6qEr35gjKzkMjHltgkOzioo6gIfY=";
           })
         ];
       });
