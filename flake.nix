@@ -29,9 +29,6 @@
       ./nix/core.nix
       home-manager.darwinModules.home-manager
       yuki.nixosModules.default
-      ({ config, pkgs, ... }: {
-        nixpkgs.config.allowUnfree = true;
-      })
       ({ vars, system, ... }: {  # system is now available here
         home-manager = {
           useGlobalPkgs = true;
