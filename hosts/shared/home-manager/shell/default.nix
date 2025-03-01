@@ -60,6 +60,7 @@
       SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true;
       SPACESHIP_PROMPT_SUFFIXES_SHOW=false;
       SSL_CERT_FILE="$(/opt/homebrew/bin/brew --prefix)/etc/ca-certificates/cert.pem";
+      NIX_GIT_PATH="${vars.git.nix}";
     };
 
     ##TODO: Improve TMUX function (move away from tmux + make session name more readable)
