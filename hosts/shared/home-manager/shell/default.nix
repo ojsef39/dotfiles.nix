@@ -154,7 +154,7 @@
     shellAliases = {
       update-nix = "make -C ${vars.git.nix} update";
       select-nix = "make -C ${vars.git.nix} select";
-      ghql = "/Users/${vars.user}/.config/kitty/scripts/project_selector.sh";
+      ghql = "/Users/${vars.user}/.config/kitty/scripts/project_selector.sh --no-nvim";
       ls = "eza --icons --git --header";
       cat = "bat --theme=base16-256";
       tree = "eza --icons --git --header --tree";

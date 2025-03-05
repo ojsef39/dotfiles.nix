@@ -166,6 +166,17 @@
         ghq_root=~/${vars.git.ghq}
         project_dirs=(${vars.kitty.project_selector})
 
+        # Parse command line arguments
+        no_nvim=false
+        for arg in "$@"; do
+          case $arg in
+            --no-nvim)
+              no_nvim=true
+              shift
+              ;;
+          esac
+        done
+
         # Function to find git repositories under the ghq root path
         git_repos() {
           find "$ghq_root" -type d -name ".git" | sed 's/\/.git$//'
@@ -183,22 +194,23 @@
         project_selector() {
           local project
           project=$(projects | fzf --height 100%)
-
           if [ -n "$project" ]; then
-            {
-              kitten @ launch --type=tab --cwd="$project" -- env SKIP_FF=1 zsh -il -c "nvim ."
+            if [ "$no_nvim" = true ]; then
+              # Only change to the directory without opening nvim
+              cd "$project"
               echo "Changed to $project"
-            } || {
-              echo "Failed to change directory to $project"
-              exit 1
-            }
-          else
-            echo "No project selected."
-          fi
-        }
+            else
+              # Change directory and open nvim (original behavior)
+          kitten @ launch --type=tab --cwd="$project" -- env SKIP_FF=1 zsh -il -c "nvim ."
+          echo "Changed to $project"
+        fi
+      else
+        echo "No project selected."
+      fi
+    }
 
-        project_selector
-      '';
+    project_selector
+    '';
     };
   };
 }
