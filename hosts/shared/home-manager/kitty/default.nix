@@ -160,6 +160,7 @@
     };
 
     "kitty/scripts/project_selector.sh" = {
+      executable = true;
       text = ''
         #!/bin/bash
         ghq_root=~/${vars.git.ghq}
