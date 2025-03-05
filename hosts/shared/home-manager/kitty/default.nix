@@ -197,19 +197,18 @@
           if [ -n "$project" ]; then
             if [ "$no_nvim" = true ]; then
               # Only change to the directory without opening nvim
-              cd "$project"
+              kitten @ launch --type=tab --cwd="$project" -- env SKIP_FF=1 zsh -il
               echo "Changed to $project"
             else
               # Change directory and open nvim (original behavior)
-          kitten @ launch --type=tab --cwd="$project" -- env SKIP_FF=1 zsh -il -c "nvim ."
-          echo "Changed to $project"
-        fi
-      else
-        echo "No project selected."
-      fi
-    }
-
-    project_selector
+              kitten @ launch --type=tab --cwd="$project" -- env SKIP_FF=1 zsh -il -c "nvim ."
+              echo "Changed to $project"
+            fi
+          else
+            echo "No project selected."
+          fi
+        }
+        project_selector
     '';
     };
   };
