@@ -28,7 +28,7 @@
     sharedModules = [
       ./nix/core.nix
       home-manager.darwinModules.home-manager
-      yuki.nixosModules.default
+      # yuki.nixosModules.default
       ({ vars, system, ... }: {  # system is now available here
         home-manager = {
           useGlobalPkgs = true;
