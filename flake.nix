@@ -11,7 +11,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     yuki = {
-      url = "github:frostplexx/yuki/dev";
+      url = "github:frostplexx/yuki";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
