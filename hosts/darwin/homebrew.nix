@@ -23,6 +23,7 @@
       "ca-certificates"
       "coreutils"
       "goreleaser"
+      "grip"
       "hashicorp/tap/vault"
       "helm"
       "keyring"
