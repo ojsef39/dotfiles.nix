@@ -22,6 +22,7 @@
     brews = [
       "ca-certificates"
       "coreutils"
+      "expect"
       "goreleaser"
       "grip"
       "hashicorp/tap/vault"
