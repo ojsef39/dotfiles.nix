@@ -42,7 +42,7 @@
       # Lock the dock after Apps were set by upstream
       CustomUserPreferences = {
         "com.apple.dock" = {
-          "contents-immutable" = 1;
+          # "contents-immutable" = 1;
           "size-immutable" = 1;
           "position-immutable" = 1;
         };
