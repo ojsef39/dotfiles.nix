@@ -4,6 +4,7 @@
     enable = lib.mkDefault true;
     settings = {
       k9s = {
+        liveViewAutoRefresh = true;
         ui = {
           skin = "catppuccin-macchiato";
           enableMouse = true;
