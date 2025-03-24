@@ -69,6 +69,8 @@
       autoload -U promptinit; promptinit
       bindkey -r "^j"
 
+      source <(fzf --zsh)
+
       # TMUX function
       # n() {
       #  local session_name=$(echo "$PWD" | rev | cut -d'/' -f1-5 | rev | tr '/' '-' | tr '.' '-' | tr ':' '-')
