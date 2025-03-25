@@ -9,6 +9,7 @@
           skin = "catppuccin-macchiato";
           enableMouse = true;
           reactive = true;
+          logoless = true;
         };
         logger = {
           tail = 500;
