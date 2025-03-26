@@ -37,6 +37,7 @@
         "/opt/homebrew/bin"
         "$HOME/Library/Python/3.12/bin"
         "/Users/${vars.user}/${vars.git.ghq}/github.com/ojsef39/commit-oracle"
+        "/Users/josefhofer/.local/bin"
         "$PATH"
       ];
       PYTHON = "/usr/bin/python3";
