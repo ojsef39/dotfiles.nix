@@ -207,6 +207,7 @@ return {
         "shellcheck",
         "shfmt",
         "flake8",
+        "helm-ls",
       },
     },
   },
