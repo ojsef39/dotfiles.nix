@@ -163,6 +163,7 @@
       cat = "bat --theme=base16-256";
       tree = "eza --icons --git --header --tree";
       lg = "lazygit";
+      k = "kubectl";
       n = "nvim";
       x = "exit";
     };
