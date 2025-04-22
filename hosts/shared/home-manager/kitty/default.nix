@@ -75,7 +75,7 @@
       listen_on = "unix:/tmp/mykitty";
 
       # Fonts
-      font_family = "JetBrainsMono Nerd Font Mono";
+      font_family = "Maple Mono NF";
       bold_font = "auto";
       italic_font = "auto";
       bold_italic_font = "auto";

@@ -17,7 +17,7 @@ in
     fzf
     git
     lazygit
-    nerd-fonts.jetbrains-mono
+    maple-mono.NF
     ripgrep
   ];
 
