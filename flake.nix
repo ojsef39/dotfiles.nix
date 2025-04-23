@@ -18,13 +18,26 @@
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nh = {
+      url = "github:viperml/nh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ { self, nixpkgs, home-manager, darwin, ... }:
+  let
+    overlays = [
+      # Simple overlay to make the nh package available in pkgs
+      (final: prev: {
+        nh = inputs.nh.packages.${prev.system}.default;
+      })
+    ];
+  in
   {
     sharedModules = [
       ./nix/core.nix
+      { nixpkgs.overlays = overlays; }
       home-manager.darwinModules.home-manager
-      ({ vars, system, ... }: {  # system is now available here
+      ({ vars, system, ... }: {
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
