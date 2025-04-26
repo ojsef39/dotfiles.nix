@@ -18,12 +18,16 @@
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixkit = {
+      url = "github:frostplexx/nixkit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nh = {
       url = "github:viperml/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = inputs @ { self, nixpkgs, home-manager, darwin, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, darwin, nixcord, nixkit, ... }:
   let
     overlays = [
       # Simple overlay to make the nh package available in pkgs
@@ -37,6 +41,7 @@
       ./nix/core.nix
       { nixpkgs.overlays = overlays; }
       home-manager.darwinModules.home-manager
+      nixkit.nixosModules.default
       ({ vars, system, ... }: {
         home-manager = {
           useGlobalPkgs = true;
@@ -45,7 +50,8 @@
           extraSpecialArgs = { inherit vars inputs; };
           users.${vars.user} = import ./hosts/shared/import-hm.nix;
           sharedModules = [
-            inputs.nixcord.homeModules.nixcord
+            nixcord.homeModules.nixcord
+            nixkit.homeModules.default
           ];
         };
       })
