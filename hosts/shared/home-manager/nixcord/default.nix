@@ -2,7 +2,7 @@
 
 let
   themeFile = "midnight-catppuccin-macchiato.theme.css";
-  themeUrl = "https://raw.githubusercontent.com/refact0r/midnight-discord/master/flavors/midnight-catppuccin-macchiato.theme.css";
+  themeUrl = "https://raw.githubusercontent.com/refact0r/midnight-discord/refs/heads/master/themes/flavors/midnight-catppuccin-macchiato.theme.css";
 
   # Define theme path based on operating system
   themePath =
@@ -117,7 +117,7 @@ in {
     ${themePath} = {
       source = builtins.fetchurl {
         url = themeUrl;
-        sha256 = "0gwb46zq1kbz7xvmhwcr8ib5zfzjl00yz97507k9l7vli1q0mw52";
+        sha256 = "1xkxifwh9mallyw4ib6d9xr27b1v9gvvszx4j2naq44ay5s30y53";
       };
       force = true;
     };
