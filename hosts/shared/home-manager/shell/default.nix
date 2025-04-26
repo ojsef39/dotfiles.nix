@@ -16,7 +16,6 @@
     zoxide
   ];
 
-  ##TODO: do you really have to still install it when its enabled?
   programs.zsh = {
     enable = lib.mkDefault true;
 

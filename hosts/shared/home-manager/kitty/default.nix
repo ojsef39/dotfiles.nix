@@ -91,9 +91,6 @@
       macos_option_as_alt = "both";
     };
 
-
-    ##TODO: Add mouse buttons to switch tabs
-    # Keybindings
     keybindings = {
       "ctrl+shift+-" = "launch --location=hsplit --cwd=current";
       "ctrl+shift++" = "launch --location=vsplit --cwd=current";
