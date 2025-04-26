@@ -66,7 +66,7 @@
     };
 
     ##TODO: Improve TMUX function (move away from tmux + make session name more readable)
-    initExtra = ''
+    initContent = ''
       autoload -U promptinit; promptinit
       bindkey -r "^j"
 

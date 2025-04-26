@@ -14,7 +14,7 @@ let
     homeManagerDirs;
 
   # Map each valid directory to its default.nix path
-  homeManagerModules = map (dir: ./home-manager/${dir}/default.nix) validHomeManagerDirs;
+  homeModules = map (dir: ./home-manager/${dir}/default.nix) validHomeManagerDirs;
 
   # Determine home directory based on system
   homeDirectory = if pkgs.stdenv.isDarwin
@@ -23,7 +23,7 @@ let
 
 in
 {
-  imports = homeManagerModules;
+  imports = homeModules;
 
   home = {
     homeDirectory = lib.mkForce homeDirectory;

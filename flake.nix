@@ -45,7 +45,7 @@
           extraSpecialArgs = { inherit vars inputs; };
           users.${vars.user} = import ./hosts/shared/import-hm.nix;
           sharedModules = [
-            inputs.nixcord.homeManagerModules.nixcord
+            inputs.nixcord.homeModules.nixcord
           ];
         };
       })
