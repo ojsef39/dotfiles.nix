@@ -4,9 +4,6 @@
   programs.kitty = {
     enable = true;
 
-    # Theme
-    #theme = "Catppuccin";
-
     # Settings
     settings = {
       # Colors
