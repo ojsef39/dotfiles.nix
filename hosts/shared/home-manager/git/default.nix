@@ -6,12 +6,14 @@
     file."Library/Application Support/lazygit/config.yml".text = ''
       # yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
       customCommands:
-      - key: <c-g>
-        description: Pick LLM commit
-        loadingText: "waiting for LLM to generate commit messages..."
-        command: clear && export EDITOR=nvim && commit-oracle.sh
-        context: files
-        subprocess: true
+        - key: <c-g>
+          description: Pick LLM commit
+          loadingText: "waiting for LLM to generate commit messages..."
+          command: clear && export EDITOR=nvim && commit-oracle.sh
+          context: files
+          subprocess: true
+      git:
+        overrideGpg: true
     '';
   };
 
@@ -26,7 +28,7 @@
       init.defaultBranch = "main";
       push.autoSetupRemote = lib.mkDefault true;
       pull.rebase = lib.mkDefault true;
-      
+
       diff = {
         tool = "nvimdiff";
       };
@@ -43,7 +45,6 @@
     };
 
     aliases = {
-      # Your existing aliases
       mr = "!sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -";
       br = "branch";
       co = "checkout";
