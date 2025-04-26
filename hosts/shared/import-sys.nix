@@ -1,4 +1,4 @@
-{ vars, pkgs, lib, ... }:
+{ vars, pkgs, ... }:
 let
   # Check if system directory exists
   hasSystemDir = builtins.pathExists ./system;
