@@ -16,7 +16,6 @@
     zoxide
   ];
 
-  ##TODO: do you really have to still install it when its enabled?
   programs.zsh = {
     enable = lib.mkDefault true;
 
@@ -160,6 +159,7 @@
       select-nix = "make -C ${vars.git.nix} select";
       nhu = "nh darwin switch -u -a -H mac $NIX_GIT_PATH";
       nhb = "nh darwin build -u -H mac $NIX_GIT_PATH";
+      nhd = "nh darwin switch -a -H mac $NIX_GIT_PATH";
       nhc = "nh darwin clean all -a -k 2 -K 14d";
       ghql = "/Users/${vars.user}/.config/kitty/scripts/project_selector.sh --no-nvim";
       ls = "eza --icons --git --header";
