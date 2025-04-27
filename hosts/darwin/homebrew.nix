@@ -24,12 +24,12 @@
       "coreutils"
       "expect"
       "goreleaser"
-      "grip"
       "hashicorp/tap/vault"
       "helm"
       "keyring"
       "mas"
       "ncdu"
+      "norwoodj/tap/helm-docs"
       "renovate"
       "yazi"
     ];
