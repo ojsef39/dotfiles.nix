@@ -111,7 +111,7 @@
       diffn() {
         nvim -d "$@"
       }
-      compdef _diff diffnV
+      compdef _diff diffn
 
       check_repos() {
         find . -type d -name ".git" | while read gitdir; do

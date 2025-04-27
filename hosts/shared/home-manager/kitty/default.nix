@@ -6,9 +6,6 @@
 
     # Settings
     settings = {
-      # Colors
-      url_color = "#4dc6ff";
-
       # Environment
       term = "xterm-256color";
       editor = "nvim";
@@ -63,7 +60,6 @@
       tab_title_template = "{index} { tab.active_exe if tab.active_exe not in ('-zsh', 'kitten') else title}";
       active_tab_font_style = "bold";
       inactive_tab_font_style = "normal";
-      active_tab_background = "#8aadf4";
 
       # Remote control
       remote_kitty = "if-needed";
