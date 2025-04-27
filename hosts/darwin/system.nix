@@ -11,13 +11,30 @@
 #
 ###################################################################################
 {
+  # You can enable the fish shell and manage fish configuration and plugins with Home Manager, but to enable vendor fish completions provided by Nixpkgs you
+  # will also want to enable the fish shell in /etc/nixos/configuration.nix:
+  programs.fish.enable = true;
+
+  # User configuration (needed for fish to work as default shell: https://github.com/nix-darwin/nix-darwin/issues/1237)
+  users = {
+    users = {
+      ${vars.user} = {
+        shell = pkgs.fish;
+        uid = 501;
+      };
+    };
+    knownUsers = [ "${vars.user}" ];
+  };
+
   system = {
     # activationScripts are executed every time you boot the system or run `nixos-rebuild` / `darwin-rebuild`.
-    activationScripts.postUserActivation.text = ''
-      # activateSettings -u will reload the settings from the database and apply them to the current session,
-      # so we do not need to logout and login again to make the changes take effect.
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    '';
+    activationScripts = {
+      postUserActivation.text = ''
+        # activateSettings -u will reload the settings from the database and apply them to the current session,
+        # so we do not need to logout and login again to make the changes take effect.
+        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+      '';
+    };
 
     startup.chime = lib.mkDefault true;
 

@@ -6,9 +6,6 @@
 
     # Settings
     settings = {
-      # Colors
-      url_color = "#4dc6ff";
-
       # Environment
       term = "xterm-256color";
       editor = "nvim";
@@ -16,7 +13,7 @@
       # Window
       window_padding_width = "2 2";
       draw_minimal_borders = "yes";
-      # background_opacity = "0.8";
+      background_opacity = "0.8";
       background_blur = "25";
       remember_window_size = "yes";
       initial_window_width = "640";
@@ -60,10 +57,9 @@
       tab_bar_edge = "top";
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
-      tab_title_template = "{index} { tab.active_exe if tab.active_exe not in ('-zsh', 'kitten') else title}";
+      tab_title_template = "{index} { tab.active_exe if tab.active_exe not in ('-fish', 'kitten') else title}";
       active_tab_font_style = "bold";
       inactive_tab_font_style = "normal";
-      active_tab_background = "#8aadf4";
 
       # Remote control
       remote_kitty = "if-needed";
@@ -106,8 +102,8 @@
       "ctrl+shift+up" = "resize_window taller";
       "ctrl+shift+down" = "resize_window shorter";
       "ctrl+shift+x" = "close_window";
-      "ctrl+shift+m" = "launch --type=tab --cwd=current --copy-env --title Yazi -- env SKIP_FF=1 zsh -il -c \"yazi\"";
-      "ctrl+shift+p" = "launch --title 'Project Selector' --copy-env --type=overlay env SKIP_FF=1  sh -il ~/.config/kitty/scripts/project_selector.sh";
+      "ctrl+shift+m" = "launch --type=tab --cwd=current --copy-env --title Yazi -- env SKIP_FF=1 fish -c 'yazi'";
+      "ctrl+shift+p" = "launch --title 'Project Selector' --copy-env --type=overlay env SKIP_FF=1 fish -c '~/.config/kitty/scripts/project_selector.sh'";
       "cmd+left" = "previous_tab";
       "cmd+right" = "next_tab";
       ## SET F9 to forward and F10 to back button in Logitech app
@@ -138,11 +134,16 @@
       "opt+shift+7" = "send_text all \\\\";  # backslash
       "opt+shift+-" = "send_text all —";  # em dash
     };
+    extraConfig = ''
+      include ${config.xdg.configHome}/kitty/themes/catppuccin-macchiato.conf
+    '';
   };
 
   xdg.configFile = {
-    # Copy theme
-    "kitty/themes/catpuccin.conf".source = ./themes/catpuccin.conf;
+    "kitty/themes/catppuccin-macchiato.conf".source = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/catppuccin/kitty/refs/heads/main/themes/macchiato.conf";
+      hash = "sha256-1fF00Gm1cf5iXX2QIhqxxwYAbStyL5LBUR6wP82hO74=";
+    };
 
     # Copy icon
     "kitty/kitty.app.png".source = ./themes/kitty.app.png;
@@ -191,11 +192,11 @@
           if [ -n "$project" ]; then
             if [ "$no_nvim" = true ]; then
               # Only change to the directory without opening nvim
-              kitten @ launch --type=tab --cwd="$project" -- env SKIP_FF=1 zsh -il
+              kitten @ launch --copy-env --type=tab --cwd="$project" -- env SKIP_FF=1 fish -c "cd '$project'"
               echo "Changed to $project"
             else
               # Change directory and open nvim (original behavior)
-              kitten @ launch --type=tab --cwd="$project" -- env SKIP_FF=1 zsh -il -c "nvim ."
+              kitten @ launch --copy-env --type=tab --cwd="$project" -- env SKIP_FF=1 fish -c "cd '$project' && nvim ."
               echo "Changed to $project"
             fi
           else

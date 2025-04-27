@@ -10,10 +10,6 @@
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    stylix = {
-      url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixcord = {
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,7 +55,6 @@
     ];
 
     macModules = [
-      inputs.stylix.darwinModules.stylix
       ./hosts/darwin/import.nix
       ./hosts/darwin/homebrew.nix
     ];
