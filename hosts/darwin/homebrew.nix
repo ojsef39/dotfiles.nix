@@ -24,7 +24,6 @@
       "coreutils"
       "expect"
       "goreleaser"
-      "grip"
       "hashicorp/tap/vault"
       "helm"
       "keyring"
