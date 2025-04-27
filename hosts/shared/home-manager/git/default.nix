@@ -1,4 +1,4 @@
-{ lib, vars, ...}:
+{ pkgs, lib, vars, ...}:
 {
   home = {
     activation.removeExistingGitconfig = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
@@ -58,10 +58,28 @@
     };
     lazygit = {
       enable = true;
+      package = pkgs.buildGoModule rec {
+        pname = "lazygit";
+        version = "master";
+        src = pkgs.fetchFromGitHub {
+          owner = "jesseduffield";
+          repo = "lazygit";
+          rev = "master";
+          sha256 = "sha256-1+X/FyT6EzsbVBZsMrI5iVBcjv7mSGMEgc/JOqyfNWA=";
+        };
+        vendorHash = null;
+        doCheck = false;
+        ldflags = [ "-X main.version=${version}" "-X main.buildSource=nix" ];
+        meta = with pkgs.lib; {
+          description = "Simple terminal UI for git commands";
+          homepage = "https://github.com/jesseduffield/lazygit";
+          license = licenses.mit;
+          mainProgram = "lazygit";
+        };
+      };
       settings = {
         notARepository = "quit";
         git.overrideGpg = true;
-        os.editPreset = "nvim";
         customCommands = [
           {
             key = "<c-g>";

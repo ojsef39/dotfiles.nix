@@ -16,7 +16,6 @@ in
     fd
     fzf
     git
-    lazygit
     maple-mono.NF
     ripgrep
   ];
@@ -35,7 +34,6 @@ in
     # Packages used in nvim
     extraPackages = with pkgs; [
       fzf
-      lazygit
       nodejs
       ripgrep
 
