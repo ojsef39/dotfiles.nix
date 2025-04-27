@@ -13,7 +13,7 @@
       # Window
       window_padding_width = "2 2";
       draw_minimal_borders = "yes";
-      # background_opacity = "0.8";
+      background_opacity = "0.8";
       background_blur = "25";
       remember_window_size = "yes";
       initial_window_width = "640";
@@ -134,11 +134,16 @@
       "opt+shift+7" = "send_text all \\\\";  # backslash
       "opt+shift+-" = "send_text all —";  # em dash
     };
+    extraConfig = ''
+      include ${config.xdg.configHome}/kitty/themes/catppuccin-macchiato.conf
+    '';
   };
 
   xdg.configFile = {
-    # Copy theme
-    "kitty/themes/catpuccin.conf".source = ./themes/catpuccin.conf;
+    "kitty/themes/catppuccin-macchiato.conf".source = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/catppuccin/kitty/refs/heads/main/themes/macchiato.conf";
+      hash = "sha256-1fF00Gm1cf5iXX2QIhqxxwYAbStyL5LBUR6wP82hO74=";
+    };
 
     # Copy icon
     "kitty/kitty.app.png".source = ./themes/kitty.app.png;
