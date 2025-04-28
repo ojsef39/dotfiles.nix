@@ -160,9 +160,16 @@
       # Launch a kitty overlay terminal to configure tide without disturbing the current session
       $DRY_RUN_CMD ${pkgs.kitty}/bin/kitten @ launch --type=overlay --title="Tide Configuration" --copy-env --env SKIP_FF=1 ${pkgs.fish}/bin/fish -C "
         # Configure tide with initial settings
-        tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Many icons' --transient=Yes
-        echo 'Tide configuration complete. Window will close in 1 seconds.'
-        sleep 1
+        set tide_output (tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Many icons' --transient=Yes 2>&1)
+
+        if string match -q '*Invalid*' \$tide_output
+          echo 'There was an issue with Tide configuration:'
+          echo \$tide_output
+          read -n 1 -P \"Press any key to quit \" key_pressed
+        else
+          echo 'Tide configuration complete. Window will close in 1 second.'
+          sleep 1
+        end
         exit 0
       "
     '';
