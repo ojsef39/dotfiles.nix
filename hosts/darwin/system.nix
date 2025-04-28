@@ -18,12 +18,12 @@
   # User configuration (needed for fish to work as default shell: https://github.com/nix-darwin/nix-darwin/issues/1237)
   users = {
     users = {
-      ${vars.user} = {
+      ${vars.user.name} = {
         shell = pkgs.fish;
-        uid = 501;
+        uid = vars.user.uid;
       };
     };
-    knownUsers = [ "${vars.user}" ];
+    knownUsers = [ "${vars.user.name}" ];
   };
 
   system = {

@@ -44,7 +44,7 @@
           useUserPackages = true;
           backupFileExtension = "backup";
           extraSpecialArgs = { inherit vars inputs; };
-          users.${vars.user} = import ./hosts/shared/import-hm.nix;
+          users.${vars.user.name} = import ./hosts/shared/import-hm.nix;
           sharedModules = [
             nixcord.homeModules.nixcord
             nixkit.homeModules.default

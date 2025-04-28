@@ -18,8 +18,8 @@ let
 
   # Determine home directory based on system
   homeDirectory = if pkgs.stdenv.isDarwin
-    then "/Users/${vars.user}"
-    else "/home/${vars.user}";
+    then "/Users/${vars.user.name}"
+    else "/home/${vars.user.name}";
 
 in
 {

@@ -11,8 +11,8 @@
       enable = lib.mkDefault true;
       lfs.enable = lib.mkDefault true;
 
-      userName = "${vars.full_name}";
-      userEmail = "${vars.email}";
+      userName = "${vars.user.full_name}";
+      userEmail = "${vars.user.email}";
 
       extraConfig = {
         init.defaultBranch = "main";
@@ -103,7 +103,7 @@
             searchingActiveBorderColor = ["#eed49f"];
           };
           authorColors = {
-            "${vars.full_name}" = "#ee99a0"; # Maroon
+            "${vars.user.full_name}" = "#ee99a0"; # Maroon
             "jhcloud-bot" = "#f4dbd6"; # Rosewater
             "renovate[bot]" = "#f4dbd6"; # Rosewater
             "*" = "#b7bdf8"; # Lavender
