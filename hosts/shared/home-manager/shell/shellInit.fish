@@ -5,7 +5,8 @@ fish_add_path /opt/homebrew/bin
 fish_add_path $HOME/Library/Python/3.12/bin
 fish_add_path $HOME/.local/bin
 
-# Tide configuration
+# Fish / Tide configuration
+set -U fish_greeting " "
 set -U tide_git_icon '⚡'
 
 # Source additional scripts
