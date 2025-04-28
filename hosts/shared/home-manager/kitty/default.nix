@@ -102,8 +102,8 @@
       "ctrl+shift+up" = "resize_window taller";
       "ctrl+shift+down" = "resize_window shorter";
       "ctrl+shift+x" = "close_window";
-      "ctrl+shift+m" = "launch --type=tab --cwd=current --copy-env --title Yazi -- env SKIP_FF=1 fish -c 'yazi'";
-      "ctrl+shift+p" = "launch --title 'Project Selector' --copy-env --type=overlay env SKIP_FF=1 fish -c '~/.config/kitty/scripts/project_selector.sh'";
+      "ctrl+shift+m" = "launch --type=tab --cwd=current --copy-env --title Yazi -- env SKIP_FF=1 ${pkgs.fish}/bin/fish -c 'yazi'";
+      "ctrl+shift+p" = "launch --title 'Project Selector' --copy-env --type=overlay env SKIP_FF=1 ${pkgs.fish}/bin/fish -c '~/.config/kitty/scripts/project_selector.sh'";
       "cmd+left" = "previous_tab";
       "cmd+right" = "next_tab";
       ## SET F9 to forward and F10 to back button in Logitech app
@@ -192,11 +192,11 @@
           if [ -n "$project" ]; then
             if [ "$no_nvim" = true ]; then
               # Only change to the directory without opening nvim
-              kitten @ launch --copy-env --type=tab --cwd="$project" -- env SKIP_FF=1 fish -c "cd '$project'"
+              kitten @ launch --copy-env --type=tab --cwd="$project" -- env SKIP_FF=1 ${pkgs.fish}/bin/fish -c "cd '$project'"
               echo "Changed to $project"
             else
               # Change directory and open nvim (original behavior)
-              kitten @ launch --copy-env --type=tab --cwd="$project" -- env SKIP_FF=1 fish -c "cd '$project' && nvim ."
+              kitten @ launch --copy-env --type=tab --cwd="$project" -- env SKIP_FF=1 ${pkgs.fish}/bin/fish -c "cd '$project' && nvim ."
               echo "Changed to $project"
             fi
           else
