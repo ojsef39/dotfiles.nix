@@ -55,14 +55,15 @@
 
     interactiveShellInit = ''
       # Environment variables
-      set -gx PYTHON /usr/bin/python3
-      set -gx NODE_EXTRA_CA_CERTS /opt/homebrew/etc/ca-certificates/cert.pem
-      set -gx GCL_TIMESTAMPS true
-      set -gx GCL_MAX_JOB_NAME_PADDING 30
+      set -gx BAT_THEME Catppuccin Macchiato
       set -gx GCL_CONTAINER_EXECUTABLE podman
-      set -gx SSL_CERT_FILE (command -v brew >/dev/null && brew --prefix)/etc/ca-certificates/cert.pem
-      set -gx REQUESTS_CA_BUNDLE (command -v brew >/dev/null && brew --prefix)/etc/ca-certificates/cert.pem
+      set -gx GCL_MAX_JOB_NAME_PADDING 30
+      set -gx GCL_TIMESTAMPS true
       set -gx NIX_GIT_PATH "${vars.git.nix}"
+      set -gx NODE_EXTRA_CA_CERTS /opt/homebrew/etc/ca-certificates/cert.pem
+      set -gx PYTHON /usr/bin/python3
+      set -gx REQUESTS_CA_BUNDLE (command -v brew >/dev/null && brew --prefix)/etc/ca-certificates/cert.pem
+      set -gx SSL_CERT_FILE (command -v brew >/dev/null && brew --prefix)/etc/ca-certificates/cert.pem
     '';
 
     # Essential functions that can't be replaced with abbreviations
@@ -143,6 +144,12 @@
               url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
               sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
           });
+      };
+      "bat/themes/Catppuccin Macchiato.tmTheme" = {
+        text = builtins.readFile (pkgs.fetchurl {
+          url = "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Macchiato.tmTheme";
+          sha256 = "sha256-zL18U4AXMO8+gBH3T/HDl8e7OYjIRqUdeeb0i4V7kVI=";
+        });
       };
   };
 
