@@ -39,7 +39,6 @@
       "1password"
       "1password-cli"
       "ChatGPT"
-      "Lens"
       "arc"
       "caffeine"
       "kitty"
