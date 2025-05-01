@@ -27,6 +27,22 @@ function __log_success
     end
 end
 
+# Get the path for the SOPS config file (Git-aware)
+function __get_sops_config_path
+    # First check if we're in a Git repo
+    if command -q git; and git rev-parse --git-dir >/dev/null 2>&1
+        # We're in a Git repo, get the root directory
+        set -l repo_root (git rev-parse --show-toplevel)
+        __log_debug "In Git repository. Using config path: $repo_root/.sops.yaml"
+        echo "$repo_root/.sops.yaml"
+    else
+        # Not in a Git repo, use current directory
+        set -l current_dir (pwd)
+        __log_debug "Not in Git repository. Using config path: $current_dir/.sops.yaml"
+        echo "$current_dir/.sops.yaml"
+    end
+end
+
 # 1Password integration for fetching Age key
 function simple_sops_get_key
     __log_debug "Fetching SOPS key from 1Password..."
@@ -140,6 +156,9 @@ function simple_sops_encrypt
         return 1
     end
 
+    # Get the SOPS config path (Git-aware)
+    set -l sops_config_path (__get_sops_config_path)
+
     # Process each file
     set -l overall_status 0
     for file in $argv
@@ -151,19 +170,19 @@ function simple_sops_encrypt
         end
 
         # Check if a config file exists
-        if test -f ".sops.yaml"
-            __log_debug "Using existing SOPS config from .sops.yaml"
+        if test -f "$sops_config_path"
+            __log_debug "Using existing SOPS config from $sops_config_path"
 
             # Check if the config file has a specific rule for this file
             set -l file_name (basename $file)
-            if not grep -q "$file_name" .sops.yaml
-                __log_info "Adding specific rule for $file_name to .sops.yaml..."
+            if not grep -q "$file_name" "$sops_config_path"
+                __log_info "Adding specific rule for $file_name to $sops_config_path..."
 
                 # Create a temporary file with the new rule
                 set -l temp_file (mktemp)
 
                 # Preserve the header comments
-                grep "^#" .sops.yaml >$temp_file
+                grep "^#" "$sops_config_path" >$temp_file
 
                 # Start with creation_rules
                 echo "creation_rules:" >>$temp_file
@@ -173,30 +192,30 @@ function simple_sops_encrypt
                 echo "    age: $pubkey" >>$temp_file
 
                 # Check if there's an encrypted_regex in the existing file
-                set -l regex (grep "encrypted_regex" .sops.yaml | head -1 | cut -d: -f2- | string trim)
+                set -l regex (grep "encrypted_regex" "$sops_config_path" | head -1 | cut -d: -f2- | string trim)
                 if test -n "$regex"
                     echo "    encrypted_regex: $regex" >>$temp_file
                 end
 
                 # Add all the existing rules
-                sed -n '/creation_rules:/,$ p' .sops.yaml | grep -v "^creation_rules:" >>$temp_file
+                sed -n '/creation_rules:/,$ p' "$sops_config_path" | grep -v "^creation_rules:" >>$temp_file
 
                 # Replace the old config file
-                mv $temp_file .sops.yaml
+                mv $temp_file "$sops_config_path"
             end
         else
-            __log_info "Creating SOPS config..."
+            __log_info "Creating SOPS config at $sops_config_path..."
 
             # Create a simple config for first file
             set -l file_name (basename $file)
-            echo "# SOPS configuration file" >.sops.yaml
-            echo "creation_rules:" >>.sops.yaml
-            echo "  - path_regex: $file_name" >>.sops.yaml
-            echo "    age: $pubkey" >>.sops.yaml
+            echo "# SOPS configuration file" >"$sops_config_path"
+            echo "creation_rules:" >>"$sops_config_path"
+            echo "  - path_regex: $file_name" >>"$sops_config_path"
+            echo "    age: $pubkey" >>"$sops_config_path"
 
             # Add a wildcard rule for other files
-            echo "  - path_regex: .*\\\.(yaml|yml|json)" >>.sops.yaml
-            echo "    age: $pubkey" >>.sops.yaml
+            echo "  - path_regex: .*\\\.(yaml|yml|json)" >>"$sops_config_path"
+            echo "    age: $pubkey" >>"$sops_config_path"
         end
 
         # Encrypt the file
@@ -204,8 +223,8 @@ function simple_sops_encrypt
 
         # Check encryption mode for debug output
         if test $simple_sops_debug -eq 1
-            if grep -q encrypted_regex .sops.yaml
-                __log_debug "Using selective encryption based on .sops.yaml config."
+            if grep -q encrypted_regex "$sops_config_path"
+                __log_debug "Using selective encryption based on SOPS config."
             else
                 __log_debug "Encrypting the entire file."
             end
@@ -400,10 +419,13 @@ function simple_sops_set_keys
         return 1
     end
 
+    # Get the SOPS config path (Git-aware)
+    set -l sops_config_path (__get_sops_config_path)
+
     # Options for what keys to encrypt
     __log_info "What do you want to encrypt in this file?"
     echo "1. All values (encrypt entire file)"
-    echo "2. Kubernetes secrets (data, stringData, password, token fields)"
+    echo "2. Kubernetes (data, stringData, password, ingress, token fields)"
     echo "3. Talos configuration secrets (secrets sections, certs, keys)"
     echo "4. Common sensitive data (passwords, tokens, keys, credentials)"
     echo "5. Custom pattern (provide your own regex)"
@@ -416,7 +438,7 @@ function simple_sops_set_keys
             set encrypted_regex ".*"
         case 2
             # Kubernetes-focused pattern
-            set encrypted_regex "^(data|stringData|password|token|secret|key|cert|ca.crt|tls)"
+            set encrypted_regex "^(data|stringData|password|token|secret|key|cert|ca.crt|tls|ingress|backupTarget)"
         case 3
             # Talos-focused pattern
             set encrypted_regex "^(secrets|privateKey|token|key|crt|cert|password|secret|kubeconfig|talosconfig)"
@@ -437,17 +459,17 @@ function simple_sops_set_keys
     set -l file_name (basename $file)
 
     # Create or update .sops.yaml
-    if test -f ".sops.yaml"
+    if test -f "$sops_config_path"
         __log_info "Updating existing SOPS config for $file_name..."
 
         # Store the existing file content for reference
-        set -l existing_content (cat .sops.yaml)
+        set -l existing_content (cat "$sops_config_path")
 
         # Create a temporary file for the new configuration
         set -l temp_file (mktemp)
 
         # Copy any comment lines from the top of the file
-        grep "^#" .sops.yaml >$temp_file 2>/dev/null
+        grep "^#" "$sops_config_path" >$temp_file 2>/dev/null
 
         # Start with creation_rules tag
         echo "creation_rules:" >>$temp_file
@@ -474,7 +496,7 @@ function simple_sops_set_keys
                 set rule_end_line (math $line_number - 1)
                 break
             end
-        end <.sops.yaml
+        end <"$sops_config_path"
 
         # If we found the start but not the end, the rule goes to the end of the file
         if test $rule_start_line -gt 0; and test $rule_end_line -eq 0
@@ -530,7 +552,7 @@ function simple_sops_set_keys
 
             # Copy all other lines
             echo $line >>$temp_file
-        end <.sops.yaml
+        end <"$sops_config_path"
 
         # If we didn't add our rule yet, add it at the end
         if test $added_our_rule -eq 0
@@ -540,22 +562,22 @@ function simple_sops_set_keys
         end
 
         # Replace the old config file
-        mv $temp_file .sops.yaml
+        mv $temp_file "$sops_config_path"
     else
-        __log_info "Creating new .sops.yaml file..."
+        __log_info "Creating new SOPS config file at $sops_config_path..."
 
         # Create new config with file-specific rule and wildcard rule
-        echo "# SOPS configuration file" >.sops.yaml
-        echo "creation_rules:" >>.sops.yaml
+        echo "# SOPS configuration file" >"$sops_config_path"
+        echo "creation_rules:" >>"$sops_config_path"
 
         # File-specific rule
-        echo "  - path_regex: $file_name" >>.sops.yaml
-        echo "    age: $pubkey" >>.sops.yaml
-        echo "    encrypted_regex: \"$encrypted_regex\"" >>.sops.yaml
+        echo "  - path_regex: $file_name" >>"$sops_config_path"
+        echo "    age: $pubkey" >>"$sops_config_path"
+        echo "    encrypted_regex: \"$encrypted_regex\"" >>"$sops_config_path"
 
         # General wildcard rule as fallback
-        echo "  - path_regex: .*\\\.(yaml|yml|json)" >>.sops.yaml
-        echo "    age: $pubkey" >>.sops.yaml
+        echo "  - path_regex: .*\\\.(yaml|yml|json)" >>"$sops_config_path"
+        echo "    age: $pubkey" >>"$sops_config_path"
     end
 
     # Clear the key after use
@@ -570,12 +592,15 @@ end
 function simple_sops_list_config
     # Don't need the key for this operation
 
-    if not test -f ".sops.yaml"
-        __log_error "No SOPS configuration file (.sops.yaml) found in the current directory."
+    # Get the SOPS config path (Git-aware)
+    set -l sops_config_path (__get_sops_config_path)
+
+    if not test -f "$sops_config_path"
+        __log_error "No SOPS configuration file found at $sops_config_path."
         return 1
     end
 
-    __log_info "Current SOPS configuration:"
+    __log_info "Current SOPS configuration ($sops_config_path):"
     __log_info --------------------------
 
     # Parse the config file to show rules in a more readable way
@@ -618,7 +643,7 @@ function simple_sops_list_config
             __log_info "  $prop"
             continue
         end
-    end <.sops.yaml
+    end <"$sops_config_path"
 
     __log_info ""
     __log_info "This configuration will be used when encrypting files with SOPS."
@@ -630,6 +655,9 @@ function simple_sops_rm
         echo "Usage: simple_sops rm [file...]"
         return 1
     end
+
+    # Get the SOPS config path (Git-aware)
+    set -l sops_config_path (__get_sops_config_path)
 
     # Process each file
     set -l overall_status 0
@@ -664,25 +692,25 @@ function simple_sops_rm
         end
 
         # Check if .sops.yaml exists
-        if not test -f ".sops.yaml"
+        if not test -f "$sops_config_path"
             __log_info "No SOPS configuration file found for $file. Nothing to clean up."
             continue
         end
 
         # Look for config for this file
-        if not grep -q "path_regex: $file_name" .sops.yaml
-            __log_info "No configuration found for $file_name in .sops.yaml."
+        if not grep -q "path_regex: $file_name" "$sops_config_path"
+            __log_info "No configuration found for $file_name in $sops_config_path."
             continue
         end
 
         # Clean up the configuration
-        __log_info "Removing configuration for $file_name from .sops.yaml..."
+        __log_info "Removing configuration for $file_name from $sops_config_path..."
 
         # Create a temporary file
         set -l temp_file (mktemp)
 
         # Copy any comment lines from the top of the file
-        grep "^#" .sops.yaml >$temp_file 2>/dev/null
+        grep "^#" "$sops_config_path" >$temp_file 2>/dev/null
 
         # Start with creation_rules tag
         echo "creation_rules:" >>$temp_file
@@ -720,28 +748,28 @@ function simple_sops_rm
 
             # Copy all other lines
             echo $line >>$temp_file
-        end <.sops.yaml
+        end <"$sops_config_path"
 
         # Replace the old config file
-        mv $temp_file .sops.yaml
+        mv $temp_file "$sops_config_path"
 
         __log_success "SOPS configuration for $file_name removed successfully."
     end
 
     # Check if the file is now empty except for the header after all files processed
-    if test -f ".sops.yaml"
-        set -l rule_count (grep -c "path_regex:" .sops.yaml)
+    if test -f "$sops_config_path"
+        set -l rule_count (grep -c "path_regex:" "$sops_config_path")
 
         if test $rule_count -eq 0
-            __log_info "No rules remain in .sops.yaml. Do you want to remove it? [y/N]"
+            __log_info "No rules remain in $sops_config_path. Do you want to remove it? [y/N]"
             read -l remove_config
 
             if test "$remove_config" = y -o "$remove_config" = Y
-                rm .sops.yaml
-                __log_success ".sops.yaml removed since it no longer contains any rules."
+                rm "$sops_config_path"
+                __log_success "$sops_config_path removed since it no longer contains any rules."
             end
         else
-            __log_info "Remaining rules in .sops.yaml: $rule_count"
+            __log_info "Remaining rules in $sops_config_path: $rule_count"
         end
     end
 
@@ -749,13 +777,16 @@ function simple_sops_rm
 end
 
 function simple_sops_clean_config
+    # Get the SOPS config path (Git-aware)
+    set -l sops_config_path (__get_sops_config_path)
+
     # Check if .sops.yaml exists
-    if not test -f ".sops.yaml"
-        __log_info "No SOPS configuration file found. Nothing to clean up."
+    if not test -f "$sops_config_path"
+        __log_info "No SOPS configuration file found at $sops_config_path. Nothing to clean up."
         return 0
     end
 
-    __log_info "Scanning for orphaned rules in .sops.yaml..."
+    __log_info "Scanning for orphaned rules in $sops_config_path..."
 
     # Get all file-specific rules (not wildcards)
     set -l rules
@@ -783,15 +814,15 @@ function simple_sops_clean_config
                 end
             end
         end
-    end <.sops.yaml
+    end <"$sops_config_path"
 
     if test $orphaned_rules -eq 0
-        __log_info "No orphaned rules found in .sops.yaml."
+        __log_info "No orphaned rules found in $sops_config_path."
         return 0
     end
 
     # Ask for confirmation
-    __log_info "Found $orphaned_rules orphaned rules in .sops.yaml."
+    __log_info "Found $orphaned_rules orphaned rules in $sops_config_path."
     echo "Do you want to remove them? [y/N]"
     read -l confirm
 
