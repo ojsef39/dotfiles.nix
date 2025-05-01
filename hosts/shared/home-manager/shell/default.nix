@@ -7,6 +7,7 @@
 
   # Required packages
   home.packages = with pkgs; [
+    age
     coreutils
     eza
     fastfetch
@@ -14,6 +15,7 @@
     git
     nodejs
     python3
+    sops
     tmux
     tree
     yarn
