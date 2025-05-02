@@ -27,7 +27,7 @@ complete -c simple_sops -f -n "not __fish_seen_subcommand_from $commands" -a cle
 complete -c simple_sops -f -n "not __fish_seen_subcommand_from $commands" -a help -d "Show help message"
 
 # File completions for the shorthand method (when no command is given, assume it's edit)
-complete -c simple_sops -f -n "not __fish_seen_subcommand_from $commands && count (commandline -opc) = 1" -a "(__fish_simple_sops_files)"
+complete -c simple_sops -f -n "not __fish_seen_subcommand_from $commands && count (commandline -opc) = 1" -a "(__fish_simple_sops_encrypted_files)"
 
 # Global options
 complete -c simple_sops -s q -l quiet -d "Minimal output"
@@ -41,7 +41,7 @@ complete -c simple_sops -f -n "__fish_seen_subcommand_from decrypt" -a "(__fish_
 complete -c simple_sops -f -n "__fish_seen_subcommand_from decrypt" -a --stdout -d "Output to stdout"
 
 # Complete file arguments for edit
-complete -c simple_sops -f -n "__fish_seen_subcommand_from edit" -a "(__fish_simple_sops_files)"
+complete -c simple_sops -f -n "__fish_seen_subcommand_from edit" -a "(__fish_simple_sops_encrypted_files)"
 
 # Complete file arguments for set-keys (any yaml/json files)
 complete -c simple_sops -f -n "__fish_seen_subcommand_from set-keys" -a "(__fish_simple_sops_files)"
