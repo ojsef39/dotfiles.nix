@@ -22,6 +22,7 @@ if test -z "$SKIP_FF"
         # Create lock file with current kitty session PID
         echo $KITTY_PID >/tmp/fastfetch.lock
         fastfetch
+        fortune -s | cowsay -r
     end
 
     function cleanup_fastfetch_lock --on-event fish_exit

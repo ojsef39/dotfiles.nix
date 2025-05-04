@@ -9,8 +9,10 @@
   home.packages = with pkgs; [
     age
     coreutils
+    cowsay
     eza
     fastfetch
+    fortune
     fzf
     git
     nodejs
