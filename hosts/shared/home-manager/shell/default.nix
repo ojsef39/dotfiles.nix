@@ -45,12 +45,6 @@
 
     # Abbreviations - expand as you type them
     shellAbbrs = {
-      ga = "git add";
-      gc = "git commit";
-      gco = "git checkout";
-      gp = "git pull";
-      gpu = "git push";
-      gst = "git status";
       diffc = "diff -u -a";
       diffn = "nvim -d";
     };
