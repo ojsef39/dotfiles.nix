@@ -65,7 +65,7 @@
           owner = "jesseduffield";
           repo = "lazygit";
           rev = "master";
-          sha256 = "sha256-1+X/FyT6EzsbVBZsMrI5iVBcjv7mSGMEgc/JOqyfNWA=";
+          sha256 = "sha256-QKYqdPsE6JoCHZZiYU1MmNLrNjIisi5cS0McopV80D8=";
         };
         vendorHash = null;
         doCheck = false;
