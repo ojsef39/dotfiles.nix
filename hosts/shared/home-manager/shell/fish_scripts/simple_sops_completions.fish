@@ -6,7 +6,7 @@ set -l commands encrypt decrypt edit set-keys config rm clean-config get-key cle
 
 # Define files that can be encrypted/decrypted (YAML and JSON)
 function __fish_simple_sops_files
-    find . -type f -name "*.yaml" -o -name "*.yml" -o -name "*.json" 2>/dev/null
+    find . -type f -name "*.yaml" -o -name "*.yml" -o -name "*.json" -o -name "*.ini" 2>/dev/null
 end
 
 # Define files that are already encrypted
@@ -43,10 +43,10 @@ complete -c simple_sops -f -n "__fish_seen_subcommand_from decrypt" -a --stdout 
 # Complete file arguments for edit
 complete -c simple_sops -f -n "__fish_seen_subcommand_from edit" -a "(__fish_simple_sops_encrypted_files)"
 
-# Complete file arguments for set-keys (any yaml/json files)
+# Complete file arguments for set-keys (any yaml/json/ini files)
 complete -c simple_sops -f -n "__fish_seen_subcommand_from set-keys" -a "(__fish_simple_sops_files)"
 
-# Complete file arguments for rm (any yaml/json files)
+# Complete file arguments for rm (any yaml/json/ini files)
 complete -c simple_sops -f -n "__fish_seen_subcommand_from rm" -a "(__fish_simple_sops_files)"
 
 # No arguments for config, clean-config, get-key, clear-key, or help
