@@ -87,7 +87,7 @@
             loadingText = "waiting for LLM to generate commit messages...";
             command = "clear && export EDITOR=nvim && commit-oracle.sh";
             context = "files";
-            subprocess = true;
+            output = "terminal";
           }
         ];
         gui = {
