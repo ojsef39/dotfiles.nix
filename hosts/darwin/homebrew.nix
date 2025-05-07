@@ -45,6 +45,7 @@
       "logi-options+"
       "mac-mouse-fix"
       "poe"
+      "postman"
       "raycast"
       "scroll-reverser"
       "shottr"
