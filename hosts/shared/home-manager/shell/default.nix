@@ -42,6 +42,8 @@
       lg = "lazygit";
       k = "kubectl";
       n = "nvim";
+      c = "clear";
+      r = "reset";
       x = "exit";
     };
 
