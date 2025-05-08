@@ -30,7 +30,6 @@
       "mas"
       "ncdu"
       "norwoodj/tap/helm-docs"
-      "renovate"
       "yazi"
     ];
 
