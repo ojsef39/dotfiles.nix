@@ -26,7 +26,7 @@
   outputs = inputs @ { self, nixpkgs, home-manager, darwin, nixcord, nixkit, ... }:
   let
     overlays = [
-      # Simple overlay to make the nh package available in pkgs
+      # Simple overlay to make nh available from source in pkgs
       (final: prev: {
         nh = inputs.nh.packages.${prev.system}.default;
       })
@@ -37,7 +37,7 @@
       ./nix/core.nix
       { nixpkgs.overlays = overlays; }
       home-manager.darwinModules.home-manager
-      nixkit.nixosModules.default
+      nixkit.darwinModules.default
       ({ vars, system, ... }: {
         home-manager = {
           useGlobalPkgs = true;
