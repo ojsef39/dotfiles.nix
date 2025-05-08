@@ -11,7 +11,7 @@ end
 
 # Define files that are already encrypted
 function __fish_simple_sops_encrypted_files
-    grep -l "sops:" (__fish_simple_sops_files) 2>/dev/null
+    grep -l -e "sops:" -e "\[sops\]" (__fish_simple_sops_files) 2>/dev/null
 end
 
 # Complete subcommands
