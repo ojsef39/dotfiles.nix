@@ -18,24 +18,26 @@
       url = "github:frostplexx/nixkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nh = {
-      url = "github:viperml/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # ⬇️ Leave here as example for building from source instead of nixpkg repo:
+    # nh = {
+    #   url = "github:viperml/nh";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
   outputs = inputs @ { self, nixpkgs, home-manager, darwin, nixcord, nixkit, ... }:
-  let
-    overlays = [
-      # Simple overlay to make nh available from source in pkgs
-      (final: prev: {
-        nh = inputs.nh.packages.${prev.system}.default;
-      })
-    ];
-  in
+  # ⬇️ Leave here as example for building from source instead of nixpkg repo:
+  # let
+  #   overlays = [
+  #     # Simple overlay to make nh available from source in pkgs
+  #     (final: prev: {
+  #       nh = inputs.nh.packages.${prev.system}.default;
+  #     })
+  #   ];
+  # in
   {
     sharedModules = [
       ./nix/core.nix
-      { nixpkgs.overlays = overlays; }
+      # { nixpkgs.overlays = overlays; } # Leave here as example for building from source instead of nixpkg repo:
       home-manager.darwinModules.home-manager
       nixkit.darwinModules.default
       ({ vars, system, ... }: {
