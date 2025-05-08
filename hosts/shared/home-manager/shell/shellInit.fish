@@ -16,20 +16,17 @@ if test -d $HOME/.fish_scripts
     end
 end
 
+function _fish_greeting
+    fortune -s | cowsay -r | fastfetch -l -
+end
+
 # Ensure fastfetch doesnt get on my nerves
 if test -z "$SKIP_FF"
-    if not test -f /tmp/fastfetch.lock
-        # Create lock file with current kitty session PID
-        echo $KITTY_PID >/tmp/fastfetch.lock
-        fastfetch
-        fortune -s | cowsay -r
-    end
-
-    function cleanup_fastfetch_lock --on-event fish_exit
-        if test -f /tmp/fastfetch.lock
-            # Check if any kitty windows are still running
-            if not pgrep -x kitty >/dev/null
-                rm /tmp/fastfetch.lock
+    if test -n "$KITTY_LISTEN_ON"; and command -sq jq
+        set _kitty_total_tab_count_output (kitty @ --to "$KITTY_LISTEN_ON" ls | jq 'map(try .tabs | length) | add // 0' 2>/dev/null)
+        if test $status -eq 0; and test "$_kitty_total_tab_count_output" -eq "$_kitty_total_tab_count_output" 2>/dev/null
+            if test "$_kitty_total_tab_count_output" -eq 1
+                _fish_greeting
             end
         end
     end
