@@ -2,6 +2,7 @@
 {
   imports = [
     ./tmux.nix
+    ./fastfetch.nix
     ./yazi.nix
   ];
 
@@ -11,7 +12,6 @@
     coreutils
     cowsay
     eza
-    fastfetch
     fortune
     fzf
     git
