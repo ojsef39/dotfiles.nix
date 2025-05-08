@@ -34,7 +34,7 @@
       nhu = "nh darwin switch -u -a -H mac $NIX_GIT_PATH";
       nhb = "nh darwin switch -U base -a -H mac $NIX_GIT_PATH";
       nhd = "nh darwin switch -a -H mac $NIX_GIT_PATH";
-      nhc = "nh clean all -a -k 2 -K 14d";
+      nhc = "nh clean all -a -k 2 -K 7d";
       ghql = "/Users/${vars.user.name}/.config/kitty/scripts/project_selector.sh --no-nvim";
       ls = "eza --icons --git --header";
       cat = "bat";
