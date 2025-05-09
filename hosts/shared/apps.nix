@@ -8,6 +8,7 @@
     nixpkgs-review
     update-nix-fetchgit # https://github.com/expipiplus1/update-nix-fetchgit
     ##
+    just
     podman
     podman-compose
     virt-viewer

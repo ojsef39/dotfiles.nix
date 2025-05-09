@@ -29,12 +29,8 @@
 
     # Aliases - direct replacements for commands
     shellAliases = {
-      update-nix = "make -C ${vars.git.nix} update";
-      select-nix = "make -C ${vars.git.nix} select";
-      nhu = "nh darwin switch -u -a -H mac $NIX_GIT_PATH";
-      nhb = "nh darwin switch -U base -a -H mac $NIX_GIT_PATH";
-      nhd = "nh darwin switch -a -H mac $NIX_GIT_PATH";
-      nhc = "nh clean all -a -k 2 -K 7d";
+      unix = "just -f $NIX_GIT_PATH/justfile u";
+      snix = "just -f $NIX_GIT_PATH/justfile";
       ghql = "/Users/${vars.user.name}/.config/kitty/scripts/project_selector.sh --no-nvim";
       ls = "eza --icons --git --header";
       cat = "bat";
