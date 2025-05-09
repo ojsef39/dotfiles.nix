@@ -1,10 +1,8 @@
 { config, pkgs, vars, ... }:
 
 let
-  themeFile = "midnight-catppuccin-macchiato.theme.css";
-  themeUrl = "https://raw.githubusercontent.com/refact0r/midnight-discord/refs/heads/master/themes/flavors/midnight-catppuccin-macchiato.theme.css";
-
   # Define theme path based on operating system
+  themeFile = "midnight-catppuccin-macchiato.theme.css";
   themePath =
     if pkgs.stdenv.isDarwin
     then "/Users/${vars.user.name}/Library/Application Support/vesktop/themes/${themeFile}"
@@ -115,7 +113,7 @@ in {
   home.file = {
     ${themePath} = {
       source = builtins.fetchurl {
-        url = themeUrl;
+        url = "https://raw.githubusercontent.com/refact0r/midnight-discord/refs/heads/master/themes/flavors/midnight-catppuccin-macchiato.theme.css";
         sha256 = "1xkxifwh9mallyw4ib6d9xr27b1v9gvvszx4j2naq44ay5s30y53";
       };
       force = true;
