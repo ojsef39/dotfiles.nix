@@ -159,8 +159,9 @@
   home = {
     file.".tmux/plugins/tpm".source = pkgs.fetchgit {
       url= "https://github.com/tmux-plugins/tpm";
-      rev = "v3.1.0";
-      sha256 = "sha256-IxguT6YgQNG9sE5773FIVgkddc2pGge/rLRDzopeBag=";
+      # version comment so 'update-nix-fetchgit-all' doesnt update this
+      rev = "7bdb7ca33c9cc6440a600202b50142f401b6fe21"; # v3.1.0
+      sha256 = "1a05bs5cwhxlmjzhf6m9rmsis2an91qyyysfn2yx2h10lr7jw613";
       leaveDotGit = false;
     };
 
