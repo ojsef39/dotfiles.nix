@@ -140,14 +140,16 @@
 
   xdg.configFile = {
       "fish/themes/Catppuccin Macchiato.theme" = {
-          text = builtins.readFile (pkgs.fetchurl {
-              url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
-              sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
-          });
+        text = builtins.readFile (pkgs.fetchurl {
+          name = "Catppuccin Macchiato.theme";
+          url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
+          sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
+        });
       };
       "bat/themes/Catppuccin Macchiato.tmTheme" = {
         text = builtins.readFile (pkgs.fetchurl {
-          url = "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Macchiato.tmTheme";
+          name = "Catppuccin Macchiato.tmTheme";
+          url = "https://raw.githubusercontent.com/catppuccin/bat/refs/heads/main/themes/Catppuccin%20Macchiato.tmTheme";
           sha256 = "sha256-zL18U4AXMO8+gBH3T/HDl8e7OYjIRqUdeeb0i4V7kVI=";
         });
       };
