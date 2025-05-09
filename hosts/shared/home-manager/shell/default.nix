@@ -55,7 +55,6 @@
 
     interactiveShellInit = ''
       # Environment variables
-      set -gx BAT_THEME Catppuccin Macchiato
       set -gx GCL_CONTAINER_EXECUTABLE podman
       set -gx GCL_MAX_JOB_NAME_PADDING 30
       set -gx GCL_TIMESTAMPS true
@@ -135,22 +134,29 @@
     };
     bat = {
       enable = true;
+      config = {
+          theme = "catppuccin-macchiato";
+      };
+      themes = {
+        catppuccin-macchiato = {
+          src = pkgs.fetchFromGitHub {
+            owner = "catppuccin";
+            repo = "bat";
+            rev = "699f60fc8ec434574ca7451b444b880430319941";
+            sha256 = "1lirgwgh2hnz6j60py19bbmhvgaqs7i6wf6702k6n83lgw4aixg9";
+          };
+          file = "themes/Catppuccin Macchiato.tmTheme";
+        };
+      };
     };
   };
 
   xdg.configFile = {
       "fish/themes/Catppuccin Macchiato.theme" = {
         text = builtins.readFile (pkgs.fetchurl {
-          name = "Catppuccin Macchiato.theme";
+          name = "Catppuccin-Macchiato.theme";
           url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
           sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
-        });
-      };
-      "bat/themes/Catppuccin Macchiato.tmTheme" = {
-        text = builtins.readFile (pkgs.fetchurl {
-          name = "Catppuccin Macchiato.tmTheme";
-          url = "https://raw.githubusercontent.com/catppuccin/bat/refs/heads/main/themes/Catppuccin%20Macchiato.tmTheme";
-          sha256 = "sha256-zL18U4AXMO8+gBH3T/HDl8e7OYjIRqUdeeb0i4V7kVI=";
         });
       };
   };
