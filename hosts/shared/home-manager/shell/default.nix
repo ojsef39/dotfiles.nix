@@ -84,6 +84,11 @@
           end
         end
       '';
+
+      temp_dir = ''
+        set temp_dir (mktemp -d)
+        cd "$temp_dir"
+      '';
     };
 
     plugins = with pkgs.fishPlugins; [
