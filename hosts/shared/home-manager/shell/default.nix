@@ -2,6 +2,7 @@
 {
   imports = [
     ./tmux.nix
+    ./fastfetch.nix
     ./yazi.nix
   ];
 
@@ -11,7 +12,6 @@
     coreutils
     cowsay
     eza
-    fastfetch
     fortune
     fzf
     git
@@ -29,12 +29,8 @@
 
     # Aliases - direct replacements for commands
     shellAliases = {
-      update-nix = "make -C ${vars.git.nix} update";
-      select-nix = "make -C ${vars.git.nix} select";
-      nhu = "nh darwin switch -u -a -H mac $NIX_GIT_PATH";
-      nhb = "nh darwin switch -U base -a -H mac $NIX_GIT_PATH";
-      nhd = "nh darwin switch -a -H mac $NIX_GIT_PATH";
-      nhc = "nh clean all -a -k 2 -K 14d";
+      unix = "just -f $NIX_GIT_PATH/justfile u";
+      snix = "just -f $NIX_GIT_PATH/justfile";
       ghql = "/Users/${vars.user.name}/.config/kitty/scripts/project_selector.sh --no-nvim";
       ls = "eza --icons --git --header";
       cat = "bat";
@@ -42,6 +38,8 @@
       lg = "lazygit";
       k = "kubectl";
       n = "nvim";
+      c = "clear";
+      r = "reset";
       x = "exit";
     };
 
@@ -53,7 +51,6 @@
 
     interactiveShellInit = ''
       # Environment variables
-      set -gx BAT_THEME Catppuccin Macchiato
       set -gx GCL_CONTAINER_EXECUTABLE podman
       set -gx GCL_MAX_JOB_NAME_PADDING 30
       set -gx GCL_TIMESTAMPS true
@@ -86,6 +83,11 @@
             echo "changes in "(string replace -r "^./" "" "$repo_dir")
           end
         end
+      '';
+
+      temp_dir = ''
+        set temp_dir (mktemp -d)
+        cd "$temp_dir"
       '';
     };
 
@@ -133,20 +135,29 @@
     };
     bat = {
       enable = true;
+      config = {
+          theme = "catppuccin-macchiato";
+      };
+      themes = {
+        catppuccin-macchiato = {
+          src = pkgs.fetchFromGitHub {
+            owner = "catppuccin";
+            repo = "bat";
+            rev = "699f60fc8ec434574ca7451b444b880430319941";
+            sha256 = "1lirgwgh2hnz6j60py19bbmhvgaqs7i6wf6702k6n83lgw4aixg9";
+          };
+          file = "themes/Catppuccin Macchiato.tmTheme";
+        };
+      };
     };
   };
 
   xdg.configFile = {
       "fish/themes/Catppuccin Macchiato.theme" = {
-          text = builtins.readFile (pkgs.fetchurl {
-              url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
-              sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
-          });
-      };
-      "bat/themes/Catppuccin Macchiato.tmTheme" = {
         text = builtins.readFile (pkgs.fetchurl {
-          url = "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Macchiato.tmTheme";
-          sha256 = "sha256-zL18U4AXMO8+gBH3T/HDl8e7OYjIRqUdeeb0i4V7kVI=";
+          name = "Catppuccin-Macchiato.theme";
+          url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
+          sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
         });
       };
   };
@@ -155,8 +166,9 @@
   home = {
     file.".tmux/plugins/tpm".source = pkgs.fetchgit {
       url= "https://github.com/tmux-plugins/tpm";
-      rev = "v3.1.0";
-      sha256 = "sha256-IxguT6YgQNG9sE5773FIVgkddc2pGge/rLRDzopeBag=";
+      # version comment so 'update-nix-fetchgit-all' doesnt update this
+      rev = "7bdb7ca33c9cc6440a600202b50142f401b6fe21"; # v3.1.0
+      sha256 = "1a05bs5cwhxlmjzhf6m9rmsis2an91qyyysfn2yx2h10lr7jw613";
       leaveDotGit = false;
     };
 
