@@ -214,7 +214,7 @@ function simple_sops_encrypt
             echo "    age: $pubkey" >>"$sops_config_path"
 
             # Add a wildcard rule for other files
-            echo "  - path_regex: .*\\\.(ya?ml|json|ini)" >>"$sops_config_path"
+            echo "  - path_regex: .*\\\.(ya?ml|json|ini|env)" >>"$sops_config_path"
             echo "    age: $pubkey" >>"$sops_config_path"
         end
 
@@ -404,8 +404,8 @@ function simple_sops_set_keys
 
     # Check file extension
     set -l ext (string match -r '\.([^.]+)$' $file)[2]
-    if not string match -q -r 'ya?ml|json|ini' $ext
-        __log_error "Only YAML and JSON files are supported"
+    if not string match -q -r 'ya?ml|json|ini|env' $ext
+        __log_error "Only YAML, JSON, INI and ENV files are supported"
         simple_sops_clear_key
         return 1
     end
@@ -576,7 +576,7 @@ function simple_sops_set_keys
         echo "    encrypted_regex: \"$encrypted_regex\"" >>"$sops_config_path"
 
         # General wildcard rule as fallback
-        echo "  - path_regex: .*\\\.(ya?ml|json|ini)" >>"$sops_config_path"
+        echo "  - path_regex: .*\\\.(ya?ml|json|ini|env)" >>"$sops_config_path"
         echo "    age: $pubkey" >>"$sops_config_path"
     end
 

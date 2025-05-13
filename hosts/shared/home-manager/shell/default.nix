@@ -20,6 +20,7 @@
     sops
     tmux
     tree
+    wtfis
     yarn
     zoxide
   ];
@@ -83,6 +84,33 @@
             echo "changes in "(string replace -r "^./" "" "$repo_dir")
           end
         end
+      '';
+
+      wtf = ''
+        # Decrypt the file temporarily
+        simple_sops decrypt $HOME/.wtfis.env --stdout > $HOME/.env.wtfis 2>/dev/null
+        set decrypt_status $status
+
+        # Set up cleanup to happen in any case
+        function cleanup
+          rm -f $HOME/.env.wtfis
+        end
+
+        # Only run wtfis if decryption succeeded
+        if test $decrypt_status -eq 0
+          # Run wtfis with all original arguments
+          command wtfis $argv
+          set wtfis_status $status
+        else
+          echo "Error: Failed to decrypt .wtfis.env file" >&2
+          set wtfis_status 1
+        end
+
+        # Clean up regardless of outcome
+        cleanup
+
+        # Return the original status code
+        return $wtfis_status
       '';
 
       temp_dir = ''
@@ -153,13 +181,13 @@
   };
 
   xdg.configFile = {
-      "fish/themes/Catppuccin Macchiato.theme" = {
-        text = builtins.readFile (pkgs.fetchurl {
-          name = "Catppuccin-Macchiato.theme";
-          url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
-          sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
-        });
-      };
+    "fish/themes/Catppuccin Macchiato.theme" = {
+      text = builtins.readFile (pkgs.fetchurl {
+        name = "Catppuccin-Macchiato.theme";
+        url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
+        sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
+      });
+    };
   };
 
   # Ensure tmux plugin manager is installed
@@ -196,6 +224,9 @@
       ".fish_scripts/" = {
         recursive = true;
         source = ./fish_scripts;
+      };
+      ".wtfis.env" = {
+        source = ./wtfis.env;
       };
     };
   };

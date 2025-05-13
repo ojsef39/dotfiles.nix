@@ -6,12 +6,20 @@ set -l commands encrypt decrypt edit set-keys config rm clean-config get-key cle
 
 # Define files that can be encrypted/decrypted (YAML and JSON)
 function __fish_simple_sops_files
-    find . -type f -name "*.yaml" -o -name "*.yml" -o -name "*.json" -o -name "*.ini" 2>/dev/null
+    # Use extended globs to find all relevant files
+    for ext in yaml yml json ini env
+        find . -type f -name "*.$ext" 2>/dev/null
+    end
 end
 
 # Define files that are already encrypted
 function __fish_simple_sops_encrypted_files
-    grep -l -e "sops:" -e "\[sops\]" (__fish_simple_sops_files) 2>/dev/null
+    # Check each potential file for encryption markers
+    for file in (__fish_simple_sops_files)
+        if grep -q -e "sops:" -e "\[sops\]" -e "ENC\[AES256_GCM" -e sops_ "$file" 2>/dev/null
+            echo "$file"
+        end
+    end
 end
 
 # Complete subcommands

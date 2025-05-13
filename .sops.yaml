@@ -1,0 +1,6 @@
+# SOPS configuration file
+creation_rules:
+  - path_regex: wtfis.env
+    age: age1y7r3ycr37pdg69f5rjxgymxe3jt4y6rnyysjxtr42qy257j8h59q70ugvc
+  - path_regex: .*\\.(ya?ml|json|ini|env)
+    age: age1y7r3ycr37pdg69f5rjxgymxe3jt4y6rnyysjxtr42qy257j8h59q70ugvc
