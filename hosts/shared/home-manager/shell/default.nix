@@ -58,8 +58,9 @@
       set -gx NIX_GIT_PATH "${vars.git.nix}"
       set -gx NODE_EXTRA_CA_CERTS /opt/homebrew/etc/ca-certificates/cert.pem
       set -gx PYTHON /usr/bin/python3
-      set -gx REQUESTS_CA_BUNDLE (command -v brew >/dev/null && brew --prefix)/etc/ca-certificates/cert.pem
       set -gx SSL_CERT_FILE (command -v brew >/dev/null && brew --prefix)/etc/ca-certificates/cert.pem
+      set -gx REQUESTS_CA_BUNDLE $SSL_CERT_FILE
+      set -gx NIX_SSL_CERT_FILE $SSL_CERT_FILE
     '';
 
     # Essential functions that can't be replaced with abbreviations
