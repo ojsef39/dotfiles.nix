@@ -88,7 +88,7 @@
       '';
 
       manf = ''
-        /usr/bin/man -k . 2>/dev/null | fzf --preview 'man {1}' --preview-window=right:70%:wrap | awk '{print $1}' | xargs man
+        /usr/bin/man -k . 2>/dev/null | SKIP_FF=1 fzf --preview 'man {1}' --preview-window=right:70%:wrap | awk '{print $1}' | xargs man
       '';
 
       wtf = ''
