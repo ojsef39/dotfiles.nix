@@ -87,6 +87,10 @@
         end
       '';
 
+      manf = ''
+        /usr/bin/man -k . 2>/dev/null | fzf --preview 'man {1}' --preview-window=right:70%:wrap | awk '{print $1}' | xargs man
+      '';
+
       wtf = ''
         # Decrypt the file temporarily
         simple_sops decrypt $HOME/.wtfis.env --stdout > $HOME/.env.wtfis 2>/dev/null
