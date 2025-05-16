@@ -57,7 +57,7 @@
       tab_bar_edge = "top";
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
-      tab_title_template = "{index} { tab.active_exe if tab.active_exe not in ('-fish', 'kitten') else title}";
+      tab_title_template = "{index} {'' if 'fish' in tab.active_exe else tab.active_exe.split('/')[-1] + ': '}{tab.active_wd.split('/')[-1] if 'fish' in tab.active_exe else (title.split('/')[-1] if '/' in title else title)}";
       active_tab_font_style = "bold";
       inactive_tab_font_style = "normal";
 
