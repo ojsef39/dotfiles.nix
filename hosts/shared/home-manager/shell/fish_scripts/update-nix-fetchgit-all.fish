@@ -74,4 +74,6 @@ function update-nix-fetchgit-all
             update-nix-fetchgit -v $file
         end
     end
+    git add .
+    git commit -m "chore(deps): updated inputs and/or refs" || true
 end
