@@ -8,6 +8,8 @@
     btop
     cargo
     gh
+    gh-dash
+    gh-poi
     ghq
     gitlab-ci-local
     go
