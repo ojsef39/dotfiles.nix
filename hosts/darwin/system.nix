@@ -27,6 +27,7 @@
   };
 
   system = {
+    primaryUser = "${vars.user.name}";
     # activationScripts are executed every time you boot the system or run `nixos-rebuild` / `darwin-rebuild`.
     activationScripts = {
       postUserActivation.text = ''
