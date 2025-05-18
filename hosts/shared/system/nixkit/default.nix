@@ -1,0 +1,7 @@
+{ ... }:
+{
+  programs = {
+    opsops.enable = true;
+  };
+}
+

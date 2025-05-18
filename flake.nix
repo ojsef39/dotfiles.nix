@@ -21,6 +21,7 @@
     };
     nixkit = {
       url = "github:frostplexx/nixkit";
+      # url = "/Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # ⬇️ Leave here as example for building from source instead of nixpkg repo:
