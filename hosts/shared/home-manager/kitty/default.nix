@@ -136,6 +136,7 @@
     };
     extraConfig = ''
       include ${config.xdg.configHome}/kitty/themes/catppuccin-macchiato.conf
+      include ${config.xdg.configHome}/kitty/quick-access-terminal.conf
     '';
   };
 
@@ -144,6 +145,8 @@
       url = "https://raw.githubusercontent.com/catppuccin/kitty/refs/heads/main/themes/macchiato.conf";
       hash = "sha256-1fF00Gm1cf5iXX2QIhqxxwYAbStyL5LBUR6wP82hO74=";
     };
+
+    "kitty/quick-access-terminal.conf".source = ./quick-access-terminal.conf;
 
     # Copy icon
     "kitty/kitty.app.png".source = ./themes/kitty.app.png;
