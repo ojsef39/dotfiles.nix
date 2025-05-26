@@ -18,6 +18,7 @@ in
     git
     maple-mono.NF
     ripgrep
+    yq
   ];
 
   programs.neovim = {
