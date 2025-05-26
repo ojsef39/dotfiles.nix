@@ -118,6 +118,15 @@
         return $wtfis_status
       '';
 
+      cdgit = ''
+        set -l git_root (git rev-parse --show-toplevel)
+        if test -n "$git_root"
+            cd $git_root
+        else
+            echo "Not in a Git repository."
+        end
+      '';
+
       temp_dir = ''
         set temp_dir (mktemp -d)
         cd "$temp_dir"
