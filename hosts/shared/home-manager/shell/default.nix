@@ -127,6 +127,10 @@
         end
       '';
 
+      gh_prm = ''
+        git branch $argv || true && git switch $argv && gh pr create && gh pr merge && git pull
+      '';
+
       temp_dir = ''
         set temp_dir (mktemp -d)
         cd "$temp_dir"
