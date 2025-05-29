@@ -148,7 +148,7 @@
       '';
 
       gh_prm = ''
-        git branch $argv || true && git switch $argv && gh pr create && gh pr merge && git pull
+        git branch $argv || true && git switch $argv && gh pr create && gh pr merge -d && git pull
       '';
 
       temp_dir = ''
