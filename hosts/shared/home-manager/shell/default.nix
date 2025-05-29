@@ -79,16 +79,12 @@
       '';
 
       _find_nix_base = ''
-        set code_dir $NIX_GIT_PATH
-        while not string match -q "*Code*" (basename $code_dir)
-          set code_dir (dirname $code_dir)
-        end
+         # Extract path up to and including "Code" directory
+        set code_path (string replace -r '(/[^/]*Code[^/]*)/.*' '$1' $NIX_GIT_PATH)
 
-        set nix_base_path (find $code_dir -type d -path "*/github.com/*" -name "nix-base" | head -n 1)
-
+        set nix_base_path (find "$code_path" -maxdepth 4 -type d -path "*/github.com/*/nix-base" -print -quit 2>/dev/null)
         if test -n "$nix_base_path"
           echo $nix_base_path
-          return 0
         else
           echo "nix-base repository not found" >&2
           return 1
