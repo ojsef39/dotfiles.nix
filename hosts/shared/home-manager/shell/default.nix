@@ -151,6 +151,10 @@
         git branch $argv || true && git switch $argv && gh pr create && gh pr merge -d && git pull
       '';
 
+      rm_DS = ''
+        find . -name '.DS_Store' -type f -delete
+      '';
+
       temp_dir = ''
         set temp_dir (mktemp -d)
         cd "$temp_dir"
