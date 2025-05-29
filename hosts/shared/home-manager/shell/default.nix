@@ -93,7 +93,7 @@
 
       wtf = ''
         # Decrypt the file temporarily
-        simple_sops decrypt $HOME/.wtfis.env --stdout > $HOME/.env.wtfis 2>/dev/null
+        opsops read $HOME/.wtfis.env >$HOME/.env.wtfis 2>/dev/null
         set decrypt_status $status
 
         # Set up cleanup to happen in any case
