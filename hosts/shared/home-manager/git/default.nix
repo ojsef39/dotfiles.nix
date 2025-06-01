@@ -60,13 +60,13 @@
       enable = true;
       package = pkgs.buildGoModule rec {
         pname = "lazygit";
-        version = "unstable-2025-05-29";
+        version = "unstable-2025-05-31";
         src = pkgs.fetchFromGitHub {
           owner = "jesseduffield";
           repo = "lazygit";
           # pinned to master branch (update-nix-fetchgit-all)
-          rev = "8280fdedb72e90ff5169dfe11ef2a92ebfe33551"; # master
-          sha256 = "1dgj6z0y03s21i0dhn50xxdhknqgavawd9yzyr3gmxm15gs0m4l5";
+          rev = "a8c73f1ff2119620a6314d8e4fe46455bf06cc6c"; # master
+          sha256 = "18qhll7g6j4jm24b36lyig4sw8kvvnxm3s3h2dbrz7762ps0qrlp";
         };
         vendorHash = null;
         doCheck = false;
