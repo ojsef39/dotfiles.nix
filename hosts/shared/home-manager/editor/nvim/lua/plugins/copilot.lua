@@ -52,7 +52,7 @@ return {
     end,
     opts = {
       -- Set default model
-      model = "claude-3.7-sonnet",
+      model = "claude-sonnet-4",
       mappings = {
         -- Disable Tab for completion by assigning it to a different key
         complete = {
