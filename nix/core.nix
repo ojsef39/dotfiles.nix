@@ -2,6 +2,10 @@
 
 {
   nix = {
+    enable =
+     if pkgs.stdenv.isDarwin
+     then false
+     else true;
     settings = {
       # enable flakes globally
       experimental-features = ["nix-command" "flakes"];

@@ -114,7 +114,7 @@ in {
     ${themePath} = {
       source = builtins.fetchurl {
         url = "https://raw.githubusercontent.com/refact0r/midnight-discord/refs/heads/master/themes/flavors/midnight-catppuccin-macchiato.theme.css";
-        sha256 = "1xkxifwh9mallyw4ib6d9xr27b1v9gvvszx4j2naq44ay5s30y53";
+        sha256 = "01gasg6krkw9phh24pya95l7pam5125z6db3n3casjd7cj046i6h";
       };
       force = true;
     };
