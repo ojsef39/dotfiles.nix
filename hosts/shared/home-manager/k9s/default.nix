@@ -18,6 +18,17 @@
         };
       };
     };
+    aliases = {
+      cr = "clusterroles";
+      crb = "clusterrolebindings";
+      dp = "deployments";
+      jo = "jobs";
+      np = "networkpolicies";
+      pp = "v1/pods";
+      rb = "rolebindings";
+      ro = "roles";
+      sec = "v1/secrets";
+    };
   };
   home.file = {
     "Library/Application Support/k9s/skins/catppuccin-macchiato.yaml" = {
