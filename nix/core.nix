@@ -7,6 +7,7 @@
      then false
      else true;
     settings = {
+      lazy-trees = true;
       # enable flakes globally
       experimental-features = ["nix-command" "flakes"];
       substituters = [
