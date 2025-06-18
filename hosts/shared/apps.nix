@@ -9,8 +9,8 @@
     nixpkgs-review
     update-nix-fetchgit # https://github.com/expipiplus1/update-nix-fetchgit
     ##
-    direnv
     just
+    minikube
     podman
     podman-compose
     virt-viewer
