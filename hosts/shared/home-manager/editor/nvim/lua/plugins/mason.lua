@@ -21,6 +21,7 @@ return {
         "shellcheck",
         "shfmt",
         "shfmt",
+        "sonarlint-language-server",
         "stylua",
         "stylua",
         "swiftlint",
