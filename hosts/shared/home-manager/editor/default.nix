@@ -9,12 +9,12 @@ let
   };
   treeSitterWithAllGrammars = pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: pkgs.tree-sitter.allGrammars);
 
-  # Convert Nix blacklist to Lua table
-  userBlacklist = vars.nvim.cord.blacklist or [];
-  cordBlacklist = userBlacklist ++ [ vars.user.name ];
-  blacklistToLua = blacklist:
+  # Convert Nix ignorelist to Lua table
+  userIgnorelist = vars.nvim.cord.ignorelist or [];
+  cordIgnorelist = userIgnorelist ++ [ vars.user.name ];
+  ignorelistToLua = ignorelist:
     let
-      quotedItems = map (item: "'${item}'") blacklist;
+      quotedItems = map (item: "'${item}'") ignorelist;
     in "{ ${lib.concatStringsSep ", " quotedItems} }";
 in
 {
@@ -93,33 +93,33 @@ in
                 tooltip = "How do I exit this?",
               },
               text = (function()
-                local blacklist = ${blacklistToLua cordBlacklist}
-                local is_blacklisted = function(opts)
+                local ignorelist = ${ignorelistToLua cordIgnorelist}
+                local is_ignorelisted = function(opts)
                   -- Check workspace name
-                  for _, item in ipairs(blacklist) do
+                  for _, item in ipairs(ignorelist) do
                     if opts.workspace == item then
                       return true
                     end
                   end
                   -- Check git remote
                   local remote = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "")
-                  for _, item in ipairs(blacklist) do
+                  for _, item in ipairs(ignorelist) do
                     if remote:find(item, 1, true) then
                       return true
                     end
                   end
                   return false
                 end
-                
+
                 return {
                   viewing = function(opts)
-                    return is_blacklisted(opts) and 'Viewing a file' or ('Viewing ' .. opts.filename)
+                    return is_ignorelisted(opts) and 'Viewing a file' or ('Viewing ' .. opts.filename)
                   end,
                   editing = function(opts)
-                    return is_blacklisted(opts) and 'Editing a file' or ('Editing ' .. opts.filename)
+                    return is_ignorelisted(opts) and 'Editing a file' or ('Editing ' .. opts.filename)
                   end,
                   workspace = function(opts)
-                    return is_blacklisted(opts) and 'In a secret workspace' or ('Working on ' .. opts.workspace)
+                    return is_ignorelisted(opts) and 'In a secret workspace' or ('Working on ' .. opts.workspace)
                   end
                 }
               end)()
