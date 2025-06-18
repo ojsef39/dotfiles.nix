@@ -57,11 +57,11 @@ in {
         biggerStreamPreview.enable = true;
         callTimer.enable = true;
         clearURLs.enable = true;
-        customIdle = {
-          enable = true;
-          idleTimeout = 5.0;
-          remainInIdle = true;
-        };
+        # customIdle = {
+        #   enable = true;
+        #   idleTimeout = 5.0;
+        #   remainInIdle = true;
+        # };
         crashHandler.enable = true;
         experiments = {
           enable = true;
