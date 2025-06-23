@@ -38,15 +38,15 @@ return {
         yamlls = {
           settings = vim.tbl_deep_extend("force", {
             -- global YAML settings here
-            -- yaml = {
-            --   validate = true,
-            --   hover = true,
-            --   completion = true,
-            --   format = {
-            --     enable = true,
-            --   },
-            --   -- other global settings below
-            -- },
+            yaml = {
+              validate = true,
+              hover = true,
+              completion = true,
+              format = {
+                enable = true,
+              },
+              --   -- other global settings below
+            },
           }, load_yaml_ls_settings()),
         },
       },

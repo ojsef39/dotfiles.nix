@@ -25,6 +25,7 @@ return {
         "stylua",
         "stylua",
         "swiftlint",
+        "yamllint",
       },
     },
   },
