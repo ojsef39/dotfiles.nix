@@ -11,8 +11,6 @@
     ##
     just
     minikube
-    podman
-    podman-compose
     virt-viewer
     vscode
   ];

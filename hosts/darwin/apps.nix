@@ -7,6 +7,7 @@
     aichat
     btop
     cargo
+    container
     gh
     gh-dash
     gh-poi

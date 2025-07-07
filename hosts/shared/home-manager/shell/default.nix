@@ -52,7 +52,7 @@
 
     interactiveShellInit = ''
       # Environment variables
-      set -gx GCL_CONTAINER_EXECUTABLE podman
+      set -gx GCL_CONTAINER_EXECUTABLE container
       set -gx GCL_MAX_JOB_NAME_PADDING 30
       set -gx GCL_TIMESTAMPS true
       set -gx NIX_GIT_PATH "${vars.git.nix}"
