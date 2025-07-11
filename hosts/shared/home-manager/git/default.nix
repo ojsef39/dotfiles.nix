@@ -58,26 +58,26 @@
     };
     lazygit = {
       enable = true;
-      package = pkgs.buildGoModule rec {
-        pname = "lazygit";
-        version = "unstable-2025-06-30";
-        src = pkgs.fetchFromGitHub {
-          owner = "jesseduffield";
-          repo = "lazygit";
-          # pinned to master branch (update-nix-fetchgit-all)
-          rev = "75ee87519488632e3fbce6619ee6f1a0eec2d650"; # master
-          sha256 = "0sdi0wvgcwn32q4y0k6rkpfzxxb4jfhsmgjkz94k7dm8jhv1kbzd";
-        };
-        vendorHash = null;
-        doCheck = false;
-        ldflags = [ "-X main.version=${version}" "-X main.buildSource=nix" ];
-        meta = with pkgs.lib; {
-          description = "Simple terminal UI for git commands";
-          homepage = "https://github.com/jesseduffield/lazygit";
-          license = licenses.mit;
-          mainProgram = "lazygit";
-        };
-      };
+      # package = pkgs.buildGoModule rec {
+      #   pname = "lazygit";
+      #   version = "unstable-2025-07-06";
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "jesseduffield";
+      #     repo = "lazygit";
+      #     # pinned to master branch (update-nix-fetchgit-all)
+      #     rev = "1d8073075710fe7998ebd1a37857639757f38c7b"; # master
+      #     sha256 = "1plx37vwwbdc56ahhyafimdnr4b4241dhklcbmy9460hqjjdmf9n";
+      #   };
+      #   vendorHash = null;
+      #   doCheck = false;
+      #   ldflags = [ "-X main.version=${version}" "-X main.buildSource=nix" ];
+      #   meta = with pkgs.lib; {
+      #     description = "Simple terminal UI for git commands";
+      #     homepage = "https://github.com/jesseduffield/lazygit";
+      #     license = licenses.mit;
+      #     mainProgram = "lazygit";
+      #   };
+      # };
       settings = {
         notARepository = "quit";
         git.overrideGpg = true;
