@@ -67,6 +67,7 @@ in {
           enable = true;
           toolbarDevMenu = true;
         };
+        fakeProfileThemes.enable = true;
         favoriteEmojiFirst.enable = true;
         favoriteGifSearch.enable = true;
         fixImagesQuality.enable = true;
