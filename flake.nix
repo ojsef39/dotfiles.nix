@@ -5,7 +5,6 @@
     nixpkgs_fork = {
       url = "github:ojsef39/nixpkgs/nixos-unstable";
       # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"; # latest master
