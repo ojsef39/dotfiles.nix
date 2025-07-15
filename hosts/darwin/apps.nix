@@ -21,7 +21,6 @@
     nmap
     progress
     python3Full
-    renovate # via nixpkgs fork
     retry
     rsync
     speedtest-cli
