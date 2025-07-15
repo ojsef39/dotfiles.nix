@@ -2,10 +2,10 @@
   description = "ojsef39 base nix configuration";
   inputs = {
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
-    nixpkgs_fork = {
-      url = "github:ojsef39/nixpkgs/nixos-unstable";
-      # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
-    };
+    # nixpkgs_fork = {
+    #   url = "github:ojsef39/nixpkgs/nixos-unstable";
+    #   # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
+    # };
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"; # latest master
       # url = "/Users/josefhofer/CodeProjects/github.com/nix-community/home-manager";
@@ -32,18 +32,18 @@
   };
   outputs = inputs @ { self, nixpkgs, home-manager, darwin, nixcord, nixkit, ... }:
   # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-  let
-    overlays = [
-      (final: prev: {
-        # nh = inputs.nh.packages.${prev.system}.default;
-        renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
-      })
-    ];
-  in
+  # let
+  #   overlays = [
+  #     (final: prev: {
+  #       # nh = inputs.nh.packages.${prev.system}.default;
+  #       renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
+  #     })
+  #   ];
+  # in
   {
     sharedModules = [
       ./nix/core.nix
-      { nixpkgs.overlays = overlays; } # Leave here as example for building from source instead of nixpkg repo:
+      # { nixpkgs.overlays = overlays; } # Leave here as example for building from source instead of nixpkg repo:
       home-manager.darwinModules.home-manager
       nixkit.darwinModules.default
       ({ vars, system, ... }: {
