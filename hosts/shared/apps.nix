@@ -2,6 +2,7 @@
 {
   environment.systemPackages = with pkgs; [
     # Nix tools #
+    fh
     nh
     nix-init # https://github.com/nix-community/nix-init
     nix-tree

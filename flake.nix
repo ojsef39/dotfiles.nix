@@ -1,19 +1,19 @@
 {
   description = "ojsef39 base nix configuration";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
     nixpkgs_fork = {
       url = "github:ojsef39/nixpkgs/nixos-unstable";
       # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"; # latest master
       # url = "/Users/josefhofer/CodeProjects/github.com/nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     darwin = {
-      url = "github:lnl7/nix-darwin/master";
+      url = "https://flakehub.com/f/nix-darwin/nix-darwin/0.1.tar.gz"; # latest master
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
