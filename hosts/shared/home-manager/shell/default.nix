@@ -159,6 +159,36 @@
         set temp_dir (mktemp -d)
         cd "$temp_dir"
       '';
+
+      ov = ''
+        # Check if we have arguments
+        if test (count $argv) -eq 0
+            echo "Usage: overlay <command> [args...]"
+            return 1
+        end
+
+        # Build the command string and get current directory
+        set cmd (string join ' ' $argv)
+        set current_dir (pwd)
+
+        # Create a more descriptive title
+        set title "overlay: $cmd"
+
+        # Launch with kitty overlay
+        kitten @launch \
+                    --title "$title" \
+                    --copy-env \
+                    --type=overlay \
+                    --cwd="$current_dir" \
+                    env SKIP_FF=1 fish -c "
+                $cmd
+                set exit_code \$status
+                if test \$exit_code -ne 0
+                    echo 'Command failed with exit code: '\$exit_code
+                end
+                read -n 1 --prompt-str "❯ "
+            "
+      '';
     };
 
     plugins = with pkgs.fishPlugins; [
