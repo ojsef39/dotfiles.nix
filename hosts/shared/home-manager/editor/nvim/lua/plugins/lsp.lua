@@ -35,6 +35,7 @@ return {
             },
           },
         },
+        nixd = {},
         yamlls = {
           settings = vim.tbl_deep_extend("force", {
             -- global YAML settings here
