@@ -22,9 +22,6 @@
   nixpkgs.config = {
     allowBroken = true;
     allowUnfree = true;
-    packageOverrides = pkgs: {
-      electron = pkgs.electron_37;
-    };
   };
 
   environment.etc."nix/nix.custom.conf" = lib.mkIf pkgs.stdenv.isDarwin {

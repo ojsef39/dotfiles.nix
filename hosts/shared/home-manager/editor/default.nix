@@ -47,6 +47,7 @@ in
 
       # LSPs
       vimPlugins.vim-prettier
+      nixd
       # Go
       gofumpt
       goimports-reviser
