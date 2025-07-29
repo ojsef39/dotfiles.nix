@@ -1,13 +1,20 @@
-{ config, pkgs, vars, ... }:
+{
+  config,
+  pkgs,
+  vars,
+  ...
+}:
 
 let
   # Define theme path based on operating system
   themeFile = "midnight-catppuccin-macchiato.theme.css";
   themePath =
-    if pkgs.stdenv.isDarwin
-    then "/Users/${vars.user.name}/Library/Application Support/vesktop/themes/${themeFile}"
-    else "${config.xdg.configHome}/vesktop/themes/${themeFile}";
-in {
+    if pkgs.stdenv.isDarwin then
+      "/Users/${vars.user.name}/Library/Application Support/vesktop/themes/${themeFile}"
+    else
+      "${config.xdg.configHome}/vesktop/themes/${themeFile}";
+in
+{
   programs.nixcord = {
     enable = true;
     discord = {
@@ -125,10 +132,7 @@ in {
         discordBranch = "stable";
         minimizeToTray = true;
         arRPC = true;
-        customTitleBar =
-          if pkgs.stdenv.isDarwin
-          then true
-          else false;
+        customTitleBar = if pkgs.stdenv.isDarwin then true else false;
       };
       force = true;
     };

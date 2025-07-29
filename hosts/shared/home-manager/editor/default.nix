@@ -1,21 +1,33 @@
-{ pkgs, lib, vars, ... }:
+{
+  pkgs,
+  lib,
+  vars,
+  ...
+}:
 let
   # Filter out lazy-lock.json from the source directory
   nvimConfigFiltered = lib.cleanSourceWith {
     src = ./nvim;
-    filter = path: type: let
-      baseName = baseNameOf path;
-    in baseName != "lazy-lock.json";
+    filter =
+      path: type:
+      let
+        baseName = baseNameOf path;
+      in
+      baseName != "lazy-lock.json";
   };
-  treeSitterWithAllGrammars = pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: pkgs.tree-sitter.allGrammars);
+  treeSitterWithAllGrammars = pkgs.vimPlugins.nvim-treesitter.withPlugins (
+    plugins: pkgs.tree-sitter.allGrammars
+  );
 
   # Convert Nix ignorelist to Lua table
-  userIgnorelist = vars.nvim.cord.ignorelist or [];
+  userIgnorelist = vars.nvim.cord.ignorelist or [ ];
   cordIgnorelist = userIgnorelist ++ [ vars.user.name ];
-  ignorelistToLua = ignorelist:
+  ignorelistToLua =
+    ignorelist:
     let
       quotedItems = map (item: "'${item}'") ignorelist;
-    in "{ ${lib.concatStringsSep ", " quotedItems} }";
+    in
+    "{ ${lib.concatStringsSep ", " quotedItems} }";
 in
 {
   # Packages you also want to outside use outside of nvim
@@ -26,6 +38,7 @@ in
     maple-mono.NF
     ripgrep
     yq
+    nixfmt
   ];
 
   programs.neovim = {

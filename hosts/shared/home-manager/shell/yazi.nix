@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   programs = {
     # Terminal file manager
     yazi = {

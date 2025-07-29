@@ -20,7 +20,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixkit = {
-      url = "github:frostplexx/nixkit";
+      # url = "github:frostplexx/nixkit";
+      url = "github:ojsef39/nixkit";
       # url = "/Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -30,41 +31,52 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
   };
-  outputs = inputs @ { self, nixpkgs, home-manager, darwin, nixcord, nixkit, ... }:
-  # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-  # let
-  #   overlays = [
-  #     (final: prev: {
-  #       # nh = inputs.nh.packages.${prev.system}.default;
-  #       renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
-  #     })
-  #   ];
-  # in
-  {
-    sharedModules = [
-      ./nix/core.nix
-      # { nixpkgs.overlays = overlays; } # Leave here as example for building from source instead of nixpkg repo:
-      home-manager.darwinModules.home-manager
-      nixkit.darwinModules.default
-      ({ vars, system, ... }: {
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          backupFileExtension = "backup";
-          extraSpecialArgs = { inherit vars inputs; };
-          users.${vars.user.name} = import ./hosts/shared/import-hm.nix;
-          sharedModules = [
-            nixcord.homeModules.nixcord
-            nixkit.homeModules.default
-          ];
-        };
-      })
-      ./hosts/shared/import-sys.nix
-    ];
+  outputs =
+    inputs@{
+      self,
+      home-manager,
+      nixcord,
+      nixkit,
+      ...
+    }:
+    # ⬇️ Leave here as example for building from source instead of nixpkg repo:
+    # let
+    #   overlays = [
+    #     (final: prev: {
+    #       # nh = inputs.nh.packages.${prev.system}.default;
+    #       renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
+    #     })
+    #   ];
+    # in
+    {
+      nixpkgs.overlays = [ nixkit.overlays.default ];
+      sharedModules = [
+        ./nix/core.nix
+        # { nixpkgs.overlays = overlays; } # Leave here as example for building from source instead of nixpkg repo:
+        home-manager.darwinModules.home-manager
+        nixkit.darwinModules.default
+        (
+          { vars, system, ... }:
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              extraSpecialArgs = { inherit vars inputs; };
+              users.${vars.user.name} = import ./hosts/shared/import-hm.nix;
+              sharedModules = [
+                nixcord.homeModules.nixcord
+                nixkit.homeModules.default
+              ];
+            };
+          }
+        )
+        ./hosts/shared/import-sys.nix
+      ];
 
-    macModules = [
-      ./hosts/darwin/import.nix
-      ./hosts/darwin/homebrew.nix
-    ];
-  };
+      macModules = [
+        ./hosts/darwin/import.nix
+        ./hosts/darwin/homebrew.nix
+      ];
+    };
 }

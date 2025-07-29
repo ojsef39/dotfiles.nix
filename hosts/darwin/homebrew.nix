@@ -1,5 +1,4 @@
-{ pkgs, lib, vars, ... }:
-{
+_: {
   # Homebrew for macOS-specific and unavailable packages
   # https://github.com/LnL7/nix-darwin/blob/master/modules/homebrew.nix
   homebrew = {
@@ -11,12 +10,12 @@
       cleanup = "uninstall"; # "zap" to also remove config files
     };
 
-   taps = [
-    "hashicorp/tap"
-   ];
+    taps = [
+      "hashicorp/tap"
+    ];
 
     # Mac App Store apps
-    masApps = {};
+    masApps = { };
 
     # Homebrew formulae (CLI tools)
     brews = [

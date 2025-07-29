@@ -4,4 +4,3 @@
     opsops.enable = true;
   };
 }
-

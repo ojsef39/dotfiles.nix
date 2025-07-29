@@ -1,9 +1,7 @@
-{ vars, pkgs, lib, ... }:
-{
-  imports =
-    [
-        ./apps.nix
-        ./system.nix
-        # ./host-users.nix
-    ];
+_: {
+  imports = [
+    ./apps.nix
+    ./system.nix
+    # ./host-users.nix
+  ];
 }

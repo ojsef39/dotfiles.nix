@@ -1,4 +1,9 @@
-{ pkgs, lib, vars, ... }:
+{
+  pkgs,
+  lib,
+  vars,
+  ...
+}:
 {
   ## GHQ -> This must run after the linkGeneration to make sure gitconfig with ghq settings is set
   home.activation = {

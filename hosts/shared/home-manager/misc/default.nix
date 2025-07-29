@@ -1,4 +1,4 @@
-{ pkgs, lib, vars, ... }:
+{ lib, ... }:
 {
   home.activation = {
     killDock = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
@@ -7,4 +7,3 @@
     '';
   };
 }
-

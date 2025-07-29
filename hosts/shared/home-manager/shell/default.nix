@@ -1,4 +1,9 @@
-{ pkgs, lib, vars, ... }:
+{
+  pkgs,
+  lib,
+  vars,
+  ...
+}:
 {
   imports = [
     ./tmux.nix
@@ -215,7 +220,7 @@
     fzf = {
       enable = lib.mkDefault true;
       enableFishIntegration = true;
-      defaultCommand = "fd --type f";  # Faster than find
+      defaultCommand = "fd --type f"; # Faster than find
       defaultOptions = [
         "--height 40%"
         "--layout=reverse"
@@ -227,7 +232,7 @@
     zoxide = {
       enable = lib.mkDefault true;
       enableFishIntegration = true;
-      options = ["--cmd cd"];
+      options = [ "--cmd cd" ];
     };
     eza = {
       enable = true;
@@ -236,7 +241,7 @@
     bat = {
       enable = true;
       config = {
-          theme = "catppuccin-macchiato";
+        theme = "catppuccin-macchiato";
       };
       themes = {
         catppuccin-macchiato = {
@@ -251,31 +256,33 @@
       };
     };
     direnv = {
+      enable = true;
+      # Fish shell integration is bugged or something:
+      # https://github.com/nix-community/home-manager/issues/2357
+      # enableFishIntegration = true;
+      nix-direnv = {
         enable = true;
-        # Fish shell integration is bugged or something:
-        # https://github.com/nix-community/home-manager/issues/2357
-        # enableFishIntegration = true;
-        nix-direnv = {
-            enable = true;
-        };
-        silent = true;
+      };
+      silent = true;
     };
   };
 
   xdg.configFile = {
     "fish/themes/Catppuccin Macchiato.theme" = {
-      text = builtins.readFile (pkgs.fetchurl {
-        name = "Catppuccin-Macchiato.theme";
-        url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
-        sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
-      });
+      text = builtins.readFile (
+        pkgs.fetchurl {
+          name = "Catppuccin-Macchiato.theme";
+          url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
+          sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
+        }
+      );
     };
   };
 
   # Ensure tmux plugin manager is installed
   home = {
     file.".tmux/plugins/tpm".source = pkgs.fetchgit {
-      url= "https://github.com/tmux-plugins/tpm";
+      url = "https://github.com/tmux-plugins/tpm";
       # version comment so 'update-nix-fetchgit-all' doesnt update this
       rev = "7bdb7ca33c9cc6440a600202b50142f401b6fe21"; # v3.1.0
       sha256 = "1a05bs5cwhxlmjzhf6m9rmsis2an91qyyysfn2yx2h10lr7jw613";
@@ -283,7 +290,7 @@
     };
 
     # Tide configuration (activate after installation)
-    activation.configureTide = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    activation.configureTide = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       # Launch a kitty overlay terminal to configure tide without disturbing the current session
       $DRY_RUN_CMD ${pkgs.kitty}/bin/kitten @ launch --type=overlay --title="Tide Configuration" --copy-env --env SKIP_FF=1 ${pkgs.fish}/bin/fish -C "
         # Configure tide with initial settings

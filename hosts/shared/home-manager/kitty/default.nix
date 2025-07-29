@@ -1,4 +1,9 @@
-{ config, lib, pkgs, vars, ... }:
+{
+  config,
+  pkgs,
+  vars,
+  ...
+}:
 
 {
   programs.kitty = {
@@ -75,10 +80,7 @@
       disable_ligatures = "cursor";
 
       # Set font size based on system because on linux wayland, font zise 13 is huge for some reason
-      font_size =
-        if pkgs.stdenv.isDarwin
-        then "14"
-        else "10";
+      font_size = if pkgs.stdenv.isDarwin then "14" else "10";
       modify_font = "cell_height 100%";
 
       macos_option_as_alt = "both";
@@ -102,8 +104,10 @@
       "ctrl+shift+up" = "resize_window taller";
       "ctrl+shift+down" = "resize_window shorter";
       "ctrl+shift+x" = "close_window";
-      "ctrl+shift+m" = "launch --type=tab --cwd=current --copy-env --title Yazi -- env SKIP_FF=1 ${pkgs.fish}/bin/fish -c 'yazi'";
-      "ctrl+shift+p" = "launch --title 'Project Selector' --copy-env --type=overlay env SKIP_FF=1 ${pkgs.fish}/bin/fish -c '~/.config/kitty/scripts/project_selector.sh'";
+      "ctrl+shift+m" =
+        "launch --type=tab --cwd=current --copy-env --title Yazi -- env SKIP_FF=1 ${pkgs.fish}/bin/fish -c 'yazi'";
+      "ctrl+shift+p" =
+        "launch --title 'Project Selector' --copy-env --type=overlay env SKIP_FF=1 ${pkgs.fish}/bin/fish -c '~/.config/kitty/scripts/project_selector.sh'";
       "cmd+left" = "previous_tab";
       "cmd+right" = "next_tab";
       ## SET F9 to forward and F10 to back button in Logitech app
@@ -130,9 +134,9 @@
       "opt+9" = "send_text all }";
       "opt+n" = "send_text all ~";
       "opt+l" = "send_text all @";
-      "opt+-" = "send_text all –";  # en dash
-      "opt+shift+7" = "send_text all \\\\";  # backslash
-      "opt+shift+-" = "send_text all —";  # em dash
+      "opt+-" = "send_text all –"; # en dash
+      "opt+shift+7" = "send_text all \\\\"; # backslash
+      "opt+shift+-" = "send_text all —"; # em dash
     };
     extraConfig = ''
       include ${config.xdg.configHome}/kitty/themes/catppuccin-macchiato.conf
@@ -207,7 +211,7 @@
           fi
         }
         project_selector
-    '';
+      '';
     };
   };
 }
