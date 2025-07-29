@@ -1,4 +1,9 @@
-{ pkgs, vars, lib, ... }:
+{
+  pkgs,
+  vars,
+  lib,
+  ...
+}:
 
 ###################################################################################
 #
@@ -54,7 +59,7 @@
       ".GlobalPreferences"."com.apple.mouse.scaling" = 0.6875;
 
       # https://daiderd.com/nix-darwin/manual/index.html#opt-system.defaults.CustomSystemPreferences
-      CustomSystemPreferences = {};
+      CustomSystemPreferences = { };
 
       # https://daiderd.com/nix-darwin/manual/index.html#opt-system.defaults.CustomUserPreferences
       # Lock the dock after Apps were set by upstream

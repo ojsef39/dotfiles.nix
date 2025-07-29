@@ -2,14 +2,14 @@
 
 {
   nix = {
-    enable =
-     if pkgs.stdenv.isDarwin
-     then false
-     else true;
+    enable = if pkgs.stdenv.isDarwin then false else true;
     settings = {
       lazy-trees = true;
       # enable flakes globally
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       # substituters = [
       #   "https://nix-community.cachix.org"
       # ];

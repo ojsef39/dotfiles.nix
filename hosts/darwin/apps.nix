@@ -1,4 +1,7 @@
-{ pkgs, lib, vars, ... }: 
+{
+  pkgs,
+  ...
+}:
 {
   environment.systemPackages = with pkgs; [
     # CLI utilities
@@ -29,8 +32,8 @@
     yamllint
 
     # GUI Applications
-    obsidian        # Note-taking
+    obsidian # Note-taking
     stats
-    utm             # Virtualization
+    utm # Virtualization
   ];
 }

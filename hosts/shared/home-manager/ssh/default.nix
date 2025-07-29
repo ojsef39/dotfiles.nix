@@ -1,7 +1,8 @@
-{ lib, vars, ... }: {
+{ lib, ... }:
+{
   programs.ssh = {
     enable = lib.mkDefault true;
-    
+
     matchBlocks = {
       "*" = {
         extraOptions = {
