@@ -20,7 +20,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixkit = {
-      url = "github:frostplexx/nixkit";
+      # url = "github:frostplexx/nixkit";
+      url = "github:ojsef39/nixkit";
       # url = "/Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -30,7 +31,7 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
   };
-  outputs = inputs @ { self, nixpkgs, home-manager, darwin, nixcord, nixkit, ... }:
+  outputs = inputs @ { self, home-manager, nixcord, nixkit, ... }:
   # ⬇️ Leave here as example for building from source instead of nixpkg repo:
   # let
   #   overlays = [
@@ -41,6 +42,7 @@
   #   ];
   # in
   {
+    nixpkgs.overlays = [ nixkit.overlays.default ];
     sharedModules = [
       ./nix/core.nix
       # { nixpkgs.overlays = overlays; } # Leave here as example for building from source instead of nixpkg repo:
