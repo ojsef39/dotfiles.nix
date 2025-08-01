@@ -69,7 +69,7 @@ return {
         function()
           return require("CopilotChat").toggle()
         end,
-        desc = "Toggle (CopilotChat)",
+        desc = "Toggle",
         mode = { "n", "v" },
       },
       {
@@ -77,7 +77,7 @@ return {
         function()
           return require("CopilotChat").reset()
         end,
-        desc = "Clear (CopilotChat)",
+        desc = "Clear",
         mode = { "n", "v" },
       },
       {
@@ -91,7 +91,7 @@ return {
             end
           end)
         end,
-        desc = "Quick Chat (CopilotChat)",
+        desc = "Quick Chat",
         mode = { "n", "v" },
       },
       {
@@ -99,7 +99,7 @@ return {
         function()
           require("CopilotChat").select_prompt()
         end,
-        desc = "Prompt Actions (CopilotChat)",
+        desc = "Prompt Actions",
         mode = { "n", "v" },
       },
     },

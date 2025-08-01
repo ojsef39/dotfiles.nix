@@ -32,13 +32,14 @@ in
 {
   # Packages you also want to outside use outside of nvim
   home.packages = with pkgs; [
+    claude-code
     fd
     fzf
     git
     maple-mono.NF
+    nixfmt
     ripgrep
     yq
-    nixfmt
   ];
 
   programs.neovim = {
