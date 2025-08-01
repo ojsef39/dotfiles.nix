@@ -22,7 +22,6 @@ _: {
       "ca-certificates"
       "coreutils"
       "expect"
-      "goreleaser"
       "hashicorp/tap/vault"
       "helm"
       "keyring"
@@ -37,7 +36,6 @@ _: {
     casks = [
       "1password"
       "1password-cli"
-      "ChatGPT"
       "arc"
       "caffeine"
       "kitty"

@@ -20,6 +20,8 @@
     gomplate
     hwatch
     kubectl
+    kustomize
+    kubeconform
     neovide
     nmap
     progress
@@ -28,6 +30,7 @@
     rsync
     speedtest-cli
     wget
+    ncdu
     whois
     yamllint
 
