@@ -20,6 +20,7 @@
     fortune
     fzf
     git
+    gping
     nodejs
     python3
     sops
