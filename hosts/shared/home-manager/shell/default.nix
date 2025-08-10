@@ -36,6 +36,7 @@
 
     # Aliases - direct replacements for commands
     shellAliases = {
+      rsync = "rsync -avz --progress";
       unix = "just -f $NIX_GIT_PATH/justfile u";
       snix = "just -f $NIX_GIT_PATH/justfile";
       ghql = "/Users/${vars.user.name}/.config/kitty/scripts/project_selector.sh --no-nvim";
