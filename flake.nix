@@ -30,12 +30,6 @@
       url = "github:nix-community/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #NOTE: ⬇️ https://github.com/nix-darwin/nix-darwin/pull/1396
-    nix-darwin-linking = {
-      url = "github:dwt/nix-darwin/application-linking-done-right";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    # ⬆️
   };
   outputs =
     inputs@{
@@ -47,10 +41,6 @@
     }:
     {
       sharedModules = [
-        #NOTE: ⬇️ https://github.com/nix-darwin/nix-darwin/pull/1396
-        { disabledModules = [ "system/applications.nix" ]; }
-        "${inputs.nix-darwin-linking}/modules/system/applications.nix"
-        # ⬆️
         {
           nixpkgs.overlays = [
             nixkit.overlays.default
