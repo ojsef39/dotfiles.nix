@@ -310,8 +310,10 @@
       "
     '';
 
-    # Create fish_scripts directory for additional scripts
     file = {
+      # disable last login message
+      ".hushlogin".text = "";
+      # Create fish_scripts directory for additional scripts
       ".fish_scripts/" = {
         recursive = true;
         source = ./fish_scripts;
