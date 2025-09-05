@@ -15,7 +15,7 @@ _: {
     ];
 
     # Mac App Store apps
-    masApps = { };
+    masApps = {};
 
     # Homebrew formulae (CLI tools)
     brews = [

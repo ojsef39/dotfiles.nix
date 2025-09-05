@@ -3,8 +3,7 @@
   lib,
   vars,
   ...
-}:
-{
+}: {
   imports = [
     ./tmux.nix
     ./fastfetch.nix
@@ -234,7 +233,7 @@
     zoxide = {
       enable = lib.mkDefault true;
       enableFishIntegration = true;
-      options = [ "--cmd cd" ];
+      options = ["--cmd cd"];
     };
     eza = {
       enable = true;
@@ -292,7 +291,7 @@
     };
 
     # Tide configuration (activate after installation)
-    activation.configureTide = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    activation.configureTide = lib.hm.dag.entryAfter ["writeBoundary"] ''
       # Launch a kitty overlay terminal to configure tide without disturbing the current session
       $DRY_RUN_CMD ${pkgs.kitty}/bin/kitten @ launch --type=overlay --title="Tide Configuration" --copy-env --env SKIP_FF=1 ${pkgs.fish}/bin/fish -C "
         # Configure tide with initial settings

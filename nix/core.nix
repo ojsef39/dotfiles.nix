@@ -1,8 +1,13 @@
-{ pkgs, lib, ... }:
-
 {
+  pkgs,
+  lib,
+  ...
+}: {
   nix = {
-    enable = if pkgs.stdenv.isDarwin then false else true;
+    enable =
+      if pkgs.stdenv.isDarwin
+      then false
+      else true;
     settings = {
       lazy-trees = true;
       # enable flakes globally

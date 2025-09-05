@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   programs = {
     default-browser = {
       enable = true;

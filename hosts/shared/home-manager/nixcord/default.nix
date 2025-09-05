@@ -3,18 +3,14 @@
   pkgs,
   vars,
   ...
-}:
-
-let
+}: let
   # Define theme path based on operating system
   themeFile = "midnight-catppuccin-macchiato.theme.css";
   themePath =
-    if pkgs.stdenv.isDarwin then
-      "/Users/${vars.user.name}/Library/Application Support/vesktop/themes/${themeFile}"
-    else
-      "${config.xdg.configHome}/vesktop/themes/${themeFile}";
-in
-{
+    if pkgs.stdenv.isDarwin
+    then "/Users/${vars.user.name}/Library/Application Support/vesktop/themes/${themeFile}"
+    else "${config.xdg.configHome}/vesktop/themes/${themeFile}";
+in {
   programs.nixcord = {
     enable = true;
     discord = {
@@ -27,20 +23,22 @@ in
     vesktop = {
       enable = true;
       package = pkgs.vesktop.overrideAttrs (previousAttrs: {
-        patches = previousAttrs.patches ++ [
-          (pkgs.fetchpatch {
-            name = "micfix-68c19662909621f421bc4a896e9225e21d62b3ed.patch";
-            url = "https://gist.githubusercontent.com/ojsef39/b8d8190008869b8a868b998494e3f95d/raw/68c19662909621f421bc4a896e9225e21d62b3ed/micfix.patch";
-            sha256 = "sha256-orMoR0NmHKirNG/6qEr35gjKzkMjHltgkOzioo6gIfY=";
-          })
-        ];
+        patches =
+          previousAttrs.patches
+          ++ [
+            (pkgs.fetchpatch {
+              name = "micfix-68c19662909621f421bc4a896e9225e21d62b3ed.patch";
+              url = "https://gist.githubusercontent.com/ojsef39/b8d8190008869b8a868b998494e3f95d/raw/68c19662909621f421bc4a896e9225e21d62b3ed/micfix.patch";
+              sha256 = "sha256-orMoR0NmHKirNG/6qEr35gjKzkMjHltgkOzioo6gIfY=";
+            })
+          ];
       });
     };
     config = {
       useQuickCss = false;
       disableMinSize = true;
       frameless = true;
-      enabledThemes = [ themeFile ];
+      enabledThemes = [themeFile];
       plugins = {
         alwaysAnimate.enable = true;
         betterFolders = {
@@ -54,7 +52,6 @@ in
         anonymiseFileNames = {
           enable = true;
           anonymiseByDefault = true;
-
         };
         appleMusicRichPresence.enable = true;
         betterGifPicker.enable = true;
@@ -132,7 +129,10 @@ in
         discordBranch = "stable";
         minimizeToTray = true;
         arRPC = true;
-        customTitleBar = if pkgs.stdenv.isDarwin then true else false;
+        customTitleBar =
+          if pkgs.stdenv.isDarwin
+          then true
+          else false;
       };
       force = true;
     };

@@ -2,10 +2,9 @@
   lib,
   vars,
   ...
-}:
-{
+}: {
   home = {
-    activation.removeExistingGitconfig = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
+    activation.removeExistingGitconfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
       rm -f ~/.gitconfig
     '';
   };
@@ -101,22 +100,27 @@
               "#8aadf4"
               "bold"
             ];
-            inactiveBorderColor = [ "#a5adcb" ];
-            optionsTextColor = [ "#8aadf4" ];
-            selectedLineBgColor = [ "#363a4f" ];
-            cherryPickedCommitBgColor = [ "#494d64" ];
-            cherryPickedCommitFgColor = [ "#8aadf4" ];
-            unstagedChangesColor = [ "#ed8796" ];
-            defaultFgColor = [ "#cad3f5" ];
-            searchingActiveBorderColor = [ "#eed49f" ];
+            inactiveBorderColor = ["#a5adcb"];
+            optionsTextColor = ["#8aadf4"];
+            selectedLineBgColor = ["#363a4f"];
+            cherryPickedCommitBgColor = ["#494d64"];
+            cherryPickedCommitFgColor = ["#8aadf4"];
+            unstagedChangesColor = ["#ed8796"];
+            defaultFgColor = ["#cad3f5"];
+            searchingActiveBorderColor = ["#eed49f"];
           };
-          authorColors = {
-            "${vars.user.full_name}" = "#ee99a0"; # Maroon
-            "jhcloud-bot" = "#f4dbd6"; # Rosewater
-            "renovate[bot]" = "#f4dbd6"; # Rosewater
-            "*" = "#b7bdf8"; # Lavender
-          }
-          // (if vars.git.lazy ? authorColors then vars.git.lazy.authorColors else { });
+          authorColors =
+            {
+              "${vars.user.full_name}" = "#ee99a0"; # Maroon
+              "jhcloud-bot" = "#f4dbd6"; # Rosewater
+              "renovate[bot]" = "#f4dbd6"; # Rosewater
+              "*" = "#b7bdf8"; # Lavender
+            }
+            // (
+              if vars.git.lazy ? authorColors
+              then vars.git.lazy.authorColors
+              else {}
+            );
         };
       };
     };
