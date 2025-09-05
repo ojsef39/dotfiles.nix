@@ -1,7 +1,8 @@
 {
   description = "ojsef39 base nix configuration";
   inputs = {
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
+    # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # nixpkgs_fork = {
     #   url = "github:ojsef39/nixpkgs/nixos-unstable";
     #   # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
@@ -48,6 +49,13 @@
             (final: prev: {
               nh = inputs.nh.packages.${prev.system}.default;
               # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
+              # Fix for podman 5.6.0 Darwin build issue
+              podman = prev.podman.overrideAttrs (oldAttrs: {
+                nativeInstallCheckInputs =
+                  (oldAttrs.nativeInstallCheckInputs or [ ])
+                  ++ prev.lib.optionals prev.stdenv.isDarwin [ prev.writableTmpDirAsHomeHook ];
+                versionCheckKeepEnvironment = [ "HOME" ];
+              });
             })
           ];
         }
