@@ -16,6 +16,10 @@
       url = "https://flakehub.com/f/nix-darwin/nix-darwin/0.1.tar.gz"; # latest master
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixcord = {
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,6 +39,7 @@
   outputs = inputs @ {
     self,
     home-manager,
+    neovim-nightly-overlay,
     nixcord,
     nixkit,
     ...
@@ -43,6 +48,7 @@
       {
         nixpkgs.overlays = [
           nixkit.overlays.default
+          neovim-nightly-overlay.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
           (final: prev: {
             # nh = inputs.nh.packages.${prev.system}.default;

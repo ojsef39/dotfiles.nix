@@ -1,8 +1,6 @@
 return {
-	"mbbill/undotree",
-	keys = {
-		{ "<leader>cu", "<cmd>UndotreeToggle<cr>", desc = "Undotree" },
-	},
+	src = "https://github.com/mbbill/undotree",
+	defer = true,
 	config = function()
 		-- Undotree window layout
 		vim.g.undotree_WindowLayout = 2
@@ -18,5 +16,8 @@ return {
 
 		-- Show diff in a horizontal split below
 		vim.g.undotree_DiffpanelHeight = 10
+
+		-- Keymaps
+		vim.keymap.set("n", "<leader>cu", "<cmd>UndotreeToggle<cr>", { desc = "Undotree", silent = true })
 	end,
 }

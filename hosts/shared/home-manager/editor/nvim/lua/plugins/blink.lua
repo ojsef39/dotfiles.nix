@@ -1,15 +1,15 @@
 return {
-	{
-		"saghen/blink.cmp",
-		lazy = true,
-		enabled = true,
-		event = "InsertEnter",
-		version = "*",
-		dependencies = {
-			"rafamadriz/friendly-snippets",
-			"onsails/lspkind.nvim",
+	src = "https://github.com/saghen/blink.cmp",
+	defer = true,
+	dependencies = {
+		{
+			src = "https://github.com/rafamadriz/friendly-snippets",
 		},
-		opts = {
+	},
+	version = vim.version.range("1.*"),
+	-- Configuration function
+	config = function()
+		require("blink.cmp").setup({
 			keymap = { preset = "super-tab" },
 			completion = {
 				ghost_text = { enabled = true },
@@ -42,7 +42,7 @@ return {
 				documentation = {
 					window = {
 						border = "rounded",
-						auto_show = true,
+						--auto_show = true,
 					},
 				},
 			},
@@ -53,7 +53,6 @@ return {
 				enabled = true,
 				window = { border = "rounded" },
 			},
-		},
-		opts_extend = { "sources.default" },
-	},
+		})
+	end,
 }

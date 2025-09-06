@@ -1,10 +1,10 @@
 return {
-	"mfussenegger/nvim-dap",
-	lazy = true,
+	src = "https://github.com/mfussenegger/nvim-dap",
+	defer = true,
 	dependencies = {
-		"rcarriga/nvim-dap-ui",
-		"nvim-neotest/nvim-nio",
-		"theHamsta/nvim-dap-virtual-text",
+		{ src = "https://github.com/rcarriga/nvim-dap-ui" },
+		{ src = "https://github.com/nvim-neotest/nvim-nio" },
+		{ src = "https://github.com/theHamsta/nvim-dap-virtual-text" },
 	},
 	config = function()
 		local dap, dapui = require("dap"), require("dapui")
@@ -132,21 +132,32 @@ return {
 		dap.listeners.before.event_exited.dapui_config = function()
 			dapui.close()
 		end
-	end,
-	keys = {
-		{ "<leader>dc", "<cmd>DapContinue<CR>", desc = "Debug Continue" },
-		{
+
+		-- Keymaps
+		vim.keymap.set("n", "<leader>dc", "<cmd>DapContinue<CR>", { desc = "Debug Continue", silent = true })
+		vim.keymap.set(
+			"n",
 			"<leader>db",
 			"<cmd>lua require'dap'.toggle_breakpoint()<CR>",
-			desc = "Debug Toggle Breakpoint",
-		},
-		{ "<leader>dn", "<cmd>DapStepOver<CR>", desc = "Debug Step Over" },
-		{ "<leader>di", "<cmd>DapStepInto<CR>", desc = "Debug Step Into" },
-		{ "<leader>do", "<cmd>DapStepOut<CR>", desc = "Debug Step Out" },
-		{ "<leader>dd", "<cmd>lua require'dap'.down()<CR>", desc = "Debug Down" },
-		{ "<leader>ds", "<cmd>DapTerminate<CR>", desc = "Debug Stop" },
-		{ "<leader>dt", "<cmd>:lua require('dapui').toggle()<CR>", desc = "Debug Toggle Debug UI" },
-		{ "<leader>da", "<cmd>DapNew<CR>", desc = "Debug New" },
-		{ "<leader>?", "<cmd>:lua require('dapui').eval(nil, { enter = true })<CR>", desc = "Debug Eval" },
-	},
+			{ desc = "Debug Toggle Breakpoint", silent = true }
+		)
+		vim.keymap.set("n", "<leader>dn", "<cmd>DapStepOver<CR>", { desc = "Debug Step Over", silent = true })
+		vim.keymap.set("n", "<leader>di", "<cmd>DapStepInto<CR>", { desc = "Debug Step Into", silent = true })
+		vim.keymap.set("n", "<leader>do", "<cmd>DapStepOut<CR>", { desc = "Debug Step Out", silent = true })
+		vim.keymap.set("n", "<leader>dd", "<cmd>lua require'dap'.down()<CR>", { desc = "Debug Down", silent = true })
+		vim.keymap.set("n", "<leader>ds", "<cmd>DapTerminate<CR>", { desc = "Debug Stop", silent = true })
+		vim.keymap.set(
+			"n",
+			"<leader>dt",
+			"<cmd>lua require('dapui').toggle()<CR>",
+			{ desc = "Debug Toggle Debug UI", silent = true }
+		)
+		vim.keymap.set("n", "<leader>da", "<cmd>DapNew<CR>", { desc = "Debug New", silent = true })
+		vim.keymap.set(
+			"n",
+			"<leader>?",
+			"<cmd>lua require('dapui').eval(nil, { enter = true })<CR>",
+			{ desc = "Debug Eval", silent = true }
+		)
+	end,
 }

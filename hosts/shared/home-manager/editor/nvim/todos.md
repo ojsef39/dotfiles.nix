@@ -1,4 +1,0 @@
-- Move to nix config
-  - Cord hidden workspaces
-- patch following PR into this: <https://github.com/frostplexx/dotfiles.nix/pull/415>
-- winebar uses speical folders with vim.env.HOME variable, see what to do with that

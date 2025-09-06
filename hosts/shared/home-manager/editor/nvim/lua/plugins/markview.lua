@@ -1,11 +1,15 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	dependencies = { "OXY2DEV/markview.nvim" },
+	src = "https://github.com/OXY2DEV/markview.nvim",
+	defer = false,
 	priority = 49,
-	lazy = false,
-	opts = {
-		preview = {
-			icon_provider = "mini", -- "mini" or "devicons" or "internal"
-		},
+	dependencies = {
+		{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 	},
+	config = function()
+		require("markview").setup({
+			preview = {
+				icon_provider = "mini", -- "mini" or "devicons" or "internal"
+			},
+		})
+	end,
 }

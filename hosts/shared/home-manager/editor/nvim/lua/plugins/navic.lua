@@ -1,14 +1,17 @@
 return {
-	"SmiteshP/nvim-navic",
+	src = "https://github.com/SmiteshP/nvim-navic",
+	defer = true,
 	dependencies = {
-		"neovim/nvim-lspconfig",
+		{ src = "https://github.com/neovim/nvim-lspconfig" },
 	},
-	opts = {
-		lsp = {
-			auto_attach = true,
-		},
-		separator = " › ",
-		depth_limit = 0,
-		safe_output = true,
-	},
+	config = function()
+		require("nvim-navic").setup({
+			lsp = {
+				auto_attach = true,
+			},
+			separator = " › ",
+			depth_limit = 0,
+			safe_output = true,
+		})
+	end,
 }

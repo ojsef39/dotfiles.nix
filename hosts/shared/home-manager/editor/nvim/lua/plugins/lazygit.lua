@@ -1,20 +1,12 @@
 return {
-	"kdheepak/lazygit.nvim",
-	lazy = true,
-	cmd = {
-		"LazyGit",
-		"LazyGitConfig",
-		"LazyGitCurrentFile",
-		"LazyGitFilter",
-		"LazyGitFilterCurrentFile",
-	},
-	-- optional for floating window border decoration
+	src = "https://github.com/kdheepak/lazygit.nvim",
+	defer = true,
 	dependencies = {
-		"nvim-lua/plenary.nvim",
+		{ src = "https://github.com/nvim-lua/plenary.nvim" },
 	},
-	-- setting the keybinding for LazyGit with 'keys' is recommended in
-	-- order to load the plugin when the command is run for the first time
-	keys = {
-		{ "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
-	},
+	config = function()
+		-- Keymap
+		vim.g.lazygit_floating_window_border_chars = { "", "", "", "", "", "", "", "" } -- remove window border
+		vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit", silent = true })
+	end,
 }
