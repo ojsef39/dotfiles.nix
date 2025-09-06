@@ -330,16 +330,58 @@ return {
 				local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 999999999 })
 				local git = MiniStatusline.section_git({ trunc_width = 75 })
 				local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
-				local filename = MiniStatusline.section_filename({ trunc_width = 140 })
 				local location = simple_location()
 				local lsp_status = get_lsp_clients()
 				local filetype = get_filetype_with_icon()
+
+				-- Get breadcrumbs from navic if available
+				local breadcrumbs = ""
+				local has_navic, navic = pcall(require, "nvim-navic")
+				if has_navic and navic.is_available() then
+					local navic_location = navic.get_location()
+					if navic_location ~= "" then
+						-- Calculate available space more conservatively
+						local win_width = vim.api.nvim_win_get_width(0)
+						local max_width = math.floor(win_width * 0.6) -- More conservative
+
+						if #navic_location > max_width then
+							-- Split on separators and keep the most specific parts
+							local parts = vim.split(navic_location, " › ")
+							local result = ""
+							local total_len = 3 -- for "..."
+
+							-- Start from the end (most specific) and work backwards
+							for i = #parts, 1, -1 do
+								local part_len = #parts[i] + (i < #parts and 3 or 0) -- +3 for " › "
+								if total_len + part_len <= max_width then
+									if result == "" then
+										result = parts[i]
+									else
+										result = parts[i] .. " › " .. result
+									end
+									total_len = total_len + part_len
+								else
+									break
+								end
+							end
+
+							-- Add ellipsis if we truncated
+							if total_len < #navic_location then
+								result = "..." .. (result ~= "" and " › " .. result or "")
+							end
+
+							breadcrumbs = result
+						else
+							breadcrumbs = navic_location
+						end
+					end
+				end
 
 				return MiniStatusline.combine_groups({
 					{ hl = mode_hl, strings = { mode } },
 					{ hl = "MiniStatuslineDevinfo", strings = { git, diagnostics } },
 					"%<", -- Mark general truncate point
-					{ hl = "", strings = { filename } },
+					{ hl = "MiniStatuslineFilename", strings = { breadcrumbs } },
 					"%=", -- End left alignment
 					{ hl = "MiniStatuslineFileinfo", strings = { lsp_status, filetype } },
 					{ hl = mode_hl, strings = { location } },
