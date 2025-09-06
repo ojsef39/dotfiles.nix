@@ -1,3 +1,3 @@
-require 'core.autocommands'
-require 'core.lsp'
-require 'core.commands'
+require("core.autocommands")
+require("core.lsp")
+require("core.commands")
