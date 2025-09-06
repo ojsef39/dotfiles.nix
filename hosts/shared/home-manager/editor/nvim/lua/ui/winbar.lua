@@ -6,10 +6,10 @@ local function setup_highlights()
 	if highlights_setup then
 		return
 	end
-	local macchiato = require("catppuccin.palettes").get_palette("macchiato")
-	vim.api.nvim_set_hl(0, "WinbarSeparator", { fg = macchiato.green, bold = true })
-	vim.api.nvim_set_hl(0, "WinBarDir", { fg = macchiato.mauve, italic = true })
-	vim.api.nvim_set_hl(0, "Winbar", { fg = macchiato.subtext0 })
+	local mocha = require("catppuccin.palettes").get_palette("macchiato")
+	vim.api.nvim_set_hl(0, "WinbarSeparator", { fg = mocha.green, bold = true })
+	vim.api.nvim_set_hl(0, "WinBarDir", { fg = mocha.mauve, italic = true })
+	vim.api.nvim_set_hl(0, "Winbar", { fg = mocha.subtext0 })
 	highlights_setup = true
 end
 
@@ -94,7 +94,7 @@ function M.render()
 end
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
-	group = vim.api.nvim_create_augroup("frostplexx/winbar", { clear = true }),
+	group = vim.api.nvim_create_augroup("ojsef39/winbar", { clear = true }),
 	desc = "Attach winbar",
 	callback = function(args)
 		if

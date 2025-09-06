@@ -16,6 +16,10 @@
       url = "https://flakehub.com/f/nix-darwin/nix-darwin/0.1.tar.gz"; # latest master
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixcord = {
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,14 +31,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-    nh = {
-      url = "github:nix-community/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # nh = {
+    #   url = "github:nix-community/nh";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
   outputs = inputs @ {
     self,
     home-manager,
+    neovim-nightly-overlay,
     nixcord,
     nixkit,
     ...
@@ -43,9 +48,10 @@
       {
         nixpkgs.overlays = [
           nixkit.overlays.default
+          neovim-nightly-overlay.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
           (final: prev: {
-            nh = inputs.nh.packages.${prev.system}.default;
+            # nh = inputs.nh.packages.${prev.system}.default;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
             # Fix for podman 5.6.0 Darwin build issue
             podman = prev.podman.overrideAttrs (oldAttrs: {

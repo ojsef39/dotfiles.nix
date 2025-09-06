@@ -1,4 +1,3 @@
-# TODO: patch following PR into this: <https://github.com/frostplexx/dotfiles.nix/pull/415>
 {
   pkgs,
   lib,
@@ -38,13 +37,14 @@ in {
 
   programs.neovim = {
     enable = lib.mkDefault true;
+    package = pkgs.neovim; # This will use the nightly version from the overlay
     defaultEditor = lib.mkDefault true;
     viAlias = lib.mkDefault true;
     vimAlias = lib.mkDefault true;
     withNodeJs = lib.mkDefault true;
 
     plugins = [
-      treeSitterWithAllGrammars
+      # treeSitterWithAllGrammars
     ];
 
     # Packages used in nvim
@@ -98,91 +98,37 @@ in {
         vim.g.projects_dir = vim.env.HOME .. "/${vars.git.ghq}"
         vim.g.nix_dir = vim.fn.expand("${vars.git.nix}")
 
-        -- [[ Lazy.nvim Plugin Manager ]]
+        vim.loader.enable()
 
-        -- Install Lazy
-        local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-        if not vim.loop.fs_stat(lazypath) then
+        local unpack_path = vim.fn.stdpath("data") .. "/site/pack/managers/start/unpack"
+
+        if not vim.uv.fs_stat(unpack_path) then
             vim.fn.system({
                 "git",
                 "clone",
                 "--filter=blob:none",
-                "https://github.com/folke/lazy.nvim.git",
-                "--branch=stable", -- latest stable release
-                lazypath,
+                "https://github.com/mezdelex/unpack",
+                unpack_path,
             })
         end
-        vim.opt.rtp = vim.opt.rtp ^ lazypath
 
-        ---@diagnostic disable-next-line: undefined-doc-name
-        ---@type LazySpec
-        local plugins = "plugins"
-
-        -- General Setup
-        require("globals") -- needs to be first
-        require("core")
-        require("config")
-
-        -- initialize lazy.nvim
-        require("lazy").setup(plugins, {
-            ui = { border = "rounded" },
-            dev = {
-                path = "~/.local/share/nvim/nix",
-                fallback = false,
-            },
-            defaults = {
-                lazy = true,
-                version = nil,
-            },
-            change_detection = {
-                notify = true,
-                enabled = true,
-            },
-            rocks = { enabled = false },
-            checker = {
-                enabled = false,
-                notify = false,
-            },
-            performance = {
-                cache = {
-                    enabled = true,
-                },
-                reset_packpath = true, -- Reset packpath for better performance
-                rtp = {
-                    reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
-                    -- disable some rtp plugins
-                    disabled_plugins = {
-                        "gzip",
-                        "matchit",
-                        "matchparen",
-                        "netrwPlugin",
-                        "tarPlugin",
-                        "tohtml",
-                        "tutor",
-                        "zipPlugin",
-                        "rplugin", -- Disable remote plugins
-                        "syntax", -- Disable vim syntax (use treesitter)
-                    },
-                },
-            },
-            profiling = {
-                loader = false,
-                require = false,
-            },
-        })
-
+        require("globals")
+        require("core.autocmds")
+        require("core.keymaps")
+        require("core.options")
         require("ui")
-        vim.cmd.colorscheme("catppuccin-macchiato")
+        require("core.lsp")
+        require("unpack").setup()
       '';
     };
     # Discord Rich Presence Configuration
-    "nvim/lua/plugins/cord.lua" = {
+    "nvim/lua/plugins/neocord.lua" = {
       text = ''
         return {
-            "vyfor/cord.nvim",
-            build = ":Cord update",
-            lazy = true,
-            event = "VeryLazy",
+            src = "https://github.com/vyfor/cord.nvim",
+            name = "cord.nvim",
+            defer = true,
+            data = { build = ":Cord update" },
             config = function()
                 local errors = {}
                 local get_errors = function(bufnr)
@@ -204,7 +150,7 @@ in {
                     end,
                 })
 
-                local ignorelist = ${ignorelistToLua cordIgnorelist}
+                local ignorelist = { "git.mam.dev", "jhofer" }
                 local is_ignorelisted = function(opts)
                     -- Check workspace name
                     for _, item in ipairs(ignorelist) do
