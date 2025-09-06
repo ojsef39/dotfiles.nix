@@ -27,10 +27,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-    nh = {
-      url = "github:nix-community/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # nh = {
+    #   url = "github:nix-community/nh";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
   outputs = inputs @ {
     self,
@@ -45,7 +45,7 @@
           nixkit.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
           (final: prev: {
-            nh = inputs.nh.packages.${prev.system}.default;
+            # nh = inputs.nh.packages.${prev.system}.default;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
             # Fix for podman 5.6.0 Darwin build issue
             podman = prev.podman.overrideAttrs (oldAttrs: {
