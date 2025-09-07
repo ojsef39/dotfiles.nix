@@ -33,6 +33,8 @@
     text = ''
       # Written by base/nix/core.nix
       lazy-trees = true
+      extra-experimental-features = parallel-eval
+      eval-cores = 0
     '';
   };
 
