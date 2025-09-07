@@ -2,7 +2,8 @@
   description = "ojsef39 base nix configuration";
   inputs = {
     # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "https://flakehub.com/f/JHOFER-Cloud/NixOS-nixpkgs/0.1.tar.gz"; # latest nixpkgs-unstable
+    # nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # nixpkgs_fork = {
     #   url = "github:ojsef39/nixpkgs/nixos-unstable";
     #   # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
@@ -25,7 +26,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixkit = {
-      url = "github:frostplexx/nixkit";
+      url = "https://flakehub.com/f/JHOFER-Cloud/frostplexx-nixkit/0.1.tar.gz";
       # url = "github:ojsef39/nixkit";
       # url = "/Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit";
       inputs.nixpkgs.follows = "nixpkgs";

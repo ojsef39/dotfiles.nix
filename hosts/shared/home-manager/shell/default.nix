@@ -39,6 +39,7 @@
       unix = "just -f $NIX_GIT_PATH/justfile u";
       snix = "just -f $NIX_GIT_PATH/justfile";
       ghql = "/Users/${vars.user.name}/.config/kitty/scripts/project_selector.sh --no-nvim";
+      cachix_login = ''echo "$(op read op://Personal/cachix_ojsef39/password)" | cachix authtoken --stdin'';
       ls = "eza --icons --git --header";
       cat = "bat";
       tree = "eza --icons --git --header --tree";
@@ -164,6 +165,29 @@
       temp_dir = ''
         set temp_dir (mktemp -d)
         cd "$temp_dir"
+      '';
+
+      nix-restart = ''
+        echo "Restarting Nix daemon..."
+
+        # 1. Unload the service properly
+        sudo launchctl unload /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
+        echo "Unloaded nix daemon service"
+
+        # 2. Kill any remaining processes
+        sudo pkill -9 -f nix-daemon
+        echo "Killed all nix-daemon processes"
+
+        # 3. Bootstrap the service back
+        sudo launchctl bootstrap system /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
+        echo "Bootstrapped nix daemon service"
+
+        sleep 2
+        if test -S /nix/var/nix/daemon-socket/socket
+          echo "✅ Nix daemon restarted successfully"
+        else
+          echo "❌ Daemon socket not found"
+        end
       '';
 
       ov = ''

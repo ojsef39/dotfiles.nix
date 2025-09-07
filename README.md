@@ -54,6 +54,9 @@ It is designed to be used as an input in another nix config, see an example: [oj
 
 ## Useful commands for upstream nix configuration
 
+Check if vars are correctly set:
+`nix eval .#darwinConfigurations.mac._module.specialArgs.vars.cachix.ignorePatterns`
+
 Check if Brew list got merged correctly:
 
 `nix eval .#darwinConfigurations.mac.config.homebrew.masApps`
