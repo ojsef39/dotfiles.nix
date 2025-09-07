@@ -8,10 +8,23 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.list = true
 vim.opt.listchars = { space = " ", trail = "⋅", tab = "  ↦" }
 
-vim.opt.foldmethod = "manual"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevel = 99
+vim.opt.foldcolumn = "1"
+vim.opt.mouse = "a"
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.breakindent = true
+
+-- indent-specific folding
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "yaml", "yml", "nix", "python" },
+	callback = function()
+		vim.opt_local.foldmethod = "indent"
+		vim.opt_local.foldlevel = 1
+	end,
+})
 
 -- Case insensitive searching UNLESS /C or the search has capitals.
 vim.opt.ignorecase = true
