@@ -166,6 +166,29 @@
         cd "$temp_dir"
       '';
 
+      nix-restart = ''
+        echo "Restarting Nix daemon..."
+
+        # 1. Unload the service properly
+        sudo launchctl unload /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
+        echo "Unloaded nix daemon service"
+
+        # 2. Kill any remaining processes
+        sudo pkill -9 -f nix-daemon
+        echo "Killed all nix-daemon processes"
+
+        # 3. Bootstrap the service back
+        sudo launchctl bootstrap system /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
+        echo "Bootstrapped nix daemon service"
+
+        sleep 2
+        if test -S /nix/var/nix/daemon-socket/socket
+          echo "✅ Nix daemon restarted successfully"
+        else
+          echo "❌ Daemon socket not found"
+        end
+      '';
+
       ov = ''
         # Check if we have arguments
         if test (count $argv) -eq 0
