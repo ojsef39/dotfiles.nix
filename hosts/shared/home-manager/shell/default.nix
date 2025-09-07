@@ -39,6 +39,7 @@
       unix = "just -f $NIX_GIT_PATH/justfile u";
       snix = "just -f $NIX_GIT_PATH/justfile";
       ghql = "/Users/${vars.user.name}/.config/kitty/scripts/project_selector.sh --no-nvim";
+      cachix_login = ''echo "$(op read op://Personal/cachix_ojsef39/password)" | cachix authtoken --stdin'';
       ls = "eza --icons --git --header";
       cat = "bat";
       tree = "eza --icons --git --header --tree";

@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     # Nix tools #
+    cachix
     fh
     nh
     nix-init # https://github.com/nix-community/nix-init
