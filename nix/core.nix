@@ -8,7 +8,7 @@
     #!/bin/bash
     set -e
     CACHIX_NAME="ojsef39"
-    IGNORE_PATTERNS="${lib.concatStringsSep " " (["source"] ++ (vars.cachix.ignorePatterns or []))}"
+    IGNORE_PATTERNS="${lib.concatStringsSep " " (["source" "etc" "darwin-system"] ++ (vars.cachix.ignorePatterns or []))}"
 
     # Filter out ignored patterns
     FILTERED_PATHS=""
