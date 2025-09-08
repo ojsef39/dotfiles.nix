@@ -21,6 +21,7 @@ return {
 				javascript = { "prettier" },
 				javascriptreact = { "prettier" },
 				json = { "prettier" },
+				json5 = { "prettier" },
 				jsonc = { "prettier" },
 				less = { "prettier" },
 				lua = { "stylua" },
