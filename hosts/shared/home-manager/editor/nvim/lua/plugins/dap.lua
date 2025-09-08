@@ -99,8 +99,9 @@ return {
 						return vim.fn.system('nix-shell --pure -p bashdb --run "which bashdb"'):gsub("\n", "")
 					end,
 					pathBashdbLib = function()
-						return vim.fn.system('nix-shell --pure -p bashdb --run "dirname $(which bashdb)"'):gsub("\n", "")
-							.. "/../share/bashdb"
+						return vim.fn
+							.system('nix-shell --pure -p bashdb --run "dirname $(which bashdb)"')
+							:gsub("\n", "") .. "/../share/bashdb"
 					end,
 					trace = true,
 					file = "${file}",
