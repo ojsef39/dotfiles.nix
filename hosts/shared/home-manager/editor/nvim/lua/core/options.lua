@@ -22,7 +22,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "yaml", "yml", "nix", "python" },
 	callback = function()
 		vim.opt_local.foldmethod = "indent"
-		vim.opt_local.foldlevel = 1
 	end,
 })
 

@@ -8,7 +8,7 @@
     #!/bin/bash
     set -e
     CACHIX_NAME="ojsef39"
-    IGNORE_PATTERNS="${lib.concatStringsSep " " (["source" "etc" "darwin-system"] ++ (vars.cachix.ignorePatterns or []))}"
+    IGNORE_PATTERNS="${lib.concatStringsSep " " (["source" "etc" "system" "home-manager" "user-environment"] ++ [vars.user.name] ++ (vars.cachix.ignorePatterns or []))}"
 
     # Filter out ignored patterns
     FILTERED_PATHS=""
@@ -61,6 +61,7 @@ in {
       experimental-features = [
         "nix-command"
         "flakes"
+        "parallel-eval"
       ];
       extra-substituters = [
         # "https://nix-community.cachix.org"
