@@ -1,3 +1,9 @@
+vim.lsp.handlers["workspace/diagnostic/refresh"] = function(_, _, ctx)
+	-- Simply ignore this request - some servers like vscode-json-language-server
+	-- don't support this method but Neovim tries to call it anyway
+	return vim.NIL
+end
+
 -- Set up autocommands to attach to lsp
 local lsp_dir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":p:h") .. "/../../lsp"
 
