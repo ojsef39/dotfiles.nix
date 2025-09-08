@@ -220,13 +220,13 @@ return {
 			clues = {
 				-- Custom leader key descriptions
 				{ mode = "n", keys = "<Leader>b", desc = "Buffer" },
-				{ mode = "n", keys = "<Leader>c", desc = "Copilot/Command" },
+				{ mode = "n", keys = "<Leader>c", desc = "Command" },
 				{ mode = "n", keys = "<Leader>d", desc = "Debug" },
 				{ mode = "n", keys = "<Leader>f", desc = "Find" },
 				{ mode = "n", keys = "<Leader>g", desc = "Git" },
 				{ mode = "n", keys = "<Leader>j", desc = "Previous Tab" },
 				{ mode = "n", keys = "<Leader>k", desc = "Next Tab" },
-				{ mode = "n", keys = "<Leader>l", desc = "Lsp" },
+				{ mode = "n", keys = "<Leader>l", desc = "LSP" },
 				{ mode = "n", keys = "<Leader>m", desc = "Markdown/Marks" },
 				{ mode = "n", keys = "<Leader>s", desc = "Search/Symbols" },
 				{ mode = "n", keys = "<Leader>t", desc = "Tabs/Trouble" },
@@ -447,7 +447,7 @@ return {
 			MiniPick.builtin.grep_live()
 		end, { desc = "Live Grep", silent = true })
 
-		vim.keymap.set("n", "<leader>ss", function()
+		vim.keymap.set("n", "<leader>ls", function()
 			MiniExtra.pickers.lsp({ scope = "workspace_symbol" })
 		end, { desc = "Workspace Symbols", silent = true })
 

@@ -1,5 +1,5 @@
 return {
-	cmd = { "nix-shell", "-p", "pyright", "--run", "pyright-langserver --stdio" },
+	cmd = { "nix-shell", "--pure", "-p", "pyright", "--run", "pyright-langserver --stdio" },
 	filetypes = { "python" },
 	root_marker = {
 		"pyproject.toml",

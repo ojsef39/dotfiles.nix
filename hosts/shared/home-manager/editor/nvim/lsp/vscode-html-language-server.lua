@@ -2,6 +2,7 @@
 return {
 	cmd = {
 		"nix-shell",
+		"--pure",
 		"-p",
 		"nodePackages.vscode-langservers-extracted",
 		"--run",

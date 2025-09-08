@@ -1,6 +1,6 @@
 ---@type vim.lsp.Config
 return {
-	cmd = { "nix-shell", "-p", "lua-language-server", "--run", "lua-language-server" },
+	cmd = { "nix-shell", "--pure", "-p", "lua-language-server", "--run", "lua-language-server" },
 	root_markers = {
 		".luarc.json",
 		".luarc.jsonc",

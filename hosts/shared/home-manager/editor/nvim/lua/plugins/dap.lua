@@ -29,7 +29,7 @@ return {
 					port = "${port}",
 					executable = {
 						command = "nix-shell",
-						args = { "-p", "delve", "--run", "dlv dap -l 127.0.0.1:${port}" },
+						args = { "--pure", "-p", "delve", "--run", "dlv", "dap", "-l", "127.0.0.1:${port}" },
 					},
 				})
 			end
@@ -38,7 +38,7 @@ return {
 		dap.adapters.python = {
 			type = "executable",
 			command = "nix-shell",
-			args = { "-p", "python3", "python3Packages.debugpy", "--run", "python -m debugpy.adapter" },
+			args = { "--pure", "-p", "python3", "python3Packages.debugpy", "--run", "python", "-m", "debugpy.adapter" },
 		}
 
 		-- bashdb not available on aarch64-darwin (Apple Silicon)
@@ -82,7 +82,7 @@ return {
 				name = "Launch file",
 				program = "${file}",
 				pythonPath = function()
-					return "nix-shell -p python3 python3Packages.debugpy --run python"
+					return "nix-shell --pure -p python3 python3Packages.debugpy --run python"
 				end,
 			},
 		}
@@ -96,11 +96,12 @@ return {
 					name = "Launch file",
 					showDebugOutput = true,
 					pathBashdb = function()
-						return vim.fn.system('nix-shell -p bashdb --run "which bashdb"'):gsub("\n", "")
+						return vim.fn.system('nix-shell --pure -p bashdb --run "which bashdb"'):gsub("\n", "")
 					end,
 					pathBashdbLib = function()
-						return vim.fn.system('nix-shell -p bashdb --run "dirname $(which bashdb)"'):gsub("\n", "")
-							.. "/../share/bashdb"
+						return vim.fn
+							.system('nix-shell --pure -p bashdb --run "dirname $(which bashdb)"')
+							:gsub("\n", "") .. "/../share/bashdb"
 					end,
 					trace = true,
 					file = "${file}",
@@ -108,7 +109,7 @@ return {
 					cwd = "${workspaceFolder}",
 					pathCat = "cat",
 					pathBash = function()
-						return vim.fn.system('nix-shell -p bash --run "which bash"'):gsub("\n", "")
+						return vim.fn.system('nix-shell --pure -p bash --run "which bash"'):gsub("\n", "")
 					end,
 					pathMkfifo = "mkfifo",
 					pathPkill = "pkill",

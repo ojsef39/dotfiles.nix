@@ -25,6 +25,17 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- 2-space indentation for Helm files
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "helm" },
+	callback = function()
+		vim.opt_local.tabstop = 2
+		vim.opt_local.softtabstop = 2
+		vim.opt_local.shiftwidth = 2
+		vim.opt_local.expandtab = true
+	end,
+})
+
 -- Case insensitive searching UNLESS /C or the search has capitals.
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -71,8 +82,16 @@ vim.opt.undofile = true
 -- [[ Filetypes ]]
 vim.filetype.add({
 	pattern = {
-		[".*/templates/.*%.yaml"] = "helm",
 		[".*%.base"] = "yaml",
+		[".*/templates/.*%.yaml"] = "helm",
+		[".*/templates/.*%.yml"] = "helm",
+		[".*/templates/.*%.tpl"] = "helm",
+		[".*values.*%.yaml"] = "helm",
+		[".*values.*%.yml"] = "helm",
+		[".*/.*values.*/.*%.yaml"] = "helm",
+		[".*/.*values.*/.*%.yml"] = "helm",
+		["Chart%.yaml"] = "helm",
+		["Chart%.yml"] = "helm",
 	},
 })
 
