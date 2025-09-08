@@ -71,8 +71,16 @@ vim.opt.undofile = true
 -- [[ Filetypes ]]
 vim.filetype.add({
 	pattern = {
-		[".*/templates/.*%.yaml"] = "helm",
 		[".*%.base"] = "yaml",
+		[".*/templates/.*%.yaml"] = "helm",
+		[".*/templates/.*%.yml"] = "helm",
+		[".*/templates/.*%.tpl"] = "helm",
+		[".*values.*%.yaml"] = "helm",
+		[".*values.*%.yml"] = "helm",
+		[".*/.*values.*/.*%.yaml"] = "helm",
+		[".*/.*values.*/.*%.yml"] = "helm",
+		["Chart%.yaml"] = "helm",
+		["Chart%.yml"] = "helm",
 	},
 })
 
