@@ -17,6 +17,14 @@ local function load_yaml_ls_settings()
 	return {}
 end
 
+local function get_yaml_schemas()
+	local ok, schemastore = pcall(require, "schemastore")
+	if ok then
+		return schemastore.yaml.schemas()
+	end
+	return {}
+end
+
 ---@type vim.lsp.Config
 return {
 	cmd = { "nix-shell", "--pure", "-p", "nodePackages.yaml-language-server", "--run", "yaml-language-server --stdio" },
@@ -35,6 +43,10 @@ return {
 			format = {
 				enable = true,
 			},
+			schemaStore = {
+				enable = false,
+			},
+			schemas = get_yaml_schemas(),
 		},
 	}, load_yaml_ls_settings()),
 }
