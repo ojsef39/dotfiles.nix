@@ -226,7 +226,6 @@ return {
 				{ mode = "n", keys = "<Leader>g", desc = "Git" },
 				{ mode = "n", keys = "<Leader>j", desc = "Previous Tab" },
 				{ mode = "n", keys = "<Leader>k", desc = "Next Tab" },
-				{ mode = "n", keys = "<Leader>l", desc = "Lsp" },
 				{ mode = "n", keys = "<Leader>m", desc = "Markdown/Marks" },
 				{ mode = "n", keys = "<Leader>s", desc = "Search/Symbols" },
 				{ mode = "n", keys = "<Leader>t", desc = "Tabs/Trouble" },

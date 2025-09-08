@@ -51,9 +51,34 @@ return {
 			},
 		})
 
+		-- Global toggle for conform
+		_G.conform_enabled = true
+
+		-- Toggle function
+		local function toggle_conform()
+			_G.conform_enabled = not _G.conform_enabled
+			if _G.conform_enabled then
+				print("Conform enabled")
+			else
+				print("Conform disabled - using LSP formatting")
+			end
+		end
+
+		-- Override format function to check toggle
+		local original_format = require("conform").format
+		require("conform").format = function(opts)
+			opts = opts or {}
+			if not _G.conform_enabled then
+				return vim.lsp.buf.format(opts)
+			end
+			return original_format(opts)
+		end
+
 		-- Keymaps
 		vim.keymap.set({ "n", "v" }, "<leader>cF", function()
 			require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
 		end, { desc = "Format Injected Langs", silent = true })
+
+		vim.keymap.set("n", "<leader>ct", toggle_conform, { desc = "Toggle Conform", silent = true })
 	end,
 }
