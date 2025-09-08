@@ -2,10 +2,12 @@
 return {
 	cmd = {
 		"nix-shell",
+		"--pure",
 		"-p",
 		"nodePackages.vscode-langservers-extracted",
 		"--run",
-		"vscode-json-language-server --stdio",
+		"vscode-json-language-server",
+		"--stdio",
 	},
 	filetypes = { "json", "jsonc" },
 	root_markers = {

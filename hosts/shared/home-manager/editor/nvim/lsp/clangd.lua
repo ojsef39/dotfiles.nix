@@ -1,6 +1,6 @@
 ---@type vim.lsp.Config
 return {
-	cmd = { "nix-shell", "-p", "llvm", "--run", "clangd" },
+	cmd = { "nix-shell", "--pure", "-p", "llvm", "--run", "clangd" },
 	filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
 	root_markers = {
 		".clangd",

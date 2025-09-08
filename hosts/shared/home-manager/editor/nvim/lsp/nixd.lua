@@ -141,10 +141,10 @@ local function get_nixd_cmd()
 		return { "nixd" }
 	elseif command_exists("nix") then
 		-- Use nix shell if nixd isn't directly available
-		return { "nix", "shell", "nixpkgs#nixd", "-c", "nixd" }
+		return { "nix", "shell", "--ignore-environment", "nixpkgs#nixd", "-c", "nixd" }
 	elseif command_exists("nix-shell") then
 		-- Fallback to nix-shell
-		return { "nix-shell", "-p", "nixd", "--run", "nixd" }
+		return { "nix-shell", "--pure", "-p", "nixd", "--run", "nixd" }
 	else
 		-- Last resort - assume nixd is in PATH
 		return { "nixd" }
