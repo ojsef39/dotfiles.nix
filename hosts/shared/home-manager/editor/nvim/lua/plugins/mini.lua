@@ -28,6 +28,8 @@ return {
 		})
 
 		-- picker
+		local picker_width = math.min(120, math.floor(vim.o.columns * 0.8))
+		local picker_height = math.min(30, math.floor(vim.o.lines * 0.6))
 		require("mini.pick").setup({
 			mappings = {
 				choose_marked = "<C-q>",
@@ -35,11 +37,11 @@ return {
 			window = {
 				config = function()
 					return {
-						anchor = "NW",
-						col = math.floor((vim.o.columns - 80) / 2),
-						row = math.floor((vim.o.lines - 10) / 2),
-						width = 80,
-						height = 35,
+						anchor = "SW",
+						col = math.floor((vim.o.columns - picker_width) / 2),
+						row = vim.o.lines - 3,
+						width = picker_width,
+						height = picker_height,
 						relative = "editor",
 					}
 				end,
@@ -49,6 +51,7 @@ return {
 				use_cache = true,
 			},
 		})
+		vim.ui.select = MiniPick.ui_select
 		---@class FFFItem
 		---@field name string
 		---@field path string
@@ -426,9 +429,22 @@ return {
 			})
 		end
 
+		-- Custom inactive statusline content
+		local function statusline_content_inactive()
+			local filename = vim.fn.expand("%:t")
+			if filename == "" then
+				filename = "[No Name]"
+			end
+
+			return MiniStatusline.combine_groups({
+				{ hl = "MiniStatuslineInactive", strings = { " " .. filename .. " " } },
+			})
+		end
+
 		require("mini.statusline").setup({
 			content = {
 				active = statusline_content,
+				inactive = statusline_content_inactive,
 			},
 			use_icons = vim.g.have_nerd_font or false,
 			set_vim_settings = false, -- Keep your existing statusline settings

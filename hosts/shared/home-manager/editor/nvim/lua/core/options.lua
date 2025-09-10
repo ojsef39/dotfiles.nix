@@ -1,8 +1,9 @@
--- Essential options first
+vim.opt.compatible = false
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.termguicolors = true
 vim.opt.clipboard = "unnamedplus"
+vim.opt.fileencoding = "utf-8"
 
 -- Show whitespace
 vim.opt.list = true
@@ -33,8 +34,8 @@ vim.opt.showmode = false
 vim.opt.wildignore:append({ ".DS_Store" })
 
 -- Status line.
-vim.opt.cmdheight = 0
-vim.opt.laststatus = 3
+vim.opt.cmdheight = 1
+vim.opt.laststatus = 2
 
 vim.opt.textwidth = 160
 vim.opt.colorcolumn = "0"
