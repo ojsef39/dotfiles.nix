@@ -123,6 +123,7 @@ in {
         require("core.options")
         require("ui")
         require("core.lsp")
+        require("core.commands")
         require("unpack").setup()
       '';
     };

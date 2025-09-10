@@ -1,7 +1,6 @@
 return {
 	src = "https://github.com/OXY2DEV/markview.nvim",
-	defer = false,
-	priority = 49,
+	defer = true,
 	dependencies = {
 		{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 	},

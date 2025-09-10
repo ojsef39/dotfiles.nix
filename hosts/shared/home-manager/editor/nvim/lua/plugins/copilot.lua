@@ -1,6 +1,6 @@
 return {
 	src = "https://github.com/zbirenbaum/copilot.lua",
-	defer = false,
+	defer = true,
 	config = function()
 		require("copilot").setup({
 			suggestion = {
