@@ -1,6 +1,6 @@
 return {
 	src = "https://github.com/echasnovski/mini.nvim",
-	defer = false,
+	defer = true,
 	dependencies = {
 		{
 			src = "https://github.com/dmtrKovalenko/fff.nvim",
