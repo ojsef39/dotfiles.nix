@@ -7,6 +7,14 @@ return {
 				enabled = true,
 				auto_trigger = true,
 				debounce = 75,
+				keymap = {
+					accept = "<C-j>",
+					accept_word = "<C-l>",
+					accept_line = "<C-k>",
+					next = "<C-n>",
+					prev = "<C-p>",
+					dismiss = "<C-h>",
+				},
 			},
 			filetypes = {
 				["*"] = true, -- Enable for ALL filetypes by default
