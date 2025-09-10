@@ -22,6 +22,11 @@
   ignorelistToLua = ignorelist: let
     quotedItems = map (item: "'${item}'") ignorelist;
   in "{ ${lib.concatStringsSep ", " quotedItems} }";
+
+  # Convert git callbacks to Lua table
+  callbacksToLua = callbacks: let
+    entries = lib.mapAttrsToList (url: luaFunc: ''["${url}"] = ${luaFunc}'') callbacks;
+  in "{ ${lib.concatStringsSep ", " entries} }";
 in {
   # Packages you also want to outside use outside of nvim
   home.packages = with pkgs; [
@@ -150,7 +155,7 @@ in {
                     end,
                 })
 
-                local ignorelist = { "git.mam.dev", "jhofer" }
+                local ignorelist = ${ignorelistToLua cordIgnorelist}
                 local is_ignorelisted = function(opts)
                     -- Check workspace name
                     for _, item in ipairs(ignorelist) do
@@ -196,6 +201,50 @@ in {
                     },
                 })
             end,
+        }
+      '';
+    };
+    "nvim/lua/plugins/gitlinker.lua" = {
+      text = ''
+        return {
+          src = "https://github.com/ruifm/gitlinker.nvim",
+          defer = true,
+          dependencies = {
+            { src = "https://github.com/nvim-lua/plenary.nvim" },
+          },
+          config = function()
+            require("gitlinker").setup({
+              opts = {
+                add_current_line_on_normal_mode = true,
+                action_callback = require("gitlinker.actions").open_in_browser,
+                print_url = true,
+              },
+              callbacks = ${callbacksToLua (vars.git.callbacks or {})},
+            })
+
+            -- Keymaps
+            vim.keymap.set("n", "<leader>go", function()
+              require("gitlinker").get_buf_range_url("n")
+            end, { desc = "Git Browse (open in browser)", silent = true })
+
+            vim.keymap.set("n", "<leader>gy", function()
+              require("gitlinker").get_buf_range_url(
+                "n",
+                { action_callback = require("gitlinker.actions").copy_to_clipboard }
+              )
+            end, { desc = "Git Copy URL", silent = true })
+
+            vim.keymap.set("v", "<leader>go", function()
+              require("gitlinker").get_buf_range_url("v")
+            end, { desc = "Git Browse selection", silent = true })
+
+            vim.keymap.set("v", "<leader>gy", function()
+              require("gitlinker").get_buf_range_url(
+                "v",
+                { action_callback = require("gitlinker.actions").copy_to_clipboard }
+              )
+            end, { desc = "Git Copy selection URL", silent = true })
+          end,
         }
       '';
     };
