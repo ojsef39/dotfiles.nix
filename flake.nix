@@ -54,13 +54,6 @@
           (final: prev: {
             nh = inputs.nh.packages.${prev.system}.default;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
-            # Fix for podman 5.6.0 Darwin build issue
-            podman = prev.podman.overrideAttrs (oldAttrs: {
-              nativeInstallCheckInputs =
-                (oldAttrs.nativeInstallCheckInputs or [])
-                ++ prev.lib.optionals prev.stdenv.isDarwin [prev.writableTmpDirAsHomeHook];
-              versionCheckKeepEnvironment = ["HOME"];
-            });
           })
         ];
       }
