@@ -107,8 +107,6 @@ end
 
 vim.keymap.set("n", "yt", toggle_bool, { desc = "Toggle boolean value" })
 
--- Todos search
-vim.keymap.set("n", "<leader>dx", "<cmd>Todos<cr>", { desc = "Search TODOs/FIXMEs" })
 
 -- Move selected lines with Shift+Up/Down in visual mode
 vim.keymap.set("v", "<S-Up>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
