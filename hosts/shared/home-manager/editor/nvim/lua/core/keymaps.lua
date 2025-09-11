@@ -46,8 +46,16 @@ vim.keymap.set("v", "<leader>d", [["_d]], { desc = "delete without affecting cli
 vim.keymap.set(
 	"n",
 	"<leader>s",
-	[[:%s/\<<c-r><c-w>\>/<c-r><c-w>/gi<left><left><left>]],
-	{ desc = "search and replace in file" }
+	[[:%s/\<<c-r><c-w>\>/<c-r><c-w>/gc<left><left><left>]],
+	{ desc = "search and replace word" }
+)
+
+-- search and replace selected text in visual mode
+vim.keymap.set(
+	"v",
+	"<leader>s",
+	[["zy:%s/<c-r>z/<c-r>z/gc<left><left><left>]],
+	{ desc = "search and replace selection" }
 )
 
 vim.keymap.set("n", "<Tab>", ":bnext<cr>", { noremap = true, silent = true })
@@ -106,9 +114,6 @@ local function toggle_bool()
 end
 
 vim.keymap.set("n", "yt", toggle_bool, { desc = "Toggle boolean value" })
-
--- Todos search
-vim.keymap.set("n", "<leader>dx", "<cmd>Todos<cr>", { desc = "Search TODOs/FIXMEs" })
 
 -- Move selected lines with Shift+Up/Down in visual mode
 vim.keymap.set("v", "<S-Up>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
