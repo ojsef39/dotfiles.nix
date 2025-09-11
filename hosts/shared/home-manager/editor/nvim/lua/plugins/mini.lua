@@ -33,6 +33,7 @@ return {
 		require("mini.pick").setup({
 			mappings = {
 				choose_marked = "<C-q>",
+				paste = "<C-v>",
 			},
 			window = {
 				config = function()
@@ -454,6 +455,9 @@ return {
 		end, { desc = "FFF Files", silent = true })
 
 		vim.keymap.set("n", "<leader>fg", function()
+			local temp_config = vim.fn.tempname()
+			vim.fn.writefile({ "--hidden", "--glob=!.git/*" }, temp_config)
+			vim.env.RIPGREP_CONFIG_PATH = temp_config
 			MiniPick.builtin.grep_live()
 		end, { desc = "Live Grep", silent = true })
 
