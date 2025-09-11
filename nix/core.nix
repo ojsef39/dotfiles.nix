@@ -63,18 +63,27 @@ in {
         "flakes"
         "parallel-eval"
       ];
-      extra-substituters = [
-        # "https://nix-community.cachix.org"
-        "https://ojsef39.cachix.org"
-      ];
-      extra-trusted-substituters = [
-        # "https://nix-community.cachix.org"
-        "https://ojsef39.cachix.org"
-      ];
-      extra-trusted-public-keys = [
-        # "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y="
-      ];
+      extra-substituters =
+        [
+          "https://ojsef39.cachix.org"
+        ]
+        ++ lib.optionals (vars.cache.community or false) [
+          "https://nix-community.cachix.org"
+        ];
+      extra-trusted-substituters =
+        [
+          "https://ojsef39.cachix.org"
+        ]
+        ++ lib.optionals (vars.cache.community or false) [
+          "https://nix-community.cachix.org"
+        ];
+      extra-trusted-public-keys =
+        [
+          "ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y="
+        ]
+        ++ lib.optionals (vars.cache.community or false) [
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        ];
     };
     package = pkgs.nix;
   };
@@ -86,9 +95,9 @@ in {
   environment.etc."nix/nix.custom.conf" = lib.mkIf pkgs.stdenv.isDarwin {
     text = ''
       # Written by base/nix/core.nix
-      extra-substituters = https://ojsef39.cachix.org
-      extra-trusted-substituters = https://ojsef39.cachix.org
-      extra-trusted-public-keys = ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=
+      extra-substituters = https://ojsef39.cachix.org ${lib.optionalString (vars.cache.community or false) "https://nix-community.cachix.org"}
+      extra-trusted-substituters = https://ojsef39.cachix.org ${lib.optionalString (vars.cache.community or false) "https://nix-community.cachix.org"}
+      extra-trusted-public-keys = ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y= ${lib.optionalString (vars.cache.community or false) "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="}
       lazy-trees = true
       extra-experimental-features = parallel-eval
       eval-cores = 0
