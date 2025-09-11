@@ -1,7 +1,7 @@
 return {
 	src = "https://github.com/iamcco/markdown-preview.nvim",
 	defer = true,
-	data = { build = ":call mkdp#util#install()" },
+	data = { build = "cd app && npm install" },
 	config = function()
 		vim.g.mkdp_filetypes = { "markdown", "rst" }
 
