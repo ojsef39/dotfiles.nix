@@ -1,3 +1,5 @@
+#TODO: https://github.com/bennypowers/nvim-regexplainer
+#TODO: https://github.com/yazi-rs/plugins/tree/main/diff.yazi
 {
   pkgs,
   lib,
