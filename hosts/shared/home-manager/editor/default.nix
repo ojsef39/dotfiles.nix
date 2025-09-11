@@ -175,6 +175,29 @@ in {
                     return false
                 end
 
+                local get_display_name = function(opts)
+                    if is_ignorelisted(opts) then
+                        return nil -- Signal that it's ignorelisted
+                    end
+
+                    local display_name = opts.filename
+                    if opts.workspace_dir then
+                        local current_file = vim.fn.expand("%:p")
+                        if current_file:find(opts.workspace_dir, 1, true) == 1 then
+                            local rel_path = current_file:sub(#opts.workspace_dir + 2)
+                            local parts = {}
+                            for part in string.gmatch(rel_path, "[^/]+") do
+                                table.insert(parts, part)
+                            end
+                            if #parts >= 2 then
+                                local parent_dir = parts[#parts - 1]
+                                display_name = parent_dir .. "/" .. opts.filename
+                            end
+                        end
+                    end
+                    return display_name
+                end
+
                 require("cord").setup({
                     editor = {
                         tooltip = "How do I exit this?",
@@ -187,14 +210,18 @@ in {
                     },
                     text = {
                         viewing = function(opts)
-                            return is_ignorelisted(opts) and "Viewing a file" or ("Viewing " .. opts.filename)
+                            local display_name = get_display_name(opts)
+                            if not display_name then
+                                return "Viewing a file"
+                            end
+                            return "Viewing " .. display_name
                         end,
                         editing = function(opts)
-                            if is_ignorelisted(opts) then
+                            local display_name = get_display_name(opts)
+                            if not display_name then
                                 return "Editing a file"
-                            else
-                                return string.format("Editing %s - %s errors", opts.filename, #errors)
                             end
+                            return string.format("Editing %s - %s errors", display_name, #errors)
                         end,
                         workspace = function(opts)
                             return is_ignorelisted(opts) and "In a secret workspace"
