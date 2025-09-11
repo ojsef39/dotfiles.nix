@@ -116,11 +116,7 @@
               "renovate[bot]" = "#f4dbd6"; # Rosewater
               "*" = "#b7bdf8"; # Lavender
             }
-            // (
-              if vars.git.lazy ? authorColors
-              then vars.git.lazy.authorColors
-              else {}
-            );
+            // (vars.git.lazy.authorColors or {});
         };
       };
     };

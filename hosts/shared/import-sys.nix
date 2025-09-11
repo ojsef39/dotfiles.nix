@@ -23,10 +23,6 @@
   systemModules = map (dir: ./system/${dir}/default.nix) validSystemDirs;
 
   # Determine home directory based on system
-  homeDirectory =
-    if pkgs.stdenv.isDarwin
-    then "/Users/${vars.user.name}"
-    else "/home/${vars.user.name}";
 in {
   imports =
     systemModules

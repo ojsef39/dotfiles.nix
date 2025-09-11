@@ -24,7 +24,7 @@
     users = {
       ${vars.user.name} = {
         shell = pkgs.fish;
-        uid = vars.user.uid;
+        inherit (vars.user) uid;
       };
     };
     knownUsers = ["${vars.user.name}"];

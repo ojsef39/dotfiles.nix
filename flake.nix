@@ -38,7 +38,6 @@
     };
   };
   outputs = inputs @ {
-    self,
     home-manager,
     neovim-nightly-overlay,
     nixcord,
@@ -51,7 +50,7 @@
           nixkit.overlays.default
           neovim-nightly-overlay.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-          (final: prev: {
+          (_final: prev: {
             nh = inputs.nh.packages.${prev.system}.default;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
           })

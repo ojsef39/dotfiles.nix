@@ -9,13 +9,13 @@
   # Filter out lazy-lock.json from the source directory
   nvimConfigFiltered = lib.cleanSourceWith {
     src = ./nvim;
-    filter = path: type: let
+    filter = path: _type: let
       baseName = baseNameOf path;
     in
       baseName != "lazy-lock.json";
   };
   treeSitterWithAllGrammars = pkgs.vimPlugins.nvim-treesitter.withPlugins (
-    plugins: pkgs.tree-sitter.allGrammars
+    _plugins: pkgs.tree-sitter.allGrammars
   );
 
   # Convert Nix ignorelist to Lua table
