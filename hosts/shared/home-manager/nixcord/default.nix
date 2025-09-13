@@ -53,7 +53,10 @@ in {
           enable = true;
           anonymiseByDefault = true;
         };
-        appleMusicRichPresence.enable = true;
+        appleMusicRichPresence = {
+          enable = true;
+          activityType = "listening";
+        };
         betterGifPicker.enable = true;
         betterRoleContext.enable = true;
         betterSettings.enable = true;
