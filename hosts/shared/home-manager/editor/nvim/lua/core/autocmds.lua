@@ -11,3 +11,11 @@ autocmd("TextYankPost", {
 		vim.hl.on_yank({ higroup = "Visual", priority = 250 })
 	end,
 })
+
+autocmd("BufWinEnter", {
+	group = augroup("ojsef39/marks", { clear = true }),
+	desc = "Show marks in signcolumn",
+	callback = function(args)
+		require("ui.marks").BufWinEnterHandler(args)
+	end,
+})

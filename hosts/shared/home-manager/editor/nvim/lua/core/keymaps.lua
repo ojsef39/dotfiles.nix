@@ -122,3 +122,10 @@ vim.keymap.set("v", "<S-Down>", ":m '>+1<CR>gv=gv", { silent = true, desc = "Mov
 -- Indent in visual mode and keep selection
 vim.keymap.set("v", "<", "<gv", { silent = true, desc = "Indent left and keep selection" })
 vim.keymap.set("v", ">", ">gv", { silent = true, desc = "Indent right and keep selection" })
+
+-- Quick mark access
+vim.keymap.set("n", "<C-1>", "'A", { desc = "Select Mark A" })
+vim.keymap.set("n", "<C-2>", "'B", { desc = "Select Mark B" })
+vim.keymap.set("n", "<C-3>", "'C", { desc = "Select Mark C" })
+vim.keymap.set("n", "<C-4>", "'D", { desc = "Select Mark D" })
+vim.keymap.set("n", "<C-5>", "'E", { desc = "Select Mark E" })
