@@ -21,7 +21,7 @@
     neovide
     nmap
     progress
-    python3Full
+    python3
     retry
     rsync
     speedtest-cli
