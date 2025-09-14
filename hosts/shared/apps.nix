@@ -15,6 +15,5 @@
     podman
     podman-compose
     virt-viewer
-    vscode
   ];
 }
