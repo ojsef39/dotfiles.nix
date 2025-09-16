@@ -29,7 +29,16 @@ return {
 					source = {
 						items = items,
 						name = local_only and "TODOs (Current File)" or "TODOs",
-						choose = function(item_idx)
+						choose = function(item)
+							-- Find the index of the selected item
+							local item_idx = nil
+							for i, display_item in ipairs(items) do
+								if display_item == item then
+									item_idx = i
+									break
+								end
+							end
+
 							local todo = filtered_results[item_idx]
 							if todo then
 								local target_win = require("mini.pick").get_picker_state().windows.target
