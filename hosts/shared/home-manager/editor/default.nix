@@ -85,9 +85,10 @@ in {
       # JSON
       jsonnet-language-server
       # Formatters
+      alejandra
+      dockerfmt
       nodePackages.prettier
       rustfmt
-      alejandra
       # git
       actionlint
     ];

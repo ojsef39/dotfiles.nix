@@ -12,6 +12,7 @@ return {
 				quiet = false, -- not recommended to change
 			},
 			formatters_by_ft = {
+				["markdown.mdx"] = { "prettier", "markdownlint-cli2" },
 				css = { "prettier" },
 				fish = { "fish_indent" },
 				go = { "gofumpt", "goimports-reviser" },
@@ -26,7 +27,7 @@ return {
 				less = { "prettier" },
 				lua = { "stylua" },
 				markdown = { "prettier", "markdownlint-cli2" },
-				["markdown.mdx"] = { "prettier", "markdownlint-cli2" },
+				nix = { "alejandra" },
 				python = { "isort", "black" },
 				rust = { "rustfmt" },
 				scss = { "prettier" },
@@ -35,7 +36,7 @@ return {
 				typescriptreact = { "prettier" },
 				vue = { "prettier" },
 				yaml = { "prettier" },
-				nix = { "alejandra" },
+				dockerfile = { "dockerfmt" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
