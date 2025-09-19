@@ -1,4 +1,3 @@
-vim.opt.compatible = false
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.termguicolors = true
@@ -108,3 +107,8 @@ local shadafile = cache_dir .. "/myshada/" .. unique_id .. ".shada"
 vim.opt.shadafile = shadafile
 
 vim.opt.switchbuf = "usetab"
+
+-- Ensure files end with a newline
+vim.opt.fixendofline = true
+vim.opt.endofline = true
+vim.opt.endoffile = true
