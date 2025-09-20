@@ -33,6 +33,7 @@ in {
   # Packages you also want to outside use outside of nvim
   home.packages = with pkgs; [
     claude-code
+    codex
     fd
     fzf
     git
