@@ -37,6 +37,7 @@ return {
 				vue = { "prettier" },
 				yaml = { "prettier" },
 				dockerfile = { "dockerfmt" },
+				terraform = { "terraform_fmt" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
@@ -50,6 +51,14 @@ return {
 			notify_no_formatters = true,
 			formatters = {
 				injected = { options = { ignore_errors = true } },
+				terraform_fmt = {
+					command = "nix",
+					args = { "run", "--impure", "nixpkgs#terraform", "--", "fmt", "-" },
+					stdin = true,
+					env = {
+						NIXPKGS_ALLOW_UNFREE = "1",
+					},
+				},
 			},
 		})
 
