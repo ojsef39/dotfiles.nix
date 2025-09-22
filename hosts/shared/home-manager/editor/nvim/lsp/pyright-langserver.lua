@@ -11,6 +11,9 @@ return {
 		".git",
 	},
 	single_file_support = true,
+	handlers = {
+		["textDocument/publishDiagnostics"] = function() end,
+	},
 	settings = {
 		python = {
 			analysis = {
