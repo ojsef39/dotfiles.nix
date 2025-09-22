@@ -2,18 +2,113 @@ return {
 	src = "https://github.com/stevearc/conform.nvim",
 	defer = true,
 	config = function()
-		-- Install conform formatters on VeryLazy
+		local conform = require("conform")
+
 		vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
-		require("conform").setup({
+		local function wrap_with_nix(name, spec)
+			spec = spec or {}
+			-- Force load the formatter first if it doesn't exist
+			local ok, builtin_formatter = pcall(require, "conform.formatters." .. name)
+			if not ok then
+				return
+			end
+
+			local formatter = conform.formatters[name] or builtin_formatter
+
+			local function with_nix(def)
+				local fmt = vim.deepcopy(def)
+				fmt.command = "nix"
+
+				local target = spec.package or name
+				local nix_prefix = { "run", "--impure", "nixpkgs#" .. target, "--" }
+				if spec.extra_args then
+					vim.list_extend(nix_prefix, spec.extra_args)
+				end
+
+				if type(def.args) == "function" then
+					-- Preserve formatter's original args function (e.g. prettier generates ["--stdin-filepath", "file.json"])
+					-- and prepend our nix command to create: ["nix", "run", "nixpkgs#prettier", "--", "--stdin-filepath", "file.json"]
+					local original_args = def.args
+					fmt.args = function(self, ctx)
+						local final_args = vim.deepcopy(nix_prefix)
+						local dynamic_args = original_args(self, ctx)
+						if dynamic_args then
+							vim.list_extend(final_args, dynamic_args)
+						end
+						return final_args
+					end
+				else
+					local args = vim.deepcopy(nix_prefix)
+					if type(def.args) == "table" then
+						vim.list_extend(args, def.args)
+					end
+					fmt.args = args
+				end
+
+				return fmt
+			end
+
+			if type(formatter) == "function" then
+				conform.formatters[name] = function(...)
+					local def = formatter(...)
+					if type(def) ~= "table" then
+						return def
+					end
+					return with_nix(def)
+				end
+			else
+				conform.formatters[name] = with_nix(formatter)
+			end
+		end
+
+		local formatter_specs = {
+			["goimports-reviser"] = {},
+			["markdownlint-cli2"] = { package = "markdownlint-cli2" },
+			alejandra = {},
+			black = { package = "python3Packages.black" },
+			dockerfmt = {},
+			fish_indent = { package = "fish", extra_args = { "fish_indent" } },
+			gofumpt = {},
+			isort = { package = "python3Packages.isort" },
+			markdownlint = { package = "markdownlint-cli" },
+			prettier = { package = "nodePackages.prettier" },
+			rustfmt = {},
+			shfmt = {},
+			stylua = { extra_args = { "-" } },
+		}
+
+		for name, spec in pairs(formatter_specs) do
+			wrap_with_nix(name, spec)
+		end
+
+		local terraform_fmt = conform.formatters.terraform_fmt or {}
+		conform.formatters.terraform_fmt = vim.tbl_deep_extend("force", terraform_fmt, {
+			command = "nix",
+			args = {
+				"run",
+				"--impure",
+				"nixpkgs#terraform",
+				"--",
+				"fmt",
+				"-",
+			},
+			stdin = true,
+			env = {
+				NIXPKGS_ALLOW_UNFREE = "1",
+			},
+		})
+
+		conform.setup({
 			default_format_opts = {
 				timeout_ms = 3000,
-				async = false, -- not recommended to change
-				quiet = false, -- not recommended to change
+				async = false,
+				quiet = false,
 			},
 			formatters_by_ft = {
 				["markdown.mdx"] = { "prettier", "markdownlint-cli2" },
 				css = { "prettier" },
+				dockerfile = { "dockerfmt" },
 				fish = { "fish_indent" },
 				go = { "gofumpt", "goimports-reviser" },
 				graphql = { "prettier" },
@@ -32,12 +127,11 @@ return {
 				rust = { "rustfmt" },
 				scss = { "prettier" },
 				sh = { "shfmt" },
+				terraform = { "terraform_fmt" },
 				typescript = { "prettier" },
 				typescriptreact = { "prettier" },
 				vue = { "prettier" },
 				yaml = { "prettier" },
-				dockerfile = { "dockerfmt" },
-				terraform = { "terraform_fmt" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
@@ -51,21 +145,11 @@ return {
 			notify_no_formatters = true,
 			formatters = {
 				injected = { options = { ignore_errors = true } },
-				terraform_fmt = {
-					command = "nix",
-					args = { "run", "--impure", "nixpkgs#terraform", "--", "fmt", "-" },
-					stdin = true,
-					env = {
-						NIXPKGS_ALLOW_UNFREE = "1",
-					},
-				},
 			},
 		})
 
-		-- Global toggle for conform
 		_G.conform_enabled = true
 
-		-- Toggle function
 		local function toggle_conform()
 			_G.conform_enabled = not _G.conform_enabled
 			if _G.conform_enabled then
@@ -75,9 +159,8 @@ return {
 			end
 		end
 
-		-- Override format function to check toggle
-		local original_format = require("conform").format
-		require("conform").format = function(opts)
+		local original_format = conform.format
+		conform.format = function(opts)
 			opts = opts or {}
 			if not _G.conform_enabled then
 				return vim.lsp.buf.format(opts)
@@ -85,9 +168,8 @@ return {
 			return original_format(opts)
 		end
 
-		-- Keymaps
 		vim.keymap.set({ "n", "v" }, "<leader>cF", function()
-			require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
+			conform.format({ formatters = { "injected" }, timeout_ms = 3000 })
 		end, { desc = "Format Injected Langs", silent = true })
 
 		vim.keymap.set("n", "<leader>ct", toggle_conform, { desc = "Toggle Conform", silent = true })

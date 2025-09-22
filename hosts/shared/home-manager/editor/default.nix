@@ -55,43 +55,12 @@ in {
       # treeSitterWithAllGrammars
     ];
 
-    # Packages used in nvim
+    # Packages used in nvim - only include essential runtime dependencies
     extraPackages = with pkgs; [
+      # Essential runtime dependencies
       fzf
       nodejs
       ripgrep
-
-      # LSPs
-      vimPlugins.vim-prettier
-      nixd
-      # Go
-      gofumpt
-      goimports-reviser
-      gopls
-      # Python
-      pyright
-      python3Packages.black
-      python3Packages.isort
-      # Lua
-      lua-language-server
-      stylua
-      # Markdown
-      markdownlint-cli2
-      marksman
-      vimPlugins.vim-markdown-toc
-      # Shell
-      shfmt
-      # YAML
-      yaml-language-server
-      # JSON
-      jsonnet-language-server
-      # Formatters
-      alejandra
-      dockerfmt
-      nodePackages.prettier
-      rustfmt
-      # git
-      actionlint
     ];
   };
 
