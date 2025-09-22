@@ -46,7 +46,7 @@ return {
 						relative = "editor",
 					}
 				end,
-				prompt_prefix = " ",
+				prompt_prefix = " ",
 			},
 			options = {
 				use_cache = true,
@@ -249,27 +249,6 @@ return {
 			},
 		})
 
-		-- notifier
-		-- require('mini.notify').setup({
-		--     content = {
-		--         -- Show more recent notifications first
-		--         sort = function(notif_arr)
-		--             table.sort(
-		--                 notif_arr,
-		--                 function(a, b) return a.ts_update > b.ts_update end
-		--             )
-		--             return notif_arr
-		--         end,
-		--     },
-		--     lsp_progress = {
-		--         enable = false,
-		--     },
-		--     window = {
-		--         winblend = 0
-		--     }
-		-- })
-		-- vim.notify = require('mini.notify').make_notify()
-
 		-- starter
 		local starter = require("mini.starter")
 		starter.setup({
@@ -284,22 +263,46 @@ return {
 		})
 
 		-- statusline
-		-- Helper function to get LSP clients
-		local function get_lsp_clients()
-			local clients = {}
-			local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
+		local has_nerd_font = vim.g.have_nerd_font ~= false
 
-			for _, client in ipairs(buf_clients) do
+		local function get_tools()
+			local tools = {}
+
+			-- LSP
+			local lsp_names = {}
+			for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
 				if client.name ~= "null-ls" and client.name ~= "copilot" then
-					table.insert(clients, client.name)
+					table.insert(lsp_names, client.name)
+				end
+			end
+			if #lsp_names > 0 then
+				table.insert(tools, (has_nerd_font and "" or "LSP:") .. " " .. table.concat(lsp_names, ","))
+			end
+
+			-- Formatters
+			local ok, conform = pcall(require, "conform")
+			if ok then
+				local formatters = conform.list_formatters and conform.list_formatters() or {}
+				local fmt_names = {}
+				for _, f in ipairs(formatters) do
+					table.insert(fmt_names, type(f) == "table" and f.name or f)
+				end
+				if #fmt_names > 0 then
+					table.insert(tools, (has_nerd_font and "" or "FMT:") .. " " .. table.concat(fmt_names, ","))
 				end
 			end
 
-			if #clients == 0 then
-				return ""
+			-- Linters
+			local ok, lint = pcall(require, "lint")
+			if ok then
+				local ft = vim.bo.filetype
+				local linters = lint.linters_by_ft[ft] or {}
+				if #linters > 0 then
+					table.insert(tools, (has_nerd_font and "" or "LINT:") .. " " .. table.concat(linters, ","))
+				end
 			end
 
-			return "[" .. table.concat(clients, ",") .. "]"
+			return #tools > 0 and "[" .. table.concat(tools, " ") .. "]" or nil
 		end
 
 		-- Custom location function showing only line and percentage
@@ -367,8 +370,18 @@ return {
 			local git = MiniStatusline.section_git({ trunc_width = 75 })
 			local diagnostics = get_diagnostics_with_icons()
 			local location = simple_location()
-			local lsp_status = get_lsp_clients()
+			local tooling = get_tools()
 			local filetype = get_filetype_with_icon()
+			local fileinfo_strings = {}
+			if tooling then
+				table.insert(fileinfo_strings, tooling)
+			end
+			if filetype ~= "" then
+				table.insert(fileinfo_strings, filetype)
+			end
+			if vim.tbl_isempty(fileinfo_strings) then
+				table.insert(fileinfo_strings, "")
+			end
 
 			-- Get breadcrumbs from navic if available
 			local breadcrumbs = ""
@@ -419,7 +432,7 @@ return {
 				"%<", -- Mark general truncate point
 				{ hl = "MiniStatuslineFilename", strings = { breadcrumbs } },
 				"%=", -- End left alignment
-				{ hl = "MiniStatuslineFileinfo", strings = { lsp_status, filetype } },
+				{ hl = "MiniStatuslineFileinfo", strings = fileinfo_strings },
 				{ hl = mode_hl, strings = { location } },
 			})
 		end
