@@ -69,6 +69,19 @@ return {
 			local linter = wrap_with_nix(name, spec)
 			if linter then
 				lint.linters[name] = linter
+
+				-- Fix yamllint: use file paths (not stdin) so ignore rules work
+				if name == "yamllint" then
+					linter.stdin = false
+					linter.args = vim.tbl_filter(function(arg) return arg ~= "-" end, linter.args)
+					-- Replace parser to handle file paths instead of stdin
+					linter.parser = require('lint.parser').from_pattern(
+						'.-:(%d+):(%d+): %[(.+)%] (.+) %((.+)%)',
+						{ 'lnum', 'col', 'severity', 'message', 'code' },
+						{ ['error'] = vim.diagnostic.severity.ERROR, ['warning'] = vim.diagnostic.severity.WARN },
+						{ ['source'] = 'yamllint' }
+					)
+				end
 			end
 		end
 
@@ -118,6 +131,7 @@ return {
 					names = vim.deepcopy(names)
 					table.insert(names, "actionlint")
 				end
+
 			end
 
 			lint.try_lint(names, { bufnr = bufnr })
