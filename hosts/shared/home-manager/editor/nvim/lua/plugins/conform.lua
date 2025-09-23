@@ -46,6 +46,14 @@ return {
 					fmt.args = args
 				end
 
+				-- Apply spec overrides
+				if spec.stdin ~= nil then
+					fmt.stdin = spec.stdin
+				end
+				if spec.env then
+					fmt.env = spec.env
+				end
+
 				return fmt
 			end
 
@@ -76,28 +84,17 @@ return {
 			rustfmt = {},
 			shfmt = {},
 			stylua = { extra_args = { "-" } },
+			terraform_fmt = {
+				package = "terraform",
+				extra_args = { "fmt", "-" },
+				stdin = true,
+				env = { NIXPKGS_ALLOW_UNFREE = "1" },
+			},
 		}
 
 		for name, spec in pairs(formatter_specs) do
 			wrap_with_nix(name, spec)
 		end
-
-		local terraform_fmt = conform.formatters.terraform_fmt or {}
-		conform.formatters.terraform_fmt = vim.tbl_deep_extend("force", terraform_fmt, {
-			command = "nix",
-			args = {
-				"run",
-				"--impure",
-				"nixpkgs#terraform",
-				"--",
-				"fmt",
-				"-",
-			},
-			stdin = true,
-			env = {
-				NIXPKGS_ALLOW_UNFREE = "1",
-			},
-		})
 
 		conform.setup({
 			default_format_opts = {
