@@ -45,7 +45,6 @@ _: {
       "postman"
       "raycast"
       "scroll-reverser"
-      "shottr"
       "the-unarchiver"
       "yubico-authenticator"
     ];
