@@ -4,10 +4,10 @@
     # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
     nixpkgs.url = "https://flakehub.com/f/JHOFER-Cloud/NixOS-nixpkgs/0.1.tar.gz"; # latest nixpkgs-unstable
     # nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    # nixpkgs_fork = {
-    #   url = "github:ojsef39/nixpkgs/nixos-unstable";
-    #   # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
-    # };
+    nixpkgs_fork = {
+      url = "github:ojsef39/nixpkgs/mist";
+      # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
+    };
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"; # latest master
       # url = "/Users/josefhofer/CodeProjects/github.com/nix-community/home-manager";
@@ -52,6 +52,7 @@
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
           (_final: prev: {
             nh = inputs.nh.packages.${prev.system}.default;
+            inherit (inputs.nixpkgs_fork.legacyPackages.${prev.system}) mist mist-cli;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
           })
         ];

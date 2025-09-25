@@ -15,9 +15,11 @@
     go
     gomplate
     hwatch
+    kubeconform
     kubectl
     kustomize
-    kubeconform
+    mist-cli
+    ncdu
     neovide
     nmap
     progress
@@ -26,11 +28,11 @@
     rsync
     speedtest-cli
     wget
-    ncdu
     whois
     yamllint
 
     # GUI Applications
+    mist
     obsidian # Note-taking
     stats
     utm # Virtualization
