@@ -2,6 +2,7 @@
   environment.systemPackages = with pkgs; [
     # Nix tools #
     cachix
+    devenv
     fh
     nh
     nix-init # https://github.com/nix-community/nix-init

@@ -44,9 +44,10 @@
       cat = "bat";
       tree = "eza --icons --git --header --tree";
       lg = "lazygit";
+      c = "clear";
+      d = "devenv";
       k = "kubectl";
       n = "nvim";
-      c = "clear";
       r = "reset";
       x = "exit";
     };
