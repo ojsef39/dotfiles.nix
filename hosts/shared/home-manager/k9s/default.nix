@@ -23,10 +23,10 @@
       dp = "deployments";
       jo = "jobs";
       np = "networkpolicies";
-      pp = "v1/pods";
+      pp = "pods";
       rb = "rolebindings";
       ro = "roles";
-      sec = "v1/secrets";
+      sec = "secrets";
     };
   };
   home.file = {
