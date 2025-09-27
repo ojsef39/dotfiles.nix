@@ -6,7 +6,7 @@ vim.keymap.set("n", "U", "<c-r>", { desc = "redo", noremap = false })
 
 -- Key mappings for LSP actions
 vim.keymap.set("n", "<leader>lD", vim.diagnostic.setloclist, { desc = "Diagnostic Loclist" })
-vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, { desc = "Go to Definition" })
+vim.keymap.set("n", "<leader>le", vim.lsp.buf.definition, { desc = "Go to Definition" })
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
 vim.keymap.set("n", "K", vim.lsp.buf.hover)
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration)

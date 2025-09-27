@@ -478,7 +478,7 @@ return {
 			MiniExtra.pickers.lsp({ scope = "workspace_symbol" })
 		end, { desc = "Workspace Symbols", silent = true })
 
-		vim.keymap.set("n", "<leader>dr", function()
+		vim.keymap.set("n", "<leader>ld", function()
 			MiniExtra.pickers.diagnostic()
 		end, { desc = "Diagnostics", silent = true })
 
