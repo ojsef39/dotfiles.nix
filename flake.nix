@@ -6,6 +6,12 @@
     # nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs_fork = {
       url = "github:ojsef39/nixpkgs/mist";
+      inputs.nixpkgs.follows = "nixpkgs";
+      # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
+    };
+    nixpkgs_claude_code_fork = {
+      url = "github:mirkolenz/nixpkgs/claude-code";
+      inputs.nixpkgs.follows = "nixpkgs";
       # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
     };
     home-manager = {
@@ -53,6 +59,8 @@
           (_final: prev: {
             nh = inputs.nh.packages.${prev.system}.default;
             inherit (inputs.nixpkgs_fork.legacyPackages.${prev.system}) mist mist-cli;
+            # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
+            claude-code = prev.callPackage "${inputs.nixpkgs_claude_code_fork}/pkgs/by-name/cl/claude-code/package.nix" {};
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
           })
         ];
