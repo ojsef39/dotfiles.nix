@@ -21,7 +21,6 @@
 
   # Map each valid directory to its default.nix path
   systemModules = map (dir: ./system/${dir}/default.nix) validSystemDirs;
-
   # Determine home directory based on system
 in {
   imports =
