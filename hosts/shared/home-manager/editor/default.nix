@@ -37,6 +37,7 @@ in {
     fd
     fzf
     git
+    github-copilot-cli
     maple-mono.NF
     nixfmt
     ripgrep
