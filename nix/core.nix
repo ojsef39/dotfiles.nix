@@ -51,62 +51,44 @@
   '';
 in {
   nix = {
-    enable =
-      if pkgs.stdenv.isDarwin
-      then false
-      else true;
-    settings = {
-      lazy-trees = true;
-      # enable flakes globally
-      experimental-features = [
-        "nix-command"
-        "flakes"
-        "parallel-eval"
-      ];
-      trusted-users = ["root" "@wheel" "${vars.user.name}"];
-      extra-substituters =
-        [
-          "https://ojsef39.cachix.org"
-        ]
-        ++ lib.optionals (vars.cache.community or false) [
-          "https://nix-community.cachix.org"
-        ];
-      extra-trusted-substituters =
-        [
-          "https://ojsef39.cachix.org"
-        ]
-        ++ lib.optionals (vars.cache.community or false) [
-          "https://nix-community.cachix.org"
-        ];
-      extra-trusted-public-keys =
-        [
-          "ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y="
-        ]
-        ++ lib.optionals (vars.cache.community or false) [
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        ];
-    };
+    enable = false;
     package = pkgs.nix;
   };
   nixpkgs.config = {
     allowBroken = true;
     allowUnfree = true;
   };
-
-  environment.etc."nix/nix.custom.conf" = lib.mkIf pkgs.stdenv.isDarwin {
-    text = ''
-      # Written by base/nix/core.nix
-      trusted-users = root @wheel ${vars.user.name}
-      extra-substituters = https://ojsef39.cachix.org ${lib.optionalString (vars.cache.community or false) "https://nix-community.cachix.org"}
-      extra-trusted-substituters = https://ojsef39.cachix.org ${lib.optionalString (vars.cache.community or false) "https://nix-community.cachix.org"}
-      extra-trusted-public-keys = ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y= ${lib.optionalString (vars.cache.community or false) "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="}
-      lazy-trees = true
-      extra-experimental-features = parallel-eval
-      eval-cores = 0
-      post-build-hook = ${cachixHook}
-    '';
+  determinate-nix = {
+    customSettings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      trusted-users = ["root" "@wheel" vars.user.name];
+      extra-substituters =
+        ["https://ojsef39.cachix.org"]
+        ++ lib.optionals (vars.cache.community or false) ["https://nix-community.cachix.org"];
+      extra-trusted-substituters =
+        ["https://ojsef39.cachix.org"]
+        ++ lib.optionals (vars.cache.community or false) ["https://nix-community.cachix.org"];
+      extra-trusted-public-keys =
+        ["ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y="]
+        ++ lib.optionals (vars.cache.community or false) ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
+      lazy-trees = true;
+      extra-experimental-features = ["parallel-eval external-builders"];
+      eval-cores = 0;
+      post-build-hook = "${cachixHook}";
+      # Enable Determinate Nix's native Linux builder (requires access approval)
+      external-builders = builtins.toJSON [
+        {
+          systems = ["aarch64-linux" "x86_64-linux"];
+          program = "/usr/local/bin/determinate-nixd";
+          args = ["builder"];
+        }
+      ];
+    };
   };
 
-  # TODO: Idk why this has to be set to 5
+  # NOTE: Idk why this has to be set to 5
   system.stateVersion = 5;
 }

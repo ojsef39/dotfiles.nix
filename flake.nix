@@ -19,6 +19,9 @@
       url = "https://flakehub.com/f/nix-darwin/nix-darwin/0.1.tar.gz"; # latest master
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    determinate = {
+      url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
+    };
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -83,8 +86,13 @@
     ];
 
     macModules = [
+      inputs.determinate.darwinModules.default
       ./hosts/darwin/import.nix
       ./hosts/darwin/homebrew.nix
     ];
+
+    # nixosModules = [
+    #   inputs.determinate.nixosModules.default
+    # ];
   };
 }
