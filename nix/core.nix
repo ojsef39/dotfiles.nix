@@ -83,7 +83,7 @@ in {
         {
           systems = ["aarch64-linux" "x86_64-linux"];
           program = "/usr/local/bin/determinate-nixd";
-          args = ["builder"];
+          args = ["builder" "--memory-size" "12884901888" "--cpu-count" "8"];
         }
       ];
     };
