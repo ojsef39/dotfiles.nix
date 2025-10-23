@@ -3,7 +3,7 @@
   vars,
 }: let
   # Image configuration from vars
-  inherit (vars.kubectl-debug) imageName;
+  imageName = vars.kubectl-debug.imageName or "";
   imageTag = vars.kubectl-debug.imageTag or "latest";
   username = vars.user.name;
 
@@ -68,6 +68,11 @@ in
       log_error() {
         echo -e "''${RED}[kubectl-debug]''${NC} $*" >&2
       }
+
+      if [ -z "${imageName}" ]; then
+        log_error "imageName is not set in vars.kubectl-debug.imageName"
+        exit 1
+      fi
 
       usage() {
         cat <<EOF
