@@ -1,15 +1,7 @@
 {
   pkgs,
   vars,
-  ...
 }: let
-  # Check if required variables are properly set (not using fallback values)
-  hasImageName = builtins.hasAttr "kubectl-debug" vars && builtins.hasAttr "imageName" vars.kubectl-debug;
-  hasUsername = builtins.hasAttr "user" vars && builtins.hasAttr "name" vars.user;
-
-  # Only proceed if both required variables are set
-  shouldBuild = hasImageName && hasUsername;
-
   # Image configuration from vars
   inherit (vars.kubectl-debug) imageName;
   imageTag = vars.kubectl-debug.imageTag or "latest";
@@ -44,8 +36,8 @@
       User = "1000:1000";
     };
   };
-
-  kubectl-debug = pkgs.writeShellApplication {
+in
+  pkgs.writeShellApplication {
     name = "kubectl-debug";
 
     runtimeInputs = with pkgs; [
@@ -250,10 +242,4 @@
         attach_to_pod "$NAMESPACE" "$POD_NAME"
       fi
     '';
-  };
-in {
-  home.packages =
-    if shouldBuild
-    then [kubectl-debug]
-    else [];
-}
+  }
