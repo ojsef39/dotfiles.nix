@@ -38,7 +38,6 @@ _: {
       "1password-cli"
       "arc"
       "caffeine"
-      "kitty"
       "logi-options+"
       "mac-mouse-fix"
       "poe"

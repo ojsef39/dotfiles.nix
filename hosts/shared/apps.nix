@@ -6,7 +6,6 @@
     fh
     nh
     nix-init # https://github.com/nix-community/nix-init
-    nix-prefetch-docker
     nix-tree
     nix-update # https://github.com/Mic92/nix-update
     nixpkgs-review
