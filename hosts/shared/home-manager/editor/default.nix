@@ -41,7 +41,7 @@ in {
     maple-mono.NF
     nixfmt
     ripgrep
-    yq
+    yq-go
   ];
 
   programs.neovim = {
