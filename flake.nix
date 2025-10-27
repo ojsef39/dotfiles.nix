@@ -30,6 +30,10 @@
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixkit = {
       url = "https://flakehub.com/f/JHOFER-Cloud/frostplexx-nixkit/0.1.tar.gz";
       # url = "github:ojsef39/nixkit";
@@ -48,6 +52,7 @@
     nixcord,
     nixkit,
     nixpkgs,
+    spicetify-nix,
     ...
   }: let
     # Helper to support all standard flake systems
@@ -93,6 +98,7 @@
             sharedModules = [
               nixcord.homeModules.nixcord
               nixkit.homeModules.default
+              spicetify-nix.homeManagerModules.default
             ];
           };
         }

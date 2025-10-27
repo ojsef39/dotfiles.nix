@@ -15,7 +15,6 @@
     minikube
     podman
     podman-compose
-    spotify
     virt-viewer
   ];
 }
