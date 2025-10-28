@@ -19,6 +19,7 @@
     # Each package will be in its own layer (better Docker cache utilization)
     contents = with linuxPkgs; [
       bash
+      cacert
       coreutils
       dnsutils # nslookup, dig
       curl
