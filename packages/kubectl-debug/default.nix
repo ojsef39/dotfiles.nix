@@ -35,6 +35,9 @@
     config = {
       Cmd = ["/bin/bash"];
       User = "1000:1000";
+      Env = [
+        "SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt"
+      ];
     };
   };
 
