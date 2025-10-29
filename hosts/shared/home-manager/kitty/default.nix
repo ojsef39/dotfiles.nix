@@ -136,6 +136,9 @@
       "opt+-" = "send_text all –"; # en dash
       "opt+shift+7" = "send_text all \\\\"; # backslash
       "opt+shift+-" = "send_text all —"; # em dash
+
+      # Fix opencode Shift-Enter
+      "shift+enter" = "send_text normal,application \\n";
     };
     extraConfig = ''
       include ${config.xdg.configHome}/kitty/themes/catppuccin-macchiato.conf

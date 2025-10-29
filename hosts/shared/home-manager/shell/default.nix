@@ -345,9 +345,6 @@
       ".wtfis.env" = {
         source = ./wtfis.env;
       };
-      ".claude/settings.json" = {
-        source = ./claude-settings.json;
-      };
     };
   };
 }
