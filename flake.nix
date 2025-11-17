@@ -45,6 +45,11 @@
       url = "github:nix-community/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Fish 4.1.2 - workaround for completion bug in 4.2.x
+    # See: https://github.com/NixOS/nixpkgs/issues/462025
+    nixpkgs-fish = {
+      url = "github:nixos/nixpkgs/fe9e07b2b565a8dee42e30eaff3e3606f6aefd6a";
+    };
   };
   outputs = inputs @ {
     home-manager,
@@ -81,6 +86,8 @@
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
             # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
             # claude-code = prev.callPackage "${inputs.nixpkgs_claude_code_fork}/pkgs/by-name/cl/claude-code/package.nix" {};
+            # Override fish to 4.1.2 - https://github.com/NixOS/nixpkgs/issues/462025
+            inherit (inputs.nixpkgs-fish.legacyPackages.${prev.system}) fish fishPlugins;
           })
         ];
       }
