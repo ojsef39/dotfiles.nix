@@ -39,6 +39,10 @@
         # so we do not need to logout and login again to make the changes take effect.
         sudo /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
       '';
+      touchIdPrivilegeDisplayLinkFix = ''
+        # https://www.reddit.com/r/macbookpro/comments/ld3rzr/display_link_drivers_disable_support_for_touchid/
+        /usr/bin/defaults write ~/Library/Preferences/com.apple.security.authorization.plist ignoreArd -bool TRUE
+      '';
     };
 
     startup.chime = lib.mkDefault true;
