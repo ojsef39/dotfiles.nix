@@ -115,8 +115,12 @@
 
     macModules = [
       inputs.determinate.darwinModules.default
-      ./hosts/darwin/import.nix
-      ./hosts/darwin/homebrew.nix
+      ./hosts/darwin/import-sys.nix
+      (
+        {vars, ...}: {
+          home-manager.users.${vars.user.name} = import ./hosts/darwin/import-hm.nix;
+        }
+      )
     ];
 
     # nixosModules = [
