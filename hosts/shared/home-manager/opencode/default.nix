@@ -1,10 +1,10 @@
-_: {
+{lib, ...}: {
   programs.opencode = {
     enable = true;
     settings = {
       theme = "catppuccin";
-      model = "anthropic/claude-sonnet-4-5";
-      small_model = "anthropic/claude-haiku-4-5";
+      model = lib.mkDefault "anthropic/claude-sonnet-4-5";
+      small_model = lib.mkDefault "anthropic/claude-haiku-4-5";
       autoupdate = false;
       disabled_providers = ["xai"];
       permission = {
