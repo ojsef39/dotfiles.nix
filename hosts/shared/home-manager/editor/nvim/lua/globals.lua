@@ -226,3 +226,32 @@ tools.group_number = function(num, sep)
 	num = tostring(num)
 	return num:reverse():gsub("(%d%d%d)", "%1" .. sep):reverse():gsub("^,", "")
 end
+
+-- Plugins --------------------------------
+-- Register a PackChanged autocommand for a specific plugin
+--- @param plugin_name string The name of the plugin to watch
+--- @param callback function The function to run when the plugin changes. Receives the event data.
+--- @param opts table|nil Optional table with 'kinds' field to filter specific event kinds (install, update, etc.)
+tools.on_pack_changed = function(plugin_name, callback, opts)
+	opts = opts or {}
+	local kinds = opts.kinds -- Optional: { 'install', 'update' } etc.
+
+	local hook = function(ev)
+		local name, kind = ev.data.spec.name, ev.data.kind
+
+		-- Check if this is the plugin we're watching
+		if name ~= plugin_name then
+			return
+		end
+
+		-- If specific kinds are specified, filter by them
+		if kinds and not vim.tbl_contains(kinds, kind) then
+			return
+		end
+
+		-- Call the user's callback with the full event data
+		callback(ev)
+	end
+
+	vim.api.nvim_create_autocmd("PackChanged", { callback = hook })
+end
