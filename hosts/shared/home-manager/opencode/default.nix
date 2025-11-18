@@ -9,6 +9,11 @@
       disabled_providers = ["xai"];
       permission = {
         webfetch = "allow";
+        bash = {
+          pwd = "allow";
+          "git status" = "allow";
+          "*" = "ask";
+        };
       };
 
       # LSP Configuration

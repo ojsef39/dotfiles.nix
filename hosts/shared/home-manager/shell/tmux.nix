@@ -6,7 +6,6 @@
   programs = {
     tmux = {
       enable = lib.mkDefault true;
-      ##TODO: Check if this is correct:
       shell = "${pkgs.fish}/bin/fish";
       baseIndex = 1;
       clock24 = true;
