@@ -31,22 +31,15 @@
   in "{ ${lib.concatStringsSep ", " entries} }";
 in {
   # Packages you also want to outside use outside of nvim
-  home = {
-    packages = with pkgs; [
-      fd
-      fzf
-      git
-      maple-mono.NF
-      nixfmt
-      ripgrep
-      yq-go
-    ];
-    file = {
-      ".claude/settings.json" = {
-        source = ./claude-settings.json;
-      };
-    };
-  };
+  home.packages = with pkgs; [
+    fd
+    fzf
+    git
+    maple-mono.NF
+    nixfmt
+    ripgrep
+    yq-go
+  ];
 
   programs = {
     neovim = {
