@@ -55,7 +55,7 @@ in {
         };
         appleMusicRichPresence = {
           enable = true;
-          activityType = "listening";
+          activityType = 2;
         };
         betterGifPicker.enable = true;
         betterRoleContext.enable = true;
