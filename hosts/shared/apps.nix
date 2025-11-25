@@ -13,6 +13,7 @@
     ##
     just
     minikube
+    moonlight-qt
     podman
     podman-compose
     virt-viewer
