@@ -55,7 +55,7 @@ in {
         };
         appleMusicRichPresence = {
           enable = true;
-          activityType = "listening";
+          activityType = 2;
         };
         betterGifPicker.enable = true;
         betterRoleContext.enable = true;
@@ -103,7 +103,7 @@ in {
         summaries.enable = true;
         shikiCodeblocks = {
           enable = true;
-          theme = "https://raw.githubusercontent.com/shikijs/textmate-grammars-themes/refs/heads/main/packages/tm-themes/themes/catppuccin-macchiato.json";
+          theme = "https://raw.githubusercontent.com/shikijs/textmate-grammars-themes/ecd9fb1b4a38381df95048c19cf9b8bdcbb1ec09/packages/tm-themes/themes/catppuccin-macchiato.json";
         };
         translate.enable = true;
         typingIndicator.enable = true;
