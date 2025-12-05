@@ -35,6 +35,7 @@ in {
     fd
     fzf
     git
+    jc
     maple-mono.NF
     nixfmt
     ripgrep
