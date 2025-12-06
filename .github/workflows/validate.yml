@@ -24,7 +24,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: GitGuardian scan
-        uses: GitGuardian/ggshield/actions/secret@98f0c171593a9ddb43d84b21f7e078b0e3bc9095 # v1.44.0
+        uses: GitGuardian/ggshield/actions/secret@edac2af7a4c4670e24600482e6ae0b3e2bb52160 # v1.45.0
         env:
           GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
           GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
