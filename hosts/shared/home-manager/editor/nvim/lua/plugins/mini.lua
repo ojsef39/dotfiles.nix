@@ -27,7 +27,7 @@ local picker_height = math.min(30, math.floor(vim.o.lines * 0.6))
 require("mini.pick").setup({
 	mappings = {
 		choose_marked = "<C-q>",
-		paste = "<C-v>",
+		paste = "<C-r>",
 	},
 	window = {
 		config = function()
