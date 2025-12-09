@@ -16,7 +16,7 @@ _: {
 
     # Mac App Store apps
     masApps = {
-      "Reeder" = 1529448980;
+      "Reeder" = 6475002485;
       "The Unarchiver" = 425424353;
     };
 
