@@ -87,10 +87,10 @@
       '';
 
       _find_nix_base = ''
-         # Extract path up to and including "Code" directory
-        set code_path (string replace -r '(/[^/]*Code[^/]*)/.*' '$1' $NIX_GIT_PATH)
+         # Extract path up to and including workspace/code directory
+        set base_path (string replace -r '(/[^/]*(?:workspace|Code)[^/]*)/.*' '$1' $NIX_GIT_PATH)
 
-        set nix_base_path (find "$code_path" -maxdepth 4 -type d -path "*/github.com/*/nix-base" -print -quit 2>/dev/null)
+        set nix_base_path (find "$base_path" -maxdepth 4 -type d -path "*/github.com/*/nix-base" -print -quit 2>/dev/null)
         if test -n "$nix_base_path"
           echo $nix_base_path
         else
