@@ -82,6 +82,7 @@
         wvous-br-corner = 14;
         wvous-tl-corner = 5;
         wvous-tr-corner = 5; # https://daiderd.com/nix-darwin/manual/index.html#opt-system.defaults.dock.wvous-tl-corner
+        mru-spaces = false;
       };
       WindowManager = {
         GloballyEnabled = true;
