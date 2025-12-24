@@ -60,6 +60,7 @@
 
     interactiveShellInit = ''
       # Environment variables
+      set -gx EDITOR nvim
       set -gx GCL_CONTAINER_EXECUTABLE podman
       set -gx GCL_MAX_JOB_NAME_PADDING 30
       set -gx GCL_TIMESTAMPS true
@@ -299,7 +300,7 @@
         pkgs.fetchurl {
           name = "Catppuccin-Macchiato.theme";
           url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
-          sha256 = "sha256-WFGzRDaC8zY96w9QgxIbFsAKcUR6xjb/p7vk7ZWgeps=";
+          sha256 = "sha256-vkWfhM2DtWC6OQTBXZDFdhpITU7z4Y9lRA4QL4BmVSQ=";
         }
       );
     };
@@ -316,6 +317,7 @@
     };
 
     # Tide configuration (activate after installation)
+    #FIX: not closing after its done?
     activation.configureTide = lib.hm.dag.entryAfter ["writeBoundary"] ''
       # Launch a kitty overlay terminal to configure tide without disturbing the current session
       $DRY_RUN_CMD ${pkgs.kitty}/bin/kitten @ launch --type=overlay --title="Tide Configuration" --copy-env --env SKIP_FF=1 ${pkgs.fish}/bin/fish -C "

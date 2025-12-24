@@ -22,8 +22,8 @@
     determinate = {
       url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
     };
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
+    nvf = {
+      url = "github:notashelf/nvf/notashelf/push-tnxxqnkoyomy";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
@@ -48,7 +48,7 @@
   };
   outputs = inputs @ {
     home-manager,
-    neovim-nightly-overlay,
+    nvf,
     nixcord,
     nixkit,
     nixpkgs,
@@ -73,7 +73,6 @@
       {
         nixpkgs.overlays = [
           nixkit.overlays.default
-          neovim-nightly-overlay.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
           (_final: prev: {
             nh = inputs.nh.packages.${prev.system}.default;
