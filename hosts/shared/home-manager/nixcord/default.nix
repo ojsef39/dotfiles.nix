@@ -63,7 +63,7 @@ in {
         betterUploadButton.enable = true;
         biggerStreamPreview.enable = true;
         callTimer.enable = true;
-        clearURLs.enable = true;
+        ClearURLs.enable = true;
         # customIdle = {
         #   enable = true;
         #   idleTimeout = 5.0;
@@ -93,7 +93,7 @@ in {
         noF1.enable = true;
         noOnboardingDelay.enable = true;
         permissionsViewer.enable = true;
-        pinDMs.enable = true;
+        PinDMs.enable = true;
         plainFolderIcon.enable = true;
         previewMessage.enable = true;
         quickMention.enable = true;
