@@ -57,7 +57,7 @@
     # Linting
     {
       key = "<leader>cl";
-      action = "function() _G.lint_buffer(0) end";
+      action = "function() require('lint').try_lint() end";
       mode = "n";
       lua = true;
       desc = "Lint current buffer";

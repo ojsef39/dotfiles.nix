@@ -32,6 +32,16 @@ local function get_tools()
 	if ok then
 		local ft = vim.bo.filetype
 		local linters = lint.linters_by_ft[ft] or {}
+
+		-- Add actionlint for GitHub Actions workflow files
+		if ft == "yaml" then
+			local filepath = vim.api.nvim_buf_get_name(0)
+			if filepath:match("%.github/workflows/.*%.ya?ml$") then
+				linters = vim.deepcopy(linters)
+				table.insert(linters, "actionlint")
+			end
+		end
+
 		if #linters > 0 then
 			table.insert(tools, (has_nerd_font and "" or "LINT:") .. " " .. table.concat(linters, ","))
 		end
@@ -192,3 +202,4 @@ require("mini.statusline").setup({
 	use_icons = vim.g.have_nerd_font or false,
 	set_vim_settings = false, -- Keep your existing statusline settings
 })
+

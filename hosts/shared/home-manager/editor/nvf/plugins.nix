@@ -414,6 +414,31 @@
   diagnostics = {
     nvim-lint = {
       enable = true;
+      lint_after_save = false; # Using custom autocmds in autocmds.nix instead
+
+      # Custom lint function to add actionlint for GitHub Actions workflows
+      lint_function = lib.generators.mkLuaInline ''
+        function(buf)
+          local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+          local names = require("lint").linters_by_ft[ft]
+
+          if not names or vim.tbl_isempty(names) then
+            return
+          end
+
+          -- Add actionlint for GitHub Actions workflow files
+          if ft == "yaml" then
+            local filepath = vim.api.nvim_buf_get_name(buf)
+            if filepath:match("%.github/workflows/.*%.ya?ml$") then
+              names = vim.deepcopy(names)
+              table.insert(names, "actionlint")
+            end
+          end
+
+          require("lint").try_lint(names, { bufnr = buf })
+        end
+      '';
+
       linters_by_ft = {
         bash = ["shellcheck"];
         css = ["stylelint"];
@@ -444,7 +469,7 @@
       };
       linters = {
         actionlint.cmd = "nix";
-        actionlint.args = ["run" "--impure" "nixpkgs#actionlint" "--"];
+        actionlint.args = ["run" "--impure" "nixpkgs#actionlint" "--" "-format" "{{json .}}"];
 
         clippy.cmd = "nix";
         clippy.args = ["run" "--impure" "nixpkgs#cargo" "--"];

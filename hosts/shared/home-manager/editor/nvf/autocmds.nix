@@ -39,6 +39,37 @@ in {
         end
       '';
     }
+    # Trigger nvim-lint
+    {
+      event = ["BufEnter" "BufWritePost" "InsertLeave"];
+      pattern = ["*"];
+      callback = lib.generators.mkLuaInline ''
+        function(event)
+          local lint_status, lint = pcall(require, "lint")
+          if not lint_status then
+            return
+          end
+
+          local ft = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+          local names = lint.linters_by_ft[ft]
+
+          if not names or vim.tbl_isempty(names) then
+            return
+          end
+
+          -- Add actionlint for GitHub Actions workflow files
+          if ft == "yaml" then
+            local filepath = vim.api.nvim_buf_get_name(event.buf)
+            if filepath:match("%.github/workflows/.*%.ya?ml$") then
+              names = vim.deepcopy(names)
+              table.insert(names, "actionlint")
+            end
+          end
+
+          require("lint").try_lint(names, { bufnr = event.buf })
+        end
+      '';
+    }
   ];
 
   # Filetype associations (helm detection) and helper functions
