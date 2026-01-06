@@ -507,5 +507,23 @@
       desc = "Git Copy URL";
       silent = true;
     }
+
+    # Yazi (custom keymaps that handle special buffers like ministarter)
+    {
+      key = "<leader>e";
+      action = "function() _G.yazi_toggle_smart() end";
+      mode = "n";
+      lua = true;
+      desc = "Resume last yazi session";
+      silent = true;
+    }
+    {
+      key = "<leader>E";
+      action = "function() _G.yazi_open_smart() end";
+      mode = "n";
+      lua = true;
+      desc = "Open yazi at current file";
+      silent = true;
+    }
   ];
 }

@@ -262,15 +262,19 @@
     yazi-nvim = {
       enable = true;
       mappings = {
-        openYazi = "<leader>E";
-        yaziToggle = "<leader>e";
+        # Disable default mappings - using custom ones that handle special buffers
+        openYazi = null;
+        yaziToggle = null;
         openYaziDir = null;
       };
       setupOpts = {
-        open_for_directories = false; # Conflicts with mini.starter when opening nvim without a file
+        open_for_directories = false;
         yazi_floating_window_border = "rounded";
         env = {
           SKIP_FF = "1";
+        };
+        future_features = {
+          use_cwd_file = true; # Store last directory for resume behavior
         };
       };
     };

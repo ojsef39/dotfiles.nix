@@ -20,6 +20,27 @@ in {
       -- Disable netrw for yazi
       vim.g.loaded_netrwPlugin = 1
 
+      -- Yazi wrappers to handle special buffers (ministarter, etc)
+
+      -- Resume last yazi session (toggle/resume behavior)
+      -- Use the :Yazi toggle command instead of Lua API
+      _G.yazi_toggle_smart = function()
+        vim.cmd("Yazi toggle")
+      end
+
+      -- Open yazi at current file location
+      _G.yazi_open_smart = function()
+        local bufname = vim.fn.expand('%')
+
+        -- If current buffer is a special buffer (contains ://), open at cwd
+        if bufname:match('://') then
+          vim.cmd("Yazi cwd")
+        else
+          -- Open at current file location
+          vim.cmd("Yazi")
+        end
+      end
+
       -- Additional vim options
       vim.opt.shortmess:remove("S")
       vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
