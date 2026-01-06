@@ -300,7 +300,7 @@
         pkgs.fetchurl {
           name = "Catppuccin-Macchiato.theme";
           url = "https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20Macchiato.theme";
-          sha256 = "sha256-vkWfhM2DtWC6OQTBXZDFdhpITU7z4Y9lRA4QL4BmVSQ=";
+          sha256 = "sha256-R8cYiE7KKAyxUajpYOaWo9KmGo+S/iXXdUWYGPXXWj4=";
         }
       );
     };
