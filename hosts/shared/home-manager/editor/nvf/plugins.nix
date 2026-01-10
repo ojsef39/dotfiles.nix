@@ -516,17 +516,19 @@
         tflint.cmd = "nix";
         tflint.args = ["run" "--impure" "nixpkgs#tflint" "--"];
 
-        yamllint.cmd = "nix";
-        yamllint.args = ["run" "--impure" "nixpkgs#yamllint" "--"];
-        yamllint.stdin = false;
-        yamllint.parser = lib.generators.mkLuaInline ''
-          require('lint.parser').from_pattern(
-            '.-:(%d+):(%d+): %[(.+)%] (.+) %((.+)%)',
-            { 'lnum', 'col', 'severity', 'message', 'code' },
-            { ['error'] = vim.diagnostic.severity.ERROR, ['warning'] = vim.diagnostic.severity.WARN },
-            { ['source'] = 'yamllint' }
-          )
-        '';
+        yamllint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#yamllint" "--"];
+          stdin = false;
+          parser = lib.generators.mkLuaInline ''
+            require('lint.parser').from_pattern(
+              '.-:(%d+):(%d+): %[(.+)%] (.+) %((.+)%)',
+              { 'lnum', 'col', 'severity', 'message', 'code' },
+              { ['error'] = vim.diagnostic.severity.ERROR, ['warning'] = vim.diagnostic.severity.WARN },
+              { ['source'] = 'yamllint' }
+            )
+          '';
+        };
       };
     };
   };

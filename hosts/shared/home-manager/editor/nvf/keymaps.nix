@@ -1,4 +1,4 @@
-{...}: {
+_: {
   # Leader keys and global variables
   globals = {
     mapleader = " ";

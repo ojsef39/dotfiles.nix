@@ -1,4 +1,4 @@
-{...}: {
+_: {
   # Complete vim options migrated from your config
   options = {
     # Line numbers
