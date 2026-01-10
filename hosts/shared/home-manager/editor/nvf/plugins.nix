@@ -468,53 +468,85 @@
         zsh = ["shellcheck"];
       };
       linters = {
-        actionlint.cmd = "nix";
-        actionlint.args = ["run" "--impure" "nixpkgs#actionlint" "--" "-format" "{{json .}}"];
+        actionlint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#actionlint" "--" "-format" "{{json .}}"];
+        };
 
-        clippy.cmd = "nix";
-        clippy.args = ["run" "--impure" "nixpkgs#cargo" "--"];
+        clippy = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#cargo" "--"];
+        };
 
-        deadnix.cmd = "nix";
-        deadnix.args = ["run" "--impure" "nixpkgs#deadnix" "--"];
+        deadnix = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#deadnix" "--"];
+        };
 
-        eslint.cmd = "nix";
-        eslint.args = ["run" "--impure" "nixpkgs#eslint" "--"];
+        eslint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#eslint" "--"];
+        };
 
-        fish.cmd = "nix";
-        fish.args = ["run" "--impure" "nixpkgs#fish" "--"];
+        fish = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#fish" "--"];
+        };
 
-        golangcilint.cmd = "nix";
-        golangcilint.args = ["run" "--impure" "nixpkgs#golangci-lint" "--"];
+        golangcilint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#golangci-lint" "--"];
+        };
 
-        hadolint.cmd = "nix";
-        hadolint.args = ["run" "--impure" "nixpkgs#hadolint" "--"];
+        hadolint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#hadolint" "--"];
+        };
 
-        htmlhint.cmd = "nix";
-        htmlhint.args = ["run" "--impure" "nixpkgs#htmlhint" "--"];
+        htmlhint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#htmlhint" "--"];
+        };
 
-        jsonlint.cmd = "nix";
-        jsonlint.args = ["run" "--impure" "nixpkgs#nodePackages.jsonlint" "--"];
+        jsonlint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#nodePackages.jsonlint" "--"];
+        };
 
-        luacheck.cmd = "nix";
-        luacheck.args = ["run" "--impure" "nixpkgs#lua54Packages.luacheck" "--"];
+        luacheck = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#lua54Packages.luacheck" "--"];
+        };
 
-        markdownlint.cmd = "nix";
-        markdownlint.args = ["run" "--impure" "nixpkgs#markdownlint-cli" "--"];
+        markdownlint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#markdownlint-cli" "--"];
+        };
 
-        pylint.cmd = "nix";
-        pylint.args = ["run" "--impure" "nixpkgs#pylint" "--"];
+        pylint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#pylint" "--"];
+        };
 
-        shellcheck.cmd = "nix";
-        shellcheck.args = ["run" "--impure" "nixpkgs#shellcheck" "--"];
+        shellcheck = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#shellcheck" "--"];
+        };
 
-        statix.cmd = "nix";
-        statix.args = ["run" "--impure" "nixpkgs#statix" "--"];
+        statix = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#statix" "--"];
+        };
 
-        stylelint.cmd = "nix";
-        stylelint.args = ["run" "--impure" "nixpkgs#stylelint" "--"];
+        stylelint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#stylelint" "--"];
+        };
 
-        tflint.cmd = "nix";
-        tflint.args = ["run" "--impure" "nixpkgs#tflint" "--"];
+        tflint = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#tflint" "--"];
+        };
 
         yamllint = {
           cmd = "nix";
