@@ -11,6 +11,7 @@
     nixpkgs-review
     update-nix-fetchgit # https://github.com/expipiplus1/update-nix-fetchgit
     ##
+    firefox
     just
     minikube
     moonlight-qt

@@ -22,8 +22,8 @@
     determinate = {
       url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
     };
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
+    nvf = {
+      url = "github:notashelf/nvf/notashelf/push-tnxxqnkoyomy";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
@@ -48,7 +48,7 @@
   };
   outputs = inputs @ {
     home-manager,
-    neovim-nightly-overlay,
+    nvf,
     nixcord,
     nixkit,
     nixpkgs,
@@ -73,12 +73,11 @@
       {
         nixpkgs.overlays = [
           nixkit.overlays.default
-          neovim-nightly-overlay.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
           (_final: prev: {
-            nh = inputs.nh.packages.${prev.system}.default;
-            inherit (inputs.nixpkgs_fork.legacyPackages.${prev.system}) mist mist-cli;
-            # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.system}.renovate;
+            nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
+            inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
+            # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
             # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
             # claude-code = prev.callPackage "${inputs.nixpkgs_claude_code_fork}/pkgs/by-name/cl/claude-code/package.nix" {};
           })
@@ -130,7 +129,7 @@
       # Usage: packages = base.lib.makePackages vars;
       makePackages = vars:
         forAllSystems (system: let
-          pkgs = import nixpkgs {inherit system;};
+          pkgs = import nixpkgs {localSystem = system;};
         in
           import ./packages {
             inherit pkgs vars;

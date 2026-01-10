@@ -8,7 +8,7 @@
   username = vars.user.name;
 
   # Import nixpkgs for x86_64-linux to build the Docker image with the Linux builder
-  linuxPkgs = import pkgs.path {system = "x86_64-linux";};
+  linuxPkgs = import pkgs.path {localSystem = "x86_64-linux";};
 
   # Build layered image - each package gets its own layer for better caching
   kubectl-debug-image = linuxPkgs.dockerTools.buildLayeredImage {
