@@ -143,7 +143,7 @@ in {
           buffers = {
             colors = {
               blend = -0.2,
-              backgroundColor = "catppuccin-machiatto",
+              backgroundColor = "catppuccin-macchiato",
             },
             scratchPad = {
               enabled = false,
