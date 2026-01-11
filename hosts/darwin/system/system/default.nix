@@ -44,6 +44,7 @@
       };
 
       NSGlobalDomain = {
+        NSWindowShouldDragOnGesture = true;
         NSAutomaticCapitalizationEnabled = false;
         "com.apple.trackpad.scaling" = 0.6875;
         "com.apple.sound.beep.volume" = 1.0;
