@@ -4,11 +4,11 @@
   vars,
   ...
 }: let
-  # Convert Nix blacklist to Lua table for cord
-  userBlacklist = vars.nvim.cord.blacklist or [];
-  cordBlacklist = userBlacklist ++ [vars.user.name];
-  blacklistToLua = blacklist: let
-    quotedItems = map (item: "'${item}'") blacklist;
+  # Convert Nix ignoreList to Lua table for cord
+  userIgnoreList = vars.nvim.cord.ignoreList or [];
+  cordIgnoreList = userIgnoreList ++ [vars.user.name];
+  ignoreListToLua = ignoreList: let
+    quotedItems = map (item: "'${item}'") ignoreList;
   in "{ ${lib.concatStringsSep ", " quotedItems} }";
 in {
   extraPlugins = {
@@ -235,17 +235,17 @@ in {
     cord = {
       package = pkgs.vimPlugins.cord-nvim;
       setup = ''
-        local blacklist = ${blacklistToLua cordBlacklist}
-        local is_blacklisted = function(opts)
+        local ignoreList = ${ignoreListToLua cordIgnoreList}
+        local is_ignoreListed = function(opts)
           -- Check workspace name
-          for _, item in ipairs(blacklist) do
+          for _, item in ipairs(ignoreList) do
             if opts.workspace == item then
               return true
             end
           end
           -- Check git remote
           local remote = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "")
-          for _, item in ipairs(blacklist) do
+          for _, item in ipairs(ignoreList) do
             if remote:find(item, 1, true) then
               return true
             end
@@ -259,13 +259,13 @@ in {
           },
           text = {
             viewing = function(opts)
-              return is_blacklisted(opts) and 'Viewing a file' or ('Viewing ' .. opts.filename)
+              return is_ignoreListed(opts) and 'Viewing a file' or ('Viewing ' .. opts.filename)
             end,
             editing = function(opts)
-              return is_blacklisted(opts) and 'Editing a file' or ('Editing ' .. opts.filename)
+              return is_ignoreListed(opts) and 'Editing a file' or ('Editing ' .. opts.filename)
             end,
             workspace = function(opts)
-              return is_blacklisted(opts) and 'In a secret workspace' or ('Working on ' .. opts.workspace)
+              return is_ignoreListed(opts) and 'In a secret workspace' or ('Working on ' .. opts.workspace)
             end,
           },
         })
