@@ -8,7 +8,6 @@
   home.activation = {
     ghqGetRepos = lib.hm.dag.entryAfter ["linkGeneration"] ''
       export PATH=$PATH:/usr/bin
-      ${pkgs.ghq}/bin/ghq get -u https://github.com/ojsef39/commit-oracle 2>&1 | grep -E "update|error:" || true
       ${pkgs.ghq}/bin/ghq get -u https://github.com/ojsef39/nix-base 2>&1 | grep -E "update|error:" || true
       export PATH=$PATH:/bin/hostname
       hostname=$(/bin/hostname)
