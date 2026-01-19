@@ -23,7 +23,7 @@
       url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
     };
     nvf = {
-      url = "github:notashelf/nvf/notashelf/push-tnxxqnkoyomy";
+      url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
