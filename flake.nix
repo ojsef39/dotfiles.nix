@@ -1,4 +1,5 @@
 {
+  #TODO: swift lint and formatter for opencode and nvim
   description = "ojsef39 base nix configuration";
   inputs = {
     # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
@@ -41,10 +42,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-    nh = {
-      url = "github:nix-community/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # nh = {
+    #   url = "github:nix-community/nh";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
   outputs = inputs @ {
     home-manager,
@@ -75,7 +76,7 @@
           nixkit.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
           (_final: prev: {
-            nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
+            # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
             inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
             # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
