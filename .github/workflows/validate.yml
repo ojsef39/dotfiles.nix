@@ -42,7 +42,68 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@c5a866b6ab867e88becbed4467b93592bce69f8a # v21
 
+      - name: Install Just
+        uses: extractions/setup-just@v3
+        with:
+          just-version: "1.40.0"
+
       - name: Run statix linter
         run: |
-          nix run nixpkgs#statix -- check .
-          nix run nixpkgs#deadnix -- -eq .
+          echo "Linting Flake..."
+          if just lint; then
+            echo "success=true" >> $GITHUB_ENV
+          else
+            echo "Lint failed, listing flake.lock for debugging:"
+            cat flake.lock
+            echo "success=false" >> $GITHUB_ENV
+            exit 1
+          fi
+
+  test-configurations:
+    name: Test Nix Configurations
+    needs: [security-check, lint]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # os: [ubuntu-latest, macos-latest]
+        os: [macos-latest]
+        include:
+          - os: macos-latest
+            nix_cmd: "darwin"
+            nix_host: "mac"
+            # - os: ubuntu-latest
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@c5a866b6ab867e88becbed4467b93592bce69f8a # v21
+
+      - name: Install Just
+        uses: extractions/setup-just@v3
+        with:
+          just-version: "1.40.0"
+
+      - name: Enable Nix Flakes
+        run: |
+          mkdir -p ~/.config/nix
+          echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+          echo "extra-substituters = https://ojsef39.cachix.org" >> ~/.config/nix/nix.conf
+          echo "extra-trusted-substituters = https://ojsef39.cachix.org" >> ~/.config/nix/nix.conf
+          echo "extra-trusted-public-keys = ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=" >> ~/.config/nix/nix.conf
+
+      - name: Check Configuration
+        run: |
+          nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build --no-nom -H ${{ matrix.nix_host }} .
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v16
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          name: ojsef39
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: Push to Cachix
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          RESULT=$(nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build --no-nom -H ${{ matrix.nix_host }} . -- --print-out-paths | grep "^/nix/store")
+          echo "$RESULT" | cachix push ojsef39

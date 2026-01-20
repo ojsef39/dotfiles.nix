@@ -1,5 +1,5 @@
 {
-  description = "ojsef39 base nix configuration";
+  description = "ojsef39 dotfiles.nix configuration";
   inputs = {
     # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
     nixpkgs.url = "https://flakehub.com/f/JHOFER-Cloud/NixOS-nixpkgs/0.1.tar.gz"; # latest nixpkgs-unstable
@@ -23,7 +23,7 @@
       url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
     };
     nvf = {
-      url = "github:notashelf/nvf/notashelf/push-tnxxqnkoyomy";
+      url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
@@ -41,41 +41,39 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-    nh = {
-      url = "github:nix-community/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # nh = {
+    #   url = "github:nix-community/nh";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
   outputs = inputs @ {
+    self,
     home-manager,
-    nvf,
     nixcord,
     nixkit,
     nixpkgs,
     spicetify-nix,
+    darwin,
     ...
   }: let
-    # Helper to support all standard flake systems
-    forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
-
-    # Create an overlay that exposes packages with custom vars
-    makeOverlay = vars: _final: prev:
-      import ./packages {
-        pkgs = prev;
-        inherit vars;
-      };
+    # Library functions for consuming flakes
+    myLib = import ./lib {
+      inherit (nixpkgs) lib;
+      inherit nixpkgs;
+    };
   in {
+    # Export base modules for nix-work to consume (same pattern as before migration)
     sharedModules = [
       # Apply base packages overlay
       ({vars, ...}: {
-        nixpkgs.overlays = [(makeOverlay vars)];
+        nixpkgs.overlays = [(myLib.makeOverlay vars)];
       })
       {
         nixpkgs.overlays = [
           nixkit.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
           (_final: prev: {
-            nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
+            # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
             inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
             # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
@@ -83,7 +81,7 @@
           })
         ];
       }
-      ./nix/core.nix
+      ./modules/shared/import-sys.nix
       home-manager.darwinModules.home-manager
       nixkit.darwinModules.default
       (
@@ -92,8 +90,11 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "backup";
-            extraSpecialArgs = {inherit vars inputs;};
-            users.${vars.user.name} = import ./hosts/shared/import-hm.nix;
+            extraSpecialArgs = {
+              inherit vars inputs;
+              baseLib = myLib;
+            };
+            users.${vars.user.name} = import ./modules/shared/import-hm.nix;
             sharedModules = [
               nixcord.homeModules.nixcord
               nixkit.homeModules.default
@@ -102,38 +103,39 @@
           };
         }
       )
-      ./hosts/shared/import-sys.nix
     ];
 
     macModules = [
       inputs.determinate.darwinModules.default
-      ./hosts/darwin/import-sys.nix
+      ./modules/darwin/import-sys.nix
       (
         {vars, ...}: {
-          home-manager.users.${vars.user.name} = import ./hosts/darwin/import-hm.nix;
+          home-manager.users.${vars.user.name} = import ./modules/darwin/import-hm.nix;
         }
       )
     ];
 
-    # nixosModules = [
-    #   inputs.determinate.nixosModules.default
-    # ];
-
-    # Library functions for consuming flakes
-    lib = {
-      # Create an overlay that exposes packages with custom vars
-      # Usage: nixpkgs.overlays = [(base.lib.makeOverlay vars)];
-      inherit makeOverlay;
-
-      # Create packages output for all systems with custom vars
-      # Usage: packages = base.lib.makePackages vars;
-      makePackages = vars:
-        forAllSystems (system: let
-          pkgs = import nixpkgs {localSystem = system;};
-        in
-          import ./packages {
-            inherit pkgs vars;
-          });
+    # Personal macOS configuration
+    darwinConfigurations.mac = darwin.lib.darwinSystem {
+      modules =
+        self.sharedModules
+        ++ self.macModules
+        ++ [
+          {nixpkgs.hostPlatform = "aarch64-darwin";}
+          # Personal configuration (recursive discovery via hosts/mac/import-sys.nix)
+          ./hosts/mac/import-sys.nix
+          (
+            {vars, ...}: {
+              home-manager.users.${vars.user.name} = import ./hosts/mac/import-hm.nix;
+            }
+          )
+        ];
+      specialArgs = {
+        vars = import ./vars/personal.nix;
+        baseLib = myLib;
+      };
     };
+
+    lib = myLib;
   };
 }
