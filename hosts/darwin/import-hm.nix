@@ -24,4 +24,9 @@
   homeModules = map (dir: ./home-manager/${dir}/default.nix) validHomeManagerDirs;
 in {
   imports = homeModules;
+
+  targets.darwin = {
+    linkApps.enable = false;
+    copyApps.enable = true;
+  };
 }
