@@ -87,6 +87,12 @@
           command = ["nix" "run" "--impure" "nixpkgs#fish" "--" "fish_indent"];
           extensions = [".fish"];
         };
+
+        # Swift
+        swift-format = {
+          command = ["nix" "run" "--impure" "nixpkgs#swift-format" "--" "$FILE"];
+          extensions = [".swift"];
+        };
       };
     };
   };

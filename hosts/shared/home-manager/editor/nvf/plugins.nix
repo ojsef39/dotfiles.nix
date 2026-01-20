@@ -1,6 +1,7 @@
 {
   lib,
   vars,
+  pkgs,
   ...
 }: {
   # Completion with blink-cmp
@@ -155,6 +156,8 @@
 
     highlight.enable = true;
     indent.enable = true;
+
+    grammars = lib.mkAfter [pkgs.vimPlugins.nvim-treesitter.builtGrammars.swift];
 
     textobjects = {
       enable = true;
@@ -338,6 +341,7 @@
           less = ["prettier"];
           markdown = ["prettier" "markdownlint-cli2"]; # nvf has deno_fmt, we want prettier + markdownlint
           scss = ["prettier"];
+          swift = ["swift-format"];
           terraform = ["terraform_fmt"];
           vue = ["prettier"];
           yaml = ["prettier"];
@@ -396,6 +400,11 @@
             command = "nix";
             "inherit" = true;
             prepend_args = ["run" "--impure" "nixpkgs#nodePackages.prettier" "--"];
+          };
+          "swift-format" = {
+            command = "nix";
+            stdin = true;
+            args = ["run" "--impure" "nixpkgs#swift-format" "--" "format" "--assume-filename" "$FILENAME"];
           };
           terraform_fmt = {
             command = "nix";
@@ -460,6 +469,7 @@
         rust = ["clippy"];
         scss = ["stylelint"];
         sh = ["shellcheck"];
+        swift = ["swift-format"];
         terraform = ["tflint"];
         typescript = ["eslint"];
         typescriptreact = ["eslint"];
@@ -541,6 +551,11 @@
         stylelint = {
           cmd = "nix";
           args = ["run" "--impure" "nixpkgs#stylelint" "--"];
+        };
+
+        "swift-format" = {
+          cmd = "nix";
+          args = ["run" "--impure" "nixpkgs#swift-format" "--" "lint" "--strict"];
         };
 
         tflint = {

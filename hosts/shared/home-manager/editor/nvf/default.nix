@@ -85,6 +85,7 @@ in {
         inherit vars;
       })
       (import ./plugins.nix {
+        inherit pkgs;
         lib = extendedLib;
         inherit vars;
       })

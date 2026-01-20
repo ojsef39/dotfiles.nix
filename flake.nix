@@ -1,5 +1,4 @@
 {
-  #TODO: swift lint and formatter for opencode and nvim
   description = "ojsef39 base nix configuration";
   inputs = {
     # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable

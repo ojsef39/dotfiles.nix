@@ -52,6 +52,19 @@
       signatureHelp = null;
       toggleFormatOnSave = null;
     };
+    lspconfig = {
+      enable = true;
+      sources = {
+        sourcekit = ''
+          vim.lsp.config.sourcekit = {
+            cmd = { '${pkgs.sourcekit-lsp}/bin/sourcekit-lsp' },
+            filetypes = { 'swift', 'objective-c', 'objective-cpp' },
+            root_markers = { 'Package.swift', '*.xcodeproj', '*.xcworkspace', '.git' },
+          }
+          vim.lsp.enable('sourcekit')
+        '';
+      };
+    };
   };
 
   # Language configurations
