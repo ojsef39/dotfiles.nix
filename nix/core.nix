@@ -78,15 +78,6 @@ in {
       extra-experimental-features = ["parallel-eval external-builders"];
       eval-cores = 0;
       post-build-hook = "${cachixHook}";
-      # Enable Determinate Nix's native Linux builder (requires access approval)
-      # NOTE: no longer allowed?
-      # external-builders = builtins.toJSON [
-      #   {
-      #     systems = ["aarch64-linux" "x86_64-linux"];
-      #     program = "/usr/local/bin/determinate-nixd";
-      #     args = ["builder" "--memory-size" "12884901888" "--cpu-count" "8"];
-      #   }
-      # ];
     };
   };
 
