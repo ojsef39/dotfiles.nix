@@ -1,66 +1,92 @@
-# nix-base
+# dotfiles.nix
 
-[![Build Status](https://github.com/ojsef39/nix-base/actions/workflows/validate.yml/badge.svg)](https://github.com/ojsef39/nix-base/actions/workflows/validate.yml)
-![GitHub repo size](https://img.shields.io/github/repo-size/ojsef39/nix-base)
-![GitHub License](https://img.shields.io/github/license/ojsef39/nix-base)
+[![Build Status](https://github.com/ojsef39/dotfiles.nix/actions/workflows/validate.yml/badge.svg)](https://github.com/ojsef39/dotfiles.nix/actions/workflows/validate.yml)
+![GitHub repo size](https://img.shields.io/github/repo-size/ojsef39/dotfiles.nix)
+![GitHub License](https://img.shields.io/github/license/ojsef39/dotfiles.nix)
 
-This repository contains my public Nix base configuration for both macOS and Linux systems.
+My central Nix configuration for macOS (and potentially Linux) systems. This
+repository serves as the single source of truth for my system configuration and
+dotfiles, managing everything from system settings to user applications.
 
-It is designed to be used as an input in another nix config, see an example: [ojsef39/nix-personal](https://github.com/ojsef39/nix-personal)
+> [!NOTE]
+> Formerly `nix-base`. The `nix-personal` repository has been merged into this
+> one.
 
-## Structure
+## Features
 
+- **Flake-based**: Uses Nix Flakes for reproducible and hermetic dependency
+  management.
+
+## Repository Structure
+
+```graphql
+.
+├── flake.nix             # Entry point, input definitions, and output composition
+├── lib/                  # Custom Nix library functions
+│   ├── default.nix       # Library entry point
+│   ├── scanPaths.nix     # Recursive module discovery logic
+│   └── helpers.nix       # Flake helpers (makeOverlay, makePackages)
+├── modules/              # Reusable modules
+│   ├── shared/           # Cross-platform modules
+│   │   ├── system/       # System-level config (e.g., core, packages)
+│   │   └── home/         # Home Manager config (e.g., shell, editor)
+│   └── darwin/           # macOS-specific modules
+│       ├── system/       # macOS system settings
+│       └── home/         # macOS Home Manager modules
+└── hosts/                # Host-specific configurations
+    └── mac/              # Configuration for "mac" host
+        ├── import-sys.nix # Recursive system import
+        └── import-hm.nix  # Recursive home-manager import
 ```
 
+## External Usage
+
+This flake exposes its modules for consumption by other configurations (like
+`nix-work`), allowing for a layered configuration approach where `dotfiles.nix`
+provides the base.
+
+### Exported Modules
+
+- **`sharedModules`**: Core system configuration, packages, and shared Home
+  Manager modules.
+- **`macModules`**: macOS-specific system modules and settings.
+
+### Output Structure
+
+The flake outputs are structured to be easily consumed:
+
+```nix
+outputs = { ... }: {
+  sharedModules = [ ... ]; # Base modules
+  macModules = [ ... ];    # macOS modules
+  lib = { ... };           # Helper library
+};
 ```
 
-## TODOs
+### Example: `nix-work` Consumption
 
-- [ ] Move pkgs for all systems to shared/pkgs.nix
-  - [ ] Move packages to where they get used e.g. eza to shell/default.nix
-- [ ] Use Vesktop instead of Discord
-- [ ] Update READMEs
+To build a work configuration on top of this base:
 
-## Key Files and Their Purpose
+```nix
+{
+  inputs.base.url = "github:ojsef39/dotfiles.nix";
 
-### Top-Level Files
+  outputs = { base, ... }: {
+    darwinConfigurations.workMac = darwin.lib.darwinSystem {
+      modules =
+        base.outputs.sharedModules
+        ++ base.outputs.macModules
+        ++ [
+          ./work-specific-config.nix
+        ];
+      specialArgs = {
+        baseLib = base.lib;
+      };
+    };
+  };
+}
+```
 
-- `flake.nix`: Entry point for the Nix flake configuration, defining inputs and outputs.
-- `Makefile`: Automation scripts for building and deploying configurations.
-- `renovate.json`: Configuration for dependency updates.
+## Setup & Deployment
 
-### Shared Configuration
-
-- `nix/core.nix`: Core Nix configurations shared across all systems.
-
-- `hosts/shared/`: Shared configurations and programs used by both macOS and Linux.
-  - `import.nix`: Imports shared program modules.
-  - `programs/`: Contains configurations for various programs:
-    - `editor/`
-    - `git/`
-    - `kitty/`
-    - `shell/`
-    - `ssh/`
-    - `yuki/`
-    - `…`
-
-### macOS Configuration (`nix-darwin`)
-
-- `hosts/darwin/`:
-  - `import.nix`: Imports macOS-specific modules.
-  - `system.nix`: System-level settings and preferences for macOS.
-  - `homebrew.nix`: Homebrew package configurations (gets imported seperately).
-  - `apps.nix`: Additional applications to install on macOS.
-
-## Useful commands for upstream nix configuration
-
-Check if vars are correctly set:
-`nix eval .#darwinConfigurations.mac._module.specialArgs.vars.cachix.ignorePatterns`
-
-Check if Brew list got merged correctly:
-
-`nix eval .#darwinConfigurations.mac.config.homebrew.masApps`
-
-Check if programs got merged correctly:
-
-`nix eval .#darwinConfigurations.mac.config.system.programs.zsh.sessionVariables.PATH`
+This configuration is managed using `nh` (Nix Helper) and `just`.
