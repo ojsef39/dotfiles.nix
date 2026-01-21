@@ -87,6 +87,19 @@
         end
       '';
 
+      _find_nix_base = ''
+         # Extract path up to and including workspace/code directory
+        set base_path (string replace -r '(/[^/]*(?:workspace|Code)[^/]*)/.*' '$1' $NIX_GIT_PATH)
+
+        set nix_base_path (find "$base_path" -maxdepth 4 -type d -path "*/github.com/*/dotfiles.nix" -print -quit 2>/dev/null)
+        if test -n "$nix_base_path"
+          echo $nix_base_path
+        else
+          echo "nix-base repository not found" >&2
+          return 1
+        end
+      '';
+
       check_repos = ''
         find . -type d -name ".git" | while read -l gitdir
           set repo_dir (dirname "$gitdir")
@@ -101,8 +114,15 @@
       '';
 
       wtf = ''
+        # Find the path to nix-base for the sops.yaml file
+        set nix_base_path (_find_nix_base)
+        if test $status -ne 0
+          echo "Error: Could not find nix-base repository" >&2
+          return 1
+        end
+
         # Decrypt the file temporarily
-        opsops read $HOME/.wtfis.env --sops-file $NIX_GIT_PATH/.sops.yaml >$HOME/.env.wtfis 2>/dev/null
+        opsops read $HOME/.wtfis.env --sops-file $nix_base_path/.sops.yaml >$HOME/.env.wtfis 2>/dev/null
         set decrypt_status $status
 
         # Set up cleanup to happen in any case
