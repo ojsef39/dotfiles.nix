@@ -48,7 +48,7 @@ upgrade: update-refs lint
 [doc('Update every fetcher with its newest commit and hash')]
 update-refs:
     # Update current repository
-    @kitten @ launch --type=overlay --title="update-nix-fetchgit-all" --copy-env --env SKIP_FF=1 fish -C "cd $NIX_GIT_PATH && update-nix-fetchgit-all && exit 0"
+    @kitten @ launch --type=overlay --title="update-nix-fetchgit-all" --copy-env --env SKIP_FF=1 fish -c "cd $NIX_GIT_PATH && update-nix-fetchgit-all"
 
 [group('maintain')]
 [doc('Clean and optimise the nix store with nh')]
