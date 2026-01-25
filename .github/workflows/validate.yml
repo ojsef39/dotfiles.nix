@@ -91,19 +91,19 @@ jobs:
           echo "extra-trusted-substituters = https://ojsef39.cachix.org" >> ~/.config/nix/nix.conf
           echo "extra-trusted-public-keys = ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=" >> ~/.config/nix/nix.conf
 
-      - name: Check Configuration
-        run: |
-          nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build --no-nom -H ${{ matrix.nix_host }} .
-
-      - name: Setup Cachix
+      - name: Setup Cachix Auth
         uses: cachix/cachix-action@v16
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           name: ojsef39
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Push to Cachix
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - name: Build Cachix Hook
         run: |
-          RESULT=$(nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build --no-nom -H ${{ matrix.nix_host }} . -- --print-out-paths | grep "^/nix/store")
-          echo "$RESULT" | cachix push ojsef39
+          HOOK=$(nix build .#cachix-hook --print-out-paths)
+          echo "post-build-hook = $HOOK/bin/cachix-push-hook" >> ~/.config/nix/nix.conf
+
+      - name: Check Configuration
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        run: |
+          nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build --no-nom -H ${{ matrix.nix_host }} .

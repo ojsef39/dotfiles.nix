@@ -137,5 +137,16 @@
     };
 
     lib = myLib;
+
+    packages = let
+      mkPackages = system:
+        import ./packages {
+          pkgs = nixpkgs.legacyPackages.${system};
+        };
+    in {
+      aarch64-darwin = mkPackages "aarch64-darwin";
+      x86_64-darwin = mkPackages "x86_64-darwin";
+      x86_64-linux = mkPackages "x86_64-linux";
+    };
   };
 }

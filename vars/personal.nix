@@ -22,5 +22,4 @@ rec {
   kitty.project_selector = "~/.config";
   cache.community = true;
   is_vm = false;
-  kubectl-debug.imageName = "kubectl-debug";
 }

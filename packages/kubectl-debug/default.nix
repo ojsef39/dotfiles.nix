@@ -3,9 +3,9 @@
   vars,
 }: let
   # Image configuration from vars
-  imageName = vars.kubectl-debug.imageName or (throw "vars.kubectl-debug.imageName must be set");
+  imageName = vars.kubectl-debug.imageName or "kubectl-debug";
   imageTag = vars.kubectl-debug.imageTag or "latest";
-  username = vars.user.name;
+  username = vars.user.name or "local";
 
   # Import nixpkgs for x86_64-linux to build the Docker image with the Linux builder
   linuxPkgs = import pkgs.path {localSystem = "x86_64-linux";};
