@@ -41,6 +41,7 @@ _: {
       "1password-cli"
       "arc"
       "caffeine"
+      "dockdoor"
       "mac-mouse-fix"
       "poe"
       "postman"

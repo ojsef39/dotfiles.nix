@@ -2,6 +2,7 @@
   pkgs,
   cachixName ? "ojsef39",
   ignorePatterns ? [],
+  vars,
 }:
 pkgs.writeShellApplication {
   name = "cachix-push-hook";
@@ -33,16 +34,13 @@ pkgs.writeShellApplication {
       exit 0
     fi
 
-    # Auth: prefer env var, fall back to config file
-    if [[ -z "''${CACHIX_AUTH_TOKEN:-}" ]]; then
-      CACHIX_CONFIG="$HOME/.config/cachix/cachix.dhall"
-      if [[ -f "$CACHIX_CONFIG" ]]; then
-        TOKEN=$(awk '/authToken/{getline; gsub(/[" ]/, ""); print}' "$CACHIX_CONFIG")
-        echo "$TOKEN" | cachix authtoken --stdin
-      else
-        echo "No CACHIX_AUTH_TOKEN and no config at $CACHIX_CONFIG"
-        exit 1
-      fi
+    CACHIX_CONFIG="/Users/${vars.user.name}/.config/cachix/cachix.dhall"
+    if [[ -f "$CACHIX_CONFIG" ]]; then
+      TOKEN=$(awk '/authToken/{getline; gsub(/[" ]/, ""); print}' "$CACHIX_CONFIG")
+      echo "$TOKEN" | cachix authtoken --stdin
+    else
+      echo "No CACHIX_AUTH_TOKEN and no config at $CACHIX_CONFIG"
+      exit 1
     fi
 
     cachix push "$CACHIX_NAME" "''${FILTERED_PATHS[@]}"

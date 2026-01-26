@@ -37,7 +37,6 @@
     casks = [
       "Signal"
       "brooklyn"
-      "dockdoor"
       "imageoptim"
       "parsec"
     ];
