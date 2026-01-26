@@ -5,6 +5,7 @@
   ...
 }: let
   cachixHook = pkgs.callPackage ../../../packages/cachix-hook {
+    inherit vars;
     ignorePatterns =
       ["source" "etc" "system" "home-manager" "user-environment" ".zip" vars.user.name]
       ++ (vars.cachix.ignorePatterns or []);
