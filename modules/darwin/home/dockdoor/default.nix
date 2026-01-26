@@ -1,4 +1,4 @@
-{...}: {
+_: {
   # installed via mod/dw/brew
   targets.darwin.defaults = {
     "com.ethanbills.DockDoor" = {
