@@ -12,6 +12,7 @@ _: {
 
     taps = [
       "hashicorp/tap"
+      "tldev/tap"
     ];
 
     # Mac App Store apps
@@ -45,6 +46,7 @@ _: {
       "mac-mouse-fix"
       "poe"
       "postman"
+      "posturr"
       "raycast"
       "scroll-reverser"
       "the-unarchiver"
