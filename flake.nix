@@ -4,6 +4,7 @@
     # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
     nixpkgs.url = "https://flakehub.com/f/JHOFER-Cloud/NixOS-nixpkgs/0.1.tar.gz"; # latest nixpkgs-unstable
     # nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/release-25.05";
     nixpkgs_fork = {
       url = "github:ojsef39/nixpkgs/mist";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -72,12 +73,18 @@
         nixpkgs.overlays = [
           nixkit.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-          (_final: prev: {
+          (final: prev: {
             # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
             inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
             # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
             # claude-code = prev.callPackage "${inputs.nixpkgs_claude_code_fork}/pkgs/by-name/cl/claude-code/package.nix" {};
+            inherit
+              (inputs.nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system})
+              vesktop
+              firefox
+              firefox-unwrapped
+              ;
           })
         ];
       }
