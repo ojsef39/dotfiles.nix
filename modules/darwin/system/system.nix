@@ -104,4 +104,19 @@
     touchIdAuth = true;
     watchIdAuth = true;
   };
+
+  # Configure nix-daemon to use 1Password SSH agent for remote builders
+  launchd.daemons."systems.determinate.nix-daemon" = {
+    serviceConfig.EnvironmentVariables = {
+      SSH_AUTH_SOCK = "/Users/${vars.user.name}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+    };
+  };
+  # example for linux
+  # systemd.services.nix-daemon = {
+  #   environment = {
+  #     SSH_AUTH_SOCK = "/run/user/${builtins.toString config.users.users.${username}.uid}/${
+  #       config.home-manager.users.${username}.services.ssh-agent.socket
+  #     }";
+  #   };
+  # };
 }

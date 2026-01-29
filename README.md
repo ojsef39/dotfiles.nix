@@ -45,6 +45,15 @@ This flake exposes its modules for consumption by other configurations (like
 `nix-work`), allowing for a layered configuration approach where `dotfiles.nix`
 provides the base.
 
+Remote building with 1Password as SSH Agent:
+
+```bash
+nix build .#darwinConfigurations.mac.system --builders 'ssh://<user>@<ip> x86_64-linux,aarch64-darwin'
+```
+
+> Make sure you ran `sudo ssh <user>@<ip>` first and accept the host key dialog,
+> otherwise remote build will fail as that runs as root (nix daemon).
+
 ### Exported Modules
 
 - **`sharedModules`**: Core system configuration, packages, and shared Home
