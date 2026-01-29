@@ -7,7 +7,7 @@ alias u := upgrade
 nix_cmd := `if [ "$(uname)" = "Darwin" ]; then echo "darwin"; else echo "os"; fi`
 nix_host := `if [ "$(uname)" = "Darwin" ]; then echo "mac"; else echo "nixos"; fi`
 # Use GITHUB_TOKEN from 1Password to prevent rate limiting
-NIX_CONFIG := `if [ "${GITHUB_ACTIONS:-}" != "true" ]; then echo "access-tokens = github.com=$(op read op://Personal/GITHUB_TOKEN/no_access)"; fi`
+nix_flags := `if [ "${GITHUB_ACTIONS:-}" != "true" ]; then echo '--option access-tokens github.com=$(op read op://Personal/GITHUB_TOKEN/no_access)'; fi`
 
 [doc('HELP')]
 default:
@@ -19,7 +19,7 @@ deploy: lint
     # Deploying system configuration without update...
     @git pull || true
     @git add .
-    @NIX_CONFIG="{{NIX_CONFIG}}" nh {{nix_cmd}} switch -a -H {{nix_host}} $NIX_GIT_PATH
+    @nh {{nix_cmd}} switch -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
 
 [group('nix')]
 [doc('Deploy system configuration')]
@@ -27,14 +27,14 @@ deploy-update: lint
     # Deploying system configuration with update...
     @git pull || true
     @git add .
-    @NIX_CONFIG="{{NIX_CONFIG}}" nh {{nix_cmd}} switch -u -a -H {{nix_host}} $NIX_GIT_PATH
+    @nh {{nix_cmd}} switch -u -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
 
 [group('nix')]
 [doc('Upgrade flake inputs and deploy')]
 upgrade: update-refs lint
     @git pull || true
     @git add .
-    @NIX_CONFIG="{{NIX_CONFIG}}" nh {{nix_cmd}} switch -u -a -H {{nix_host}} $NIX_GIT_PATH
+    @nh {{nix_cmd}} switch -u -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
     @git add .
     @if git log -1 --pretty=%B | grep -q "chore(deps): updated inputs and refs"; then \
         echo "Amending previous dependency update commit..."; \
@@ -73,13 +73,13 @@ rollback:
 [group('lint')]
 [doc('Lint all nix files using statix and deadnix')]
 lint: format
-    @NIX_CONFIG="{{NIX_CONFIG}}" nix run nixpkgs#statix -- check .
-    @NIX_CONFIG="{{NIX_CONFIG}}" nix run nixpkgs#deadnix -- -eq .
+    @nix run {{nix_flags}} nixpkgs#statix -- check .
+    @nix run {{nix_flags}} nixpkgs#deadnix -- -eq .
 
 [group('lint')]
 [doc('Format files using alejandra')]
 format:
-    @NIX_CONFIG="{{NIX_CONFIG}}" nix run nixpkgs#alejandra -- .
+    @nix run {{nix_flags}} nixpkgs#alejandra -- .
 
 [group('lint')]
 [doc('Show diff between current and commited changes')]
