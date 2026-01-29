@@ -97,6 +97,37 @@
 
       hitoolbox.AppleFnUsageType = "Show Emoji & Symbols";
     };
+
+    # Configure nix-daemon to use 1Password SSH agent for remote builders
+    # Uses PlistBuddy to modify the Determinate-managed plist directly
+    activationScripts = {
+      preActivation.text = ''
+        plist="/Library/LaunchDaemons/systems.determinate.nix-daemon.plist"
+        desired="/Users/${vars.user.name}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+        current=$(/usr/libexec/PlistBuddy -c "Print :EnvironmentVariables:SSH_AUTH_SOCK" "$plist" 2>/dev/null || echo "")
+
+        if [ "$current" != "$desired" ]; then
+          /usr/libexec/PlistBuddy -c "Add :EnvironmentVariables dict" "$plist" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Set :EnvironmentVariables:SSH_AUTH_SOCK '$desired'" "$plist" 2>/dev/null || \
+          /usr/libexec/PlistBuddy -c "Add :EnvironmentVariables:SSH_AUTH_SOCK string '$desired'" "$plist"
+
+          if launchctl print system/systems.determinate.nix-daemon &>/dev/null; then
+            launchctl unload /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
+            launchctl load /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
+          fi
+        fi
+      '';
+
+      # example for linux
+      # systemd.services.nix-daemon = {
+      #   environment = {
+      #     SSH_AUTH_SOCK = "/run/user/${builtins.toString config.users.users.${username}.uid}/${
+      #       config.home-manager.users.${username}.services.ssh-agent.socket
+      #     }";
+      #   };
+      # };
+    };
   };
   networking.applicationFirewall.enableStealthMode = true;
   # Add ability to used TouchID for sudo authentication
@@ -104,19 +135,4 @@
     touchIdAuth = true;
     watchIdAuth = true;
   };
-
-  # Configure nix-daemon to use 1Password SSH agent for remote builders
-  launchd.daemons."systems.determinate.nix-daemon" = {
-    serviceConfig.EnvironmentVariables = {
-      SSH_AUTH_SOCK = "/Users/${vars.user.name}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-    };
-  };
-  # example for linux
-  # systemd.services.nix-daemon = {
-  #   environment = {
-  #     SSH_AUTH_SOCK = "/run/user/${builtins.toString config.users.users.${username}.uid}/${
-  #       config.home-manager.users.${username}.services.ssh-agent.socket
-  #     }";
-  #   };
-  # };
 }

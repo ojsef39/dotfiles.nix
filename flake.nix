@@ -73,7 +73,7 @@
         nixpkgs.overlays = [
           nixkit.overlays.default
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-          (final: prev: {
+          (_final: prev: {
             # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
             inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
