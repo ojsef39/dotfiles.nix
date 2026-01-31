@@ -6,6 +6,7 @@
     fh
     nh
     nix-init # https://github.com/nix-community/nix-init
+    nix-output-monitor
     nix-tree
     nix-update # https://github.com/Mic92/nix-update
     nixpkgs-review
