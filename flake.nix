@@ -82,8 +82,6 @@
             inherit
               (inputs.nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system})
               vesktop
-              firefox
-              firefox-unwrapped
               ;
           })
         ];

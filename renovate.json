@@ -1,4 +1,5 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "nix": {
     "enabled": true
   },
@@ -6,5 +7,6 @@
     "at any time"
   ],
   "automerge": true,
-  "automergeType": "pr"
+  "automergeType": "pr",
+  "prHourlyLimit": 0
 }
