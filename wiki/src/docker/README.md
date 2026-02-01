@@ -9,7 +9,7 @@ cd wiki/docker && nix develop -c $SHELL
 ```
 
 or with [nix-output-monitor](https://github.com/maralorn/nix-output-monitor)
-(`nom develop -c $SHELL`) for a nice overview of build progress
+(`nom develop -c $SHELL`) for a nice overview of the build progress
 
 This will build and load two Docker images:
 
@@ -26,7 +26,9 @@ This will build and load two Docker images:
 
 ### Linux Builder (Recommended)
 
-The flake uses Determinate's built-in Linux builder on macOS:
+The flake uses
+[Determinate's](https://github.com/DeterminateSystems/nix-installer) built-in
+Linux builder on macOS:
 
 ```nix
 linuxPkgs = import pkgs.path {system = "x86_64-linux";};
