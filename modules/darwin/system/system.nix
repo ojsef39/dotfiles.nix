@@ -100,6 +100,7 @@
 
     # Configure nix-daemon to use 1Password SSH agent for remote builders
     # Uses PlistBuddy to modify the Determinate-managed plist directly
+    # DOCS: included in wiki/src/external-usage.md
     activationScripts = {
       preActivation.text = ''
         plist="/Library/LaunchDaemons/systems.determinate.nix-daemon.plist"
