@@ -1,0 +1,8 @@
+[book]
+authors = ["ojsef39"]
+language = "en"
+src = "src"
+title = "dotfiles.nix wiki"
+
+[output.html]
+git-repository-url = "https://github.com/ojsef39/dotfiles.nix"

@@ -6,9 +6,14 @@ on:
     paths-ignore:
       - ".github/**"
       - "README.md"
+      - "wiki/**"
   pull_request:
     branches:
       - "main"
+    paths-ignore:
+      - ".github/**"
+      - "README.md"
+      - "wiki/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
