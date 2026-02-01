@@ -3,16 +3,10 @@
   "nix": {
     "enabled": true
   },
-  "git-submodules": {
-    "enabled": true
-  },
   "schedule": [
     "at any time"
   ],
   "automerge": true,
   "automergeType": "pr",
-  "prHourlyLimit": 0,
-  "ignorePaths": [
-    "wiki/**"
-  ]
+  "prHourlyLimit": 0
 }
