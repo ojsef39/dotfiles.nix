@@ -5,11 +5,11 @@ Example flake showing `buildLayeredImage` and `buildImage` with Ubuntu base.
 ## Try it out
 
 ```bash
-cd wiki/docker && nix develop
+cd wiki/docker && nix develop -c $SHELL
 ```
 
 or with [nix-output-monitor](https://github.com/maralorn/nix-output-monitor)
-(`nom develop`) for a nice overview of build progress
+(`nom develop -c $SHELL`) for a nice overview of build progress
 
 This will build and load two Docker images:
 
