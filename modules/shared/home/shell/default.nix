@@ -158,12 +158,6 @@
 
       gh_prm = ''
         # Usage: gh_prm <branch> [gh pr create flags] -- [gh pr merge flags]
-        # Creates a new branch, switches to it, creates a PR, and merges it.
-        # Flags before '--' are passed to 'gh pr create', flags after to 'gh pr merge'.
-        if test (count $argv) -lt 1
-          echo "Usage: gh_prm <branch> [gh pr create flags] -- [gh pr merge flags]" >&2
-          return 1
-        end
 
         set -l branch $argv[1]
         set -l create_flags
