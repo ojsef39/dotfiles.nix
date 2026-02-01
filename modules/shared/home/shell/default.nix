@@ -157,7 +157,22 @@
       '';
 
       gh_prm = ''
-        git branch $argv || true && git switch $argv && gh pr create && gh pr merge -d && git pull
+        set branch $argv[1]
+        set create_flags
+        set merge_flags
+        set in_merge 0
+
+        for arg in $argv[2..-1]
+          if test "$arg" = "--"
+            set in_merge 1
+          else if test $in_merge -eq 1
+            set merge_flags $merge_flags $arg
+          else
+            set create_flags $create_flags $arg
+          end
+        end
+
+        git branch $branch || true && git switch $branch && gh pr create $create_flags && gh pr merge --delete-branch $merge_flags && git pull
       '';
 
       rm_DS = ''
