@@ -153,5 +153,31 @@
       x86_64-darwin = mkPackages "x86_64-darwin";
       x86_64-linux = mkPackages "x86_64-linux";
     };
+
+    devShells = let
+      mkShell = system: let
+        pkgs = nixpkgs.legacyPackages.${system};
+
+        md-build = pkgs.writeShellScriptBin "md-build" ''
+          ${pkgs.mdbook}/bin/mdbook build wiki
+        '';
+
+        md-serve = pkgs.writeShellScriptBin "md-serve" ''
+          ${pkgs.mdbook}/bin/mdbook serve wiki
+        '';
+      in {
+        default = pkgs.mkShell {
+          packages = [
+            pkgs.mdbook
+            md-build
+            md-serve
+          ];
+        };
+      };
+    in {
+      aarch64-darwin = mkShell "aarch64-darwin";
+      x86_64-darwin = mkShell "x86_64-darwin";
+      x86_64-linux = mkShell "x86_64-linux";
+    };
   };
 }

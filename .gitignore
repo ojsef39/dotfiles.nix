@@ -1,3 +1,5 @@
 .DS_Store
 .yazi-cwd
 result
+.direnv/bin
+.direnv
