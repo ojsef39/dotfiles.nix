@@ -14,10 +14,10 @@
       "Final Cut Pro" = 424389933;
       "Goodnotes" = 1444383602;
       "Ground News" = 1324203419;
-      "Keynote" = 409183694;
+      "Keynote" = 361285480;
       "Motion" = 434290957;
-      "Numbers" = 409203825;
-      "Pages" = 409201541;
+      "Numbers" = 361304891;
+      "Pages" = 361309726;
       "Parcel" = 639968404;
       "Pixelmator Pro" = 1289583905;
       "TestFlight" = 899247664;
