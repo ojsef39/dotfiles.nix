@@ -1,5 +1,6 @@
 # dotfiles.nix
 
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://dotfiles.jhofer.de "Go to project documentation")
 [![Build Status](https://github.com/ojsef39/dotfiles.nix/actions/workflows/validate.yml/badge.svg)](https://github.com/ojsef39/dotfiles.nix/actions/workflows/validate.yml)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ojsef39/dotfiles.nix)
 ![GitHub License](https://img.shields.io/github/license/ojsef39/dotfiles.nix)
