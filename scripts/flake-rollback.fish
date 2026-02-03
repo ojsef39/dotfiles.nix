@@ -2,42 +2,99 @@
 
 # Nix Flake Input Revert Tool
 # Helps revert specific flake inputs to their previous versions
+# Supports interactive commit selection for rollback to any point in history
 
 # Check prerequisites
 function check_prerequisites
     set -l flake_dir $argv[1]
     if not test -f "$flake_dir/flake.lock"
-        echo "$(set_color red) Error: flake.lock not found in $flake_dir$(set_color normal)"
+        echo "$(set_color red) Error: flake.lock not found in $flake_dir$(set_color normal)"
         exit 1
     end
 
     for cmd in git fzf jq
         if not command -v $cmd >/dev/null 2>&1
-            echo "$(set_color red) Error: $cmd is required but not found$(set_color normal)"
+            echo "$(set_color red) Error: $cmd is required but not found$(set_color normal)"
             exit 1
         end
     end
 
     if not git -C "$flake_dir" rev-parse --is-inside-work-tree >/dev/null 2>&1
-        echo "$(set_color red) Error: not in a git repository ($flake_dir)$(set_color normal)"
+        echo "$(set_color red) Error: not in a git repository ($flake_dir)$(set_color normal)"
         exit 1
     end
 end
 
-# Get previous flake.lock from git
+# Get commits that modified flake.lock
+function get_flake_lock_commits
+    set -l flake_dir $argv[1]
+    set -l limit $argv[2]
+    
+    if test -z "$limit"
+        set limit 50
+    end
+    
+    # Get commits that touched flake.lock with a nice format for fzf
+    git -C "$flake_dir" log --oneline --format="%h %C(yellow)%ad%C(reset) %C(cyan)%an%C(reset) %s" --date=short -n $limit -- flake.lock 2>/dev/null
+end
+
+# Interactive commit picker
+function pick_commit
+    set -l flake_dir $argv[1]
+    
+    echo "$(set_color cyan)󰜘  Fetching commits that modified flake.lock...$(set_color normal)" >&2
+    
+    set -l commits (get_flake_lock_commits $flake_dir 100)
+    
+    if test (count $commits) -eq 0
+        echo "$(set_color red) Error: No commits found that modified flake.lock$(set_color normal)" >&2
+        return 1
+    end
+    
+    # Use fzf to select a commit
+    set -l selected (printf '%s\n' $commits | fzf --ansi \
+        --header="󰜘  Select a commit to rollback to (current state will be compared against this)" \
+        --prompt="󰜘  Commit: " \
+        --preview="git -C '$flake_dir' show {1}:flake.lock 2>/dev/null | jq -r '.nodes.root.inputs | keys[]' 2>/dev/null | head -20" \
+        --preview-label="Inputs in selected commit")
+    
+    if test -z "$selected"
+        return 1
+    end
+    
+    # Extract just the commit hash (first field)
+    echo $selected | awk '{print $1}'
+end
+
+# Get flake.lock from a specific commit
+function get_lock_from_commit
+    set -l flake_dir $argv[1]
+    set -l commit $argv[2]
+    set target_lock (mktemp)
+    
+    if not git -C "$flake_dir" show "$commit:flake.lock" >$target_lock 2>/dev/null
+        echo "$(set_color red) Error: Could not get flake.lock from commit $commit$(set_color normal)" >&2
+        rm -f $target_lock
+        return 1
+    end
+    
+    echo $target_lock
+end
+
+# Get previous flake.lock from git (legacy function for backward compatibility)
 function get_previous_lock
     set -l flake_dir $argv[1]
     set prev_lock (mktemp)
     # Try to get flake.lock from previous commit (HEAD^), fallback to HEAD if not available
     if git -C "$flake_dir" rev-parse HEAD^ >/dev/null 2>&1
         if not git -C "$flake_dir" show HEAD^:flake.lock >$prev_lock 2>/dev/null
-            echo "$(set_color red) Error: Could not get flake.lock from previous commit (HEAD^)$(set_color normal)"
+            echo "$(set_color red) Error: Could not get flake.lock from previous commit (HEAD^)$(set_color normal)"
             rm -f $prev_lock
             exit 1
         end
     else
         if not git -C "$flake_dir" show HEAD:flake.lock >$prev_lock 2>/dev/null
-            echo "$(set_color red) Error: Could not get previous version of flake.lock from git$(set_color normal)"
+            echo "$(set_color red) Error: Could not get previous version of flake.lock from git$(set_color normal)"
             rm -f $prev_lock
             exit 1
         end
@@ -124,9 +181,15 @@ end
 # Get all changed inputs with better duplicate handling
 function get_changed_inputs
     set -l flake_dir $argv[1]
+    set -l target_lock $argv[2]
     set -l current_lock "$flake_dir/flake.lock"
-    set -l prev_lock (get_previous_lock $flake_dir)
     set -l changed_entries
+    
+    # If no target lock provided, get from previous commit
+    if test -z "$target_lock"
+        set target_lock (get_previous_lock $flake_dir)
+        set -g _cleanup_target_lock $target_lock
+    end
 
     # Get all input names from current lock
     set -l inputs (jq -r '.nodes.root.inputs | keys[]' $current_lock)
@@ -138,7 +201,7 @@ function get_changed_inputs
 
         # Get nodes for this input from both locks
         set -l current_nodes_raw (get_input_nodes $current_lock $input)
-        set -l prev_nodes_raw (get_input_nodes $prev_lock $input)
+        set -l prev_nodes_raw (get_input_nodes $target_lock $input)
 
         # Convert to arrays
         set -l current_nodes_arr
@@ -167,7 +230,7 @@ function get_changed_inputs
             set -l prev_rev ""
 
             if test -n "$prev_node"
-                set prev_rev (get_node_revision $prev_lock $prev_node)
+                set prev_rev (get_node_revision $target_lock $prev_node)
             end
 
             # Check if revision changed
@@ -180,7 +243,11 @@ function get_changed_inputs
         end
     end
 
-    rm -f $prev_lock
+    # Only cleanup if we created the target lock ourselves
+    if set -q _cleanup_target_lock
+        rm -f $_cleanup_target_lock
+        set -e _cleanup_target_lock
+    end
 
     if test (count $changed_entries) -eq 0
         return 1
@@ -198,7 +265,6 @@ function parse_selection
 
     # Extract node key (hash) from brackets
     set -l node_name (string replace -r '.*\[(\w+)\].*' '$1' $selection)
-    echo $node_name
 
     echo "$input_name|$node_name"
 end
@@ -206,15 +272,21 @@ end
 # Revert selected inputs with better error handling
 function revert_inputs
     set -l flake_dir $argv[1]
-    set -e argv[1]
-    set -l selected_inputs $argv
+    set -l target_lock $argv[2]
+    set -l selected_inputs $argv[3..-1]
 
     if test (count $selected_inputs) -eq 0
         echo "No inputs selected for reversion"
         return 0
     end
 
-    set -l prev_lock (get_previous_lock $flake_dir)
+    # If no target lock provided, get from previous commit
+    set -l cleanup_lock 0
+    if test -z "$target_lock"
+        set target_lock (get_previous_lock $flake_dir)
+        set cleanup_lock 1
+    end
+    
     set -l new_lock (mktemp)
     cp "$flake_dir/flake.lock" $new_lock
 
@@ -227,8 +299,8 @@ function revert_inputs
 
         echo "Reverting $input_name [$node_name]..."
 
-        # Get node data from previous lock
-        set -l node_data (jq --arg node "$node_name" '.nodes[$node]' $prev_lock)
+        # Get node data from target lock
+        set -l node_data (jq --arg node "$node_name" '.nodes[$node]' $target_lock)
 
         if test "$node_data" = null
             echo "$(set_color yellow) Warning: Could not find node $input_name in previous lock file$(set_color normal)"
@@ -247,47 +319,97 @@ function revert_inputs
     # Replace the current flake.lock with the updated one
     if test $reverted_count -gt 0
         cp $new_lock "$flake_dir/flake.lock"
-        echo "$(set_color green) Successfully reverted $reverted_count input(s)$(set_color normal)"
+        echo "$(set_color green) Successfully reverted $reverted_count input(s)$(set_color normal)"
     else
         echo "$(set_color yellow) No inputs were reverted$(set_color normal)"
     end
 
     # Clean up
-    rm -f $prev_lock $new_lock
+    if test $cleanup_lock -eq 1
+        rm -f $target_lock
+    end
+    rm -f $new_lock
 end
 
 # Main function
 function main
     set -l flake_dir "."
-    if test (count $argv) -ge 1
-        set flake_dir $argv[1]
+    set -l quick_mode 0
+    
+    # Parse arguments
+    for arg in $argv
+        switch $arg
+            case -q --quick
+                set quick_mode 1
+            case '-*'
+                echo "$(set_color red) Unknown option: $arg$(set_color normal)"
+                echo "Usage: flake-rollback [OPTIONS] [FLAKE_DIR]"
+                echo ""
+                echo "Options:"
+                echo "  -q, --quick    Quick mode: compare against previous commit (HEAD^)"
+                echo ""
+                echo "Without --quick, an interactive picker lets you choose any commit"
+                return 1
+            case '*'
+                set flake_dir $arg
+        end
     end
 
     check_prerequisites $flake_dir
 
+    set -l target_lock ""
+    set -l target_commit ""
+    
+    if test $quick_mode -eq 1
+        # Quick mode: use previous commit
+        echo "$(set_color cyan)󰜘  Quick mode: comparing against previous commit (HEAD^)$(set_color normal)"
+        set target_lock (get_previous_lock $flake_dir)
+        set target_commit "HEAD^"
+    else
+        # Interactive mode: let user pick a commit
+        set target_commit (pick_commit $flake_dir)
+        
+        if test -z "$target_commit"
+            echo "$(set_color yellow) No commit selected. Exiting.$(set_color normal)"
+            return 0
+        end
+        
+        echo ""
+        echo "$(set_color cyan)󰜘  Comparing current flake.lock against commit: $(set_color yellow)$target_commit$(set_color normal)"
+        
+        set target_lock (get_lock_from_commit $flake_dir $target_commit)
+        if test $status -ne 0
+            return 1
+        end
+    end
+
     # Get changed inputs
-    set -l changed_inputs_output (get_changed_inputs $flake_dir)
+    set -l changed_inputs_output (get_changed_inputs $flake_dir $target_lock)
     set -l get_inputs_status $status
 
     if test $get_inputs_status -ne 0
         echo ""
-        echo "$(set_color cyan) No changes detected in flake.lock$(set_color normal)"
+        echo "$(set_color cyan) No changes detected between current flake.lock and $target_commit$(set_color normal)"
+        rm -f $target_lock
         return 0
     end
 
     # Use fzf to select inputs to revert
-    set -l selected_inputs (printf '%s\n' $changed_inputs_output | fzf --ansi --multi --header="󱄅  Select inputs to revert (Tab for multiple, Enter to confirm)" --prompt="󰏗  Input to revert: ")
+    set -l selected_inputs (printf '%s\n' $changed_inputs_output | fzf --ansi --multi \
+        --header="󱄅  Select inputs to revert to $target_commit (Tab for multiple, Enter to confirm)" \
+        --prompt="󰏗  Input to revert: ")
 
     if test (count $selected_inputs) -eq 0
         echo "$(set_color yellow) No inputs selected. Exiting.$(set_color normal)"
+        rm -f $target_lock
         return 0
     end
 
     # Confirm the selection
     echo ""
-    echo "You selected the following inputs to revert:"
+    echo "You selected the following inputs to revert to $(set_color yellow)$target_commit$(set_color normal):"
     for input in $selected_inputs
-        echo "  -$(set_color red)  $input$(set_color normal)"
+        echo "  -$(set_color red)  $input$(set_color normal)"
     end
     echo ""
 
@@ -296,11 +418,15 @@ function main
 
     if not string match -qi 'y*' $confirm
         echo "$(set_color yellow) Operation cancelled.$(set_color normal)"
+        rm -f $target_lock
         return 0
     end
 
     # Revert the selected inputs
-    revert_inputs $flake_dir $selected_inputs
+    revert_inputs $flake_dir $target_lock $selected_inputs
+    
+    # Cleanup
+    rm -f $target_lock
 end
 
 # Run main function
