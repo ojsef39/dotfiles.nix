@@ -39,18 +39,19 @@
         tag.forceSignAnnotated = lib.mkDefault false;
 
         alias = {
-          mr = "!sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -";
-          br = "branch";
-          co = "checkout";
-          st = "status";
-          ls = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate";
-          ll = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate --numstat";
-          cm = "commit -m";
-          ca = "commit -am";
-          dc = "diff --cached";
           amend = "commit --amend -m";
-          update = "submodule update --init --recursive";
+          br = "branch";
+          ca = "commit -am";
+          cm = "commit -m";
+          co = "checkout";
+          dc = "diff --cached";
           foreach = "submodule foreach";
+          ll = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate --numstat";
+          ls = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate";
+          mr = "!sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -";
+          root = "rev-parse --show-toplevel";
+          st = "status";
+          update = "submodule update --init --recursive";
         };
       };
     };
