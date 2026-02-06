@@ -10,6 +10,10 @@
     setupOpts = {
       keymap = {
         preset = "super-tab";
+        # Disable default mappings that interfere with copilot
+        "<C-n>" = [];
+        "<C-k>" = [];
+        "<C-p>" = [];
       };
       sources = {
         default = ["lsp" "path" "snippets" "buffer"];
