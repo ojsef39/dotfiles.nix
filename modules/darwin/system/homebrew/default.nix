@@ -50,6 +50,7 @@ _: {
       "raycast"
       "scroll-reverser"
       "the-unarchiver"
+      "tor-browser"
       "yubico-authenticator"
     ];
   };
