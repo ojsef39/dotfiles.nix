@@ -447,6 +447,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_fork2": {
+      "locked": {
+        "lastModified": 1770469213,
+        "narHash": "sha256-3VMNVPNC+/E+gQe5uPLdK+ep+GmCL20UrxKmDBx4ybs=",
+        "owner": "ojsef39",
+        "repo": "nixpkgs",
+        "rev": "09095c477383271ed91175712bb14b77d5695002",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ojsef39",
+        "ref": "feat/dadav-helm-schema",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nvf": {
       "inputs": {
         "flake-compat": "flake-compat_3",
@@ -482,6 +498,7 @@
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs_fork": "nixpkgs_fork",
+        "nixpkgs_fork2": "nixpkgs_fork2",
         "nvf": "nvf",
         "spicetify-nix": "spicetify-nix"
       }
