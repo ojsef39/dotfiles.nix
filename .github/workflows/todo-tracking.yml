@@ -52,7 +52,7 @@ jobs:
             git commit -m "docs(todos): add issue links"
             git push origin "$BRANCH_NAME"
             gh pr create --fill --head "$BRANCH_NAME"
-            gh pr merge "$BRANCH_NAME" --squash --delete-branch --admin --auto
+            gh pr merge "$BRANCH_NAME" --squash --delete-branch --admin
           else
             echo "No changes to commit"
           fi
