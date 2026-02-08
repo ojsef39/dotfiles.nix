@@ -4,25 +4,19 @@ on:
   push:
     branches:
       - main
-  # pull_request:
-  #   branches:
-  #     - main
 
 jobs:
+  # Usage: https://github.com/marketplace/actions/todo-to-issue#usage
   track-todos:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Track TODO comments
-        uses: ribtoks/tdg-github-action@v0.4.16-beta
+      - name: TODO to Issue
+        uses: alstr/todo-to-issue-action@v5.1.14
         with:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          SHA: ${{ github.sha }}
-          REF: ${{ github.ref }}
-          LABEL: "code comment"
-          COMMENT_ON_ISSUES: "true"
-          ASSIGN_FROM_BLAME: "true"
-          # DRY_RUN: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
+          CLOSE_ISSUES: true
+          AUTO_ASSIGN: true
