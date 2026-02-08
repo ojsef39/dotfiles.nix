@@ -14,6 +14,7 @@
     gitlab-ci-local
     go
     gomplate
+    helm-schema-gen
     hwatch
     kubeconform
     kubectl

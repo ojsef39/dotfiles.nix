@@ -11,6 +11,10 @@
       # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
       # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
     };
+    nixpkgs_fork2 = {
+      url = "github:ojsef39/nixpkgs/feat/dadav-helm-schema";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"; # latest master
       # url = "/Users/josefhofer/CodeProjects/github.com/nix-community/home-manager";
@@ -76,6 +80,7 @@
           (_final: prev: {
             # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
             inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
+            inherit (inputs.nixpkgs_fork2.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
             # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
             # claude-code = prev.callPackage "${inputs.nixpkgs_claude_code_fork}/pkgs/by-name/cl/claude-code/package.nix" {};
