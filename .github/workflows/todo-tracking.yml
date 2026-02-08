@@ -20,4 +20,5 @@ jobs:
         with:
           CLOSE_ISSUES: true
           AUTO_ASSIGN: true
+          NO_STANDARD: true # Disable scanning for syntax.json and languages.yml
           LANGUAGES: .github/workflows/todo-tracking-syntax.json
