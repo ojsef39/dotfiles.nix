@@ -43,6 +43,6 @@ in {
   };
 
   # NOTE: Idk why this has to be set to 5
-  # category=question
+  # labels: question
   system.stateVersion = 5;
 }
