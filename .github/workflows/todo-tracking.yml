@@ -22,6 +22,13 @@ jobs:
       issues: write
       pull-requests: write
     steps:
+      - name: Generate GitHub App Token
+        id: generate-token
+        uses: actions/create-github-app-token@v2.2.1
+        with:
+          app-id: ${{ secrets.TODO_APP_ID }}
+          private-key: ${{ secrets.TODO_APP_PRIV_KEY }}
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -31,6 +38,7 @@ jobs:
           MANUAL_COMMIT_REF: ${{ inputs.MANUAL_COMMIT_REF }}
           MANUAL_BASE_REF: ${{ inputs.MANUAL_BASE_REF }}
         with:
+          TOKEN: ${{ steps.generate-token.outputs.token }}
           CLOSE_ISSUES: true
           AUTO_ASSIGN: true
           LANGUAGES: .github/workflows/syntax.json
@@ -43,7 +51,7 @@ jobs:
 
       - name: Commit and create PR
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           git add -A
           if [[ $(git status --porcelain) ]]; then
