@@ -1,5 +1,7 @@
 #TODO: https://github.com/bennypowers/nvim-regexplainer
+#Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/401
 #TODO: https://github.com/yazi-rs/plugins/tree/main/diff.yazi
+#Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/400
 {pkgs, ...}: {
   # Import nvf configuration
   imports = [./nvf];
