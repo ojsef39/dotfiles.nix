@@ -1,0 +1,28 @@
+name: Track TODOs
+
+on:
+  push:
+    branches:
+      - main
+  # pull_request:
+  #   branches:
+  #     - main
+
+jobs:
+  track-todos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Track TODO comments
+        uses: ribtoks/tdg-github-action@v0.4.16-beta
+        with:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          REF: ${{ github.ref }}
+          LABEL: "code comment"
+          COMMENT_ON_ISSUES: "true"
+          ASSIGN_FROM_BLAME: "true"
+          # DRY_RUN: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}

@@ -44,6 +44,7 @@
       };
 
       ##TODO: Is this even still used?
+      # category=os:darwin,question
       ".GlobalPreferences"."com.apple.mouse.scaling" = 0.6875;
 
       # https://daiderd.com/nix-darwin/manual/index.html#opt-system.defaults.CustomSystemPreferences
