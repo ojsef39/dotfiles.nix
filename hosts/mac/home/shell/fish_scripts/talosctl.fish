@@ -1,8 +1,10 @@
 # Function to display and launch Talos dashboard with all nodes
 # TODO: Better cancel behaviour
+# Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/387
 # labels: os:darwin, device:personal, enhancement
 
 # TODO: Dont upgrade nodes when they are already on the target version (unless specified with flag)
+# Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/386
 # labels: os:darwin, device:personal, enhancement
 function talos_dashboard
     # Get all cluster members
