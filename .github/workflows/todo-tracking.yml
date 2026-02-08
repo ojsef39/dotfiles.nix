@@ -47,11 +47,11 @@ jobs:
         run: |
           git add -A
           if [[ $(git status --porcelain) ]]; then
-            BRANCH_NAME="todo-issue-links-$(date +%s)"
+            BRANCH_NAME="docs/todo-issue-links"
             git checkout -b "$BRANCH_NAME"
             git commit -m "docs(todos): add issue links"
-            git push origin "$BRANCH_NAME"
-            gh pr create --fill --head "$BRANCH_NAME"
+            git push -f origin "$BRANCH_NAME"
+            gh pr create --fill --head "$BRANCH_NAME" || true
             gh pr merge "$BRANCH_NAME" --squash --delete-branch --admin
           else
             echo "No changes to commit"
