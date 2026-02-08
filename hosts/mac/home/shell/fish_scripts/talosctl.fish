@@ -1,8 +1,8 @@
 # Function to display and launch Talos dashboard with all nodes
-#TODO: Better cancel behaviour
-# category=os:darwin,device:personal,enhancement
-#TODO: Dont upgrade nodes when they are already on the target version (unless specified with flag)
-# category=os:darwin,device:personal,enhancement
+# TODO: Better cancel behaviour
+# labels: os:darwin, device:personal, enhancement
+# TODO: Dont upgrade nodes when they are already on the target version (unless specified with flag)
+# labels: os:darwin, device:personal, enhancement
 function talos_dashboard
     # Get all cluster members
     echo "🔍 Fetching cluster members..."
