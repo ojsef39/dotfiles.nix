@@ -7,9 +7,47 @@
         "pattern": "#"
       }
     ],
-    "extensions": [
-      ".fish"
-    ]
+    "extensions": [".fish"]
+  },
+  {
+    "language": "justfile",
+    "markers": [
+      {
+        "type": "line",
+        "pattern": "#"
+      }
+    ],
+    "extensions": ["justfile"]
+  },
+  {
+    "language": "conf",
+    "markers": [
+      {
+        "type": "line",
+        "pattern": "#"
+      }
+    ],
+    "extensions": [".conf"]
+  },
+  {
+    "language": "env",
+    "markers": [
+      {
+        "type": "line",
+        "pattern": "#"
+      }
+    ],
+    "extensions": [".env"]
+  },
+  {
+    "language": "gitignore",
+    "markers": [
+      {
+        "type": "line",
+        "pattern": "#"
+      }
+    ],
+    "extensions": [".gitignore"]
   }
 ]
 

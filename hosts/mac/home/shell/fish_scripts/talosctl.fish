@@ -1,6 +1,7 @@
 # Function to display and launch Talos dashboard with all nodes
 # TODO: Better cancel behaviour
 # labels: os:darwin, device:personal, enhancement
+
 # TODO: Dont upgrade nodes when they are already on the target version (unless specified with flag)
 # labels: os:darwin, device:personal, enhancement
 function talos_dashboard
