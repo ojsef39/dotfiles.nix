@@ -1,0 +1,15 @@
+[
+  {
+    "language": "fish",
+    "markers": [
+      {
+        "type": "line",
+        "pattern": "#"
+      }
+    ],
+    "extensions": [
+      ".fish"
+    ]
+  }
+]
+
