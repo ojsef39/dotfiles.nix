@@ -14,53 +14,16 @@ on:
         required: false
 
 jobs:
-  # Usage: https://github.com/marketplace/actions/todo-to-issue#usage
-  track-todos:
-    runs-on: ubuntu-latest
+  track:
     permissions:
       contents: write
       issues: write
       pull-requests: write
-    steps:
-      - name: Generate GitHub App Token
-        id: generate-token
-        uses: actions/create-github-app-token@v2.2.1
-        with:
-          app-id: ${{ secrets.TODO_APP_ID }}
-          private-key: ${{ secrets.TODO_APP_PRIV_KEY }}
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: TODO to Issue
-        uses: alstr/todo-to-issue-action@v5.1.14
-        env:
-          MANUAL_COMMIT_REF: ${{ inputs.MANUAL_COMMIT_REF }}
-          MANUAL_BASE_REF: ${{ inputs.MANUAL_BASE_REF }}
-        with:
-          TOKEN: ${{ steps.generate-token.outputs.token }}
-          CLOSE_ISSUES: true
-          AUTO_ASSIGN: true
-          LANGUAGES: .github/workflows/syntax.json
-          INSERT_ISSUE_URLS: true
-
-      - name: Set Git user
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit and create PR
-        env:
-          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-        run: |
-          git add -A
-          if [[ $(git status --porcelain) ]]; then
-            BRANCH_NAME="docs/todo-issue-links"
-            git checkout -b "$BRANCH_NAME"
-            git commit -m "docs(todos): add issue links"
-            git push -f origin "$BRANCH_NAME"
-            gh pr create --fill --head "$BRANCH_NAME" || true
-            gh pr merge "$BRANCH_NAME" --squash --delete-branch --admin
-          else
-            echo "No changes to commit"
-          fi
+    uses: JHOFER-Cloud/todo-tracking/.github/workflows/todo-tracking-reusable.yml@main
+    with:
+      languages: ".github/workflows/syntax.json"
+      manual_commit_ref: ${{ inputs.MANUAL_COMMIT_REF }}
+      manual_base_ref: ${{ inputs.MANUAL_BASE_REF }}
+    secrets:
+      TODO_APP_ID: ${{ secrets.TODO_APP_ID }}
+      TODO_APP_PRIV_KEY: ${{ secrets.TODO_APP_PRIV_KEY }}
