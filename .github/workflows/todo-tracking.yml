@@ -20,3 +20,4 @@ jobs:
         with:
           CLOSE_ISSUES: true
           AUTO_ASSIGN: true
+          LANGUAGES: .github/workflows/todo-tracking-syntax.json
