@@ -7,7 +7,9 @@
         "pattern": "#"
       }
     ],
-    "extensions": [".fish"]
+    "extensions": [
+      ".fish"
+    ]
   },
   {
     "language": "justfile",
@@ -17,7 +19,9 @@
         "pattern": "#"
       }
     ],
-    "extensions": ["justfile"]
+    "extensions": [
+      "justfile"
+    ]
   },
   {
     "language": "conf",
@@ -27,7 +31,9 @@
         "pattern": "#"
       }
     ],
-    "extensions": [".conf"]
+    "extensions": [
+      ".conf"
+    ]
   },
   {
     "language": "env",
@@ -37,7 +43,9 @@
         "pattern": "#"
       }
     ],
-    "extensions": [".env"]
+    "extensions": [
+      ".env"
+    ]
   },
   {
     "language": "gitignore",
@@ -47,7 +55,8 @@
         "pattern": "#"
       }
     ],
-    "extensions": [".gitignore"]
+    "extensions": [
+      ".gitignore"
+    ]
   }
 ]
-
