@@ -9,7 +9,6 @@
 ---   * use global keymap (registered from keymap.lua)
 ---   * change sign group name
 ---   * integrated BufWinEnter funtionality in my own handler (auto.lua)
----   TODO: pluginify (really worth it? This is just so simple)
 --- Map of mark information per buffer.
 ---@type table<integer, table<string, {line: integer, id: integer}>>
 local marks = {}
