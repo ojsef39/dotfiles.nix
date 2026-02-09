@@ -3,17 +3,9 @@ on:
   push:
     branches:
       - "main"
-    paths-ignore:
-      - ".github/**"
-      - "README.md"
-      - "wiki/**"
   pull_request:
     branches:
       - "main"
-    paths-ignore:
-      - ".github/**"
-      - "README.md"
-      - "wiki/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -82,19 +74,17 @@ jobs:
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@c5a866b6ab867e88becbed4467b93592bce69f8a # v21
+        with:
+          extra-conf: |
+            extra-experimental-features = nix-command flakes external-builders
+            extra-substituters = https://ojsef39.cachix.org
+            extra-trusted-substituters = https://ojsef39.cachix.org
+            extra-trusted-public-keys = ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=
 
       - name: Install Just
         uses: extractions/setup-just@v3
         with:
           just-version: "1.40.0"
-
-      - name: Enable Nix Flakes
-        run: |
-          mkdir -p ~/.config/nix
-          echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-          echo "extra-substituters = https://ojsef39.cachix.org" >> ~/.config/nix/nix.conf
-          echo "extra-trusted-substituters = https://ojsef39.cachix.org" >> ~/.config/nix/nix.conf
-          echo "extra-trusted-public-keys = ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=" >> ~/.config/nix/nix.conf
 
       - name: Setup Cachix Auth
         uses: cachix/cachix-action@v16
