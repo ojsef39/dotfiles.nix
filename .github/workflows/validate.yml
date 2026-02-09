@@ -1,4 +1,5 @@
 name: "Nix Configuration Validation"
+# TODO: maybe use determinate CI instead? https://github.com/DeterminateSystems/ci
 on:
   push:
     branches:
@@ -32,12 +33,18 @@ jobs:
   lint:
     name: Statix Lint
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@c5a866b6ab867e88becbed4467b93592bce69f8a # v21
+        uses: DeterminateSystems/determinate-nix-action@v3.15.2
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          use-flakehub: false
 
       - name: Install Just
         uses: extractions/setup-just@v3
@@ -60,6 +67,9 @@ jobs:
     name: Test Nix Configurations
     needs: [security-check, lint]
     runs-on: ${{ matrix.os }}
+    permissions:
+      id-token: write
+      contents: read
     strategy:
       matrix:
         # os: [ubuntu-latest, macos-latest]
@@ -73,7 +83,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@c5a866b6ab867e88becbed4467b93592bce69f8a # v21
+        uses: DeterminateSystems/determinate-nix-action@v3.15.2
         with:
           extra-conf: |
             extra-experimental-features = nix-command flakes external-builders
@@ -81,16 +91,28 @@ jobs:
             extra-trusted-substituters = https://ojsef39.cachix.org
             extra-trusted-public-keys = ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=
 
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          use-flakehub: false
+
+      - name: Configure Determinate Linux Builder
+        run: |
+          sudo mkdir -p /etc/determinate
+          echo '{"builder":{"state":"enabled","cpuCount":2,"memoryBytes":4294967296}}' | sudo tee /etc/determinate/config.json
+          sudo launchctl kickstart -k system/systems.determinate.nix-daemon
+          sleep 2
+
       - name: Install Just
         uses: extractions/setup-just@v3
-        with:
-          just-version: "1.40.0"
 
       - name: Setup Cachix Auth
         uses: cachix/cachix-action@v16
         with:
           name: ojsef39
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - uses: DeterminateSystems/flake-checker-action@main
+      - run: nix flake check
 
       - name: Check Configuration
         env:
