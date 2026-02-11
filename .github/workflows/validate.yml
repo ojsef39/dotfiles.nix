@@ -105,11 +105,49 @@ jobs:
       - name: Install Just
         uses: extractions/setup-just@v3
 
+      - name: Debug netrc BEFORE Cachix
+        run: |
+          echo "== Nix configuration files =="
+          cat /etc/nix/nix.conf 2>/dev/null || echo "No nix.conf found"
+          cat /etc/nix/nix.custom.conf 2>/dev/null || echo "No nix.custom.conf found"
+          echo "=== netrc-file config in nix.conf ==="
+          grep netrc /etc/nix/nix.conf || echo "No netrc config found"
+          echo ""
+          echo "=== /nix/var/determinate/netrc ==="
+          ls -la /nix/var/determinate/netrc 2>/dev/null && cat /nix/var/determinate/netrc || echo "File does not exist"
+          echo ""
+          echo "=== /etc/nix/netrc ==="
+          ls -la /etc/nix/netrc 2>/dev/null && cat /etc/nix/netrc || echo "File does not exist"
+          echo ""
+          echo "=== ~/.netrc ==="
+          ls -la ~/.netrc 2>/dev/null && cat ~/.netrc || echo "File does not exist"
+          echo "== Cachix doctor output =="
+          nix run nixpkgs#cachix -- doctor
+
       - name: Setup Cachix Auth
         uses: cachix/cachix-action@v16
         with:
           name: ojsef39
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: Debug netrc AFTER Cachix
+        run: |
+          echo "== Nix configuration files =="
+          cat /etc/nix/nix.conf 2>/dev/null || echo "No nix.conf found"
+          cat /etc/nix/nix.custom.conf 2>/dev/null || echo "No nix.custom.conf found"
+          echo "=== netrc-file config in nix.conf ==="
+          grep netrc /etc/nix/nix.conf || echo "No netrc config found"
+          echo ""
+          echo "=== /nix/var/determinate/netrc ==="
+          ls -la /nix/var/determinate/netrc 2>/dev/null && cat /nix/var/determinate/netrc || echo "File does not exist"
+          echo ""
+          echo "=== /etc/nix/netrc ==="
+          ls -la /etc/nix/netrc 2>/dev/null && cat /etc/nix/netrc || echo "File does not exist"
+          echo ""
+          echo "=== ~/.netrc ==="
+          ls -la ~/.netrc 2>/dev/null && cat ~/.netrc || echo "File does not exist"
+          echo "== Cachix doctor output =="
+          nix run nixpkgs#cachix -- doctor
 
       - uses: DeterminateSystems/flake-checker-action@main
       - run: nix flake check
