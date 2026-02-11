@@ -66,7 +66,8 @@
 
       # Remote control
       remote_kitty = "if-needed";
-      startup_session = "startup.conf";
+      startup_session = "${config.xdg.configHome}/kitty/saved-session.kitty";
+      watcher = "${config.xdg.configHome}/kitty/watcher.py";
       allow_remote_control = "yes";
       listen_on = "unix:/tmp/mykitty";
 
@@ -152,6 +153,9 @@
     };
 
     "kitty/quick-access-terminal.conf".source = ./quick-access-terminal.conf;
+
+    # Watcher for auto-saving sessions
+    "kitty/watcher.py".source = ./watcher.py;
 
     # Copy icon
     "kitty/kitty.app.png".source = ./themes/kitty.app.png;
