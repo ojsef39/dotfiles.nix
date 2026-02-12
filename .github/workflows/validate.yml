@@ -1,5 +1,5 @@
+#NOTE: looks interesting https://github.com/DeterminateSystems/ci
 name: "Nix Configuration Validation"
-# TODO: maybe use determinate CI instead? https://github.com/DeterminateSystems/ci
 on:
   push:
     branches:
@@ -42,6 +42,12 @@ jobs:
 
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3.15.2
+        with:
+          extra-conf: |
+            extra-experimental-features = nix-command flakes external-builders
+            substituters = https://cache.nixos.org https://ojsef39.cachix.org
+            trusted-substituters = https://cache.nixos.org https://ojsef39.cachix.org
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=
       - uses: DeterminateSystems/magic-nix-cache-action@main
         with:
           use-flakehub: false
@@ -87,9 +93,9 @@ jobs:
         with:
           extra-conf: |
             extra-experimental-features = nix-command flakes external-builders
-            extra-substituters = https://ojsef39.cachix.org
-            extra-trusted-substituters = https://ojsef39.cachix.org
-            extra-trusted-public-keys = ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=
+            substituters = https://cache.nixos.org https://ojsef39.cachix.org
+            trusted-substituters = https://cache.nixos.org https://ojsef39.cachix.org
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
         with:
