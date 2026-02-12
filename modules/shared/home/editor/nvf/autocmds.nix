@@ -20,7 +20,7 @@ in {
     # Smaller indentation for specific filetypes
     {
       event = ["FileType"];
-      pattern = ["helm" "nix" "json" "jsonc" "json5"];
+      pattern = ["sh" "bash" "helm" "nix" "json" "jsonc" "json5"];
       callback = lib.generators.mkLuaInline ''
         function()
           vim.opt_local.tabstop = 2
