@@ -42,12 +42,6 @@ jobs:
 
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3.15.2
-        with:
-          extra-conf: |
-            extra-experimental-features = nix-command flakes external-builders
-            substituters = https://cache.nixos.org https://ojsef39.cachix.org
-            trusted-substituters = https://cache.nixos.org https://ojsef39.cachix.org
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=
       - uses: DeterminateSystems/magic-nix-cache-action@main
         with:
           use-flakehub: false
@@ -97,13 +91,9 @@ jobs:
         with:
           extra-conf: |
             extra-experimental-features = nix-command flakes external-builders
-            substituters = https://cache.nixos.org https://ojsef39.cachix.org
-            trusted-substituters = https://cache.nixos.org https://ojsef39.cachix.org
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y=
-
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-        with:
-          use-flakehub: false
+            substituters = https://cache.nixos.org https://ojsef39.cachix.org https://nvf.cachix.org https://nix-community.cachix.org
+            trusted-substituters = https://cache.nixos.org https://ojsef39.cachix.org https://nvf.cachix.org https://nix-community.cachix.org
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y= nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
 
       - name: Re-authenticate with FlakeHub token
         run: |
@@ -119,49 +109,11 @@ jobs:
       - name: Install Just
         uses: extractions/setup-just@v3
 
-      - name: Debug netrc BEFORE Cachix
-        run: |
-          echo "== Nix configuration files =="
-          cat /etc/nix/nix.conf 2>/dev/null || echo "No nix.conf found"
-          cat /etc/nix/nix.custom.conf 2>/dev/null || echo "No nix.custom.conf found"
-          echo "=== netrc-file config in nix.conf ==="
-          grep netrc /etc/nix/nix.conf || echo "No netrc config found"
-          echo ""
-          echo "=== /nix/var/determinate/netrc ==="
-          ls -la /nix/var/determinate/netrc 2>/dev/null && cat /nix/var/determinate/netrc || echo "File does not exist"
-          echo ""
-          echo "=== /etc/nix/netrc ==="
-          ls -la /etc/nix/netrc 2>/dev/null && cat /etc/nix/netrc || echo "File does not exist"
-          echo ""
-          echo "=== ~/.netrc ==="
-          ls -la ~/.netrc 2>/dev/null && cat ~/.netrc || echo "File does not exist"
-          echo "== Cachix doctor output =="
-          nix run nixpkgs#cachix -- doctor
-
       - name: Setup Cachix Auth
         uses: cachix/cachix-action@v16
         with:
           name: ojsef39
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-
-      - name: Debug netrc AFTER Cachix
-        run: |
-          echo "== Nix configuration files =="
-          cat /etc/nix/nix.conf 2>/dev/null || echo "No nix.conf found"
-          cat /etc/nix/nix.custom.conf 2>/dev/null || echo "No nix.custom.conf found"
-          echo "=== netrc-file config in nix.conf ==="
-          grep netrc /etc/nix/nix.conf || echo "No netrc config found"
-          echo ""
-          echo "=== /nix/var/determinate/netrc ==="
-          ls -la /nix/var/determinate/netrc 2>/dev/null && cat /nix/var/determinate/netrc || echo "File does not exist"
-          echo ""
-          echo "=== /etc/nix/netrc ==="
-          ls -la /etc/nix/netrc 2>/dev/null && cat /etc/nix/netrc || echo "File does not exist"
-          echo ""
-          echo "=== ~/.netrc ==="
-          ls -la ~/.netrc 2>/dev/null && cat ~/.netrc || echo "File does not exist"
-          echo "== Cachix doctor output =="
-          nix run nixpkgs#cachix -- doctor
 
       - uses: DeterminateSystems/flake-checker-action@main
       - run: nix flake check
