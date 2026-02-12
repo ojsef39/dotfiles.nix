@@ -69,7 +69,7 @@
 
         # Shell
         shfmt = {
-          command = ["nix" "run" "--impure" "nixpkgs#shfmt" "--" "-i" "4" "-w" "$FILE"];
+          command = ["nix" "run" "--impure" "nixpkgs#shfmt" "--" "-w" "$FILE"];
           extensions = [".sh" ".bash"];
         };
 
