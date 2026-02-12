@@ -238,6 +238,14 @@
                 read -n 1 --prompt-str "❯ "
             "
       '';
+
+      send-cooking = ''
+        if test (uname) = "Darwin"
+          osascript -e 'display notification "IM DONE COOKING!" with title "Kitty"'
+        else
+          notify-send "Kitty" "IM DONE COOKING!"
+        end
+      '';
     };
 
     plugins = with pkgs.fishPlugins; [
