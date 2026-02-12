@@ -7,16 +7,6 @@
 in {
   # Autocmds for filetype-specific settings
   autocmds = [
-    # Use tabs instead of spaces
-    {
-      event = ["FileType"];
-      pattern = ["sh" "bash"];
-      callback = lib.generators.mkLuaInline ''
-        function()
-          vim.opt_local.expandtab = false
-        end
-      '';
-    }
     # Indent-based folding for specific filetypes
     {
       event = ["FileType"];
@@ -30,7 +20,7 @@ in {
     # Smaller indentation for specific filetypes
     {
       event = ["FileType"];
-      pattern = ["helm" "nix" "json" "jsonc" "json5"];
+      pattern = ["sh" "bash" "helm" "nix" "json" "jsonc" "json5"];
       callback = lib.generators.mkLuaInline ''
         function()
           vim.opt_local.tabstop = 2
