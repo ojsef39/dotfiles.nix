@@ -194,7 +194,7 @@
         echo "Unloaded nix daemon service"
 
         # 2. Kill any remaining processes
-        sudo pkill -9 -f nix-daemon
+        sudo pkill -9 -f determinate-nixd
         echo "Killed all nix-daemon processes"
 
         # 3. Bootstrap the service back

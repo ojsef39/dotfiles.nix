@@ -25,14 +25,17 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v6
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-
-      # - name: Setup Nix cache
-      #   uses: DeterminateSystems/magic-nix-cache-action@main
+        uses: DeterminateSystems/determinate-nix-action@v3.15.2
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          use-flakehub: false
 
       - name: Build book
         run: nix develop --command md-build

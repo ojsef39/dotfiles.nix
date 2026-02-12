@@ -40,6 +40,12 @@ in {
       eval-cores = 0;
       post-build-hook = "${cachixHook}/bin/cachix-push-hook";
     };
+    determinateNixd = {
+      builder = {
+        cpuCount = 4;
+        memoryBytes = 8589934592; # 8,5GB
+      };
+    };
   };
 
   # NOTE: Idk why this has to be set to 5
