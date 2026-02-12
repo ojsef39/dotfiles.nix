@@ -7,6 +7,16 @@
 in {
   # Autocmds for filetype-specific settings
   autocmds = [
+    # Use tabs instead of spaces
+    {
+      event = ["FileType"];
+      pattern = ["sh" "bash"];
+      callback = lib.generators.mkLuaInline ''
+        function()
+          vim.opt_local.expandtab = false
+        end
+      '';
+    }
     # Indent-based folding for specific filetypes
     {
       event = ["FileType"];
