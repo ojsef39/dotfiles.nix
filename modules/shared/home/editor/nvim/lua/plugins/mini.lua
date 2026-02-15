@@ -76,7 +76,7 @@ local function find(query)
 
 	query = query or ""
 	---@type FFFItem[]
-	local fff_result = file_picker.search_files(query, 100, 4, state.current_file_cache, false)
+	local fff_result = file_picker.search_files(query, state.current_file_cache, 100, 4)
 
 	local items = {}
 	for _, fff_item in ipairs(fff_result) do
