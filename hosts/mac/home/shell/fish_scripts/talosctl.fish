@@ -83,9 +83,44 @@ function talos_context
     # Set environment variable
     set -gx TALOSCONFIG /tmp/talosconfig
 
-    # Generate kubeconfig
+    # Extract endpoints from the talosconfig
+    set current_context (grep "^context:" /tmp/talosconfig | awk '{print $2}')
+    if test -z "$current_context"
+        echo "Error: Could not determine current context from talosconfig"
+        return 1
+    end
+
+    # Extract endpoints for the current context
+    set endpoints (awk -v context="$current_context:" '
+        $0 ~ context {in_context=1; next}
+        in_context && /^[[:space:]]+endpoints:/ {in_endpoints=1; next}
+        in_context && in_endpoints && /^[[:space:]]+- / {print $2; next}
+        in_context && /^[[:space:]]+[a-z]+:/ && in_endpoints {exit}
+    ' /tmp/talosconfig)
+
+    if test -z "$endpoints"
+        echo "Error: No endpoints found for context '$current_context'"
+        return 1
+    end
+
+    # Try each endpoint until one succeeds
     mkdir -p ~/.kube
-    talosctl kubeconfig --force ~/.kube/config
+    set success 0
+    for endpoint in $endpoints
+        echo "Trying endpoint: $endpoint"
+        if talosctl kubeconfig --talosconfig=/tmp/talosconfig --nodes "$endpoint" --force
+            echo "Successfully generated kubeconfig using endpoint: $endpoint"
+            set success 1
+            break
+        else
+            echo "Failed to connect to $endpoint, trying next..."
+        end
+    end
+
+    if test $success -eq 0
+        echo "Error: Failed to generate kubeconfig from any endpoint"
+        return 1
+    end
 
     # Copy the config file with the selected title
     if test -n "$selected_title" -a -f ~/.kube/config
