@@ -105,13 +105,14 @@ jobs:
       contents: read
     strategy:
       matrix:
-        # os: [ubuntu-latest, macos-latest]
-        os: [macos-latest]
+        os: [ubuntu-latest, macos-latest]
         include:
           - os: macos-latest
             nix_cmd: "darwin"
             nix_host: "mac"
-            # - os: ubuntu-latest
+          - os: ubuntu-latest
+            nix_cmd: "os"
+            nix_host: "josef-nd1-gpu0"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
@@ -124,6 +125,7 @@ jobs:
           echo "${{ secrets.FLAKEHUB_TOKEN }}" | determinate-nixd auth login token --token-file /dev/stdin
 
       - name: Configure Determinate Linux Builder
+        if: matrix.os == 'macos-latest'
         run: |
           sudo mkdir -p /etc/determinate
           echo '{"builder":{"state":"enabled","cpuCount":2,"memoryBytes":4294967296}}' | sudo tee /etc/determinate/config.json

@@ -71,6 +71,9 @@
       allow_remote_control = "yes";
       listen_on = "unix:/tmp/mykitty";
 
+      # Shell
+      shell = "${pkgs.fish}/bin/fish";
+
       # Fonts
       font_family = "Maple Mono NF";
       bold_font = "auto";
@@ -128,6 +131,7 @@
       "cmd+8" = "goto_tab 8";
       "cmd+9" = "goto_tab 9";
       "cmd+0" = "goto_tab 10";
+      "ctrl+shift+delete" = "clear_terminal to_cursor_scroll active";
       # Preserve Option/Alt +  combinations for special characters
       "opt+5" = "send_text all [";
       "opt+6" = "send_text all ]";
@@ -149,7 +153,7 @@
   xdg.configFile = {
     "kitty/themes/catppuccin-macchiato.conf".source = pkgs.fetchurl {
       url = "https://raw.githubusercontent.com/catppuccin/kitty/refs/heads/main/themes/macchiato.conf";
-      hash = "sha256-1fF00Gm1cf5iXX2QIhqxxwYAbStyL5LBUR6wP82hO74=";
+      hash = "sha256-ox4pxH3dU4ijU5+o2qePSYYv9YhT7dinHvnZgrGOPyU=";
     };
 
     "kitty/quick-access-terminal.conf".source = ./quick-access-terminal.conf;

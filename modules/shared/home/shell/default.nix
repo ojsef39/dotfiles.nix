@@ -2,6 +2,7 @@
   pkgs,
   lib,
   vars,
+  config,
   ...
 }: {
   imports = [
@@ -38,7 +39,7 @@
       rsync = "rsync -avz --progress";
       unix = "just -f $NIX_GIT_PATH/justfile u";
       snix = "just -f $NIX_GIT_PATH/justfile";
-      ghql = "/Users/${vars.user.name}/.config/kitty/scripts/project_selector.sh --no-nvim";
+      ghql = "${config.xdg.configHome}/kitty/scripts/project_selector.sh --no-nvim";
       cachix_login = ''echo "$(op read op://Personal/cachix_ojsef39/password)" | cachix authtoken --stdin'';
       ls = "eza --icons --git --header";
       cat = "bat";
@@ -58,19 +59,23 @@
       diffn = "nvim -d";
     };
 
-    interactiveShellInit = ''
-      # Environment variables
-      set -gx EDITOR nvim
-      set -gx GCL_CONTAINER_EXECUTABLE podman
-      set -gx GCL_MAX_JOB_NAME_PADDING 30
-      set -gx GCL_TIMESTAMPS true
-      set -gx NIX_GIT_PATH "${vars.git.nix}"
-      set -gx NODE_EXTRA_CA_CERTS /opt/homebrew/etc/ca-certificates/cert.pem
-      set -gx PYTHON /usr/bin/python3
-      set -gx SSL_CERT_FILE (command -v brew >/dev/null && brew --prefix)/etc/ca-certificates/cert.pem
-      set -gx REQUESTS_CA_BUNDLE $SSL_CERT_FILE
-      set -gx NIX_SSL_CERT_FILE $SSL_CERT_FILE
-    '';
+    interactiveShellInit =
+      ''
+        # Environment variables
+        set -gx EDITOR nvim
+        set -gx GCL_CONTAINER_EXECUTABLE podman
+        set -gx GCL_MAX_JOB_NAME_PADDING 30
+        set -gx GCL_TIMESTAMPS true
+        set -gx NIX_GIT_PATH "$HOME/${vars.git.ghq}/github.com/ojsef39/dotfiles.nix"
+      ''
+      + lib.optionalString pkgs.stdenv.isDarwin ''
+        # macOS: make tools trust the homebrew CA bundle
+        set -gx PYTHON /usr/bin/python3
+        set -gx NODE_EXTRA_CA_CERTS /opt/homebrew/etc/ca-certificates/cert.pem
+        set -gx SSL_CERT_FILE (command -v brew >/dev/null && brew --prefix)/etc/ca-certificates/cert.pem
+        set -gx REQUESTS_CA_BUNDLE $SSL_CERT_FILE
+        set -gx NIX_SSL_CERT_FILE $SSL_CERT_FILE
+      '';
 
     # Essential functions that can't be replaced with abbreviations
     functions = {
@@ -110,7 +115,7 @@
       '';
 
       manf = ''
-        /usr/bin/man -k . 2>/dev/null | SKIP_FF=1 fzf --preview 'man {1}' --preview-window=right:70%:wrap | awk '{print $1}' | xargs man
+        man -k . 2>/dev/null | SKIP_FF=1 fzf --preview 'man {1}' --preview-window=right:70%:wrap | awk '{print $1}' | xargs man
       '';
 
       wtf = ''
@@ -188,24 +193,27 @@
 
       nix-restart = ''
         echo "Restarting Nix daemon..."
-
-        # 1. Unload the service properly
-        sudo launchctl unload /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
-        echo "Unloaded nix daemon service"
-
-        # 2. Kill any remaining processes
-        sudo pkill -9 -f determinate-nixd
-        echo "Killed all nix-daemon processes"
-
-        # 3. Bootstrap the service back
-        sudo launchctl bootstrap system /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
-        echo "Bootstrapped nix daemon service"
-
-        sleep 2
-        if test -S /nix/var/nix/daemon-socket/socket
-          echo "✅ Nix daemon restarted successfully"
+        if test (uname) = "Darwin"
+          sudo launchctl unload /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
+          echo "Unloaded nix daemon service"
+          sudo pkill -9 -f determinate-nixd
+          echo "Killed all nix-daemon processes"
+          sudo launchctl bootstrap system /Library/LaunchDaemons/systems.determinate.nix-daemon.plist
+          echo "Bootstrapped nix daemon service"
+          sleep 2
+          if test -S /nix/var/nix/daemon-socket/socket
+            echo "Nix daemon restarted successfully"
+          else
+            echo "Daemon socket not found"
+          end
         else
-          echo "❌ Daemon socket not found"
+          sudo systemctl restart nix-daemon
+          sleep 2
+          if systemctl is-active --quiet nix-daemon
+            echo "Nix daemon restarted successfully"
+          else
+            echo "Nix daemon failed to restart"
+          end
         end
       '';
 
@@ -248,20 +256,23 @@
       '';
     };
 
-    plugins = with pkgs.fishPlugins; [
-      {
-        name = "macos";
-        inherit (macos) src;
-      }
-      {
-        name = "tide";
-        inherit (tide) src;
-      }
-      {
-        name = "done";
-        inherit (done) src;
-      }
-    ];
+    plugins = with pkgs.fishPlugins;
+      (lib.optionals pkgs.stdenv.isDarwin [
+        {
+          name = "macos";
+          inherit (macos) src;
+        }
+      ])
+      ++ [
+        {
+          name = "tide";
+          inherit (tide) src;
+        }
+        {
+          name = "done";
+          inherit (done) src;
+        }
+      ];
 
     # We'll store more complex initialization in a separate file
     shellInit = builtins.readFile ./shellInit.fish;
@@ -343,22 +354,27 @@
       leaveDotGit = false;
     };
 
-    # Tide configuration (activate after installation)
     activation.configureTide = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      # Launch a kitty overlay terminal to configure tide without disturbing the current session
-      ${pkgs.kitty}/bin/kitten @ launch --type=overlay --title="Tide Configuration" --copy-env --env SKIP_FF=1 ${pkgs.fish}/bin/fish -c "
-        # Configure tide with initial settings
-        set tide_output (tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Many icons' --transient=Yes 2>&1)
+      kitty_socket=$(ls /tmp/mykitty-* 2>/dev/null | head -1 || true)
+      if [ -n "$kitty_socket" ] && [ -S "$kitty_socket" ] && ${pkgs.kitty}/bin/kitten @ --to "unix:$kitty_socket" ls 2>/dev/null >/dev/null; then
+        # Kitty is accessible - run tide configuration (failures will propagate)
+        ${pkgs.kitty}/bin/kitten @ --to "unix:$kitty_socket" launch --type=overlay --title="Tide Configuration" --copy-env --env SKIP_FF=1 ${pkgs.fish}/bin/fish -c "
+          set tide_output (tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Many icons' --transient=Yes 2>&1)
 
-        if string match -q '*Invalid*' \$tide_output
-          echo 'There was an issue with Tide configuration:'
-          echo \$tide_output
-          read -n 1 -P \"Press any key to quit \" key_pressed
-        else
-          echo 'Tide configuration complete. Window will close in 1 second.'
-          sleep 1
-        end
-      "
+          if string match -q '*Invalid*' \$tide_output
+            echo 'There was an issue with Tide configuration:'
+            echo \$tide_output
+            sleep 2
+            exit 1
+          else
+            echo 'Tide configuration complete.'
+            sleep 1
+          end
+        "
+      else
+        # Kitty not accessible (no socket or can't connect)
+        echo "Kitty not accessible, skipping tide configuration"
+      fi
     '';
 
     file = {
