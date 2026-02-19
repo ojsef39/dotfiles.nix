@@ -38,8 +38,6 @@ _: {
 
     # macOS-specific apps and those not available/stable in nixpkgs
     casks = [
-      "1password"
-      "1password-cli"
       "arc"
       "caffeine"
       "dockdoor"

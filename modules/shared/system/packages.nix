@@ -1,5 +1,8 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
+    # packages from pkgs folder
+    kubectl-debug
+
     # Nix tools #
     cachix
     devenv
@@ -12,12 +15,36 @@
     nixpkgs-review
     update-nix-fetchgit # https://github.com/expipiplus1/update-nix-fetchgit
     ##
-    firefox
+    _1password-cli
+    _1password-gui
+    act
+    btop
+    gh
+    gh-dash
+    gh-poi
+    ghq
+    gitlab-ci-local
+    go
+    gomplate
+    helm-schema-gen
+    hwatch
     just
+    kubeconform
+    kubectl
+    kustomize
     minikube
-    moonlight-qt
+    ncdu
+    neovide
+    nmap
     podman
     podman-compose
+    progress
+    python3
+    retry
+    rsync
+    speedtest-cli
     virt-viewer
+    wget
+    whois
   ];
 }
