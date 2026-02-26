@@ -18,7 +18,7 @@
       "Motion" = 434290957;
       "Numbers" = 361304891;
       "Pages" = 361309726;
-      "Parcel" = 639968404;
+      "Parcel" = 375589283;
       "Pixelmator Pro" = 1289583905;
       "TestFlight" = 899247664;
       # "waifu2x" = 1286485858;
