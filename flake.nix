@@ -16,7 +16,6 @@
   # - [ ] Docs
   # - [ ] Rework keybinds (use heyperkey on mac, look at https://wiki.hypr.land/Configuring/Binds/#keysym-combos for linux)
   # labels: enhancement, os:nix
-  # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/6
   #TODO: CI test for external config (nix-work mock)
   #Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/505
   description = "ojsef39 dotfiles.nix configuration";
