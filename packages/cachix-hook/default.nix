@@ -6,7 +6,10 @@
 }:
 pkgs.writeShellApplication {
   name = "cachix-push-hook";
-  runtimeInputs = [pkgs.cachix pkgs.gawk];
+  runtimeInputs = [
+    pkgs.cachix
+    pkgs.gawk
+  ];
   text = ''
     set -e
     CACHIX_NAME="${cachixName}"
@@ -34,7 +37,8 @@ pkgs.writeShellApplication {
       exit 0
     fi
 
-    CACHIX_CONFIG="/Users/${vars.user.name}/.config/cachix/cachix.dhall"
+    USER_HOME=$(eval echo "~${vars.user.name}")
+    CACHIX_CONFIG="$USER_HOME/.config/cachix/cachix.dhall"
     if [[ -f "$CACHIX_CONFIG" ]]; then
       TOKEN=$(awk '/authToken/{getline; gsub(/[" ]/, ""); print}' "$CACHIX_CONFIG")
       echo "$TOKEN" | cachix authtoken --stdin

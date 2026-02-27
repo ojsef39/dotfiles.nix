@@ -17,7 +17,6 @@ rec {
       #   "dependabot[bot]" = "#f4dbd6"; # Rosewater
       # };
     };
-    nix = "/Users/${user.name}/${git.ghq}/github.com/ojsef39/dotfiles.nix";
   };
   kitty.project_selector = "~/.config";
   cache.community = true;

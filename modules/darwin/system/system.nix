@@ -1,5 +1,4 @@
 {
-  pkgs,
   vars,
   lib,
   ...
@@ -15,17 +14,6 @@
 #
 ###################################################################################
 {
-  # User configuration (needed for fish to work as default shell: https://github.com/nix-darwin/nix-darwin/issues/1237)
-  users = {
-    users = {
-      ${vars.user.name} = {
-        shell = pkgs.fish;
-        inherit (vars.user) uid;
-      };
-    };
-    knownUsers = ["${vars.user.name}"];
-  };
-
   system = {
     primaryUser = "${vars.user.name}";
 

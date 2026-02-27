@@ -33,4 +33,6 @@ if test -z "$SKIP_FF"
 end
 
 # Show tmux sessions on startup
-tmux list-sessions 2>/dev/null
+if command -sq tmux
+    tmux list-sessions 2>/dev/null
+end

@@ -10,7 +10,12 @@ in {
     # Indent-based folding for specific filetypes
     {
       event = ["FileType"];
-      pattern = ["yaml" "yml" "nix" "python"];
+      pattern = [
+        "yaml"
+        "yml"
+        "nix"
+        "python"
+      ];
       callback = lib.generators.mkLuaInline ''
         function()
           vim.opt_local.foldmethod = "indent"
@@ -20,7 +25,15 @@ in {
     # Smaller indentation for specific filetypes
     {
       event = ["FileType"];
-      pattern = ["sh" "bash" "helm" "nix" "json" "jsonc" "json5"];
+      pattern = [
+        "sh"
+        "bash"
+        "helm"
+        "nix"
+        "json"
+        "jsonc"
+        "json5"
+      ];
       callback = lib.generators.mkLuaInline ''
         function()
           vim.opt_local.tabstop = 2
@@ -41,7 +54,11 @@ in {
     }
     # Trigger nvim-lint
     {
-      event = ["BufEnter" "BufWritePost" "InsertLeave"];
+      event = [
+        "BufEnter"
+        "BufWritePost"
+        "InsertLeave"
+      ];
       pattern = ["*"];
       callback = lib.generators.mkLuaInline ''
         function(event)
@@ -98,7 +115,7 @@ in {
 
     -- Global variables from your config
     vim.g.projects_dir = vim.env.HOME .. "/${vars.git.ghq or "CodeProjects"}"
-    vim.g.nix_dir = "${vars.git.nix}"
+    vim.g.nix_dir = vim.env.HOME .. "/${vars.git.ghq}/github.com/ojsef39/dotfiles.nix"
 
     -- Toggle boolean function
     local toggle_bool = function()
