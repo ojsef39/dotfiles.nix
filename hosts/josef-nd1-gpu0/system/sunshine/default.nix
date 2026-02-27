@@ -8,6 +8,7 @@
   hostname = config.networking.hostName;
 
   # TODO: move `sunshine-virt-display` to nixkit
+  # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/508
   sunshine-virt-display = pkgs.stdenv.mkDerivation {
     pname = "sunshine-virt-display";
     version = "1.0.0";

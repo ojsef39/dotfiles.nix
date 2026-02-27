@@ -1,4 +1,5 @@
 # TODO: missing packages for josef-nd1-gpu0
+# Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/507
 # - BeamMP
 # - audiorelay
 # - vierualhere

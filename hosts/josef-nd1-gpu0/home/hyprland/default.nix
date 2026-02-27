@@ -4,6 +4,7 @@
   ...
 }: let
   # TODO: dendritic pattern with flake-parts
+  # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/506
   # examples/resources:
   # https://github.com/frostplexx/dotfiles.nix/pull/694
   # https://youtu.be/-TRbzkw6Hjs?si=BcNzUCxE9QJJwDwd
