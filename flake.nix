@@ -18,6 +18,7 @@
   # labels: enhancement, os:nix
   # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/6
   #TODO: CI test for external config (nix-work mock)
+  #Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/505
   description = "ojsef39 dotfiles.nix configuration";
   inputs = {
     # nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz"; # latest unstable
