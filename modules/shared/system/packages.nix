@@ -10,6 +10,7 @@
     act
     btop
     cachix
+    claude-vm
     devenv
     fh
     gh
