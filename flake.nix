@@ -1,4 +1,4 @@
-# TODO: Loonix
+#TODO: Loonix
 # - [x] Remove x86_64-darwin support
 # - [x] Add basic nixos support
 # - [ ] btw plasma graphisch konfigurieren und dann einfach nix run github:nix-community/plasma-manager machen und das spuckt dann eine config aus
