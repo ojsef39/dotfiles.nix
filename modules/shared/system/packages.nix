@@ -4,21 +4,14 @@
     kubectl-debug
 
     # Nix tools #
-    cachix
-    devenv
-    fh
-    nh
-    nix-init # https://github.com/nix-community/nix-init
-    nix-output-monitor
-    nix-tree
-    nix-update # https://github.com/Mic92/nix-update
-    nixpkgs-review
-    update-nix-fetchgit # https://github.com/expipiplus1/update-nix-fetchgit
     ##
     _1password-cli
     _1password-gui
     act
     btop
+    cachix
+    devenv
+    fh
     gh
     gh-dash
     gh-poi
@@ -35,6 +28,12 @@
     minikube
     ncdu
     neovide
+    nh
+    nix-init # https://github.com/nix-community/nix-init
+    nix-output-monitor
+    nix-tree
+    nix-update # https://github.com/Mic92/nix-update
+    nixpkgs-review
     nmap
     podman
     podman-compose
@@ -43,6 +42,7 @@
     retry
     rsync
     speedtest-cli
+    update-nix-fetchgit # https://github.com/expipiplus1/update-nix-fetchgit
     virt-viewer
     wget
     whois
