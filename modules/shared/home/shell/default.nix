@@ -336,8 +336,8 @@
         pkgs.fetchFromGitHub {
           owner = "catppuccin";
           repo = "fish";
-          rev = "521560ce2075ca757473816aa31914215332bac9";
-          sha256 = "016610i27mz2rk400x7fw1s7g22sbpahdmd4dj2rymms577xs9g4";
+          rev = "bc201afe737fa0c8884ffcef206217f8aac88866";
+          sha256 = "10r1l745bgqqrzkq3s67gxd93xqqpml599ha8ah8s3fs4sirhzcf";
         }
         + "/themes/Catppuccin Macchiato.theme"
       );
