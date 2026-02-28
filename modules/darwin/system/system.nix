@@ -14,6 +14,15 @@
 #
 ###################################################################################
 {
+  power = {
+    # sudo systemsetup -getsleep
+    sleep = {
+      computer = 1;
+      display = 20;
+      harddisk = 10;
+    };
+  };
+
   system = {
     primaryUser = "${vars.user.name}";
 
