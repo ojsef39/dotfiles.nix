@@ -5,7 +5,7 @@ alias u := upgrade
 
 # macOS need nh darwin switch and NixOS needs nh os switch
 nix_cmd := `if [ "$(uname)" = "Darwin" ]; then echo "darwin"; else echo "os"; fi`
-nix_host := `if [ "$(uname)" = "Darwin" ]; then echo "mac"; else echo "nixos"; fi`
+nix_host := `if [ "$(uname)" = "Darwin" ]; then echo "mac"; else echo "$(hostname)"; fi`
 # Use GITHUB_TOKEN from 1Password to prevent rate limiting
 nix_flags := `if [ "${GITHUB_ACTIONS:-}" != "true" ]; then echo '--option access-tokens github.com=$(op read op://Personal/GITHUB_TOKEN/no_access)'; fi`
 

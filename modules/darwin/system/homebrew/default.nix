@@ -44,7 +44,7 @@ _: {
       "mac-mouse-fix"
       "poe"
       "postman"
-      "posturr"
+      "dorso"
       "raycast"
       "scroll-reverser"
       "the-unarchiver"
