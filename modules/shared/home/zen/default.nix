@@ -3,6 +3,7 @@
   lib,
   ...
 }: {
+  imports = [./macos-codesign-pr212.nix];
   # https://github.com/0xc000022070/zen-browser-flake
   programs.zen-browser = let
     # Use policy.json for installing extensions because its robuster and not dependent on a
