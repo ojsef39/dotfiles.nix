@@ -90,10 +90,8 @@
   outputs = inputs @ {
     self,
     home-manager,
-    nixcord,
     nixkit,
     nixpkgs,
-    spicetify-nix,
     darwin,
     caelestia-shell,
     ...
@@ -145,12 +143,7 @@
         hmModule = home-manager.darwinModules.home-manager;
         nixkitModule = nixkit.darwinModules.default;
         platformImport = ./modules/darwin/import-hm.nix;
-        inherit
-          inputs
-          nixcord
-          nixkit
-          spicetify-nix
-          ;
+        inherit inputs;
         baseLib = myLib;
       };
 
@@ -165,12 +158,7 @@
         nixkitModule = nixkit.nixosModules.default;
         platformImport = ./modules/nixos/import-hm.nix;
         extraHmModules = [caelestia-shell.homeManagerModules.default];
-        inherit
-          inputs
-          nixcord
-          nixkit
-          spicetify-nix
-          ;
+        inherit inputs;
         baseLib = myLib;
       };
 

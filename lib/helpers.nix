@@ -34,9 +34,6 @@ in {
     platformImport,
     inputs,
     baseLib,
-    nixcord,
-    nixkit,
-    spicetify-nix,
     extraHmModules ? [],
   }: [
     hmModule
@@ -53,9 +50,9 @@ in {
           users.${vars.user.name} = import ../modules/shared/import-hm.nix;
           sharedModules =
             [
-              nixcord.homeModules.nixcord
-              nixkit.homeModules.default
-              spicetify-nix.homeManagerModules.default
+              inputs.nixcord.homeModules.nixcord
+              inputs.nixkit.homeModules.default
+              inputs.spicetify-nix.homeManagerModules.default
             ]
             ++ extraHmModules;
         };
