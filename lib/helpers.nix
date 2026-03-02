@@ -36,6 +36,7 @@ _: {
               inputs.nixcord.homeModules.nixcord
               inputs.nixkit.homeModules.default
               inputs.spicetify-nix.homeManagerModules.default
+              inputs.zen-browser.homeModules.beta
             ]
             ++ extraHmModules;
         };
