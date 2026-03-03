@@ -245,5 +245,6 @@
       aarch64-darwin = mkShell "aarch64-darwin";
       x86_64-linux = mkShell "x86_64-linux";
     };
+    formatter = myLib.forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
   };
 }
