@@ -1,9 +1,4 @@
-{nixpkgs}: let
-  # Helper to support all standard flake systems
-  forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
-in {
-  inherit forAllSystems;
-
+_: {
   # Create an overlay that exposes packages with custom vars
   # Usage: nixpkgs.overlays = [(base.lib.makeOverlay vars)];
   makeOverlay = vars: _final: prev:
@@ -11,18 +6,6 @@ in {
       pkgs = prev;
       inherit vars;
     };
-
-  # Create packages output for all systems with custom vars
-  # Usage: packages = base.lib.makePackages vars;
-  makePackages = vars:
-    forAllSystems (
-      system: let
-        pkgs = import nixpkgs {localSystem = system;};
-      in
-        import ../packages {
-          inherit pkgs vars;
-        }
-    );
 
   # Build the home-manager wiring module list for a given platform.
   # hmModule:      home-manager.darwinModules.home-manager or .nixosModules.home-manager

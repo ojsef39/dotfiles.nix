@@ -97,10 +97,9 @@
     ...
   }: let
     # Library functions for consuming flakes
-    myLib = import ./lib {
-      inherit (nixpkgs) lib;
-      inherit nixpkgs;
-    };
+    myLib = import ./lib {inherit (nixpkgs) lib;};
+    supportedSystems = ["aarch64-darwin" "aarch64-linux" "x86_64-linux"];
+    forSystems = nixpkgs.lib.genAttrs supportedSystems;
   in {
     # Shared overlays and nix module — platform-agnostic, consumed by both macModules and nixosModules
     sharedModules = [
@@ -211,40 +210,31 @@
 
     lib = myLib;
 
-    packages = let
-      mkPackages = system:
-        import ./packages {
-          pkgs = nixpkgs.legacyPackages.${system};
-        };
-    in {
-      aarch64-darwin = mkPackages "aarch64-darwin";
-      x86_64-linux = mkPackages "x86_64-linux";
-    };
-
-    devShells = let
-      mkShell = system: let
+    packages = forSystems (system:
+      import ./packages {
         pkgs = nixpkgs.legacyPackages.${system};
+      });
 
-        md-build = pkgs.writeShellScriptBin "md-build" ''
-          ${pkgs.mdbook}/bin/mdbook build wiki
-        '';
+    devShells = forSystems (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
 
-        md-serve = pkgs.writeShellScriptBin "md-serve" ''
-          ${pkgs.mdbook}/bin/mdbook serve wiki
-        '';
-      in {
-        default = pkgs.mkShell {
-          packages = [
-            pkgs.mdbook
-            md-build
-            md-serve
-          ];
-        };
-      };
+      md-build = pkgs.writeShellScriptBin "md-build" ''
+        ${pkgs.mdbook}/bin/mdbook build wiki
+      '';
+
+      md-serve = pkgs.writeShellScriptBin "md-serve" ''
+        ${pkgs.mdbook}/bin/mdbook serve wiki
+      '';
     in {
-      aarch64-darwin = mkShell "aarch64-darwin";
-      x86_64-linux = mkShell "x86_64-linux";
-    };
-    formatter = myLib.forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+      default = pkgs.mkShell {
+        packages = [
+          pkgs.mdbook
+          md-build
+          md-serve
+        ];
+      };
+    });
+
+    formatter = forSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
   };
 }
