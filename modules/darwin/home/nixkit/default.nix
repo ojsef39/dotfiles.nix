@@ -1,8 +1,6 @@
 _: {
-  programs = {
-    default-browser = {
-      enable = true;
-      browser = "browser"; # browser = Arc.
-    };
+  programs.default-browser = {
+    enable = true;
+    browser = "zen"; # browser = Arc.
   };
 }

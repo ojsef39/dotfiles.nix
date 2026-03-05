@@ -23,7 +23,7 @@ in {
         # tilesize = 62; # Just so i know the before value
         # largesize = 64; # Just so i know the before value
         persistent-apps = [
-          "/Applications/Arc.app"
+          "${hmApps}/Zen Browser (Beta).app"
           "/System/Applications/Mail.app"
           "/System/Applications/Calendar.app"
           "/Applications/WhatsApp.app"

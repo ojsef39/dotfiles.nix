@@ -1,9 +1,4 @@
-{nixpkgs}: let
-  # Helper to support all standard flake systems
-  forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
-in {
-  inherit forAllSystems;
-
+_: {
   # Create an overlay that exposes packages with custom vars
   # Usage: nixpkgs.overlays = [(base.lib.makeOverlay vars)];
   makeOverlay = vars: _final: prev:
@@ -11,18 +6,6 @@ in {
       pkgs = prev;
       inherit vars;
     };
-
-  # Create packages output for all systems with custom vars
-  # Usage: packages = base.lib.makePackages vars;
-  makePackages = vars:
-    forAllSystems (
-      system: let
-        pkgs = import nixpkgs {localSystem = system;};
-      in
-        import ../packages {
-          inherit pkgs vars;
-        }
-    );
 
   # Build the home-manager wiring module list for a given platform.
   # hmModule:      home-manager.darwinModules.home-manager or .nixosModules.home-manager
@@ -34,9 +17,6 @@ in {
     platformImport,
     inputs,
     baseLib,
-    nixcord,
-    nixkit,
-    spicetify-nix,
     extraHmModules ? [],
   }: [
     hmModule
@@ -53,9 +33,10 @@ in {
           users.${vars.user.name} = import ../modules/shared/import-hm.nix;
           sharedModules =
             [
-              nixcord.homeModules.nixcord
-              nixkit.homeModules.default
-              spicetify-nix.homeManagerModules.default
+              inputs.nixcord.homeModules.nixcord
+              inputs.nixkit.homeModules.default
+              inputs.spicetify-nix.homeManagerModules.default
+              inputs.zen-browser.homeModules.beta
             ]
             ++ extraHmModules;
         };

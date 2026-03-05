@@ -73,7 +73,17 @@ jobs:
     # cached pkg and doesn't need to use nested virtualization
     name: Build Linux Packages
     needs: [security-check, lint]
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            packages: &linux_packages ".#kubectl-debug"
+          - os: "ubuntu-24.04-arm"
+            packages:
+              - "claude-vm#packages.aarch64-linux.default"
+              - *linux_packages
+
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
@@ -92,9 +102,11 @@ jobs:
           name: ojsef39
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Build kubectl-debug
+      - name: Build packages
         run: |
-          nix build .#kubectl-debug
+          for pkg in ${{ join(matrix.packages, ' ') }}; do
+            nix build --inputs-from . $pkg
+          done
 
   test-configurations:
     name: Test Nix Configurations
