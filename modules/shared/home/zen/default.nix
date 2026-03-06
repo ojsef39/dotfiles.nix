@@ -50,6 +50,7 @@
     };
   in {
     enable = true;
+    suppressXdgMigrationWarning = true;
 
     profiles."default" = let
       containers = {
