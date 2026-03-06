@@ -2,7 +2,7 @@
   catppuccin-wallpapers = pkgs.fetchFromGitHub {
     owner = "orangci";
     repo = "walls-catppuccin-mocha";
-    rev = "master";
+    rev = "7bfdf10d16ad3a689f9f0cf3a0930da3d1a245a8";
     sha256 = "0bzs76iqhxa53azlayb8rwmaxakwv0fz08lh9dfykh2w4hfikqrp";
   };
 in {

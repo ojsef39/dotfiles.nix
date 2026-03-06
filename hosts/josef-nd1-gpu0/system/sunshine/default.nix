@@ -11,13 +11,13 @@
   # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/508
   sunshine-virt-display = pkgs.stdenv.mkDerivation {
     pname = "sunshine-virt-display";
-    version = "1.0.0";
+    version = "unstable-2026-03-06";
 
     src = pkgs.fetchFromGitHub {
       owner = "frostplexx";
       repo = "sunshine_virt_display";
-      rev = "v1.0.0";
-      sha256 = "sha256-bULYkEo5Fwz+xJ9s3mxsuElxJZp/sfZ+Cgmlq35lrhE=";
+      rev = "5fa8c763fab3e0bdbcc433f8897a7a842fdc15d5";
+      sha256 = "17sjk8f4xhdgmsanr3pkb865v60v042lwsdwh5ghrigzdiddgbcv";
     };
 
     nativeBuildInputs = [pkgs.makeWrapper];
