@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install Nix
-        uses: DeterminateSystems/determinate-nix-action@v3.16.3
+        uses: DeterminateSystems/determinate-nix-action@v3.17.0
       - uses: DeterminateSystems/magic-nix-cache-action@main
         with:
           use-flakehub: false
@@ -88,7 +88,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install Nix
-        uses: DeterminateSystems/determinate-nix-action@v3.16.3
+        uses: DeterminateSystems/determinate-nix-action@v3.17.0
         with: &nix-extra-conf
           extra-conf: |
             extra-experimental-features = nix-command flakes external-builders
@@ -129,7 +129,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install Nix
-        uses: DeterminateSystems/determinate-nix-action@v3.16.3
+        uses: DeterminateSystems/determinate-nix-action@v3.17.0
         with: *nix-extra-conf
 
       - name: Re-authenticate with FlakeHub token
