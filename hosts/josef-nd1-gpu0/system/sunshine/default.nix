@@ -28,9 +28,17 @@
         os.mkfifo(pipe_path, 0o600)
         steam_env = os.environ.copy()
         steam_env["QT_QPA_PLATFORM"] = "wayland"
+        procs = []
         while True:
+            procs = [p for p in procs if p.poll() is None]
             with pipe_path.open(encoding='utf-8') as pipe:
-                subprocess.Popen(['/run/current-system/sw/bin/steam', pipe.read().strip()], env=steam_env)
+                url = pipe.read().strip()
+                if url:
+                    proc = subprocess.Popen(
+                        ['/run/current-system/sw/bin/steam', url],
+                        env=steam_env,
+                    )
+                    procs.append(proc)
     finally:
         pipe_path.unlink(missing_ok=True)
   '';
@@ -126,7 +134,7 @@ in {
   systemd.user.services = {
     steam-run-url-service = {
       enable = true;
-      description = "Listen and starts steam games by id";
+      description = "Listens for steam:// URLs and starts Steam games";
       wantedBy = ["graphical-session.target"];
       partOf = ["graphical-session.target"];
       after = ["graphical-session.target"];
