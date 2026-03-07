@@ -5,23 +5,54 @@
   lib,
   ...
 }: let
-  hostname = config.networking.hostName;
+  steam-run-url = pkgs.writeShellApplication {
+    name = "steam-run-url";
+    text = ''
+      echo "$1" > "/run/user/$(id --user)/steam-run-url.fifo"
+    '';
+    runtimeInputs = [pkgs.coreutils];
+  };
+
+  #FIX: https://github.com/NixOS/nixpkgs/issues/463989
+  # https://discourse.nixos.org/t/sunshine-self-hosted-game-stream/25608/33
+  # labels: upstream, bug, os:nix
+  steam-run-url-service-script = pkgs.writeText "steam-run-url-service.py" ''
+    import os
+    from pathlib import Path
+    import subprocess
+
+    pipe_path = Path(f'/run/user/{os.getuid()}/steam-run-url.fifo')
+    try:
+        pipe_path.parent.mkdir(parents=True, exist_ok=True)
+        pipe_path.unlink(missing_ok=True)
+        os.mkfifo(pipe_path, 0o600)
+        steam_env = os.environ.copy()
+        steam_env["QT_QPA_PLATFORM"] = "wayland"
+        while True:
+            with pipe_path.open(encoding='utf-8') as pipe:
+                subprocess.Popen(['/run/current-system/sw/bin/steam', pipe.read().strip()], env=steam_env)
+    finally:
+        pipe_path.unlink(missing_ok=True)
+  '';
 
   # TODO: move `sunshine-virt-display` to nixkit
   # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/508
   sunshine-virt-display = pkgs.stdenv.mkDerivation {
     pname = "sunshine-virt-display";
-    version = "1.0.0";
+    version = "unstable-2026-03-06";
 
     src = pkgs.fetchFromGitHub {
       owner = "frostplexx";
       repo = "sunshine_virt_display";
-      rev = "v1.0.0";
-      sha256 = "sha256-bULYkEo5Fwz+xJ9s3mxsuElxJZp/sfZ+Cgmlq35lrhE=";
+      rev = "5fa8c763fab3e0bdbcc433f8897a7a842fdc15d5";
+      sha256 = "17sjk8f4xhdgmsanr3pkb865v60v042lwsdwh5ghrigzdiddgbcv";
     };
 
     nativeBuildInputs = [pkgs.makeWrapper];
-    buildInputs = [pkgs.python3 pkgs.bash];
+    buildInputs = [
+      pkgs.python3
+      pkgs.bash
+    ];
 
     installPhase = ''
       mkdir -p $out/bin
@@ -30,7 +61,13 @@
       chmod +x $out/bin/virt_display.sh
 
       wrapProgram $out/bin/virt_display.sh \
-        --prefix PATH : ${lib.makeBinPath [pkgs.python3 pkgs.bash pkgs.coreutils]} \
+        --prefix PATH : ${
+        lib.makeBinPath [
+          pkgs.python3
+          pkgs.bash
+          pkgs.coreutils
+        ]
+      } \
         --suffix PATH : /run/wrappers/bin
     '';
 
@@ -49,7 +86,7 @@ in {
     package = pkgs.sunshine.override {cudaSupport = true;};
 
     settings = {
-      sunshine_name = hostname;
+      sunshine_name = config.networking.hostName;
       port = 48100;
     };
 
@@ -72,13 +109,31 @@ in {
         {
           name = "Steam Big Picture";
           image-path = "steam.png";
-          output = "steam steam://open/bigpicture";
-          cmd = "setsid steam steam://open/bigpicture";
+          detached = ["${steam-run-url}/bin/steam-run-url steam://open/bigpicture"];
+          prep-cmd = [
+            {
+              do = "";
+              undo = "${steam-run-url}/bin/steam-run-url steam://close/bigpicture";
+            }
+          ];
           exclude-global-prep-cmd = "false";
           auto-detach = "true";
         }
       ];
     };
+  };
+
+  systemd.user.services = {
+    steam-run-url-service = {
+      enable = true;
+      description = "Listen and starts steam games by id";
+      wantedBy = ["graphical-session.target"];
+      partOf = ["graphical-session.target"];
+      after = ["graphical-session.target"];
+      serviceConfig.Restart = "on-failure";
+      script = "${pkgs.python3}/bin/python3 ${steam-run-url-service-script}";
+    };
+    sunshine.path = [steam-run-url];
   };
 
   # Fix permissions for uinput device, required for mouse/keyboard input

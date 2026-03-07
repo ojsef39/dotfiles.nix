@@ -12,7 +12,7 @@
 
   catppuccin-hyprland = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/catppuccin/hyprland/main/themes/macchiato.conf";
-    sha256 = "sha256-iA3WePp1L381pxnl145K5P4cimbisX3YJQ8I4XTJDrk=";
+    sha256 = "1f8fr5sf220g4pc7vcg2cs51rzp49a7dgr8rlwspybvmz9wdc3c8";
   };
 in {
   imports = [./caelestia.nix];
