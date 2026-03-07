@@ -5,7 +5,6 @@
   lib,
   ...
 }: let
-  hostname = config.networking.hostName;
   steam-run-url = pkgs.writeShellApplication {
     name = "steam-run-url";
     text = ''
@@ -87,7 +86,7 @@ in {
     package = pkgs.sunshine.override {cudaSupport = true;};
 
     settings = {
-      sunshine_name = hostname;
+      sunshine_name = config.networking.hostName;
       port = 48100;
     };
 
