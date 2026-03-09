@@ -7,6 +7,7 @@ rec {
   };
   git = {
     ghq = "CodeProjects";
+    dotfiles = "github.com/ojsef39/dotfiles.nix";
     callbacks = {
       "gitlab.die-linke.de" = ''require("gitlinker.hosts").get_gitlab_type_url'';
     };

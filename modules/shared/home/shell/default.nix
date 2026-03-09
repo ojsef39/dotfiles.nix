@@ -3,6 +3,7 @@
   lib,
   vars,
   config,
+  baseLib,
   ...
 }: {
   imports = [
@@ -66,7 +67,7 @@
         set -gx GCL_CONTAINER_EXECUTABLE podman
         set -gx GCL_MAX_JOB_NAME_PADDING 30
         set -gx GCL_TIMESTAMPS true
-        set -gx NIX_GIT_PATH "$HOME/${vars.git.ghq}/github.com/ojsef39/dotfiles.nix"
+        set -gx NIX_GIT_PATH "${baseLib.mkDotPath vars pkgs}"
       ''
       + lib.optionalString pkgs.stdenv.isDarwin ''
         # macOS: make tools trust the homebrew CA bundle

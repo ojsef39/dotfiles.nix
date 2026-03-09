@@ -1,5 +1,10 @@
-{vars, ...}: let
-  dotPath = "/Users/${vars.user.name}/${vars.git.ghq}/github.com/ojsef39/dotfiles.nix";
+{
+  vars,
+  pkgs,
+  baseLib,
+  ...
+}: let
+  dotPath = baseLib.mkDotPath vars pkgs;
 in {
   programs = {
     default-browser = {
