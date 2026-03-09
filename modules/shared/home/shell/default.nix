@@ -254,6 +254,24 @@
           notify-send "Kitty" "IM DONE COOKING!"
         end
       '';
+
+      nix-prefetch-sri = ''
+        if test (count $argv) -eq 0
+            echo "Usage: nix-prefetch-sri <url> [nix-prefetch-url flags...]"
+            return 1
+        end
+
+        set url $argv[1]
+        set extra_flags $argv[2..]
+
+        set hash (nix-prefetch-url $extra_flags $url 2>/dev/null | tail -1)
+        if test $status -ne 0 -o -z "$hash"
+            echo "Error: nix-prefetch-url failed" >&2
+            return 1
+        end
+
+        nix hash convert  --hash-algo sha256 $hash
+      '';
     };
 
     plugins = with pkgs.fishPlugins;
