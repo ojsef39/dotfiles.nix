@@ -1,4 +1,15 @@
-_: {
+_: rec {
+  # Build the home directory path for the given platform.
+  # Usage: baseLib.mkHome vars pkgs
+  mkHome = vars: pkgs:
+    if pkgs.stdenv.isDarwin
+    then "/Users/${vars.user.name}"
+    else "/home/${vars.user.name}";
+
+  # Build the absolute dotfiles repository path for the given platform.
+  # Usage: baseLib.mkDotPath vars pkgs
+  mkDotPath = vars: pkgs: "${mkHome vars pkgs}/${vars.git.ghq}/${vars.git.dotfiles}";
+
   # Create an overlay that exposes packages with custom vars
   # Usage: nixpkgs.overlays = [(base.lib.makeOverlay vars)];
   makeOverlay = vars: _final: prev:

@@ -5,10 +5,7 @@
   baseLib,
   ...
 }: let
-  homeDirectory =
-    if pkgs.stdenv.isDarwin
-    then "/Users/${vars.user.name}"
-    else "/home/${vars.user.name}";
+  homeDirectory = baseLib.mkHome vars pkgs;
 in {
   imports = baseLib.scanPaths ./home;
 

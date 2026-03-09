@@ -6,6 +6,8 @@ in {
   inherit
     (helpers)
     makeOverlay
+    mkHome
+    mkDotPath
     mkHomeManagerModules
     ;
 }

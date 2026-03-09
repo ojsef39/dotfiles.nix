@@ -37,11 +37,11 @@ deploy-update: lint
     @nh {{nix_cmd}} switch -u -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
 
 [group('nix')]
-[doc('Upgrade flake inputs and deploy')]
+[doc('Upgrade refs and deploy')]
 upgrade: update-refs lint
     @git pull || true
     @git add .
-    @nh {{nix_cmd}} switch -u -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
+    @nh {{nix_cmd}} switch -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
     @git add .
     @if git log -1 --pretty=%B | grep -q "chore(deps): updated inputs and refs"; then \
         echo "Amending previous dependency update commit..."; \

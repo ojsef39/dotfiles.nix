@@ -3,6 +3,7 @@
   lib,
   vars,
   config,
+  baseLib,
   ...
 }: {
   imports = [
@@ -66,7 +67,7 @@
         set -gx GCL_CONTAINER_EXECUTABLE podman
         set -gx GCL_MAX_JOB_NAME_PADDING 30
         set -gx GCL_TIMESTAMPS true
-        set -gx NIX_GIT_PATH "$HOME/${vars.git.ghq}/github.com/ojsef39/dotfiles.nix"
+        set -gx NIX_GIT_PATH "${baseLib.mkDotPath vars pkgs}"
       ''
       + lib.optionalString pkgs.stdenv.isDarwin ''
         # macOS: make tools trust the homebrew CA bundle
@@ -253,6 +254,24 @@
         else
           notify-send "Kitty" "IM DONE COOKING!"
         end
+      '';
+
+      nix-prefetch-sri = ''
+        if test (count $argv) -eq 0
+            echo "Usage: nix-prefetch-sri <url> [nix-prefetch-url flags...]"
+            return 1
+        end
+
+        set url $argv[1]
+        set extra_flags $argv[2..]
+
+        set hash (nix-prefetch-url $extra_flags $url 2>/dev/null | tail -1)
+        if test $status -ne 0 -o -z "$hash"
+            echo "Error: nix-prefetch-url failed" >&2
+            return 1
+        end
+
+        nix hash convert  --hash-algo sha256 $hash
       '';
     };
 
