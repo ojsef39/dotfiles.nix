@@ -20,19 +20,7 @@
       };
       open = true;
       nvidiaSettings = true;
-      package = let
-        fixPatch = pkgs.fetchpatch {
-          url = "https://raw.githubusercontent.com/CachyOS/kernel-patches/master/6.19/misc/nvidia/0003-Fix-compile-for-6.19.patch";
-          hash = "sha256-YuJjSUXE6jYSuZySYGnWSNG5sfVei7vvxDcHx3K+IN4=";
-        };
-        base = config.boot.kernelPackages.nvidiaPackages.latest;
-      in
-        base
-        // {
-          open = base.open.overrideAttrs (old: {
-            patches = (old.patches or []) ++ [fixPatch];
-          });
-        };
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
     };
   };
 
