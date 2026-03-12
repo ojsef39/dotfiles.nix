@@ -546,6 +546,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-25": {
+      "locked": {
+        "lastModified": 1773346173,
+        "narHash": "sha256-dC9JG9hWU6HJbDiDZpqyCCtHCTLimzo8DFOHRgVZFc0=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "624d45e5e45c5af5889fb3eb60b21cea17043cf0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "release-25.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1772328832,
@@ -756,6 +772,7 @@
         "nixcord": "nixcord",
         "nixkit": "nixkit",
         "nixpkgs": "nixpkgs_6",
+        "nixpkgs-25": "nixpkgs-25",
         "nixpkgs_fork": "nixpkgs_fork",
         "nixpkgs_fork2": "nixpkgs_fork2",
         "nvf": "nvf",
