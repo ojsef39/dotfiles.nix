@@ -82,10 +82,6 @@
       url = "github:ndom91/rose-pine-hyprcursor";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    claude-vm = {
-      url = "github:ojsef39/claude-vm";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -128,7 +124,6 @@
           in {
             # ⬇️ Leave here as example for building from source instead of nixpkg repo:
             # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
-            claude-vm = inputs.claude-vm.packages.${prev.stdenv.hostPlatform.system}.default;
             inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
             inherit (inputs.nixpkgs_fork2.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
             # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
