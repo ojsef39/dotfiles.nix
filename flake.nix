@@ -25,6 +25,10 @@
     nixpkgs.url = "https://flakehub.com/f/JHOFER-Cloud/NixOS-nixpkgs/0.1.tar.gz"; # latest nixpkgs-unstable
     # nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # nixpkgs-stable.url = "https://flakehub.com/f/NixOS/nixpkgs/*"; # latest stable release
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs-25.url = "github:nixos/nixpkgs/release-25.05"; # specific 25.x release
     nixpkgs_fork = {
       url = "github:ojsef39/nixpkgs/mist";
