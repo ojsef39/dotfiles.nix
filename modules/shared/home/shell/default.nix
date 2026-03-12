@@ -80,6 +80,10 @@
 
     # Essential functions that can't be replaced with abbreviations
     functions = {
+      claude-vm = ''
+        nix run github:solomon-b/claude-vm -- $argv
+      '';
+
       t = ''
         set session_name (basename $PWD)
         if test -z "$TMUX"

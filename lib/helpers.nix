@@ -44,6 +44,7 @@ _: rec {
           users.${vars.user.name} = import ../modules/shared/import-hm.nix;
           sharedModules =
             [
+              inputs.nix-index-database.homeModules.default
               inputs.nixcord.homeModules.nixcord
               inputs.nixkit.homeModules.default
               inputs.spicetify-nix.homeManagerModules.default

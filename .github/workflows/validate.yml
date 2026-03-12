@@ -80,7 +80,6 @@ jobs:
             packages: &linux_packages ".#kubectl-debug"
           - os: "ubuntu-24.04-arm"
             packages:
-              - "claude-vm#packages.aarch64-linux.default"
               - *linux_packages
 
     runs-on: ${{ matrix.os }}
