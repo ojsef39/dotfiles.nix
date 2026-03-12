@@ -29,7 +29,7 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-25.url = "github:nixos/nixpkgs/release-25.05"; # specific 25.x release
+    # nixpkgs-25.url = "github:nixos/nixpkgs/release-25.05"; # specific 25.x release
     nixpkgs_fork = {
       url = "github:ojsef39/nixpkgs/mist";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,7 +59,7 @@
     };
     nixcord = {
       url = "github:kaylorben/nixcord";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
@@ -124,22 +124,26 @@
       {
         nixpkgs.overlays = [
           nixkit.overlays.default
-          (_final: prev: let
-            pkgs-25 = import inputs.nixpkgs-25 {
-              inherit (prev.stdenv.hostPlatform) system;
-              config.allowUnfree = true;
-            };
-          in {
-            # ⬇️ Leave here as example for building from source instead of nixpkg repo:
-            # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
-            claude-vm = inputs.claude-vm.packages.${prev.stdenv.hostPlatform.system}.default;
-            inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
-            inherit (inputs.nixpkgs_fork2.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
-            # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
-            # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
-            # claude-code = prev.callPackage "${inputs.nixpkgs_claude_code_fork}/pkgs/by-name/cl/claude-code/package.nix" {};
-            inherit (pkgs-25) vesktop;
-          })
+          (
+            _final: prev:
+            #   let
+            #   pkgs-25 = import inputs.nixpkgs-25 {
+            #     inherit (prev.stdenv.hostPlatform) system;
+            #     config.allowUnfree = true;
+            #   };
+            # in
+            {
+              # ⬇️ Leave here as example for building from source instead of nixpkg repo:
+              # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
+              claude-vm = inputs.claude-vm.packages.${prev.stdenv.hostPlatform.system}.default;
+              inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
+              inherit (inputs.nixpkgs_fork2.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
+              # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
+              # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
+              # claude-code = prev.callPackage "${inputs.nixpkgs_claude_code_fork}/pkgs/by-name/cl/claude-code/package.nix" {};
+              # inherit (pkgs-25) vesktop;
+            }
+          )
         ];
       }
       ./modules/shared/import-sys.nix
