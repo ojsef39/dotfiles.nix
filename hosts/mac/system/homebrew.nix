@@ -5,7 +5,9 @@
 }: {
   # Homebrew for macOS-specific and unavailable packages
   homebrew = {
-    taps = [];
+    taps = [
+      "doodlescheduling/flux-build"
+    ];
 
     # Mac App Store apps
     masApps = lib.mkIf (!vars.is_vm) {
@@ -28,6 +30,7 @@
     brews = [
       "Graphviz"
       "expect"
+      "flux-build"
       "iperf3"
       "talosctl"
       # "docx2pdf" #NOTE: Needs tap
