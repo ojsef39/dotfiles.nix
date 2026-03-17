@@ -235,6 +235,7 @@
       enable = true;
       lsp.enable = true;
       treesitter.enable = true;
+      format.enable = false; # Using prettier via conform
     };
   };
 }
