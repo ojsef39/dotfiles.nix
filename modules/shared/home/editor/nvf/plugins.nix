@@ -494,7 +494,28 @@
 
         deadnix = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#deadnix" "--"];
+          args = ["run" "--impure" "nixpkgs#deadnix" "--" "--output-format=json"];
+          parser = lib.generators.mkLuaInline ''
+            function(output, _)
+              local diagnostics = {}
+              if output == "" then return diagnostics end
+              local ok, decoded = pcall(vim.json.decode, output)
+              if not ok or not decoded or not decoded.results then return diagnostics end
+              for _, diag in ipairs(decoded.results) do
+                if diag.line then
+                  table.insert(diagnostics, {
+                    lnum = diag.line - 1,
+                    end_lnum = diag.line - 1,
+                    col = (diag.column or 1) - 1,
+                    end_col = diag.endColumn or 0,
+                    message = diag.message,
+                    severity = vim.diagnostic.severity.WARN,
+                  })
+                end
+              end
+              return diagnostics
+            end
+          '';
         };
 
         eslint = {

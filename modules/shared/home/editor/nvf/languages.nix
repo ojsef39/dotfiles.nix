@@ -20,6 +20,14 @@
           };
         };
       };
+      nixd = {
+        settings = {
+          nixd = {
+            nixpkgs.expr = "import <nixpkgs> {}";
+            formatting.command = ["${pkgs.alejandra}/bin/alejandra"];
+          };
+        };
+      };
     };
 
     mappings = {
@@ -235,6 +243,7 @@
       enable = true;
       lsp.enable = true;
       treesitter.enable = true;
+      format.enable = false; # Using prettier via conform
     };
   };
 }
