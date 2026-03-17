@@ -20,6 +20,14 @@
           };
         };
       };
+      nixd = {
+        settings = {
+          nixd = {
+            nixpkgs.expr = "import <nixpkgs> {}";
+            formatting.command = ["${pkgs.alejandra}/bin/alejandra"];
+          };
+        };
+      };
     };
 
     mappings = {
