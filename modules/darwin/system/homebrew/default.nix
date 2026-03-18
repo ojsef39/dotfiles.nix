@@ -10,10 +10,7 @@ _: {
       cleanup = "uninstall"; # "zap" to also remove config files
     };
 
-    taps = [
-      "hashicorp/tap"
-      "tldev/tap"
-    ];
+    taps = [];
 
     # Mac App Store apps
     masApps = {
@@ -26,7 +23,6 @@ _: {
       "ca-certificates"
       "coreutils"
       "expect"
-      "hashicorp/tap/vault"
       "helm"
       "keyring"
       "mas"
