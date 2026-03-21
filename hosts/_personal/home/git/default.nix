@@ -9,6 +9,7 @@
       signByDefault = true;
     };
     settings = {
+      credential.helper = "!gh auth git-credential";
       gpg.format = "ssh";
       "gpg \"ssh\"".program =
         if pkgs.stdenv.isDarwin
