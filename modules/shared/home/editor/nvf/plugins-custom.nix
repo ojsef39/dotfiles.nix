@@ -266,6 +266,13 @@ in {
               return is_ignoreListed(opts) and 'In a secret workspace' or ('Working on ' .. opts.workspace)
             end,
           },
+          idle = {
+            enabled = true,
+            timeout = 300000,
+            show_status = false,
+            smart_idle = true,
+            unidle_on_focus = true,
+          },
         })
       '';
     };
