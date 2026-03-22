@@ -9,5 +9,6 @@ in {
     mkHome
     mkDotPath
     mkHomeManagerModules
+    mkOpAgentSock
     ;
 }

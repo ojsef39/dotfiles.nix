@@ -1,13 +1,20 @@
-{pkgs, ...}: let
-  opAgentSock =
-    if pkgs.stdenv.isDarwin
-    then "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-    else "~/.1password/agent.sock";
+{
+  pkgs,
+  baseLib,
+  ...
+}: let
+  opAgentSock = baseLib.mkOpAgentSock pkgs;
 in {
   home.file.".config/1Password/ssh/agent.toml".source = ./1password-agent.toml;
 
   programs.ssh = {
     matchBlocks = {
+      # GitHub
+      "github.com" = {
+        user = "git";
+        extraOptions.IdentityAgent = ''"${opAgentSock}"'';
+      };
+
       # JHC K8s
       "*.k8*.jhofer.*" = {
         user = "josef";
