@@ -15,13 +15,19 @@ in {
     enable = true;
     discord = {
       enable = true;
-      vencord = {
-        enable = false;
-        package = pkgs.vencord;
-      };
+      vencord.enable = false;
     };
     vesktop = {
       enable = true;
+      settings = {
+        discordBranch = "stable";
+        minimizeToTray = true;
+        arRPC = true;
+        customTitleBar =
+          if pkgs.stdenv.isDarwin
+          then true
+          else false;
+      };
       # package = pkgs.vesktop.overrideAttrs (previousAttrs: {
       #   patches =
       #     previousAttrs.patches
@@ -123,19 +129,6 @@ in {
       source = builtins.fetchurl {
         url = "https://raw.githubusercontent.com/refact0r/midnight-discord/refs/heads/master/themes/flavors/midnight-catppuccin-macchiato.theme.css";
         sha256 = "08bki3fpndw0ziyp746iwakh8bwsky4qa680vw1qj5g3ylhb9pw7";
-      };
-      force = true;
-    };
-    # Settings configuration
-    "${config.programs.nixcord.vesktop.configDir}/settings.json" = {
-      text = builtins.toJSON {
-        discordBranch = "stable";
-        minimizeToTray = true;
-        arRPC = true;
-        customTitleBar =
-          if pkgs.stdenv.isDarwin
-          then true
-          else false;
       };
       force = true;
     };
