@@ -4,24 +4,38 @@
   vars,
   ...
 }: let
-  # Define theme path based on operating system
+  # FIX: Investigate Vesktop aarpc broken on linux?
+  # seems to work on cachyos; external arRPC detects games but Vesktop doesnt show it
+  #Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/698
+  useVesktop = pkgs.stdenv.isDarwin;
   themeFile = "midnight-catppuccin-macchiato.theme.css";
-  themePath =
+  vesktopThemePath =
     if pkgs.stdenv.isDarwin
     then "/Users/${vars.user.name}/Library/Application Support/vesktop/themes/${themeFile}"
     else "${config.xdg.configHome}/vesktop/themes/${themeFile}";
+  discordThemePath =
+    if pkgs.stdenv.isDarwin
+    then "/Users/${vars.user.name}/Library/Application Support/Vencord/themes/${themeFile}"
+    else "${config.xdg.configHome}/Vencord/themes/${themeFile}";
+  themePath =
+    if useVesktop
+    then vesktopThemePath
+    else discordThemePath;
 in {
   programs.nixcord = {
     enable = true;
-    discord = {
-      enable = true;
-      vencord = {
-        enable = false;
-        package = pkgs.vencord;
-      };
-    };
+    discord.enable = !useVesktop;
     vesktop = {
-      enable = true;
+      enable = useVesktop;
+      settings = {
+        discordBranch = "stable";
+        minimizeToTray = true;
+        arRPC = true;
+        customTitleBar =
+          if pkgs.stdenv.isDarwin
+          then true
+          else false;
+      };
       # package = pkgs.vesktop.overrideAttrs (previousAttrs: {
       #   patches =
       #     previousAttrs.patches
@@ -118,35 +132,29 @@ in {
   };
 
   # Download theme file
-  home.file = {
-    ${themePath} = {
-      source = builtins.fetchurl {
-        url = "https://raw.githubusercontent.com/refact0r/midnight-discord/refs/heads/master/themes/flavors/midnight-catppuccin-macchiato.theme.css";
-        sha256 = "08bki3fpndw0ziyp746iwakh8bwsky4qa680vw1qj5g3ylhb9pw7";
+  home.file =
+    {
+      ${themePath} = {
+        source = builtins.fetchurl {
+          url = "https://raw.githubusercontent.com/refact0r/midnight-discord/refs/heads/master/themes/flavors/midnight-catppuccin-macchiato.theme.css";
+          sha256 = "08bki3fpndw0ziyp746iwakh8bwsky4qa680vw1qj5g3ylhb9pw7";
+        };
+        force = true;
       };
-      force = true;
-    };
-    # Settings configuration
-    "${config.programs.nixcord.vesktop.configDir}/settings.json" = {
-      text = builtins.toJSON {
-        discordBranch = "stable";
-        minimizeToTray = true;
-        arRPC = true;
-        customTitleBar =
-          if pkgs.stdenv.isDarwin
-          then true
-          else false;
-      };
-      force = true;
-    };
-    # Quick CSS configuration
-    "${config.programs.nixcord.vesktop.configDir}/settings/quickCss.css" = {
-      text = ''
-        .titleBar_a934d8 {
-          display: none !important;
-        }
-      '';
-      force = true;
-    };
-  };
+    }
+    // (
+      if useVesktop
+      then {
+        # Quick CSS configuration
+        "${config.programs.nixcord.vesktop.configDir}/settings/quickCss.css" = {
+          text = ''
+            .titleBar_a934d8 {
+              display: none !important;
+            }
+          '';
+          force = true;
+        };
+      }
+      else {}
+    );
 }
