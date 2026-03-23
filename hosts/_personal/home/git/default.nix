@@ -7,6 +7,7 @@
     signing = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAnnOOtnSeqQ3+XjO2jaC5k0pk5BIZVB4YI3KukF4o83";
       signByDefault = true;
+      format = "ssh";
     };
     settings = {
       credential.helper = "!gh auth git-credential";
