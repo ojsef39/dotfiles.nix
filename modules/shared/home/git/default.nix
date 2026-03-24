@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   vars,
   ...
 }: {
@@ -13,6 +14,16 @@
     git = {
       enable = lib.mkDefault true;
       lfs.enable = lib.mkDefault true;
+
+      signing = {
+        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAnnOOtnSeqQ3+XjO2jaC5k0pk5BIZVB4YI3KukF4o83"; # id_ed25519_new
+        signByDefault = true;
+        format = "ssh";
+        signer =
+          if pkgs.stdenv.isDarwin
+          then "/Applications/Nix Apps/1Password.app/Contents/MacOS/op-ssh-sign"
+          else "${pkgs._1password-gui}/bin/op-ssh-sign";
+      };
 
       settings = {
         user = {
