@@ -63,6 +63,30 @@
     lspconfig = {
       enable = true;
       sources = {
+        # jsonls provides schema completions/hover for json5 files but its validator
+        # doesn't understand JSON5 syntax (trailing commas, unquoted keys, etc.).
+        # Disable its diagnostic namespace for json5 buffers on attach — works for
+        # both push (publishDiagnostics) and pull (textDocument/diagnostic) models.
+        jsonls-json5-diag = ''
+          vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(args)
+              local client = vim.lsp.get_client_by_id(args.data.client_id)
+              if not client or client.name ~= "jsonls" then return end
+              local ok, ft = pcall(vim.api.nvim_get_option_value, "filetype", { buf = args.buf })
+              if not ok or ft ~= "json5" then return end
+              -- disable push diagnostics namespace
+              vim.diagnostic.enable(false, {
+                bufnr = args.buf,
+                ns_id = vim.lsp.diagnostic.get_namespace(args.data.client_id),
+              })
+              -- disable pull diagnostics namespace (nvim 0.10.1+)
+              local pull_ok, pull_ns = pcall(vim.lsp.diagnostic.get_namespace, args.data.client_id, true)
+              if pull_ok then
+                vim.diagnostic.enable(false, { bufnr = args.buf, ns_id = pull_ns })
+              end
+            end,
+          })
+        '';
         sourcekit = ''
           vim.lsp.config.sourcekit = {
             cmd = { '${pkgs.sourcekit-lsp}/bin/sourcekit-lsp' },
@@ -146,7 +170,10 @@
       };
       format = {
         enable = true;
-        type = ["black" "isort"];
+        type = [
+          "black"
+          "isort"
+        ];
       };
     };
 

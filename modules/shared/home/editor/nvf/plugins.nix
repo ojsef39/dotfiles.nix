@@ -16,10 +16,17 @@
         "<C-p>" = [];
       };
       sources = {
-        default = ["lsp" "path" "snippets" "buffer"];
+        default = [
+          "lsp"
+          "path"
+          "snippets"
+          "buffer"
+        ];
       };
       completion = {
-        ghost_text = {enabled = true;};
+        ghost_text = {
+          enabled = true;
+        };
         menu = {
           border = "rounded";
           draw = {
@@ -56,12 +63,16 @@
           };
         };
         documentation = {
-          window = {border = "rounded";};
+          window = {
+            border = "rounded";
+          };
         };
       };
       signature = {
         enabled = true;
-        window = {border = "rounded";};
+        window = {
+          border = "rounded";
+        };
       };
     };
   };
@@ -242,7 +253,10 @@
 
     preview.markdownPreview = {
       enable = true;
-      filetypes = ["markdown" "rst"];
+      filetypes = [
+        "markdown"
+        "rst"
+      ];
     };
 
     smart-splits = {
@@ -332,10 +346,16 @@
         };
         formatters_by_ft = {
           # Languages with custom formatters not supported by nvf
-          "markdown.mdx" = ["prettier" "markdownlint-cli2"];
+          "markdown.mdx" = [
+            "prettier"
+            "markdownlint-cli2"
+          ];
           dockerfile = ["dockerfmt"];
           fish = ["fish_indent"];
-          go = ["gofumpt" "goimports-reviser"]; # nvf doesn't support goimports-reviser
+          go = [
+            "gofumpt"
+            "goimports-reviser"
+          ]; # nvf doesn't support goimports-reviser
           graphql = ["prettier"];
           handlebars = ["prettier"];
           html = ["prettier"]; # nvf only supports superhtml
@@ -343,7 +363,10 @@
           json5 = ["prettier"];
           jsonc = ["prettier"];
           less = ["prettier"];
-          markdown = ["prettier" "markdownlint-cli2"]; # nvf has deno_fmt, we want prettier + markdownlint
+          markdown = [
+            "prettier"
+            "markdownlint-cli2"
+          ]; # nvf has deno_fmt, we want prettier + markdownlint
           scss = ["prettier"];
           swift = ["swift-format"];
           terraform = ["terraform_fmt"];
@@ -369,53 +392,106 @@
           "goimports-reviser" = {
             command = "nix";
             "inherit" = true;
-            prepend_args = ["run" "--impure" "nixpkgs#goimports-reviser" "--"];
+            prepend_args = [
+              "run"
+              "--impure"
+              "nixpkgs#goimports-reviser"
+              "--"
+            ];
           };
           gofumpt = {
             command = "nix";
             "inherit" = true;
-            prepend_args = ["run" "--impure" "nixpkgs#gofumpt" "--"];
+            prepend_args = [
+              "run"
+              "--impure"
+              "nixpkgs#gofumpt"
+              "--"
+            ];
           };
 
           # Markdown formatters
           "markdownlint-cli2" = {
             command = "nix";
             "inherit" = true;
-            prepend_args = ["run" "--impure" "nixpkgs#markdownlint-cli2" "--"];
+            prepend_args = [
+              "run"
+              "--impure"
+              "nixpkgs#markdownlint-cli2"
+              "--"
+            ];
           };
           markdownlint = {
             command = "nix";
             "inherit" = true;
-            prepend_args = ["run" "--impure" "nixpkgs#markdownlint-cli" "--"];
+            prepend_args = [
+              "run"
+              "--impure"
+              "nixpkgs#markdownlint-cli"
+              "--"
+            ];
           };
 
           # Other formatters not in nvf
           dockerfmt = {
             command = "nix";
             "inherit" = true;
-            prepend_args = ["run" "--impure" "nixpkgs#dockerfmt" "--"];
+            prepend_args = [
+              "run"
+              "--impure"
+              "nixpkgs#dockerfmt"
+              "--"
+            ];
           };
           fish_indent = {
             command = "nix";
             "inherit" = true;
-            prepend_args = ["run" "--impure" "nixpkgs#fish" "--" "fish_indent"];
+            prepend_args = [
+              "run"
+              "--impure"
+              "nixpkgs#fish"
+              "--"
+              "fish_indent"
+            ];
           };
           prettier = {
             command = "nix";
             "inherit" = true;
-            prepend_args = ["run" "--impure" "nixpkgs#nodePackages.prettier" "--"];
+            prepend_args = [
+              "run"
+              "--impure"
+              "nixpkgs#nodePackages.prettier"
+              "--"
+            ];
           };
           "swift-format" = {
             command = "nix";
             stdin = true;
-            args = ["run" "--impure" "nixpkgs#swift-format" "--" "format" "--assume-filename" "$FILENAME"];
+            args = [
+              "run"
+              "--impure"
+              "nixpkgs#swift-format"
+              "--"
+              "format"
+              "--assume-filename"
+              "$FILENAME"
+            ];
           };
           terraform_fmt = {
             command = "nix";
             "inherit" = true;
-            prepend_args = ["run" "--impure" "nixpkgs#terraform" "--" "fmt" "-"];
+            prepend_args = [
+              "run"
+              "--impure"
+              "nixpkgs#terraform"
+              "--"
+              "fmt"
+              "-"
+            ];
             stdin = true;
-            env = {NIXPKGS_ALLOW_UNFREE = "1";};
+            env = {
+              NIXPKGS_ALLOW_UNFREE = "1";
+            };
           };
           # Note: black, isort, alejandra, stylua, shfmt, rustfmt are handled in languages.nix
         };
@@ -462,13 +538,15 @@
         javascript = ["eslint"];
         javascriptreact = ["eslint"];
         json = ["jsonlint"];
-        json5 = ["jsonlint"];
         jsonc = ["jsonlint"];
         less = ["stylelint"];
         lua = ["luacheck"];
         markdown = ["markdownlint"];
         "markdown.mdx" = ["markdownlint"];
-        nix = ["deadnix" "statix"];
+        nix = [
+          "deadnix"
+          "statix"
+        ];
         python = ["pylint"];
         rust = ["clippy"];
         scss = ["stylelint"];
@@ -484,17 +562,35 @@
       linters = {
         actionlint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#actionlint" "--" "-format" "{{json .}}"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#actionlint"
+            "--"
+            "-format"
+            "{{json .}}"
+          ];
         };
 
         clippy = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#cargo" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#cargo"
+            "--"
+          ];
         };
 
         deadnix = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#deadnix" "--" "--output-format=json"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#deadnix"
+            "--"
+            "--output-format=json"
+          ];
           parser = lib.generators.mkLuaInline ''
             function(output, _)
               local diagnostics = {}
@@ -520,77 +616,154 @@
 
         eslint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#eslint" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#eslint"
+            "--"
+          ];
         };
 
         fish = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#fish" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#fish"
+            "--"
+          ];
         };
 
         golangcilint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#golangci-lint" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#golangci-lint"
+            "--"
+          ];
         };
 
         hadolint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#hadolint" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#hadolint"
+            "--"
+          ];
         };
 
         htmlhint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#htmlhint" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#htmlhint"
+            "--"
+          ];
         };
 
         jsonlint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#nodePackages.jsonlint" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#nodePackages.jsonlint"
+            "--"
+          ];
         };
 
         luacheck = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#lua54Packages.luacheck" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#lua54Packages.luacheck"
+            "--"
+          ];
         };
 
         markdownlint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#markdownlint-cli" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#markdownlint-cli"
+            "--"
+          ];
         };
 
         pylint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#pylint" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#pylint"
+            "--"
+          ];
         };
 
         shellcheck = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#shellcheck" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#shellcheck"
+            "--"
+          ];
         };
 
         statix = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#statix" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#statix"
+            "--"
+          ];
         };
 
         stylelint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#stylelint" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#stylelint"
+            "--"
+          ];
         };
 
         "swift-format" = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#swift-format" "--" "lint" "--strict"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#swift-format"
+            "--"
+            "lint"
+            "--strict"
+          ];
         };
 
         tflint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#tflint" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#tflint"
+            "--"
+          ];
         };
 
         yamllint = {
           cmd = "nix";
-          args = ["run" "--impure" "nixpkgs#yamllint" "--"];
+          args = [
+            "run"
+            "--impure"
+            "nixpkgs#yamllint"
+            "--"
+          ];
           stdin = false;
           parser = lib.generators.mkLuaInline ''
             require('lint.parser').from_pattern(
