@@ -206,6 +206,22 @@ _: {
 
     # Editing
     {
+      key = "dd";
+      mode = "n";
+      lua = true;
+      expr = true;
+      silent = true;
+      desc = "Delete line (smart clipboard)";
+      action = ''
+        function()
+          if vim.api.nvim_get_current_line() == "" then
+            return '"_dd'
+          end
+          return "dd"
+        end
+      '';
+    }
+    {
       key = "<leader>d";
       action = ''"_d'';
       mode = "v";
