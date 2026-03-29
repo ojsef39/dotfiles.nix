@@ -7,6 +7,10 @@
     };
   };
 in {
+  home.sessionVariables = {
+    OPENCODE_ENABLE_EXA = "1"; # enables https://opencode.ai/docs/de/tools/#websearch
+  };
+
   programs.opencode = {
     enable = true;
     settings = {
@@ -16,6 +20,7 @@ in {
       autoupdate = false;
       disabled_providers = ["xai"];
       permission = {
+        websearch = "allow";
         webfetch = "allow";
         bash = {
           pwd = "allow";
