@@ -1,4 +1,8 @@
-_: {
+{
+  lib,
+  vars,
+  ...
+}: {
   # Homebrew for macOS-specific and unavailable packages
   # https://github.com/LnL7/nix-darwin/blob/master/modules/homebrew.nix
   homebrew = {
@@ -13,7 +17,7 @@ _: {
     taps = [];
 
     # Mac App Store apps
-    masApps = {
+    masApps = lib.mkIf (vars.masApps.enable or true) {
       "Reeder" = 6475002485;
       "The Unarchiver" = 425424353;
     };

@@ -14,6 +14,7 @@ in {
     nixupdater = {
       enable = true;
       flake = dotPath;
+      terminal = "kitty-tab";
       command = "NIX_GIT_PATH=${dotPath} just upgrade";
     };
   };

@@ -10,7 +10,7 @@
     ];
 
     # Mac App Store apps
-    masApps = lib.mkIf (!vars.is_vm) {
+    masApps = lib.mkIf (vars.masApps.enable or true) {
       "Book Tracker" = 1496543317;
       "CrystalFetch" = 6454431289;
       "Final Cut Pro" = 424389933;
