@@ -20,6 +20,7 @@
     go
     gomplate
     helm-schema-gen
+    kubernetes-helmPlugins.helm-unittest
     hwatch
     just
     kubeconform
