@@ -1,6 +1,15 @@
 -- FIXME: Nvim closes when selecting a file?
 -- labels: bug, os:nix
 
+-- Configure fff.nvim with explicit writable database paths.
+-- stdpath('cache') may resolve to a read-only nix store path in the nvf setup.
+local fff_data_dir = vim.fn.expand("~/.local/share/fff")
+vim.fn.mkdir(fff_data_dir, "p")
+require("fff").setup({
+	frecency = { db_path = fff_data_dir .. "/frecency" },
+	history = { db_path = fff_data_dir .. "/history" },
+})
+
 -- FFF.nvim integration with mini.pick
 ---@class FFFItem
 ---@field name string
