@@ -83,7 +83,7 @@ in {
             "nix"
             "run"
             "--impure"
-            "nixpkgs#nodePackages.prettier"
+            "nixpkgs#prettier"
             "--"
             "--write"
             "$FILE"
@@ -106,6 +106,20 @@ in {
             ".mdx"
             ".graphql"
             ".vue"
+          ];
+        };
+        "markdownlint-cli2" = {
+          command = [
+            "nix"
+            "run"
+            "--impure"
+            "nixpkgs#markdownlint-cli2"
+            "--"
+            "$FILE"
+          ];
+          extensions = [
+            ".md"
+            ".mdx"
           ];
         };
 
@@ -145,6 +159,17 @@ in {
             "nixpkgs#gofumpt"
             "--"
             "-w"
+            "$FILE"
+          ];
+          extensions = [".go"];
+        };
+        "goimports-reviser" = {
+          command = [
+            "nix"
+            "run"
+            "--impure"
+            "nixpkgs#goimports-reviser"
+            "--"
             "$FILE"
           ];
           extensions = [".go"];

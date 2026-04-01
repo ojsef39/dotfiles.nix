@@ -210,7 +210,15 @@ in {
 
     # FFF - File finder with frecency
     fff-nvim = {
-      package = pkgs.vimPlugins.fff-nvim;
+      package = pkgs.vimPlugins.fff-nvim.overrideAttrs (old: {
+        postPatch =
+          (old.postPatch or "")
+          + ''
+            substituteInPlace lua/fff/core.lua \
+              --replace ".. result, vim.log.levels.WARN)" ".. tostring(result), vim.log.levels.WARN)" \
+              --replace ".. result, vim.log.levels.ERROR)" ".. tostring(result), vim.log.levels.ERROR)"
+          '';
+      });
     };
 
     # Helm-ls plugin for template features
