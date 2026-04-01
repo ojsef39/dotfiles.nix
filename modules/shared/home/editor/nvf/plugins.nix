@@ -460,7 +460,7 @@
             prepend_args = [
               "run"
               "--impure"
-              "nixpkgs#nodePackages.prettier"
+              "nixpkgs#prettier"
               "--"
             ];
           };
@@ -537,8 +537,6 @@
         html = ["htmlhint"];
         javascript = ["eslint"];
         javascriptreact = ["eslint"];
-        json = ["jsonlint"];
-        jsonc = ["jsonlint"];
         less = ["stylelint"];
         lua = ["luacheck"];
         markdown = ["markdownlint"];
@@ -660,16 +658,6 @@
             "run"
             "--impure"
             "nixpkgs#htmlhint"
-            "--"
-          ];
-        };
-
-        jsonlint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#nodePackages.jsonlint"
             "--"
           ];
         };
