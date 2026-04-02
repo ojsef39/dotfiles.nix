@@ -70,6 +70,9 @@
         set -gx NIX_GIT_PATH "${baseLib.mkDotPath vars pkgs}"
       ''
       + lib.optionalString pkgs.stdenv.isDarwin ''
+        # macOS: nix config name is always "mac" regardless of hostname
+        set -gx NIX_CONFIG_NAME mac
+
         # macOS: make tools trust the homebrew CA bundle
         set -gx PYTHON /usr/bin/python3
         set -gx NODE_EXTRA_CA_CERTS /opt/homebrew/etc/ca-certificates/cert.pem
@@ -276,6 +279,57 @@
         end
 
         nix hash convert  --hash-algo sha256 $hash
+      '';
+
+      nix-render = ''
+        # Usage: nix-render <file-path> [flake-path]
+        # Renders and prints a home-manager managed file without deploying.
+        # Defaults to $NIX_GIT_PATH as the flake. Pass a second arg to use a different flake.
+        if test (count $argv) -lt 1
+          echo "Usage: nix-render <file-path> [flake-path]"
+          echo "Example: nix-render ~/.config/opencode/opencode.json"
+          echo "         nix-render ~/.config/foo/bar.json ~/path/to/other-flake"
+          return 1
+        end
+
+        set -l target $argv[1]
+        set -l flake (if test (count $argv) -ge 2; echo $argv[2]; else; echo $NIX_GIT_PATH; end)
+
+        # Normalize path
+        set target (string replace -r '^~' $HOME $target)
+        if not string match -q '/*' $target
+          set target $HOME/$target
+        end
+
+        # Determine system config type
+        set -l sys (if test (uname) = Darwin; echo darwinConfigurations; else; echo nixosConfigurations; end)
+
+        set -l config_name (test -n "$NIX_CONFIG_NAME" && echo $NIX_CONFIG_NAME || hostname -s)
+        set -l hm_base "$flake#$sys.$config_name.config.home-manager.users."(whoami)".home.file"
+        # home.file keys may be absolute or relative to $HOME — try both
+        set -l rel_target (string replace -r "^$HOME/" "" $target)
+
+        set -l text ""
+        set -l drv_path ""
+        for key in "\"$target\"" "\"$rel_target\""
+          set text (nix eval --raw "$hm_base.$key.text" 2>/dev/null)
+          if test -n "$text"; echo $text; return 0; end
+          set drv_path (nix eval --raw "$hm_base.$key.source.drvPath" 2>/dev/null)
+          if test -n "$drv_path"; break; end
+        end
+
+        if test -z "$drv_path"
+          echo "error: '$target' not found in home-manager config at $flake" >&2
+          return 1
+        end
+
+        set -l out_path (nix-store --realise $drv_path 2>/dev/null | tail -1)
+        if test -z "$out_path"
+          echo "error: failed to build derivation" >&2
+          return 1
+        end
+
+        cat $out_path
       '';
     };
 
