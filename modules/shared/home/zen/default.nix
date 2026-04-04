@@ -234,6 +234,32 @@
           workspace = spaces."JHC".id;
           position = 204;
         };
+
+        # Satisfactory folder
+        "Satisfactory" = {
+          id = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
+          container = containers.Personal.id;
+          workspace = spaces."JHC".id;
+          isGroup = true;
+          isFolderCollapsed = true;
+          position = 205;
+        };
+        "satisfaction01-p1" = {
+          id = "7b85e9fd-4b33-4321-bb5b-f747945cb0a7";
+          url = "https://satisfaction01-p1.hla1.jhofer.lan/map";
+          container = containers.Personal.id;
+          workspace = spaces."JHC".id;
+          folderParentId = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
+          position = 206;
+        };
+        "Satisfactory (Grafana)" = {
+          id = "dbddfbf3-fe78-4122-a64a-bfbf87a7ddec";
+          url = "https://grafana.hla1.jhofer.lan/d/satisfactory-savegame-exporter/";
+          container = containers.Personal.id;
+          workspace = spaces."JHC".id;
+          folderParentId = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
+          position = 207;
+        };
       };
     in {
       inherit containers spaces pins;
