@@ -1,8 +1,13 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
+  home.packages = with pkgs; [
+    satisfactorymodmanager
+  ];
+
   programs.steam.enable = true;
 
   # Override graphics to use NVIDIA's pre-built 32-bit libraries (avoids Mesa entirely)
