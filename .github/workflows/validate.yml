@@ -51,7 +51,7 @@ jobs:
           echo "${{ secrets.FLAKEHUB_TOKEN }}" | determinate-nixd auth login token --token-file /dev/stdin
 
       - name: Install Just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@v4
         with:
           just-version: "1.40.0"
 
@@ -144,7 +144,7 @@ jobs:
           sleep 2
 
       - name: Install Just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@v4
 
       - name: Setup Cachix Auth
         uses: cachix/cachix-action@v17
