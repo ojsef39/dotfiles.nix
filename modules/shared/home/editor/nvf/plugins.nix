@@ -454,16 +454,6 @@
               "fish_indent"
             ];
           };
-          prettier = {
-            command = "nix";
-            "inherit" = true;
-            prepend_args = [
-              "run"
-              "--impure"
-              "nixpkgs#prettier"
-              "--"
-            ];
-          };
           "swift-format" = {
             command = "nix";
             stdin = true;
