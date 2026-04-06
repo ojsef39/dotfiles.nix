@@ -254,7 +254,7 @@
         };
         "Satisfactory (Grafana)" = {
           id = "dbddfbf3-fe78-4122-a64a-bfbf87a7ddec";
-          url = "https://grafana.hla1.jhofer.lan/d/satisfactory-savegame-exporter/";
+          url = "https://grafana.hla1.jhofer.lan/d/satisfactory-savegame-exporter/?from=now-6h&to=now";
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
