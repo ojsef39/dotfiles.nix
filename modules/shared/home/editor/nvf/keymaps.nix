@@ -42,7 +42,10 @@ _: {
     {
       key = "<leader>cF";
       action = "function() require('conform').format({ formatters = { 'injected' }, timeout_ms = 3000 }) end";
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       lua = true;
       desc = "Format Injected Langs";
     }
@@ -435,7 +438,7 @@ _: {
     # Undotree
     {
       key = "<leader>cu";
-      action = "<cmd>UndotreeToggle<cr>";
+      action = "<cmd>lua require('undotree').open({ command = 'topleft 30vnew' })<cr>";
       mode = "n";
       desc = "Undotree";
       silent = true;
@@ -463,21 +466,30 @@ _: {
     {
       key = "<leader>mm";
       action = ":MarkdownPreviewToggle<cr>";
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       desc = "Toggle Markdown Preview";
       silent = true;
     }
     {
       key = "<leader>mp";
       action = ":MarkdownPreview<cr>";
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       desc = "Start Markdown Preview";
       silent = true;
     }
     {
       key = "<leader>ms";
       action = ":MarkdownPreviewStop<cr>";
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       desc = "Stop Markdown Preview";
       silent = true;
     }
@@ -509,8 +521,11 @@ _: {
     # Gitlinker
     {
       key = "<leader>go";
-      action = "function() require('gitlinker').link() end";
-      mode = ["n" "v"];
+      action = "function() require('gitlinker').link({ action = require('gitlinker.actions').system }) end";
+      mode = [
+        "n"
+        "v"
+      ];
       lua = true;
       desc = "Git Browse (open in browser)";
       silent = true;
@@ -518,7 +533,10 @@ _: {
     {
       key = "<leader>gy";
       action = "function() require('gitlinker').link({ action = require('gitlinker.actions').clipboard }) end";
-      mode = ["n" "v"];
+      mode = [
+        "n"
+        "v"
+      ];
       lua = true;
       desc = "Git Copy URL";
       silent = true;

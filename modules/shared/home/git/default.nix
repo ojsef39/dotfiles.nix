@@ -3,7 +3,16 @@
   pkgs,
   vars,
   ...
-}: {
+}: let
+  customServices = vars.git.customServices or [];
+  lazygitServices = builtins.listToAttrs (
+    map (s: {
+      name = s.domain;
+      value = "${s.provider}:${s.domain}";
+    })
+    customServices
+  );
+in {
   home = {
     activation.removeExistingGitconfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
       rm -f ~/.gitconfig
@@ -100,6 +109,7 @@
       settings = {
         notARepository = "quit";
         git.overrideGpg = true;
+        services = lazygitServices;
         customCommands = [
           # AI Commit using opencode
           {

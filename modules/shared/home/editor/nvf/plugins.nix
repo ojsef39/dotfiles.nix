@@ -3,7 +3,17 @@
   vars,
   pkgs,
   ...
-}: {
+}: let
+  customServices = vars.git.customServices or [];
+  domainToLuaPattern = domain: "^" + builtins.replaceStrings ["." "-"] ["%." "%-"] domain;
+  gitlinkerHosts = builtins.listToAttrs (
+    map (s: {
+      name = domainToLuaPattern s.domain;
+      value = lib.generators.mkLuaInline "require('gitlinker.routers').${s.provider}_browse";
+    })
+    customServices
+  );
+in {
   # Completion with blink-cmp
   autocomplete.blink-cmp = {
     enable = true;
@@ -154,12 +164,7 @@
     gitlinker-nvim = {
       enable = true;
       setupOpts = {
-        opts = {
-          add_current_line_on_normal_mode = true;
-          action_callback = "require('gitlinker.actions').open_in_browser";
-          print_url = true;
-        };
-        callbacks = vars.git.callbacks or {};
+        router.browse = gitlinkerHosts;
       };
     };
   };
@@ -226,6 +231,8 @@
             "vim.lsp.util.stylize_markdown" = true;
             "cmp.entry.get_documentation" = true;
           };
+          # Handled by blink-cmp, disable in noice to suppress checkhealth warning
+          signature_help.enabled = false;
         };
         presets = {
           bottom_search = true;
@@ -248,7 +255,15 @@
 
   # Utility plugins
   utility = {
-    undotree.enable = true;
+    # snacks.nvim - required by opencode.nvim for enhanced input/picker UI
+    snacks-nvim = {
+      enable = true;
+      setupOpts = {
+        input.enabled = true;
+        picker.enabled = true;
+      };
+    };
+
     diffview-nvim.enable = true;
 
     preview.markdownPreview = {
@@ -272,7 +287,6 @@
         move_cursor_down = "<C-j>";
         move_cursor_up = "<C-k>";
         move_cursor_right = "<C-l>";
-        move_cursor_previous = "<C-\\>";
         swap_buf_left = "<leader>wH";
         swap_buf_down = "<leader>wJ";
         swap_buf_up = "<leader>wK";
@@ -390,98 +404,45 @@
 
           # Go formatters (nvf doesn't support goimports-reviser)
           "goimports-reviser" = {
-            command = "nix";
+            command = "${pkgs.goimports-reviser}/bin/goimports-reviser";
             "inherit" = true;
-            prepend_args = [
-              "run"
-              "--impure"
-              "nixpkgs#goimports-reviser"
-              "--"
-            ];
           };
           gofumpt = {
-            command = "nix";
+            command = "${pkgs.gofumpt}/bin/gofumpt";
             "inherit" = true;
-            prepend_args = [
-              "run"
-              "--impure"
-              "nixpkgs#gofumpt"
-              "--"
-            ];
           };
 
           # Markdown formatters
           "markdownlint-cli2" = {
-            command = "nix";
+            command = "${pkgs.markdownlint-cli2}/bin/markdownlint-cli2";
             "inherit" = true;
-            prepend_args = [
-              "run"
-              "--impure"
-              "nixpkgs#markdownlint-cli2"
-              "--"
-            ];
           };
           markdownlint = {
-            command = "nix";
+            command = "${pkgs.markdownlint-cli}/bin/markdownlint";
             "inherit" = true;
-            prepend_args = [
-              "run"
-              "--impure"
-              "nixpkgs#markdownlint-cli"
-              "--"
-            ];
           };
 
           # Other formatters not in nvf
           dockerfmt = {
-            command = "nix";
+            command = "${pkgs.dockerfmt}/bin/dockerfmt";
             "inherit" = true;
-            prepend_args = [
-              "run"
-              "--impure"
-              "nixpkgs#dockerfmt"
-              "--"
-            ];
           };
           fish_indent = {
-            command = "nix";
+            command = "${pkgs.fish}/bin/fish_indent";
             "inherit" = true;
-            prepend_args = [
-              "run"
-              "--impure"
-              "nixpkgs#fish"
-              "--"
-              "fish_indent"
-            ];
           };
           "swift-format" = {
-            command = "nix";
+            command = "${pkgs.swift-format}/bin/swift-format";
             stdin = true;
             args = [
-              "run"
-              "--impure"
-              "nixpkgs#swift-format"
-              "--"
               "format"
               "--assume-filename"
               "$FILENAME"
             ];
           };
           terraform_fmt = {
-            command = "nix";
+            command = "${pkgs.terraform}/bin/terraform";
             "inherit" = true;
-            prepend_args = [
-              "run"
-              "--impure"
-              "nixpkgs#terraform"
-              "--"
-              "fmt"
-              "-"
-            ];
-            stdin = true;
-            env = {
-              NIXPKGS_ALLOW_UNFREE = "1";
-            };
           };
           # Note: black, isort, alejandra, stylua, shfmt, rustfmt are handled in languages.nix
         };
@@ -549,199 +510,75 @@
       };
       linters = {
         actionlint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#actionlint"
-            "--"
-            "-format"
-            "{{json .}}"
-          ];
+          cmd = "${pkgs.actionlint}/bin/actionlint";
         };
 
         clippy = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#cargo"
-            "--"
-          ];
+          cmd = "${pkgs.cargo}/bin/cargo";
         };
 
         deadnix = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#deadnix"
-            "--"
-            "--output-format=json"
-          ];
-          parser = lib.generators.mkLuaInline ''
-            function(output, _)
-              local diagnostics = {}
-              if output == "" then return diagnostics end
-              local ok, decoded = pcall(vim.json.decode, output)
-              if not ok or not decoded or not decoded.results then return diagnostics end
-              for _, diag in ipairs(decoded.results) do
-                if diag.line then
-                  table.insert(diagnostics, {
-                    lnum = diag.line - 1,
-                    end_lnum = diag.line - 1,
-                    col = (diag.column or 1) - 1,
-                    end_col = diag.endColumn or 0,
-                    message = diag.message,
-                    severity = vim.diagnostic.severity.WARN,
-                  })
-                end
-              end
-              return diagnostics
-            end
-          '';
+          cmd = "${pkgs.deadnix}/bin/deadnix";
         };
 
         eslint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#eslint"
-            "--"
-          ];
+          cmd = "${pkgs.eslint}/bin/eslint";
         };
 
         fish = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#fish"
-            "--"
-          ];
+          cmd = "${pkgs.fish}/bin/fish";
         };
 
         golangcilint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#golangci-lint"
-            "--"
-          ];
+          cmd = "${pkgs.golangci-lint}/bin/golangci-lint";
         };
 
         hadolint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#hadolint"
-            "--"
-          ];
+          cmd = "${pkgs.hadolint}/bin/hadolint";
         };
 
         htmlhint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#htmlhint"
-            "--"
-          ];
+          cmd = "${pkgs.htmlhint}/bin/htmlhint";
         };
 
         luacheck = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#lua54Packages.luacheck"
-            "--"
-          ];
+          cmd = "${pkgs.lua54Packages.luacheck}/bin/luacheck";
         };
 
         markdownlint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#markdownlint-cli"
-            "--"
-          ];
+          cmd = "${pkgs.markdownlint-cli}/bin/markdownlint";
         };
 
         pylint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#pylint"
-            "--"
-          ];
+          cmd = "${pkgs.pylint}/bin/pylint";
         };
 
         shellcheck = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#shellcheck"
-            "--"
-          ];
+          cmd = "${pkgs.shellcheck}/bin/shellcheck";
         };
 
         statix = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#statix"
-            "--"
-          ];
+          cmd = "${pkgs.statix}/bin/statix";
         };
 
         stylelint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#stylelint"
-            "--"
-          ];
+          cmd = "${pkgs.stylelint}/bin/stylelint";
         };
 
         "swift-format" = {
-          cmd = "nix";
+          cmd = "${pkgs.swift-format}/bin/swift-format";
           args = [
-            "run"
-            "--impure"
-            "nixpkgs#swift-format"
-            "--"
             "lint"
             "--strict"
           ];
         };
 
         tflint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#tflint"
-            "--"
-          ];
+          cmd = "${pkgs.tflint}/bin/tflint";
         };
 
         yamllint = {
-          cmd = "nix";
-          args = [
-            "run"
-            "--impure"
-            "nixpkgs#yamllint"
-            "--"
-          ];
+          cmd = "${pkgs.yamllint}/bin/yamllint";
           stdin = false;
           parser = lib.generators.mkLuaInline ''
             require('lint.parser').from_pattern(
@@ -963,4 +800,8 @@
       enable = true;
     };
   };
+
+  # pkgs.clippy provides cargo-clippy, which cargo invokes as a subcommand.
+  # It must be in PATH alongside pkgs.cargo for `cargo clippy` to work.
+  extraPackages = [pkgs.clippy];
 }

@@ -45,12 +45,8 @@ in {
       vim.opt.shortmess:remove("S")
       vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 
-      -- Undotree configuration
-      vim.g.undotree_WindowLayout = 2
-      vim.g.undotree_SetFocusWhenToggle = 1
-      vim.g.undotree_ShortIndicators = 1
-      vim.g.undotree_RelativeTimestamp = 1
-      vim.g.undotree_DiffpanelHeight = 10
+      vim.cmd.packadd("nvim.undotree")
+
     '';
   };
 }
