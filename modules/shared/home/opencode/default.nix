@@ -13,8 +13,10 @@ in {
 
   programs.opencode = {
     enable = true;
-    settings = {
+    tui = {
       theme = "catppuccin";
+    };
+    settings = {
       model = lib.mkDefault "github/claude-sonnet-4-6";
       small_model = lib.mkDefault "github/claude-haiku-4-5";
       autoupdate = false;
