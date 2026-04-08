@@ -114,6 +114,7 @@ in {
         };
 
         # Nix
+        nixfmt.disabled = true;
         alejandra = {
           command = [
             "${pkgs.alejandra}/bin/alejandra"
@@ -133,6 +134,9 @@ in {
         };
 
         # Go
+        gofmt = {
+          disabled = true;
+        };
         gofumpt = {
           command = [
             "${pkgs.gofumpt}/bin/gofumpt"
@@ -183,11 +187,11 @@ in {
         };
 
         # Terraform
-        terraform_fmt = {
+        terraform = {
           command = [
-            "${pkgs.terraform}/bin/terraform"
+            "${pkgs.opentofu}/bin/tofu"
             "fmt"
-            "-"
+            "$FILE"
           ];
           extensions = [
             ".tf"
@@ -197,7 +201,11 @@ in {
 
         # Fish
         fish_indent = {
-          command = ["${pkgs.fish}/bin/fish_indent"];
+          command = [
+            "${pkgs.fish}/bin/fish_indent"
+            "--write"
+            "$FILE"
+          ];
           extensions = [".fish"];
         };
 

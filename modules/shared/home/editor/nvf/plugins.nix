@@ -383,7 +383,6 @@ in {
           ]; # nvf has deno_fmt, we want prettier + markdownlint
           scss = ["prettier"];
           swift = ["swift-format"];
-          terraform = ["terraform_fmt"];
           vue = ["prettier"];
           yaml = ["prettier"];
           # Note: python, nix, lua, sh, typescript, javascript, rust, css are handled in languages.nix
@@ -439,10 +438,6 @@ in {
               "--assume-filename"
               "$FILENAME"
             ];
-          };
-          terraform_fmt = {
-            command = "${pkgs.terraform}/bin/terraform";
-            "inherit" = true;
           };
           # Note: black, isort, alejandra, stylua, shfmt, rustfmt are handled in languages.nix
         };
