@@ -8,16 +8,18 @@ rec {
   git = {
     ghq = "CodeProjects";
     dotfiles = "github.com/ojsef39/dotfiles.nix";
-    callbacks = {
-      "gitlab.die-linke.de" = ''require("gitlinker.hosts").get_gitlab_type_url'';
-    };
-    url = "";
     lazy = {
       # authorColors = {
       #   "test[bot]" = "#f4dbd6"; # Rosewater
       #   "dependabot[bot]" = "#f4dbd6"; # Rosewater
       # };
     };
+    customServices = [
+      {
+        domain = "gitlab.die-linke.de";
+        provider = "gitlab";
+      }
+    ];
   };
   kitty.project_selector = "~/.config";
   cache.community = true;

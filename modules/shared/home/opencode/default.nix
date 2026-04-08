@@ -1,4 +1,8 @@
-{lib, ...}: let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   modelOptions = {
     reasoningEffort = "high";
     textVerbosity = "low";
@@ -13,8 +17,10 @@ in {
 
   programs.opencode = {
     enable = true;
-    settings = {
+    tui = {
       theme = "catppuccin";
+    };
+    settings = {
       model = lib.mkDefault "github/claude-sonnet-4-6";
       small_model = lib.mkDefault "github/claude-haiku-4-5";
       autoupdate = false;
@@ -57,16 +63,8 @@ in {
 
       # LSP Configuration
       lsp = {
-        # Custom LSP servers (opencode has built-in support for most, but we ensure they use nix)
         gopls = {
-          command = [
-            "nix-shell"
-            "--pure"
-            "-p"
-            "gopls"
-            "--run"
-            "gopls"
-          ];
+          command = ["${pkgs.gopls}/bin/gopls"];
           extensions = [".go"];
         };
         nixd = {
@@ -80,11 +78,7 @@ in {
         # JavaScript/TypeScript/JSON/YAML/CSS/HTML/Markdown
         prettier = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#prettier"
-            "--"
+            "${pkgs.prettier}/bin/prettier"
             "--write"
             "$FILE"
           ];
@@ -110,11 +104,7 @@ in {
         };
         "markdownlint-cli2" = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#markdownlint-cli2"
-            "--"
+            "${pkgs.markdownlint-cli2}/bin/markdownlint-cli2"
             "$FILE"
           ];
           extensions = [
@@ -124,13 +114,10 @@ in {
         };
 
         # Nix
+        nixfmt.disabled = true;
         alejandra = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#alejandra"
-            "--"
+            "${pkgs.alejandra}/bin/alejandra"
             "$FILE"
           ];
           extensions = [".nix"];
@@ -139,11 +126,7 @@ in {
         # Lua
         stylua = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#stylua"
-            "--"
+            "${pkgs.stylua}/bin/stylua"
             "-"
             "$FILE"
           ];
@@ -151,13 +134,12 @@ in {
         };
 
         # Go
+        gofmt = {
+          disabled = true;
+        };
         gofumpt = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#gofumpt"
-            "--"
+            "${pkgs.gofumpt}/bin/gofumpt"
             "-w"
             "$FILE"
           ];
@@ -165,11 +147,7 @@ in {
         };
         "goimports-reviser" = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#goimports-reviser"
-            "--"
+            "${pkgs.goimports-reviser}/bin/goimports-reviser"
             "$FILE"
           ];
           extensions = [".go"];
@@ -178,11 +156,7 @@ in {
         # Python
         black = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#python3Packages.black"
-            "--"
+            "${pkgs.python3Packages.black}/bin/black"
             "$FILE"
           ];
           extensions = [".py"];
@@ -191,11 +165,7 @@ in {
         # Rust
         rustfmt = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#rustfmt"
-            "--"
+            "${pkgs.rustfmt}/bin/rustfmt"
             "$FILE"
           ];
           extensions = [".rs"];
@@ -204,11 +174,7 @@ in {
         # Shell
         shfmt = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#shfmt"
-            "--"
+            "${pkgs.shfmt}/bin/shfmt"
             "-i"
             "2"
             "-w"
@@ -221,34 +187,24 @@ in {
         };
 
         # Terraform
-        terraform_fmt = {
+        terraform = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#terraform"
-            "--"
+            "${pkgs.opentofu}/bin/tofu"
             "fmt"
-            "-"
+            "$FILE"
           ];
           extensions = [
             ".tf"
             ".tfvars"
           ];
-          environment = {
-            NIXPKGS_ALLOW_UNFREE = "1";
-          };
         };
 
         # Fish
         fish_indent = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#fish"
-            "--"
-            "fish_indent"
+            "${pkgs.fish}/bin/fish_indent"
+            "--write"
+            "$FILE"
           ];
           extensions = [".fish"];
         };
@@ -256,11 +212,7 @@ in {
         # Swift
         swift-format = {
           command = [
-            "nix"
-            "run"
-            "--impure"
-            "nixpkgs#swift-format"
-            "--"
+            "${pkgs.swift-format}/bin/swift-format"
             "$FILE"
           ];
           extensions = [".swift"];

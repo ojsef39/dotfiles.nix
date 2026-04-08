@@ -142,6 +142,7 @@
       "opt+l" = "send_text all @";
       "opt+-" = "send_text all –"; # en dash
       "opt+shift+7" = "send_text all \\\\"; # backslash
+      "ctrl+alt+n" = "send_text all \\x1c\\x0e"; # sends <C-\><C-n> to exit nvim terminal mode
       "opt+shift+-" = "send_text all —"; # em dash
     };
     extraConfig = ''

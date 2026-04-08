@@ -207,7 +207,7 @@
         # JHC workspace pins
         "GitHub PRs" = {
           id = "bd9ab8c6-bd49-4765-b776-3cd0360c4284";
-          url = "https://github.com/pulls?q=draft%3Afalse+is%3Aopen+is%3Apr+user%3AJHOFER-Cloud+archived%3Afalse+user%3Aojsef39+sort%3Acreated-asc+user%3AKuiprLab+";
+          url = "https://github.com/pulls?max_pr_age=none";
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           position = 201;
