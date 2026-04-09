@@ -162,6 +162,8 @@ in {
           }
         ];
         gui = {
+          border = "rounded";
+          nerdFontsVersion = 3;
           theme = {
             activeBorderColor = [
               "#8aadf4"
