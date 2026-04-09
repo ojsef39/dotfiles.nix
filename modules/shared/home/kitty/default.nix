@@ -114,6 +114,7 @@
       "ctrl+shift+up" = "resize_window taller";
       "ctrl+shift+down" = "resize_window shorter";
       "ctrl+shift+x" = "close_window";
+      "ctrl+shift+r" = "layout_action rotate";
       "ctrl+shift+m" = "launch --type=tab --cwd=current --copy-env --title Yazi -- env SKIP_FF=1 ${pkgs.fish}/bin/fish -c 'yazi'";
       "ctrl+shift+p" = "launch --title 'Project Selector' --copy-env --type=overlay env SKIP_FF=1 ${pkgs.fish}/bin/fish -c '~/.config/kitty/scripts/project_selector.sh'";
       "cmd+left" = "previous_tab";
