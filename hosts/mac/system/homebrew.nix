@@ -42,6 +42,7 @@
       "Signal"
       "brooklyn"
       "imageoptim"
+      "nextcloud"
       "parsec"
     ];
   };
