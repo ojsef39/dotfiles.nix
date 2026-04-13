@@ -273,6 +273,24 @@
     },
     "flake-parts_4": {
       "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib_3"
+      },
+      "locked": {
+        "lastModified": 1775087534,
+        "narHash": "sha256-91qqW8lhL7TLwgQWijoGBbiD4t7/q75KTi8NxjVmSmA=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "3107b77cd68437b9a76194f0f7f9c55f2329ca5b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-parts_5": {
+      "inputs": {
         "nixpkgs-lib": [
           "nvf",
           "nixpkgs"
@@ -498,17 +516,18 @@
     },
     "nixkit": {
       "inputs": {
+        "flake-parts": "flake-parts_4",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1774852129,
-        "narHash": "sha256-DjuCr4nD74d9nVYAElC40gdhiS/0kOxB/P86P+xTjp0=",
-        "rev": "c3505aa9b37e797b2f0ac1d24b17b94728bf2b21",
-        "revCount": 118,
+        "lastModified": 1776006474,
+        "narHash": "sha256-SZs5fAS6UaGKIhsJjnssL5hpBMNY+fbImTugO4Bf/vc=",
+        "rev": "a55365c471734bb9d563f492af438b288e3b1b6f",
+        "revCount": 131,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.118%2Brev-c3505aa9b37e797b2f0ac1d24b17b94728bf2b21/019d3fdc-7c56-748e-acf8-2d7a45371a5c/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.131%2Brev-a55365c471734bb9d563f492af438b288e3b1b6f/019d82cc-96aa-7d44-ac2e-05749fae8cfe/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -579,6 +598,21 @@
       }
     },
     "nixpkgs-lib_2": {
+      "locked": {
+        "lastModified": 1774748309,
+        "narHash": "sha256-+U7gF3qxzwD5TZuANzZPeJTZRHS29OFQgkQ2kiTJBIQ=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "333c4e0545a6da976206c74db8773a1645b5870a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "nixpkgs-lib_3": {
       "locked": {
         "lastModified": 1774748309,
         "narHash": "sha256-+U7gF3qxzwD5TZuANzZPeJTZRHS29OFQgkQ2kiTJBIQ=",
@@ -734,7 +768,7 @@
     "nvf": {
       "inputs": {
         "flake-compat": "flake-compat_4",
-        "flake-parts": "flake-parts_4",
+        "flake-parts": "flake-parts_5",
         "mnw": "mnw",
         "ndg": "ndg",
         "nixpkgs": [
