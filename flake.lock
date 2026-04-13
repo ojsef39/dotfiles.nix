@@ -524,15 +524,14 @@
       "locked": {
         "lastModified": 1776006474,
         "narHash": "sha256-SZs5fAS6UaGKIhsJjnssL5hpBMNY+fbImTugO4Bf/vc=",
-        "ref": "refs/heads/main",
         "rev": "a55365c471734bb9d563f492af438b288e3b1b6f",
         "revCount": 131,
-        "type": "git",
-        "url": "file:///Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit"
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.131%2Brev-a55365c471734bb9d563f492af438b288e3b1b6f/019d82cc-96aa-7d44-ac2e-05749fae8cfe/source.tar.gz"
       },
       "original": {
-        "type": "git",
-        "url": "file:///Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit"
+        "type": "tarball",
+        "url": "https://flakehub.com/f/JHOFER-Cloud/frostplexx-nixkit/0.1.tar.gz"
       }
     },
     "nixpkgs": {
