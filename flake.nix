@@ -68,7 +68,7 @@
     nixkit = {
       # url = "https://flakehub.com/f/JHOFER-Cloud/frostplexx-nixkit/0.1.tar.gz";
       # url = "github:ojsef39/nixkit";
-      url = "git+file:///nonexistent/path";
+      url = "git+file:///Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak = {
