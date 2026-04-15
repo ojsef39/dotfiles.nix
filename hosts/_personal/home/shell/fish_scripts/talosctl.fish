@@ -18,7 +18,7 @@ function talos_dashboard
     # Process the output line by line
     for line in (talosctl get members -o yaml | grep "hostname:" | awk '{print $2}')
         set node_hostname (string trim $line)
-        if test -n "$node_hostname"
+        if test -n "$node_hostname"; and not contains $node_hostname $control_hostnames $worker_hostnames
             # Check if it's a control plane node
             if string match -q "*control*" "$node_hostname"
                 set -a control_hostnames $node_hostname
@@ -196,7 +196,7 @@ function talos_upgrade
     # Process the output line by line to categorize nodes
     for line in (talosctl get members -o yaml | grep "hostname:" | awk '{print $2}')
         set node_hostname (string trim $line)
-        if test -n "$node_hostname"
+        if test -n "$node_hostname"; and not contains $node_hostname $control_hostnames $worker_hostnames
             # Check if it's a control plane node
             if string match -q "*control*" "$node_hostname"
                 set -a control_hostnames $node_hostname
