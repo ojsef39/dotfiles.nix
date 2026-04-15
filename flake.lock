@@ -777,11 +777,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1776275596,
-        "narHash": "sha256-AvYKYDCnor/4U3AkpPjXmTrHLpEndVJXJEEdrcioEs4=",
+        "lastModified": 1776280052,
+        "narHash": "sha256-Q3h2yG9P95uRaPakaRYtFJwC7PRH2//BTI+xqSnR0BI=",
         "owner": "notashelf",
         "repo": "nvf",
-        "rev": "3b429e3d3da47e3adc89dd1fc64cdc2f99e31631",
+        "rev": "750a2b51050f66653c4053de78ea5f8db94d0ed1",
         "type": "github"
       },
       "original": {
