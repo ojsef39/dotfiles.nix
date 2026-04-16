@@ -14,6 +14,7 @@
       "Book Tracker" = 1496543317;
       "CrystalFetch" = 6454431289;
       "Final Cut Pro" = 424389933;
+      "Flighty" = 1358823008;
       "Goodnotes" = 1444383602;
       "Ground News" = 1324203419;
       "Keynote" = 361285480;
@@ -30,7 +31,6 @@
     brews = [
       "Graphviz"
       "expect"
-      "flux-build"
       "iperf3"
       "talosctl"
       # "docx2pdf" #NOTE: Needs tap
@@ -40,7 +40,9 @@
     casks = [
       "Signal"
       "brooklyn"
+      "flux-build"
       "imageoptim"
+      "nextcloud"
       "parsec"
     ];
   };

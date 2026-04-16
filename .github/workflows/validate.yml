@@ -127,6 +127,11 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
+      # If more space is needed, see https://github.com/jlumbroso/free-disk-space/issues/23
+      - name: Free disk space
+        if: matrix.os == 'ubuntu-latest'
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3.17.3
         with: *nix-extra-conf

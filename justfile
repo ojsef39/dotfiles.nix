@@ -24,7 +24,7 @@ default:
 [doc('Deploy system configuration')]
 deploy: lint
     # Deploying system configuration without update...
-    @git pull --ff-only || true
+    @git pull --rebase --autostash || true
     @git add .
     @nh {{nix_cmd}} switch -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
 
@@ -32,14 +32,14 @@ deploy: lint
 [doc('Deploy system configuration')]
 deploy-update: lint
     # Deploying system configuration with update...
-    @git pull --ff-only || true
+    @git pull --rebase --autostash || true
     @git add .
     @nh {{nix_cmd}} switch -u -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
 
 [group('nix')]
 [doc('Upgrade refs and deploy')]
 upgrade: update-refs lint
-    @git pull --ff-only || true
+    @git pull --rebase --autostash || true
     @git add .
     @nh {{nix_cmd}} switch -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
     @git add .

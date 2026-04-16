@@ -47,6 +47,11 @@
         install_url = "https://addons.mozilla.org/firefox/downloads/latest/containerise/latest.xpi";
         installation_mode = "force_installed";
       };
+      "addon@simplelogin" = {
+        name = "SimpleLogin";
+        install_url = "https://addons.mozilla.org/firefox/downloads/latest/simplelogin/latest.xpi";
+        installation_mode = "force_installed";
+      };
     };
   in {
     enable = true;
