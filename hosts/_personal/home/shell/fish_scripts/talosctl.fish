@@ -290,14 +290,13 @@ function talos_upgrade
             talosctl $upgrade_cmd $node_upgrade_args -n $node_hostname
 
             if test $status -ne 0
-                echo "❌ Failed to upgrade: $node_hostname"
-                return 1
-            end
-
+                echo "⚠️  Upgrade command returned non-zero for $node_hostname (the node may still have upgraded successfully)."
+                echo "⏳ Press Enter to continue anyway, or Ctrl+C to abort:"
+                read -l _ignore
             # Check if this is not the last control plane node
-            if test $node_hostname != $control_hostnames[-1]
+            else if test $node_hostname != $control_hostnames[-1]
                 echo "⏳ Press Enter to continue with next control plane, or Ctrl+C to abort:"
-                read -l continue_upgrade
+                read -l _ignore
             end
         end
 
@@ -337,14 +336,13 @@ function talos_upgrade
             talosctl $upgrade_cmd $node_upgrade_args -n $node_hostname
 
             if test $status -ne 0
-                echo "❌ Failed to upgrade: $node_hostname"
-                return 1
-            end
-
+                echo "⚠️  Upgrade command returned non-zero for $node_hostname (the node may still have upgraded successfully)."
+                echo "⏳ Press Enter to continue anyway, or Ctrl+C to abort:"
+                read -l _ignore
             # Check if this is not the last worker node
-            if test $node_hostname != $worker_hostnames[-1]
+            else if test $node_hostname != $worker_hostnames[-1]
                 echo "⏳ Press Enter to continue with next worker, or Ctrl+C to abort:"
-                read -l continue_upgrade
+                read -l _ignore
             end
         end
     end

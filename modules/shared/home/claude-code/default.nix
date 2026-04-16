@@ -1,6 +1,7 @@
 _: {
   programs.claude-code = {
     enable = true;
+    enableMcpIntegration = true;
     settings = {
       permissions = {
         allow = [

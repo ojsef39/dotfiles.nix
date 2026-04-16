@@ -31,7 +31,6 @@
     brews = [
       "Graphviz"
       "expect"
-      "flux-build"
       "iperf3"
       "talosctl"
       # "docx2pdf" #NOTE: Needs tap
@@ -41,6 +40,7 @@
     casks = [
       "Signal"
       "brooklyn"
+      "flux-build"
       "imageoptim"
       "nextcloud"
       "parsec"
