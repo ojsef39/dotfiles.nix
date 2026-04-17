@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./mcp.nix
     ./claude-code.nix
     ./copilot.nix
     ./opencode.nix
