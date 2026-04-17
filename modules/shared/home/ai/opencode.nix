@@ -1,10 +1,13 @@
 {
+  ai,
   lib,
   pkgs,
   ...
 }: let
+  # opencode uses dashes and a provider prefix: "github/claude-sonnet-4-6"
+  opencodeModel = "github/${builtins.replaceStrings ["."] ["-"] ai.model}";
   modelOptions = {
-    reasoningEffort = "high";
+    reasoningEffort = ai.effortLevel;
     textVerbosity = "low";
     thinking = {
       type = "enabled";
@@ -22,7 +25,7 @@ in {
       theme = "catppuccin";
     };
     settings = {
-      model = lib.mkDefault "github/claude-sonnet-4-6";
+      model = lib.mkDefault opencodeModel;
       small_model = lib.mkDefault "github/claude-haiku-4-5";
       autoupdate = false;
       disabled_providers = ["xai"];
@@ -38,7 +41,7 @@ in {
 
       agent = {
         build = {
-          model = "github-copilot/claude-sonnet-4.6";
+          model = "github-copilot/${ai.model}";
           options =
             {
               textVerbosity = "low";
@@ -47,13 +50,13 @@ in {
         };
         plan = {
           # model = "github-copilot/claude-opus-4.6";
-          model = "github-copilot/claude-sonnet-4.6";
+          model = "github-copilot/${ai.model}";
           options = modelOptions;
         };
         code-reviewer = {
           description = "Reviews code for best practices and potential issues";
           mode = "subagent";
-          model = "github-copilot/claude-sonnet-4.6";
+          model = "github-copilot/${ai.model}";
           prompt = "You are a code reviewer. Focus on security, performance, and maintainability.";
           tools = {
             write = false;
