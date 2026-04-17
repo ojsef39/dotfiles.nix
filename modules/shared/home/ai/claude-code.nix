@@ -1,4 +1,4 @@
-{ ai, ... }: {
+{ai, ...}: {
   programs.claude-code = {
     enable = true;
     enableMcpIntegration = true;
