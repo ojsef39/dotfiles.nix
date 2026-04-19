@@ -133,18 +133,18 @@ in {
       enable = true;
       codeActions.enable = false;
       mappings = {
-        previewHunk = "<leader>gp";
-        toggleBlame = "<leader>gt";
+        previewHunk = "<leader>gsp";
+        toggleBlame = "<leader>gsb";
         blameLine = null;
-        diffThis = "<leader>gd";
+        diffThis = "<leader>gsd";
 
-        diffProject = "<leader>gD";
-        resetBuffer = "<leader>gR";
-        resetHunk = "<leader>gr";
-        stageBuffer = "<leader>gS";
-        stageHunk = "<leader>gs";
-        undoStageHunk = "<leader>gu";
-        toggleDeleted = "<leader>gx";
+        diffProject = "<leader>gsD";
+        resetBuffer = "<leader>gsR";
+        resetHunk = "<leader>gsr";
+        stageBuffer = "<leader>gsS";
+        stageHunk = "<leader>gss";
+        undoStageHunk = "<leader>gsu";
+        toggleDeleted = "<leader>gsx";
 
         nextHunk = "]c";
         previousHunk = "[c";
@@ -722,6 +722,8 @@ in {
             { mode = "n", keys = "<Leader>D", desc = "Debug/DAP" },
             { mode = "n", keys = "<Leader>f", desc = "Find" },
             { mode = "n", keys = "<Leader>g", desc = "Git" },
+            { mode = "n", keys = "<Leader>gs", desc = "Git Signs" },
+            { mode = "n", keys = "<Leader>gp", desc = "PR Review" },
             { mode = "n", keys = "<Leader>j", desc = "Previous Tab" },
             { mode = "n", keys = "<Leader>k", desc = "Next Tab" },
             { mode = "n", keys = "<Leader>l", desc = "LSP" },
