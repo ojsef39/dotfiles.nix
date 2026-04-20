@@ -238,11 +238,11 @@ in {
     prlsp = {
       package = pkgs.vimPlugins.prlsp-nvim;
       setup = ''
-        vim.lsp.config('prlsp', {
+        vim.lsp.config.prlsp = {
           cmd = { '${pkgs.prlsp}/bin/prlsp' },
           root_markers = { '.git' },
-        })
-        vim.lsp.enable({ 'prlsp' })
+        }
+        vim.lsp.enable('prlsp')
 
         vim.keymap.set("n", "<leader>gpc", function() require("prlsp").comment_on_line() end, { desc = "PR comment on line" })
         vim.keymap.set("n", "<leader>gpr", function() require("prlsp").reply_on_line() end, { desc = "PR reply on line" })
