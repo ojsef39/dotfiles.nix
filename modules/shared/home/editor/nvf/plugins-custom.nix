@@ -234,6 +234,23 @@ in {
       '';
     };
 
+    # PR review comments as LSP diagnostics
+    prlsp = {
+      package = pkgs.vimPlugins.prlsp-nvim;
+      setup = ''
+        vim.lsp.config.prlsp = {
+          cmd = { '${pkgs.prlsp}/bin/prlsp' },
+          root_markers = { '.git' },
+        }
+        vim.lsp.enable('prlsp')
+
+        vim.keymap.set("n", "<leader>gpc", function() require("prlsp").comment_on_line() end, { desc = "PR comment on line" })
+        vim.keymap.set("n", "<leader>gpr", function() require("prlsp").reply_on_line() end, { desc = "PR reply on line" })
+        vim.keymap.set("n", "<leader>gpt", function() require("prlsp").show_thread() end, { desc = "PR show thread" })
+        vim.keymap.set("n", "<leader>gpf", function() require("prlsp").refresh() end, { desc = "PR refresh" })
+      '';
+    };
+
     # Discord Rich Presence
     cord = {
       package = pkgs.vimPlugins.cord-nvim;
