@@ -1,4 +1,13 @@
 {pkgs, ...}: let
+  kubernetesMcpConfig = pkgs.writeText "kubernetes-mcp-server.toml" ''
+    read_only = true
+
+    [[denied_resources]]
+    group = ""
+    version = "v1"
+    kind = "Secret"
+  '';
+
   caBundle =
     if pkgs.stdenv.isDarwin
     then "/opt/homebrew/etc/ca-certificates/cert.pem"
@@ -13,6 +22,10 @@
     '';
 in {
   programs.mcp.servers = {
+    "kubernetes-mcp-server" = {
+      command = "${pkgs.kubernetes-mcp-server}/bin/kubernetes-mcp-server";
+      args = ["--config" "${kubernetesMcpConfig}"];
+    };
     "prometheus/talos-live-hla1" = {
       command = "${mkWrapper "talos-live-hla1"}/bin/prometheus-mcp-server-talos-live-hla1";
       args = [];
