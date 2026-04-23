@@ -146,7 +146,7 @@
     };
 
     # TypeScript/JavaScript - with ts_ls and prettier
-    ts = {
+    typescript = {
       enable = true;
       lsp.enable = true;
       treesitter.enable = true;
