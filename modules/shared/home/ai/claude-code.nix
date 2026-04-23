@@ -1,10 +1,18 @@
-{ai, ...}: let
+{ai, ...}:
+let
   # claude-code uses dashes: "claude-sonnet-4-6"
   claudeModel = builtins.replaceStrings ["."] ["-"] ai.model;
 in {
   programs.claude-code = {
     enable = true;
     enableMcpIntegration = true;
+    lspServers = builtins.listToAttrs (map (s: {
+      inherit (s) name;
+      value = {
+        inherit (s) command args;
+        extensionToLanguage = s.languageIds;
+      };
+    }) ai.lspServers);
     settings = {
       permissions = {
         allow =

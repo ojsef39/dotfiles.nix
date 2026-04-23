@@ -1,4 +1,14 @@
 {ai, ...}: {
+  home.file.".copilot/lsp-config.json".text = builtins.toJSON {
+    lspServers = builtins.listToAttrs (map (s: {
+      inherit (s) name;
+      value = {
+        inherit (s) command args;
+        fileExtensions = s.languageIds;
+      };
+    }) ai.lspServers);
+  };
+
   programs.github-copilot-cli = {
     enable = true;
     enableMcpIntegration = true;

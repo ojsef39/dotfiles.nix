@@ -66,16 +66,13 @@ in {
       };
 
       # LSP Configuration
-      lsp = {
-        gopls = {
-          command = ["${pkgs.gopls}/bin/gopls"];
-          extensions = [".go"];
+      lsp = builtins.listToAttrs (map (s: {
+        inherit (s) name;
+        value = {
+          command = [s.command] ++ s.args;
+          inherit (s) extensions;
         };
-        nixd = {
-          command = ["nixd"];
-          extensions = [".nix"];
-        };
-      };
+      }) ai.lspServers);
 
       # Formatter Configuration
       formatter = {
