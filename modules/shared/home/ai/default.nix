@@ -116,7 +116,7 @@
       {
         enable = true;
         name = "terraform";
-        command = "${pkgs.terraform-ls}/bin/terraform-ls";
+        command = "${pkgs.tofu-ls}/bin/tofu-ls";
         args = ["serve"];
         extensions = [".tf" ".tfvars"];
         languageIds = {
