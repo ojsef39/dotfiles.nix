@@ -14,6 +14,9 @@ in {
       };
     }) ai.lspServers);
     settings = {
+      env = {
+        ENABLE_LSP_TOOL = "1";
+      };
       permissions = {
         allow =
           map (d: "WebFetch(domain:${d})") ai.allowedDomains
