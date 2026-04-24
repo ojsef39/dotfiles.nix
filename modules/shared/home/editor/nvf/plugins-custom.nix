@@ -240,7 +240,24 @@ in {
       setup = ''
         vim.lsp.config.prlsp = {
           cmd = { '${pkgs.prlsp}/bin/prlsp' },
-          root_markers = { '.git' },
+          root_dir = function(bufnr, cb)
+            local root = vim.fs.root(bufnr, { '.git' })
+            if not root then
+              cb(nil)
+              return
+            end
+            vim.system(
+              { 'git', '-C', root, 'remote', 'get-url', 'origin' },
+              { text = true },
+              function(result)
+                if result.code == 0 and result.stdout:match('github%.com') then
+                  cb(root)
+                else
+                  cb(nil)
+                end
+              end
+            )
+          end,
         }
         vim.lsp.enable('prlsp')
 
