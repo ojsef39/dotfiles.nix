@@ -2,13 +2,14 @@
   home.file = {
     ".copilot/instructions/dotfiles.nix".source = ai.instructionsDir;
     ".copilot/lsp-config.json".text = builtins.toJSON {
-        lspServers = builtins.listToAttrs (map (s: {
+      lspServers = builtins.listToAttrs (map (s: {
           inherit (s) name;
           value = {
             inherit (s) command args;
             fileExtensions = s.languageIds;
           };
-        }) ai.lspServers);
+        })
+        ai.lspServers);
     };
   };
 
