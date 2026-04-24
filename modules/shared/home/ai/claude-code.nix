@@ -6,6 +6,7 @@ in {
   programs.claude-code = {
     enable = true;
     enableMcpIntegration = true;
+    rulesDir = ai.instructionsDir;
     lspServers = builtins.listToAttrs (map (s: {
       inherit (s) name;
       value = {
