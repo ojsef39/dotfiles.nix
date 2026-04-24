@@ -68,12 +68,13 @@ in {
 
       # LSP Configuration
       lsp = builtins.listToAttrs (map (s: {
-        inherit (s) name;
-        value = {
-          command = [s.command] ++ s.args;
-          inherit (s) extensions;
-        };
-      }) ai.lspServers);
+          inherit (s) name;
+          value = {
+            command = [s.command] ++ s.args;
+            inherit (s) extensions;
+          };
+        })
+        ai.lspServers);
 
       # Formatter Configuration
       formatter = {
