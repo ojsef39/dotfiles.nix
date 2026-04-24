@@ -238,28 +238,27 @@ in {
     prlsp = {
       package = pkgs.vimPlugins.prlsp-nvim;
       setup = ''
-        vim.lsp.config.prlsp = {
-          cmd = { '${pkgs.prlsp}/bin/prlsp' },
-          root_dir = function(bufnr, cb)
-            local root = vim.fs.root(bufnr, { '.git' })
-            if not root then
-              cb(nil)
-              return
-            end
+        vim.api.nvim_create_autocmd('BufReadPost', {
+          callback = function(ev)
+            local root = vim.fs.root(ev.buf, { '.git' })
+            if not root then return end
             vim.system(
-              { 'git', '-C', root, 'remote', 'get-url', 'origin' },
+              { 'git', '-C', root, 'remote', '-v' },
               { text = true },
               function(result)
                 if result.code == 0 and result.stdout:match('github%.com') then
-                  cb(root)
-                else
-                  cb(nil)
+                  vim.schedule(function()
+                    vim.lsp.start({
+                      name = 'prlsp',
+                      cmd = { '${pkgs.prlsp}/bin/prlsp' },
+                      root_dir = root,
+                    }, { bufnr = ev.buf })
+                  end)
                 end
               end
             )
           end,
-        }
-        vim.lsp.enable('prlsp')
+        })
 
         vim.keymap.set("n", "<leader>gpc", function() require("prlsp").comment_on_line() end, { desc = "PR comment on line" })
         vim.keymap.set("n", "<leader>gpr", function() require("prlsp").reply_on_line() end, { desc = "PR reply on line" })
