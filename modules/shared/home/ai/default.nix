@@ -2,7 +2,9 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  instructionsDir = ./instructions;
+in {
   imports = [
     ./mcp.nix
     ./claude-code.nix
@@ -13,6 +15,7 @@
   _module.args.ai = {
     model = "claude-sonnet-4.6";
     effortLevel = "high";
+    inherit instructionsDir;
 
     # Domains allowed across all AI tools
     # Used as WebFetch(domain:X) in claude-code, https://X in copilot

@@ -491,7 +491,7 @@ in {
           "deadnix"
           "statix"
         ];
-        python = ["pylint"];
+        python = ["ruff"];
         rust = ["clippy"];
         scss = ["stylelint"];
         sh = ["shellcheck"];
@@ -544,8 +544,8 @@ in {
           cmd = "${pkgs.markdownlint-cli}/bin/markdownlint";
         };
 
-        pylint = {
-          cmd = "${pkgs.pylint}/bin/pylint";
+        ruff = {
+          cmd = "${pkgs.ruff}/bin/ruff";
         };
 
         shellcheck = {

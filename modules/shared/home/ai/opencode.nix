@@ -26,6 +26,7 @@ in {
     };
     settings = {
       model = lib.mkDefault opencodeModel;
+      instructions = ["${ai.instructionsDir}/*.md"];
       small_model = lib.mkDefault "github/claude-haiku-4-5";
       autoupdate = false;
       disabled_providers = ["xai"];
@@ -155,9 +156,10 @@ in {
         };
 
         # Python
-        black = {
+        ruff = {
           command = [
-            "${pkgs.python3Packages.black}/bin/black"
+            "${pkgs.ruff}/bin/ruff"
+            "format"
             "$FILE"
           ];
           extensions = [".py"];
