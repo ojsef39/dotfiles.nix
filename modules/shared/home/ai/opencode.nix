@@ -155,9 +155,10 @@ in {
         };
 
         # Python
-        black = {
+        ruff = {
           command = [
-            "${pkgs.python3Packages.black}/bin/black"
+            "${pkgs.ruff}/bin/ruff"
+            "format"
             "$FILE"
           ];
           extensions = [".py"];

@@ -156,7 +156,7 @@
       };
     };
 
-    # Python - with pyright, isort and black
+    # Python - with pyright, ruff and mypy
     python = {
       enable = true;
       lsp = {
@@ -170,10 +170,7 @@
       };
       format = {
         enable = true;
-        type = [
-          "black"
-          "isort"
-        ];
+        type = ["ruff"];
       };
     };
 
