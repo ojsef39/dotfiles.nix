@@ -230,6 +230,7 @@
     markdown = {
       enable = true;
       treesitter.enable = true;
+      format.enable = false; # Using prettier + markdownlint-cli2 via conform in plugins.nix
       extensions = {
         markview-nvim = {
           enable = true;
