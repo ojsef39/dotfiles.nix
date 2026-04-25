@@ -95,6 +95,10 @@
         home-manager.follows = "home-manager";
       };
     };
+    claude-code = {
+      url = "github:sadjow/claude-code-nix?ref=latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     self,
@@ -133,8 +137,7 @@
               inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
               inherit (inputs.nixpkgs_fork2.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
               # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
-              # ⬇️ no idea why but it has to be done like this for unfree packages (inherit also inherits nixpkgs config?)
-              # claude-code = prev.callPackage "${inputs.nixpkgs_claude_code_fork}/pkgs/by-name/cl/claude-code/package.nix" {};
+              inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
               inherit (pkgs-25) firefox firefox-unwrapped;
             }
           )
