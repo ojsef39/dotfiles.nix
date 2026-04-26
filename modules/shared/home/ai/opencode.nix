@@ -27,7 +27,6 @@ in {
     settings = {
       model = lib.mkDefault opencodeModel;
       instructions = ["${ai.instructionsDir}/*.md"];
-      small_model = lib.mkDefault "github/claude-haiku-4-5";
       autoupdate = false;
       disabled_providers = ["xai"];
       permission = {
