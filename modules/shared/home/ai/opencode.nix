@@ -32,11 +32,15 @@ in {
       permission = {
         websearch = "allow";
         webfetch = "allow";
-        bash = {
-          pwd = "allow";
-          "git status" = "allow";
-          "*" = "ask";
-        };
+        bash =
+          {
+            "*" = "ask";
+          }
+          // builtins.listToAttrs (map (p: {
+              name = p;
+              value = "allow";
+            })
+            ai.allowedBashCommands);
       };
 
       agent = {
