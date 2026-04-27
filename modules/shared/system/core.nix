@@ -35,14 +35,20 @@ in {
         "https://ojsef39.cachix.org"
         "https://nvf.cachix.org"
       ]
-      ++ lib.optionals (vars.cache.community or false) ["https://nix-community.cachix.org"];
+      ++ lib.optionals (vars.cache.community or false) [
+        "https://nix-community.cachix.org"
+        "https://claude-code.cachix.org"
+      ];
     extra-trusted-substituters =
       [
         "https://cache.nixos.org"
         "https://ojsef39.cachix.org"
         "https://nvf.cachix.org"
       ]
-      ++ lib.optionals (vars.cache.community or false) ["https://nix-community.cachix.org"];
+      ++ lib.optionals (vars.cache.community or false) [
+        "https://nix-community.cachix.org"
+        "https://claude-code.cachix.org"
+      ];
     extra-trusted-public-keys =
       [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -51,6 +57,7 @@ in {
       ]
       ++ lib.optionals (vars.cache.community or false) [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
       ];
     lazy-trees = true;
     extra-experimental-features = ["parallel-eval external-builders"];

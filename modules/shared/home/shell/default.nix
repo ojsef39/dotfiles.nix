@@ -24,6 +24,8 @@
     gping
     nodejs
     python3
+    send-away
+    send-cooking
     sops
     tmux
     tree
@@ -255,15 +257,7 @@
             "
       '';
 
-      send-cooking = ''
-        if test (uname) = "Darwin"
-          osascript -e 'display notification "IM DONE COOKING!" with title "Kitty"'
-        else
-          notify-send "Kitty" "IM DONE COOKING!"
-        end
-      '';
-
-      nix-prefetch-sri = ''
+nix-prefetch-sri = ''
         if test (count $argv) -eq 0
             echo "Usage: nix-prefetch-sri <url> [nix-prefetch-url flags...]"
             return 1

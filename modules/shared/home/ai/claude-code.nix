@@ -21,9 +21,7 @@ in {
       permissions = {
         allow =
           map (d: "WebFetch(domain:${d})") ai.allowedDomains
-          ++ [
-            "Bash(mkdir:*)"
-          ];
+          ++ map (p: "Bash(${p})") ai.allowedBashCommands;
       };
       statusLine = {
         type = "command";

@@ -17,6 +17,16 @@ in {
     effortLevel = "high";
     inherit instructionsDir;
 
+    # Bash glob patterns allowed across all AI tools (without prompting)
+    # Format: opencode-style globs — "cmd" for exact match, "cmd *" for any args.
+    # Wrapped as Bash(<pattern>) in claude-code, used as-is in opencode.
+    allowedBashCommands = [
+      "pwd"
+      "git status"
+      "send-cooking"
+      "send-away *"
+    ];
+
     # Domains allowed across all AI tools
     # Used as WebFetch(domain:X) in claude-code, https://X in copilot
     allowedDomains = [
