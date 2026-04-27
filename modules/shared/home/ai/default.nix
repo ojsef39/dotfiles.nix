@@ -21,10 +21,11 @@ in {
     # Format: opencode-style globs — "cmd" for exact match, "cmd *" for any args.
     # Wrapped as Bash(<pattern>) in claude-code, used as-is in opencode.
     allowedBashCommands = [
-      "pwd"
+      "gh run watch *"
       "git status"
-      "send-cooking"
+      "pwd"
       "send-away *"
+      "send-cooking"
     ];
 
     # Domains allowed across all AI tools
@@ -39,6 +40,45 @@ in {
       "nixos.wiki"
       "patch-diff.githubusercontent.com"
       "raw.githubusercontent.com"
+    ];
+
+    # MCP tool calls allowed across all AI tools (without prompting)
+    # NOTE: opencode has no permission system yet for MCPs
+    # NOTE: copilot has no documentation on this
+    allowedMcpTools = let
+      gh = "mcp__plugin_claude-code-home-manager_github-mcp-server";
+    in [
+      "${gh}__get_me"
+      "${gh}__get_file_contents"
+      "${gh}__get_repository_tree"
+      "${gh}__list_issues"
+      "${gh}__issue_read"
+      "${gh}__search_issues"
+      "${gh}__list_pull_requests"
+      "${gh}__pull_request_read"
+      "${gh}__search_pull_requests"
+      "${gh}__list_branches"
+      "${gh}__list_commits"
+      "${gh}__get_commit"
+      "${gh}__search_code"
+      "${gh}__search_repositories"
+      "${gh}__list_releases"
+      "${gh}__get_latest_release"
+      "${gh}__list_tags"
+      "${gh}__get_tag"
+      "${gh}__actions_list"
+      "${gh}__actions_get"
+      "${gh}__get_job_logs"
+      "${gh}__list_label"
+      "${gh}__get_label"
+      "${gh}__list_notifications"
+      "${gh}__get_notification_details"
+      "${gh}__list_discussions"
+      "${gh}__get_discussion"
+      "${gh}__get_discussion_comments"
+      "${gh}__list_discussion_categories"
+      "${gh}__projects_list"
+      "${gh}__projects_get"
     ];
 
     # Shared LSP definitions — consumed by opencode, copilot, and claude-code via transformers
