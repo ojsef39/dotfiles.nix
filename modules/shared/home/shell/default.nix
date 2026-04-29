@@ -257,7 +257,7 @@
             "
       '';
 
-nix-prefetch-sri = ''
+      nix-prefetch-sri = ''
         if test (count $argv) -eq 0
             echo "Usage: nix-prefetch-sri <url> [nix-prefetch-url flags...]"
             return 1
