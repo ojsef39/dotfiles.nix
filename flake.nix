@@ -89,6 +89,10 @@
       url = "github:ndom91/rose-pine-hyprcursor";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    virtualhere = {
+      url = "github:BatteredBunny/virtualhere-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -178,6 +182,7 @@
       [
         inputs.determinate.nixosModules.default
         inputs.nix-flatpak.nixosModules.nix-flatpak
+        {nixpkgs.overlays = [inputs.virtualhere.overlays.default];}
         ./modules/nixos/import-sys.nix
       ]
       ++ myLib.mkHomeManagerModules {
