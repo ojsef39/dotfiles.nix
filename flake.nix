@@ -41,8 +41,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      # url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"; # latest master
-      url = "github:ojsef39/home-manager/feat/github-copilot-cli";
+      url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"; # latest master
       # url = "/Users/josefhofer/CodeProjects/github.com/nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
