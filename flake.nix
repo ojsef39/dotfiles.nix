@@ -31,14 +31,10 @@
     };
     nixpkgs-25.url = "github:nixos/nixpkgs/release-25.11"; # specific 25.x release
     nixpkgs_fork = {
-      url = "github:ojsef39/nixpkgs/mist";
-      inputs.nixpkgs.follows = "nixpkgs";
-      # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
-      # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
-    };
-    nixpkgs_fork2 = {
       url = "github:ojsef39/nixpkgs/feat/dadav-helm-schema";
       inputs.nixpkgs.follows = "nixpkgs";
+      # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
+      # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
     };
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"; # latest master
@@ -133,8 +129,7 @@
             in {
               # ⬇️ Leave here as example for building from source instead of nixpkg repo:
               # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
-              inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) mist mist-cli;
-              inherit (inputs.nixpkgs_fork2.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
+              inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
               # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
               inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
               inherit (pkgs-25) firefox firefox-unwrapped;

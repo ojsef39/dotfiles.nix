@@ -775,22 +775,6 @@
     },
     "nixpkgs_fork": {
       "locked": {
-        "lastModified": 1777808721,
-        "narHash": "sha256-+26I/GL34sCfjhbQkIGtgxGjM3JshaXb+1pb38L2jXU=",
-        "owner": "ojsef39",
-        "repo": "nixpkgs",
-        "rev": "0204fa04621703e91adc6dcf86497f16306ec72c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ojsef39",
-        "ref": "mist",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_fork2": {
-      "locked": {
         "lastModified": 1777574562,
         "narHash": "sha256-gf9ixqkO8epbN0Sqxju30Td/051XBNpVR6Axh/n05Lc=",
         "owner": "ojsef39",
@@ -866,7 +850,6 @@
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-25": "nixpkgs-25",
         "nixpkgs_fork": "nixpkgs_fork",
-        "nixpkgs_fork2": "nixpkgs_fork2",
         "nvf": "nvf",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "spicetify-nix": "spicetify-nix",
