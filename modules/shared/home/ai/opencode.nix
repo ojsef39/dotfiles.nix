@@ -1,13 +1,14 @@
 {
-  ai,
+  config,
   lib,
   pkgs,
   ...
 }: let
+  cfg = config.ai;
   # opencode uses dashes and a provider prefix: "github/claude-sonnet-4-6"
-  opencodeModel = "github/${builtins.replaceStrings ["."] ["-"] ai.model}";
+  opencodeModel = "github/${builtins.replaceStrings ["."] ["-"] cfg.model}";
   modelOptions = {
-    reasoningEffort = ai.effortLevel;
+    reasoningEffort = cfg.effortLevel;
     textVerbosity = "low";
     thinking = {
       type = "enabled";
@@ -26,7 +27,7 @@ in {
     };
     settings = {
       model = lib.mkDefault opencodeModel;
-      instructions = ["${ai.instructionsDir}/*.md"];
+      instructions = ["${cfg.instructionsDir}/*.md"];
       autoupdate = false;
       disabled_providers = ["xai"];
       permission = {
@@ -40,12 +41,12 @@ in {
               name = p;
               value = "allow";
             })
-            ai.allowedBashCommands);
+            cfg.allowedBashCommands);
       };
 
       agent = {
         build = {
-          model = "github-copilot/${ai.model}";
+          model = "github-copilot/${cfg.model}";
           options =
             {
               textVerbosity = "low";
@@ -54,13 +55,13 @@ in {
         };
         plan = {
           # model = "github-copilot/claude-opus-4.6";
-          model = "github-copilot/${ai.model}";
+          model = "github-copilot/${cfg.model}";
           options = modelOptions;
         };
         code-reviewer = {
           description = "Reviews code for best practices and potential issues";
           mode = "subagent";
-          model = "github-copilot/${ai.model}";
+          model = "github-copilot/${cfg.model}";
           prompt = "You are a code reviewer. Focus on security, performance, and maintainability.";
           tools = {
             write = false;
@@ -77,7 +78,7 @@ in {
             inherit (s) extensions;
           };
         })
-        ai.lspServers);
+        cfg.lspServers);
 
       # Formatter Configuration
       formatter = {

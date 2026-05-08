@@ -23,5 +23,5 @@ rec {
   };
   kitty.project_selector = "~/.config";
   cache.community = true;
-  # masApps.enable = false;
+  masApps.enable = false;
 }

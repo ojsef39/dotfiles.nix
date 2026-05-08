@@ -327,6 +327,7 @@
 
         # General preferences
         "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = true;
+        "browser.fixup.domainsuffixwhitelist.lan" = true;
         "browser.tabs.warnOnClose" = true;
 
         # Permissions
