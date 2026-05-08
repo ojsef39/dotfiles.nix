@@ -42,11 +42,14 @@ local function find(query)
 	---@type FFFItem[]
 	local fff_result = file_picker.search_files(query, state.current_file_cache, 100, 4)
 
+	local cwd = vim.uv.cwd()
 	local items = {}
 	for _, fff_item in ipairs(fff_result) do
+		local rel = fff_item.relative_path
+		local abs = vim.fn.fnamemodify(rel, ":p") == rel and rel or vim.fs.normalize(cwd .. "/" .. rel)
 		local item = {
-			text = fff_item.relative_path,
-			path = fff_item.path,
+			text = rel,
+			path = abs,
 			score = fff_item.total_frecency_score,
 		}
 		table.insert(items, item)
