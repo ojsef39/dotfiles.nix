@@ -1,12 +1,16 @@
 {
+  config,
   lib,
   pkgs,
   ...
-}: {
+}: let
+  cfg = config.ai;
+in {
   imports = [
     ./mcp.nix
     ./claude-code.nix
     ./copilot.nix
+    ./obsidian.nix
     ./opencode.nix
   ];
 
@@ -23,6 +27,13 @@
 
     instructionsDir = lib.mkOption {
       type = lib.types.path;
+    };
+
+    # Feature modules append directories of additional `*.instructions.md`
+    # files here; default.nix merges them into instructionsDir.
+    extraInstructionsDirs = lib.mkOption {
+      type = lib.types.listOf lib.types.path;
+      default = [];
     };
 
     # Bash glob patterns allowed across all AI tools (without prompting).
@@ -74,7 +85,10 @@
   };
 
   config.ai = {
-    instructionsDir = ./instructions;
+    instructionsDir = pkgs.symlinkJoin {
+      name = "ai-instructions";
+      paths = [./instructions] ++ cfg.extraInstructionsDirs;
+    };
 
     allowedBashCommands = [
       "gh run watch *"
