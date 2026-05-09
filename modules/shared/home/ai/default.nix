@@ -148,6 +148,10 @@ in {
         "resolve-library-id"
         "query-docs"
       ];
+      "@exa" = [
+        "web_search_exa"
+        "web_fetch_exa"
+      ];
     };
 
     lspServers =
