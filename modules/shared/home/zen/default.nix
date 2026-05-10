@@ -170,9 +170,9 @@
           isEssential = true;
           position = 105;
         };
-        "Slack" = {
-          id = "15319ac1-5fa8-4a89-b68f-78d7753c155c";
-          url = "https://jhofer.slack.com";
+        "AI" = {
+          id = "0c05d607-3880-4d49-a962-6804b6b0d502";
+          url = "https://ai.jhofer.org/";
           container = containers.Personal.id;
           isEssential = true;
           position = 106;
@@ -224,20 +224,27 @@
           workspace = spaces."JHC".id;
           position = 202;
         };
+        "Slack" = {
+          id = "15319ac1-5fa8-4a89-b68f-78d7753c155c";
+          url = "https://jhofer.slack.com";
+          container = containers.Personal.id;
+          workspace = spaces."JHC".id;
+          position = 203;
+        };
         # Ideally split — not possible via Nix yet (zen-browser/desktop#10388)
         "BetterStack" = {
           id = "a569ad92-804d-47ce-9bd4-5e3055836642";
           url = "https://uptime.betterstack.com/team/t459242/status-pages/225777/reports";
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
-          position = 203;
+          position = 204;
         };
         "Status" = {
           id = "7c80133f-2841-4230-bc49-bd293e6255d0";
           url = "https://status.jhofer.org";
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
-          position = 204;
+          position = 205;
         };
 
         # Satisfactory folder
@@ -247,7 +254,7 @@
           workspace = spaces."JHC".id;
           isGroup = true;
           isFolderCollapsed = true;
-          position = 205;
+          position = 206;
         };
         "satisfaction01-p1" = {
           id = "7b85e9fd-4b33-4321-bb5b-f747945cb0a7";
@@ -255,7 +262,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
-          position = 206;
+          position = 207;
         };
         "Satisfactory (Grafana)" = {
           id = "dbddfbf3-fe78-4122-a64a-bfbf87a7ddec";
@@ -263,7 +270,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
-          position = 207;
+          position = 208;
         };
       };
     in {

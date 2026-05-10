@@ -22,6 +22,7 @@
     fzf
     git
     gping
+    jhcode
     nodejs
     python3
     send-away
