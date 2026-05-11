@@ -52,6 +52,7 @@ in {
       };
       agentPushNotifEnabled = true;
       model = claudeModel;
+      advisorModel = "opus";
       inherit (cfg) effortLevel;
     };
   };
