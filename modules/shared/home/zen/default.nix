@@ -193,7 +193,6 @@
           workspace = spaces."Personal".id;
           position = 202;
         };
-        # Ideally split — not possible via Nix yet (zen-browser/desktop#10388)
         "Mastodon" = {
           id = "6f859dea-2aff-41ea-9d41-ba3b99ff38c4";
           url = "https://mastodon.de/home";
@@ -231,7 +230,6 @@
           workspace = spaces."JHC".id;
           position = 203;
         };
-        # Ideally split — not possible via Nix yet (zen-browser/desktop#10388)
         "BetterStack" = {
           id = "a569ad92-804d-47ce-9bd4-5e3055836642";
           url = "https://uptime.betterstack.com/team/t459242/status-pages/225777/reports";
@@ -246,6 +244,27 @@
           workspace = spaces."JHC".id;
           position = 205;
         };
+        "GPU Metrics" = {
+          id = "6ada4b2e-ed5a-43be-b3e6-966fecd03949";
+          url = "https://grafana.hla1.jhofer.lan/d/vlvPlrgnk/nvidia-gpu-metrics?orgId=1&from=now-3h&to=now&timezone=browser&var-job=nvidia-gpu-exporter&var-node=hla1-ai&var-gpu=6d16a72e-dab6-f22a-fa92-ebfb8f40afc2&refresh=10s";
+          container = containers.Personal.id;
+          workspace = spaces."JHC".id;
+          position = 206;
+        };
+        "Rack Temps" = {
+          id = "10bdc242-5fb3-459f-ae32-aa711c297a86";
+          url = "https://grafana.hla1.jhofer.lan/d/rack_temps/rack-temps?orgId=1&from=now-6h&to=now&timezone=browser&var-ds_prometheus=aef9f9k9lvwn4b&var-job=node-exporter-proxmox&var-nodename=pve-1&var-node=pve-1.hla1.jhofer.lan&var-temp_sensors=$__all&refresh=5m";
+          container = containers.Personal.id;
+          workspace = spaces."JHC".id;
+          position = 207;
+        };
+        "Misc Overview" = {
+          id = "950825df-59e8-4d51-a491-bb4226aecda2";
+          url = "https://grafana.hla1.jhofer.lan/d/dcf5mhzhh7gyyoc/misc-overview?orgId=1&from=now-6h&to=now&timezone=browser&var-ds=aef9f9k9lvwn4b&refresh=30s";
+          container = containers.Personal.id;
+          workspace = spaces."JHC".id;
+          position = 208;
+        };
 
         # Satisfactory folder
         "Satisfactory" = {
@@ -254,7 +273,7 @@
           workspace = spaces."JHC".id;
           isGroup = true;
           isFolderCollapsed = true;
-          position = 206;
+          position = 209;
         };
         "satisfaction01-p1" = {
           id = "7b85e9fd-4b33-4321-bb5b-f747945cb0a7";
@@ -262,7 +281,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
-          position = 207;
+          position = 210;
         };
         "Satisfactory (Grafana)" = {
           id = "dbddfbf3-fe78-4122-a64a-bfbf87a7ddec";
@@ -270,7 +289,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
-          position = 208;
+          position = 211;
         };
       };
     in {
@@ -278,6 +297,33 @@
       spacesForce = true;
       containersForce = true;
       pinsForce = false;
+
+      joinedTabs = {
+        "Mastodon + Chaos Social" = {
+          id = "mastodon-chaos-social-split";
+          gridType = "vsep";
+          tabs = [
+            pins."Mastodon".id
+            pins."Chaos Social".id
+          ];
+        };
+        "BetterStack + Status" = {
+          id = "betterstack-status-split";
+          gridType = "vsep";
+          tabs = [
+            pins."BetterStack".id
+            pins."Status".id
+          ];
+        };
+        "Rack Temps + Misc Overview" = {
+          id = "rack-temps-misc-overview-split";
+          gridType = "vsep";
+          tabs = [
+            pins."Rack Temps".id
+            pins."Misc Overview".id
+          ];
+        };
+      };
 
       # Get Key IDs using jq -c '.shortcuts[] | {id, key, keycode, action}' ~/Library/Application\ Support/Zen/Profiles/default/zen-keyboard-shortcuts.json | fzf
       # https://github.com/0xc000022070/zen-browser-flake#configuration-options
