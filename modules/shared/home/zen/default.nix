@@ -314,6 +314,7 @@
             pins."BetterStack".id
             pins."Status".id
           ];
+          sizes = [70 30];
         };
         "Rack Temps + Misc Overview" = {
           id = "rack-temps-misc-overview-split";
@@ -322,6 +323,7 @@
             pins."Rack Temps".id
             pins."Misc Overview".id
           ];
+          sizes = [70 30];
         };
       };
 
