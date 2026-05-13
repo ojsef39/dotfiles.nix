@@ -4,7 +4,11 @@
   # Automatically discover all .lua files in the extra directory
   extraLuaDir = ./lua/extra;
   extraLuaFiles =
-    map (file: extraLuaDir + "/${file}")
+    map (file:
+      builtins.path {
+        path = extraLuaDir + "/${file}";
+        name = lib.removeSuffix ".lua" file;
+      })
     (builtins.filter (file: lib.hasSuffix ".lua" file)
       (builtins.attrNames (builtins.readDir extraLuaDir)));
 in {
