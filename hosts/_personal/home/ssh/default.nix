@@ -8,32 +8,32 @@ in {
   home.file.".config/1Password/ssh/agent.toml".source = ./1password-agent.toml;
 
   programs.ssh = {
-    matchBlocks = {
+    settings = {
       # GitHub
       "github.com" = {
-        user = "git";
-        extraOptions.IdentityAgent = ''"${opAgentSock}"'';
+        User = "git";
+        IdentityAgent = ''"${opAgentSock}"'';
       };
 
       # JHC K8s
       "*.k8*.jhofer.*" = {
-        user = "josef";
-        proxyCommand = "none";
-        extraOptions.IdentityAgent = ''"${opAgentSock}"'';
+        User = "josef";
+        ProxyCommand = "none";
+        IdentityAgent = ''"${opAgentSock}"'';
       };
 
       # JHC Stuff
       "10.1.1.* 10.2.2.* 136.* 2a01:4f8:171:188a::* *.jhofer.* *.cafe.local" = {
-        user = "root";
-        proxyCommand = "none";
-        extraOptions.IdentityAgent = ''"${opAgentSock}"'';
+        User = "root";
+        ProxyCommand = "none";
+        IdentityAgent = ''"${opAgentSock}"'';
       };
 
       # JHC AWS
       "*.amazonaws.com" = {
-        user = "ubuntu";
-        proxyCommand = "none";
-        extraOptions.IdentityAgent = ''"${opAgentSock}"'';
+        User = "ubuntu";
+        ProxyCommand = "none";
+        IdentityAgent = ''"${opAgentSock}"'';
       };
     };
   };
