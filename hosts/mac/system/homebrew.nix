@@ -16,7 +16,6 @@
       "Final Cut Pro" = 424389933;
       "Flighty" = 1358823008;
       "Goodnotes" = 1444383602;
-      "Ground News" = 1324203419;
       "Keynote" = 361285480;
       "Motion" = 434290957;
       "Numbers" = 361304891;
