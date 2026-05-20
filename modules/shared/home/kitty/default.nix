@@ -145,6 +145,8 @@
       "opt+shift+7" = "send_text all \\\\"; # backslash
       "ctrl+alt+n" = "send_text all \\x1c\\x0e"; # sends <C-\><C-n> to exit nvim terminal mode
       "opt+shift+-" = "send_text all —"; # em dash
+      # fix MXL switch escape
+      "f12" = "send_text all \x1c";
     };
     extraConfig = ''
       include ${config.xdg.configHome}/kitty/themes/catppuccin-macchiato.conf
