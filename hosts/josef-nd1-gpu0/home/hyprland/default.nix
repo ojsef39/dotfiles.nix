@@ -31,6 +31,7 @@ in {
 
   wayland.windowManager.hyprland = {
     enable = true;
+    configType = "hyprlang";
 
     settings = {
       # ── Monitor ──────────────────────────────────────────────
@@ -100,7 +101,8 @@ in {
 
       # ── Layout ──────────────────────────────────────────────
       dwindle = {
-        pseudotile = true;
+        # NOTE: pseudotile option removed in Hyprland 0.55.x — use the
+        # `pseudo` dispatcher (already bound to SUPER+P) instead.
         preserve_split = true;
         force_split = 2; # always split to the right/bottom
       };
@@ -153,7 +155,7 @@ in {
         "SUPER SHIFT, F, fullscreen, 0" # true fullscreen
         "SUPER, V, togglefloating"
         "SUPER, P, pseudo" # dwindle pseudotile
-        "SUPER, S, togglesplit" # dwindle toggle split direction
+        "SUPER, S, layoutmsg, togglesplit" # dwindle toggle split direction
         "SUPER SHIFT, D, togglespecialworkspace"
 
         # ── Workspaces ──
@@ -213,7 +215,7 @@ in {
         "SUPER, mouse:273, resizewindow" # SUPER + right click drag
       ];
 
-      # Window rules moved to extraConfig below
+      # Window rules in block form below (extraConfig).
     };
 
     extraConfig = ''
