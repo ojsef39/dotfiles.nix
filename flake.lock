@@ -622,6 +622,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-copilot-cli": {
+      "locked": {
+        "lastModified": 1777727970,
+        "narHash": "sha256-+4t/6Npm2YODjEbsu3hWQ+eeKPSsVKEDgUEl7u8/8S8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3df3d1dbd49472b0cb5b921ef9f3cab8ee39f5f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3df3d1dbd49472b0cb5b921ef9f3cab8ee39f5f6",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1777168982,
@@ -849,6 +865,7 @@
         "nixkit": "nixkit",
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-25": "nixpkgs-25",
+        "nixpkgs-copilot-cli": "nixpkgs-copilot-cli",
         "nixpkgs_fork": "nixpkgs_fork",
         "nvf": "nvf",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
