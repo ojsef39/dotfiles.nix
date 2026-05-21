@@ -6,5 +6,12 @@
   "schedule": ["at any time"],
   "automerge": true,
   "automergeType": "pr",
-  "prHourlyLimit": 0
+  "prHourlyLimit": 0,
+  "packageRules": [
+    {
+      "matchManagers": ["nix"],
+      "matchDepNames": ["nixpkgs-copilot-cli"],
+      "enabled": false
+    }
+  ]
 }

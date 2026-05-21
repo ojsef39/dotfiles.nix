@@ -94,6 +94,8 @@
       url = "github:sadjow/claude-code-nix?ref=latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Pinned to 1.0.40; versions after this break MCP integration.
+    nixpkgs-copilot-cli.url = "github:NixOS/nixpkgs/3df3d1dbd49472b0cb5b921ef9f3cab8ee39f5f6";
   };
   outputs = inputs @ {
     self,
@@ -126,6 +128,10 @@
                 inherit (prev.stdenv.hostPlatform) system;
                 config.allowUnfree = true;
               };
+              pkgs-copilot-cli = import inputs.nixpkgs-copilot-cli {
+                inherit (prev.stdenv.hostPlatform) system;
+                config.allowUnfree = true;
+              };
             in {
               # ⬇️ Leave here as example for building from source instead of nixpkg repo:
               # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
@@ -133,6 +139,7 @@
               # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
               inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
               inherit (pkgs-25) firefox firefox-unwrapped;
+              inherit (pkgs-copilot-cli) github-copilot-cli;
             }
           )
         ];
