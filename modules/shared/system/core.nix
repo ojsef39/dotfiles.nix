@@ -68,5 +68,10 @@ in {
   nixpkgs.config = {
     allowBroken = false;
     allowUnfree = true;
+    # Eval-only leak from nixpkgs writers/scripts.nix:1202 forcing pkgs.pypy2Packages.
+    # Not in any built closure; fix in flight via nixpkgs#516241. Drop when nixpkgs bumps past that.
+    permittedInsecurePackages = [
+      "pypy2.7-setuptools-44.0.0"
+    ];
   };
 }
