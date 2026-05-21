@@ -80,7 +80,6 @@ in {
 
     sunshine-virt-display = {
       enable = true;
-      user = vars.user.name;
     };
   };
 
