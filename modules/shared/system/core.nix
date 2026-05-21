@@ -72,6 +72,7 @@ in {
     # Not in any built closure; fix in flight via nixpkgs#516241. Drop when nixpkgs bumps past that.
     permittedInsecurePackages = [
       "pypy2.7-setuptools-44.0.0"
+      "pypy2.7-pip-20.3.4"
     ];
   };
 }
