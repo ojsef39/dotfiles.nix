@@ -145,7 +145,7 @@ in {
         "SUPER, Q, killactive"
 
         # ── Applications ──
-        "SUPER, Return, exec, ${pkgs.kitty}/bin/kitty"
+        "SUPER, Return, exec, ${pkgs.ghostty}/bin/ghostty"
         "SUPER, D, exec, caelestia shell drawers toggle launcher"
 
         # ── Window management ──
