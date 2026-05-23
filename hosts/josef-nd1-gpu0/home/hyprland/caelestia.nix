@@ -22,7 +22,7 @@ in {
       menu.layout = "modern";
       general = {
         idle.timeouts = [];
-        apps.terminal = ["kitty"];
+        apps.terminal = ["ghostty"];
       };
       paths.wallpaperDir = "${catppuccin-wallpapers}";
       theme = {
