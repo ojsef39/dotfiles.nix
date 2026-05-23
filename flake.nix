@@ -140,6 +140,7 @@
               inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
               inherit (pkgs-25) firefox firefox-unwrapped;
               inherit (pkgs-copilot-cli) github-copilot-cli;
+              # NOTE: MCP allowlist broken above 1.0.40
             }
           )
         ];
