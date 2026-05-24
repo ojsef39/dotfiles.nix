@@ -903,11 +903,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1779567740,
-        "narHash": "sha256-nmNLrkM0uO3gqwNgg8l4XxLnEE9S37jWD5Qv60dgyEE=",
+        "lastModified": 1779607677,
+        "narHash": "sha256-Ang2de6zfcFF8v7LWqSDD1n6bgYj0vN1PY5hi7lOLsM=",
         "owner": "Gerg-L",
         "repo": "spicetify-nix",
-        "rev": "bcfc51ca18c0a65774dc4639ea971ed5cca57c48",
+        "rev": "e69b824f3c4f4db836f47193723b6d37f93e0dc0",
         "type": "github"
       },
       "original": {
