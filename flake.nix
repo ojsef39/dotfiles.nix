@@ -29,7 +29,7 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-25.url = "github:nixos/nixpkgs/release-25.11"; # specific 25.x release
+    nixpkgs-25.url = "github:nixos/nixpkgs/release-26.05"; # specific 25.x release
     nixpkgs_fork = {
       url = "github:ojsef39/nixpkgs/feat/dadav-helm-schema";
       inputs.nixpkgs.follows = "nixpkgs";
