@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   vars,
   ...
 }: {
@@ -10,11 +11,11 @@
     (writeShellScriptBin "docker" ''exec ${podman}/bin/podman "$@"'')
   ];
 
-  system.activationScripts.podmanMacHelper.text = ''
+  system.activationScripts.extraActivation.text = lib.mkAfter ''
     helper_plist="/Library/LaunchDaemons/com.github.containers.podman.helper-${vars.user.name}.plist"
     if [ ! -f "$helper_plist" ]; then
       echo "Installing podman-mac-helper..."
-      ${pkgs.podman-mac-helper}/bin/podman-mac-helper install
+      SUDO_USER=${vars.user.name} ${pkgs.podman-mac-helper}/bin/podman-mac-helper install
     fi
   '';
 }
