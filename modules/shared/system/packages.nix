@@ -36,8 +36,6 @@
     nix-update # https://github.com/Mic92/nix-update
     nixpkgs-review
     nmap
-    podman
-    podman-compose
     progress
     python3
     retry
