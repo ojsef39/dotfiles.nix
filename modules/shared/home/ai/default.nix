@@ -53,7 +53,6 @@ in {
 
     # Keys are server names from programs.mcp.servers; values are tool names without
     # any tool-specific prefix. Each AI tool's config applies its own prefix format.
-    # NOTE: opencode has no permission system yet for MCPs
     # NOTE: copilot has no documentation on this
     allowedMcpCalls = lib.mkOption {
       type = lib.types.attrsOf (lib.types.listOf lib.types.str);
