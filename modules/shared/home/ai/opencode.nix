@@ -14,6 +14,27 @@
       type = "enabled";
     };
   };
+
+  # opencode names each MCP tool `<sanitize(server)>_<sanitize(tool)>` and looks
+  # up that exact string in the permission ruleset. `sanitize` in
+  # packages/opencode/src/mcp/index.ts replaces every char outside [a-zA-Z0-9_-]
+  # with `_`, so mirror that here.
+  sanitize = s: let
+    isAllowed = c: builtins.match "[a-zA-Z0-9_-]" c != null;
+  in
+    builtins.concatStringsSep "" (map (c:
+      if isAllowed c
+      then c
+      else "_") (lib.stringToCharacters s));
+
+  expandMcpCalls = calls:
+    builtins.listToAttrs (lib.flatten (lib.mapAttrsToList (server: tools:
+      map (tool: {
+        name = "${sanitize server}_${sanitize tool}";
+        value = "allow";
+      })
+      tools)
+    calls));
 in {
   home.sessionVariables = {
     OPENCODE_ENABLE_EXA = "1"; # enables https://opencode.ai/docs/de/tools/#websearch
@@ -30,19 +51,47 @@ in {
       instructions = ["${cfg.instructionsDir}/*.md"];
       autoupdate = false;
       disabled_providers = ["xai"];
-      permission = {
-        websearch = "allow";
-        webfetch = "allow";
-        bash =
-          {
-            "*" = "ask";
-          }
-          // builtins.listToAttrs (map (p: {
-              name = p;
-              value = "allow";
-            })
-            cfg.allowedBashCommands);
-      };
+      # opencode's build agent ships with `"*": "allow"` baked into its
+      # defaults (packages/opencode/src/agent/agent.ts), so any unlisted
+      # permission key runs silently — including MCP write tools. We override
+      # `*` to `ask` here to match the deny-by-default model claude-code uses,
+      # then explicitly allow opencode's safe built-ins (which previously
+      # relied on the `*` catchall) plus the user's allowlist.
+      #
+      # `question` and `plan_enter` need re-allowing because the build agent
+      # specifically toggles them allow in its merge step, and our user-level
+      # `*: ask` lands later in the merged ruleset, shadowing those tunings.
+      permission =
+        {
+          "*" = "ask";
+
+          # safe built-ins — keep normal coding silent
+          edit = "allow"; # covers edit / write / apply_patch (all use this key)
+          glob = "allow";
+          grep = "allow";
+          list = "allow";
+          lsp = "allow";
+          skill = "allow";
+          task = "allow";
+          todowrite = "allow";
+          webfetch = "allow";
+          websearch = "allow";
+
+          # re-establish build-agent overrides shadowed by our `*: ask`
+          plan_enter = "allow";
+          question = "allow";
+
+          bash =
+            {
+              "*" = "ask";
+            }
+            // builtins.listToAttrs (map (p: {
+                name = p;
+                value = "allow";
+              })
+              cfg.allowedBashCommands);
+        }
+        // expandMcpCalls cfg.allowedMcpCalls;
 
       agent = {
         build = {
