@@ -5,7 +5,8 @@
       # so we do not need to logout and login again to make the changes take effect.
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
       export PATH=$PATH:/usr/bin
-      /usr/bin/killall Dock
+      /usr/bin/killall Dock || true
+      /usr/bin/open -ga /System/Library/CoreServices/Dock.app || true
     '';
 
     touchIdPrivilegeDisplayLinkFix = ''
