@@ -6,6 +6,7 @@
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
       export PATH=$PATH:/usr/bin
       /usr/bin/killall Dock || true
+      /bin/sleep 1
       /usr/bin/open -ga /System/Library/CoreServices/Dock.app || true
     '';
 
