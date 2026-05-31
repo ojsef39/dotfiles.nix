@@ -25,6 +25,7 @@ jobs:
       languages: ".github/workflows/syntax.json"
       manual_commit_ref: ${{ inputs.MANUAL_COMMIT_REF }}
       manual_base_ref: ${{ inputs.MANUAL_BASE_REF }}
+      escape: false
     secrets:
       TODO_APP_ID: ${{ secrets.TODO_APP_ID }}
       TODO_APP_PRIV_KEY: ${{ secrets.TODO_APP_PRIV_KEY }}
