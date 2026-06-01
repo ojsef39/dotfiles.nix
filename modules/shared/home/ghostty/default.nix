@@ -63,7 +63,7 @@
       cursor-style-blink = false;
       mouse-hide-while-typing = true;
       mouse-scroll-multiplier = "precision:1,discrete:1"; # default discrete:3 felt way too fast
-      copy-on-select = "clipboard";
+      copy-on-select = "false";
 
       shell-integration = "fish";
       shell-integration-features = true;
