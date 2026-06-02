@@ -31,7 +31,7 @@
   # Point straight at the nixkit-built derivation. Its $out has
   # Applications/Zen Browser (Beta).app already correctly named; no codesign
   # call to strip (we never run one); dontFixup is set in the derivation.
-  programs.zen-browser.package = lib.mkIf pkgs.stdenv.isDarwin (
-    inputs.nixkit.packages.${pkgs.stdenv.hostPlatform.system}.zen-browser
-  );
+  programs.zen-browser.package =
+    lib.mkIf pkgs.stdenv.isDarwin
+    inputs.nixkit.packages.${pkgs.stdenv.hostPlatform.system}.zen-browser;
 }
