@@ -6,6 +6,11 @@
 # which replaces Zen's original Apple Developer signature with ad-hoc (no Team ID).
 # 1Password requires a valid Team ID → rejects the app.
 # Fix: skip that codesign call AND dontFixup to prevent fixupPhase from re-signing too.
+#
+# Also: source the DMG from nixkit's source-built zen-browser package (which pins
+# the WIP `little-zen` PR — https://github.com/zen-browser/desktop/pull/13450)
+# instead of the upstream prebuilt beta. Built declaratively in nix, not via the
+# old `nix develop .#zen-build → build-zen` shell-script flow.
 {
   pkgs,
   lib,
@@ -23,14 +28,10 @@
       // config.programs.zen-browser.policies;
   };
 
+  # Point straight at the nixkit-built derivation. Its $out has
+  # Applications/Zen Browser (Beta).app already correctly named; no codesign
+  # call to strip (we never run one); dontFixup is set in the derivation.
   programs.zen-browser.package = lib.mkIf pkgs.stdenv.isDarwin (
-    pkgs.lib.makeOverridable
-    (
-      _:
-        inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.beta-unwrapped.overrideAttrs (old: {
-          installPhase = builtins.replaceStrings ["/usr/bin/codesign"] [": "] old.installPhase;
-          dontFixup = true;
-        })
-    ) {}
+    inputs.nixkit.packages.${pkgs.stdenv.hostPlatform.system}.zen-browser
   );
 }
