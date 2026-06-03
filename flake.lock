@@ -641,6 +641,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-helm-4": {
+      "locked": {
+        "lastModified": 1762972686,
+        "narHash": "sha256-zz9vxASSuOGvyENz3o59RI5Iud+IFHdKDxQemJndm7c=",
+        "owner": "techknowlogick",
+        "repo": "nixpkgs",
+        "rev": "f34ef5a650d4720003be8f881b514561d39cbcbd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "techknowlogick",
+        "ref": "helm-4",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1777168982,
@@ -869,6 +885,7 @@
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-25": "nixpkgs-25",
         "nixpkgs-copilot-cli": "nixpkgs-copilot-cli",
+        "nixpkgs-helm-4": "nixpkgs-helm-4",
         "nixpkgs_fork": "nixpkgs_fork",
         "nvf": "nvf",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
