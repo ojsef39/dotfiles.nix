@@ -27,7 +27,6 @@
       "ca-certificates"
       "coreutils"
       "expect"
-      "helm"
       "keyring"
       "mas"
       "ncdu"

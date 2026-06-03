@@ -1,4 +1,11 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  helm-with-plugins = pkgs.wrapHelm pkgs.kubernetes-helm {
+    plugins = [
+      pkgs.helm-schema-gen
+      pkgs.kubernetes-helmPlugins.helm-unittest
+    ];
+  };
+in {
   environment.systemPackages = with pkgs; [
     # packages from pkgs folder
     kubectl-debug
@@ -19,8 +26,7 @@
     gitlab-ci-local
     go
     gomplate
-    helm-schema-gen
-    kubernetes-helmPlugins.helm-unittest
+    helm-with-plugins
     hwatch
     just
     kubeconform
