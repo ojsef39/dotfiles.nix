@@ -139,6 +139,7 @@
               # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
               inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
               # TODO: Remove kubernetes-helm override once the PR ships
+              # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/1359
               # PR #461007 builds 4.0.0; bump to latest on top of it
               kubernetes-helm =
                 (inputs.nixpkgs-helm-4.legacyPackages.${prev.stdenv.hostPlatform.system}.kubernetes-helm.override {
