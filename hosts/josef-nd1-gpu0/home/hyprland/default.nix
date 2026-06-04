@@ -11,7 +11,9 @@
   rose-pine-hyprcursor = inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
   catppuccin-hyprland = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/catppuccin/hyprland/main/themes/macchiato.conf";
+    # Pinned: upstream replaced the .conf themes with .lua themes for Hyprland 0.55+,
+    # so the file no longer exists on main.
+    url = "https://raw.githubusercontent.com/catppuccin/hyprland/b57375545f5da1f7790341905d1049b1873a8bb3/themes/macchiato.conf";
     sha256 = "1f8fr5sf220g4pc7vcg2cs51rzp49a7dgr8rlwspybvmz9wdc3c8";
   };
 in {
