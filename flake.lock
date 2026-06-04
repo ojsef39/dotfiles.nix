@@ -559,22 +559,19 @@
         "flake-parts": "flake-parts_4",
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "rust-overlay": "rust-overlay"
+        ]
       },
       "locked": {
-        "lastModified": 1780416938,
-        "narHash": "sha256-mhwjOruxB0Bo0resKTiR+jY6OuRkhHU4BI0hL6Gdk10=",
-        "owner": "frostplexx",
-        "repo": "nixkit",
-        "rev": "ffe6bec17b2f01e8d0f620d427c85fc86bec8933",
-        "type": "github"
+        "lastModified": 1780062390,
+        "narHash": "sha256-ycMWBPqb6tg7snRv8ifJlEJGRR95NIDpDSdlhqGJBCg=",
+        "rev": "f19a086daef100b74592e11fa6dde59e87c661b9",
+        "revCount": 204,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.204%2Brev-f19a086daef100b74592e11fa6dde59e87c661b9/019e73fe-7d2b-7d42-89a4-d6fe1f21408e/source.tar.gz"
       },
       "original": {
-        "owner": "frostplexx",
-        "ref": "little_zen",
-        "repo": "nixkit",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://flakehub.com/f/JHOFER-Cloud/frostplexx-nixkit/0.1.tar.gz"
       }
     },
     "nixpkgs": {
@@ -912,27 +909,6 @@
       "original": {
         "owner": "ndom91",
         "repo": "rose-pine-hyprcursor",
-        "type": "github"
-      }
-    },
-    "rust-overlay": {
-      "inputs": {
-        "nixpkgs": [
-          "nixkit",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1780284119,
-        "narHash": "sha256-y2wR4Mk6D/N1ID4FZa2oUMStCUxyIoRzmgOOpLzoWmo=",
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "rev": "51390d0bfca0a68a8c337d215a4bbeddc2ca616e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxalica",
-        "repo": "rust-overlay",
         "type": "github"
       }
     },

@@ -413,20 +413,6 @@
             control = true;
           };
         }
-        {
-          # NOTE: Remove 1password shortcut in in-extension settings and restart Zen
-          id = "zen-new-little-window";
-          key = "L";
-          modifiers = {
-            meta = true;
-            shift = true;
-          };
-        }
-        # Free CMD+SHIFT+L for zen-new-little-window — Inspector still on CMD+OPT+L
-        {
-          id = "key_inspectorMac";
-          disabled = true;
-        }
         # Disable the quit shortcut to prevent accidental closes
         {
           id = "key_quitApplication";
@@ -435,7 +421,7 @@
       ];
       # Fails activation on schema changes to detect potential regressions
       # Find this in about:config or prefs.js of your profile
-      keyboardShortcutsVersion = 20;
+      keyboardShortcutsVersion = 18;
 
       settings = {
         # Zen-specific preferences
@@ -458,9 +444,6 @@
 
         # Permissions
         "permissions.default.shortcuts" = 1; # 0=Allow, 1=Block (https://github.com/zen-browser/desktop/issues/8894#issuecomment-3674583799)
-
-        # Dev stuff
-        "devtools.chrome.enabled" = true;
       };
 
       search = {
