@@ -12,6 +12,10 @@
       autoUpdate = true;
       upgrade = true;
       cleanup = "uninstall"; # "zap" to also remove config files
+      # TODO: Remove brew extraFlag after PR was merged
+      # Homebrew >= 5.1 requires --force-cleanup for `brew bundle --cleanup`;
+      # nix-darwin doesn't pass it yet: https://github.com/nix-darwin/nix-darwin/issues/1787
+      extraFlags = ["--force-cleanup"];
     };
 
     taps = [];
