@@ -1,8 +1,18 @@
 {pkgs, ...}: let
+  # nixpkgs only ships `untt`, but plugin.yaml expects untt-<os>-<arch> — symlink them.
+  helm-unittest = pkgs.kubernetes-helmPlugins.helm-unittest.overrideAttrs (old: {
+    postInstall =
+      old.postInstall
+      + ''
+        for bin in untt-linux-amd64 untt-linux-arm64 untt-macos-amd64 untt-macos-arm64; do
+          ln -s untt $out/helm-unittest/$bin
+        done
+      '';
+  });
   helm-with-plugins = pkgs.wrapHelm pkgs.kubernetes-helm {
     plugins = [
       pkgs.helm-schema-gen
-      pkgs.kubernetes-helmPlugins.helm-unittest
+      helm-unittest
     ];
   };
 in {
