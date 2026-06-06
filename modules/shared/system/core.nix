@@ -33,6 +33,7 @@ in {
       [
         "https://cache.nixos.org"
         "https://ojsef39.cachix.org"
+        "https://nixkit.cachix.org"
         "https://nvf.cachix.org"
       ]
       ++ lib.optionals (vars.cache.community or false) [
@@ -43,6 +44,7 @@ in {
       [
         "https://cache.nixos.org"
         "https://ojsef39.cachix.org"
+        "https://nixkit.cachix.org"
         "https://nvf.cachix.org"
       ]
       ++ lib.optionals (vars.cache.community or false) [
@@ -53,6 +55,7 @@ in {
       [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y="
+        "nixkit.cachix.org-1:d3yhZjbGSL6QTgzZsxE3lRLIQ8jGmH7/XxiD/5hGmfA="
         "nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI="
       ]
       ++ lib.optionals (vars.cache.community or false) [
