@@ -32,7 +32,7 @@ in {
           "/Applications/Nix Apps/Obsidian.app"
           "/Applications/Things3.app"
           "/Applications/Linear.app"
-          "${hmApps}/Ghostty.app"
+          "${hmApps}/kitty.app"
           "/Applications/Nix Apps/UTM.app"
           "/Applications/Nix Apps/Moonlight.app"
           "${hmApps}/Spotify.app"
