@@ -40,6 +40,7 @@ in {
           "/Applications/Reeder.localized/Reeder.app"
           "/System//Applications/System Settings.app"
           "/Applications/Yubico Authenticator.app"
+          "/System/Applications/Campo.app"
           "/Applications/Claude.app"
         ];
       };
