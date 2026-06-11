@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   vars,
   ...
@@ -35,7 +36,6 @@
       "keyring"
       "mas"
       "ncdu"
-      "norwoodj/tap/helm-docs"
       "renovate"
       "yazi"
     ];
@@ -45,7 +45,6 @@
       "arc"
       "caffeine"
       "dockdoor"
-      "mac-mouse-fix"
       "poe"
       "postman"
       "dorso"
@@ -56,4 +55,15 @@
       "yubico-authenticator"
     ];
   };
+
+  # Homebrew >= 5.1 requires non-official taps to be trusted before loading
+  # their formulae/casks. Derive trust.json from the declared taps so it stays
+  # in sync automatically — no manual `brew trust`. Runs before `brew bundle`.
+  system.activationScripts.preActivation.text = ''
+        install -d -o ${vars.user.name} -m 755 /Users/${vars.user.name}/.homebrew
+        cat > /Users/${vars.user.name}/.homebrew/trust.json <<'EOF'
+    ${builtins.toJSON {trustedtaps = map (t: t.name) config.homebrew.taps;}}
+    EOF
+        chown ${vars.user.name} /Users/${vars.user.name}/.homebrew/trust.json
+  '';
 }

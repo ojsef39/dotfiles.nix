@@ -15,23 +15,25 @@ in {
         IdentityAgent = ''"${opAgentSock}"'';
       };
 
-      # JHC K8s
-      "*.k8*.jhofer.*" = {
-        User = "josef";
-        ProxyCommand = "none";
+      # JHC grafana kiosk
+      "grafana-kiosk-rpi*.*.jhofer.lan" = {
+        User = "grafana";
         IdentityAgent = ''"${opAgentSock}"'';
+      };
+
+      # JHC CMC
+      "bc?-cmc.*.jhofer.lan" = {
+        User = "service";
+        IdentityAgent = ''"${opAgentSock}"'';
+        StrictHostKeyChecking = "no";
+        UserKnownHostsFile = "/dev/null";
+        HostKeyAlgorithms = "+ssh-rsa";
+        PubkeyAcceptedAlgorithms = "+ssh-rsa";
       };
 
       # JHC Stuff
-      "10.1.1.* 10.2.2.* 136.* 2a01:4f8:171:188a::* *.jhofer.* *.cafe.local" = {
+      "*.jhofer.* !bc?-cmc.*.jhofer.lan !grafana-kiosk-rpi*.*.jhofer.lan" = {
         User = "root";
-        ProxyCommand = "none";
-        IdentityAgent = ''"${opAgentSock}"'';
-      };
-
-      # JHC AWS
-      "*.amazonaws.com" = {
-        User = "ubuntu";
         ProxyCommand = "none";
         IdentityAgent = ''"${opAgentSock}"'';
       };
