@@ -97,7 +97,7 @@
     # Pinned to 1.0.40; versions after this break MCP integration.
     nixpkgs-copilot-cli.url = "github:NixOS/nixpkgs/3df3d1dbd49472b0cb5b921ef9f3cab8ee39f5f6";
     # Update to 4.x.x
-    nixpkgs-helm-4.url = "github:techknowlogick/nixpkgs/helm-4";
+    nixpkgs-helm-4.url = "github:techknowlogick/nixpkgs/v208";
   };
   outputs = inputs @ {
     self,
