@@ -11,8 +11,9 @@
   });
   helm-with-plugins = pkgs.wrapHelm pkgs.kubernetes-helm {
     plugins = [
-      pkgs.helm-schema-gen
       helm-unittest
+      pkgs.helm-docs
+      pkgs.helm-schema-gen
     ];
   };
 in {

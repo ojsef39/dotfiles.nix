@@ -20,7 +20,7 @@
       extraFlags = ["--force-cleanup"];
     };
 
-    taps = ["norwoodj/tap"];
+    taps = [];
 
     # Mac App Store apps
     masApps = lib.mkIf (vars.masApps.enable or true) {
@@ -36,7 +36,6 @@
       "keyring"
       "mas"
       "ncdu"
-      "norwoodj/tap/helm-docs"
       "renovate"
       "yazi"
     ];
