@@ -45,7 +45,6 @@
       "arc"
       "caffeine"
       "dockdoor"
-      "mac-mouse-fix"
       "poe"
       "postman"
       "dorso"
