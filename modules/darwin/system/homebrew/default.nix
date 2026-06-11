@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   vars,
   ...
@@ -19,7 +20,7 @@
       extraFlags = ["--force-cleanup"];
     };
 
-    taps = [];
+    taps = ["norwoodj/tap"];
 
     # Mac App Store apps
     masApps = lib.mkIf (vars.masApps.enable or true) {
@@ -55,4 +56,15 @@
       "yubico-authenticator"
     ];
   };
+
+  # Homebrew >= 5.1 requires non-official taps to be trusted before loading
+  # their formulae/casks. Derive trust.json from the declared taps so it stays
+  # in sync automatically — no manual `brew trust`. Runs before `brew bundle`.
+  system.activationScripts.preActivation.text = ''
+        install -d -o ${vars.user.name} -m 755 /Users/${vars.user.name}/.homebrew
+        cat > /Users/${vars.user.name}/.homebrew/trust.json <<'EOF'
+    ${builtins.toJSON {trustedtaps = map (t: t.name) config.homebrew.taps;}}
+    EOF
+        chown ${vars.user.name} /Users/${vars.user.name}/.homebrew/trust.json
+  '';
 }
