@@ -32,4 +32,6 @@
     // lib.optionalAttrs pkgs.stdenv.isDarwin {
       knownUsers = ["${vars.user.name}"];
     };
+
+  environment.shells = [pkgs.fish];
 }
