@@ -67,49 +67,9 @@ jobs:
             exit 1
           fi
 
-  build-linux-packages:
-    # FIX: workaround this: https://github.com/actions/runner-images/issues/13505
-    # by caching the linux package first and then hopefully macos uses the
-    # cached pkg and doesn't need to use nested virtualization
-    name: Build Linux Packages
-    needs: [security-check, lint]
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            packages: &linux_packages ".#kubectl-debug"
-          - os: "ubuntu-24.04-arm"
-            packages:
-              - *linux_packages
-
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
-
-      - name: Install Nix
-        uses: DeterminateSystems/determinate-nix-action@v3.21.0
-        with: &nix-extra-conf
-          extra-conf: |
-            extra-experimental-features = nix-command flakes external-builders
-            substituters = https://cache.nixos.org https://ojsef39.cachix.org https://nvf.cachix.org https://nix-community.cachix.org
-            trusted-substituters = https://cache.nixos.org https://ojsef39.cachix.org https://nvf.cachix.org https://nix-community.cachix.org
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y= nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-
-      - name: Setup Cachix Auth
-        uses: cachix/cachix-action@v17
-        with:
-          name: ojsef39
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-
-      - name: Build packages
-        run: |
-          for pkg in ${{ join(matrix.packages, ' ') }}; do
-            nix build --inputs-from . $pkg
-          done
-
   test-configurations:
     name: Test Nix Configurations
-    needs: [security-check, lint, build-linux-packages]
+    needs: [security-check, lint]
     runs-on: ${{ matrix.os }}
     permissions:
       id-token: write
@@ -120,7 +80,7 @@ jobs:
         include:
           - os: macos-latest
             nix_cmd: "darwin"
-            nix_host: "mac"
+            nix_host: "mac-ci"
           - os: ubuntu-latest
             nix_cmd: "os"
             nix_host: "josef-nd1-gpu0"
@@ -134,19 +94,16 @@ jobs:
 
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3.21.0
-        with: *nix-extra-conf
+        with:
+          extra-conf: |
+            extra-experimental-features = nix-command flakes external-builders
+            substituters = https://cache.nixos.org https://ojsef39.cachix.org https://nvf.cachix.org https://nix-community.cachix.org
+            trusted-substituters = https://cache.nixos.org https://ojsef39.cachix.org https://nvf.cachix.org https://nix-community.cachix.org
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y= nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
 
       - name: Re-authenticate with FlakeHub token
         run: |
           echo "${{ secrets.FLAKEHUB_TOKEN }}" | determinate-nixd auth login token --token-file /dev/stdin
-
-      - name: Configure Determinate Linux Builder
-        if: matrix.os == 'macos-latest'
-        run: |
-          sudo mkdir -p /etc/determinate
-          echo '{"builder":{"state":"enabled","cpuCount":2,"memoryBytes":4294967296}}' | sudo tee /etc/determinate/config.json
-          sudo launchctl kickstart -k system/systems.determinate.nix-daemon
-          sleep 2
 
       - name: Install Just
         uses: extractions/setup-just@v4

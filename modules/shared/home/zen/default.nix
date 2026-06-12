@@ -301,9 +301,9 @@
           position = 212;
         };
 
-        "GPU Metrics" = {
+        "Energy Watchdog" = {
           id = "6ada4b2e-ed5a-43be-b3e6-966fecd03949";
-          url = "https://grafana.hla1.jhofer.lan/d/vlvPlrgnk/nvidia-gpu-metrics?orgId=1&from=now-3h&to=now&timezone=browser&var-job=nvidia-gpu-exporter&var-node=hla1-ai&var-gpu=6d16a72e-dab6-f22a-fa92-ebfb8f40afc2&refresh=10s";
+          url = "https://grafana.hla1.jhofer.lan/d/energy-watchdog/energy-watchdog?from=now-12h&to=now&refresh=1m";
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           position = 213;
