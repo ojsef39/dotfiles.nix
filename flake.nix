@@ -239,6 +239,26 @@
       };
     };
 
+    # CI variant of `mac`
+    darwinConfigurations.mac-ci = self.darwinConfigurations.mac.extendModules {
+      modules = [
+        (
+          {
+            vars,
+            lib,
+            ...
+          }: {
+            home-manager.users.${vars.user.name}.programs.mac-mouse-fix.enable = lib.mkForce false;
+            nixpkgs.overlays = lib.mkAfter [
+              (_: prev: {
+                kubectl-debug = prev.runCommandLocal "kubectl-debug-ci-stub" {} "mkdir -p $out";
+              })
+            ];
+          }
+        )
+      ];
+    };
+
     # NixOS — josef-nd1-gpu0
     nixosConfigurations = let
       name = "josef-nd1-gpu0";
