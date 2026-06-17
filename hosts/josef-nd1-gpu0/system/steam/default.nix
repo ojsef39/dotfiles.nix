@@ -8,7 +8,11 @@
     satisfactorymodmanager
   ];
 
-  programs.steam.enable = true;
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = with pkgs; [proton-ge-bin];
+    protontricks.enable = true;
+  };
 
   # Override graphics to use NVIDIA's pre-built 32-bit libraries (avoids Mesa entirely)
   hardware.graphics.package32 = config.boot.kernelPackages.nvidiaPackages.latest.lib32;
