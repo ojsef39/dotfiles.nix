@@ -100,8 +100,6 @@
     };
     # Pinned to 1.0.40; versions after this break MCP integration.
     nixpkgs-copilot-cli.url = "github:NixOS/nixpkgs/3df3d1dbd49472b0cb5b921ef9f3cab8ee39f5f6";
-    # Update to 4.x.x
-    nixpkgs-helm-4.url = "github:techknowlogick/nixpkgs/helm-4";
   };
   outputs = inputs @ {
     self,
@@ -142,33 +140,6 @@
               # ⬇️ Leave here as example for building from source instead of nixpkg repo:
               # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
               inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
-              # TODO: Remove kubernetes-helm override once the PR ships
-              # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/1359
-              # PR #461007 builds 4.0.0; bump to latest on top of it
-              kubernetes-helm =
-                (inputs.nixpkgs-helm-4.legacyPackages.${prev.stdenv.hostPlatform.system}.kubernetes-helm.override {
-                  # helm 4.2.0 needs go >= 1.26
-                  inherit (prev) buildGoModule;
-                }).overrideAttrs (finalAttrs: old: {
-                  version = "4.2.0";
-                  src = prev.fetchFromGitHub {
-                    owner = "helm";
-                    repo = "helm";
-                    rev = "v${finalAttrs.version}";
-                    hash = "sha256-Wyihzf7KpnVuIdp5lmjhB7uLAGgtmI0TXYl29uaVC5Y=";
-                  };
-                  proxyVendor = true;
-                  vendorHash = "sha256-WVNUUa+MBETmtPnHZhJaRm/ymV2D8ffnWGKKdHHNPQw=";
-                  # 4.2.0 renamed TestPluginExitCode -> TestCliPluginExitCode, so the
-                  # packaging's skip-rename no longer matches; the test fails in the Linux
-                  # sandbox (its fixture's `#!/usr/bin/env sh` shebang can't resolve there).
-                  preCheck =
-                    (old.preCheck or "")
-                    + ''
-                      substituteInPlace cmd/helm/helm_test.go \
-                        --replace-fail "TestCliPluginExitCode" "SkipCliPluginExitCode"
-                    '';
-                });
               # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
               inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
               inherit (pkgs-25) firefox firefox-unwrapped;
