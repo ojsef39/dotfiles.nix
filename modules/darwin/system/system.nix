@@ -38,6 +38,7 @@
         NSAutomaticCapitalizationEnabled = false;
         "com.apple.trackpad.scaling" = 0.6875;
         "com.apple.sound.beep.volume" = 1.0;
+        AppleSpacesSwitchOnActivate = false; #NOTE: needed for agate wm
       };
 
       ##TODO: Is this even still used?
@@ -77,10 +78,10 @@
         wvous-br-corner = 14;
         wvous-tl-corner = 5;
         wvous-tr-corner = 5; # https://daiderd.com/nix-darwin/manual/index.html#opt-system.defaults.dock.wvous-tl-corner
-        mru-spaces = false;
+        mru-spaces = false; #NOTE: needed for agate wm
       };
       WindowManager = {
-        GloballyEnabled = true;
+        GloballyEnabled = false; #NOTE: needed for agate wm
         EnableStandardClickToShowDesktop = true;
         HideDesktop = false;
         StageManagerHideWidgets = false;

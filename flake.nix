@@ -67,6 +67,10 @@
       # url = "/Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agate = {
+      url = "github:frostplexx/agate-wm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-flatpak = {
       url = "github:gmodena/nix-flatpak";
     };

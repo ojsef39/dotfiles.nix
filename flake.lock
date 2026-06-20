@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "agate": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781945839,
+        "narHash": "sha256-ZrmLym6dizcbWgE7SDtjQWOpTcPKUTuHl9AN2htXzKQ=",
+        "owner": "frostplexx",
+        "repo": "agate-wm",
+        "rev": "6526f2d504c5d8e1751b8a982893d095e942c028",
+        "type": "github"
+      },
+      "original": {
+        "owner": "frostplexx",
+        "repo": "agate-wm",
+        "type": "github"
+      }
+    },
     "cachyos-kernel": {
       "flake": false,
       "locked": {
@@ -889,6 +909,7 @@
     },
     "root": {
       "inputs": {
+        "agate": "agate",
         "caelestia-shell": "caelestia-shell",
         "claude-code": "claude-code",
         "darwin": "darwin",
