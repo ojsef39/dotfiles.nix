@@ -187,6 +187,10 @@ agate.bind("hyper+f", function()
 	agate.zoom_fullscreen()
 end)
 
+agate.bind("hyper+shift+f", function()
+	agate.native_fullscreen()
+end)
+
 -- Multi-monitor. Windows on every display are tiled within that display's own
 -- frame. Focus another monitor (its most-recently-used window becomes key), and
 -- move the focused window to an adjacent monitor where it gets tiled too.
