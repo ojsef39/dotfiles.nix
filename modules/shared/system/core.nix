@@ -66,6 +66,7 @@ in {
     extra-experimental-features = ["parallel-eval external-builders"];
     eval-cores = 0;
     # TODO: drop the darwin guard once nixpkgs ships a libffi that works on macOS 26
+    # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/1439
     #   https://github.com/NixOS/nixpkgs/pull/354108  (libffi-mit -> libffi-apple, the regression)
     #   https://github.com/libffi/libffi/pull/621     (upstream Apple trampoline fix)
     post-build-hook = lib.optionalString (!pkgs.stdenv.isDarwin) "${cachixHook}/bin/cachix-push-hook";
