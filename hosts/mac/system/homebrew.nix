@@ -6,7 +6,11 @@
   # Homebrew for macOS-specific and unavailable packages
   homebrew = {
     taps = [
-      "doodlescheduling/flux-build"
+      {
+        name = "doodlescheduling/flux-build";
+        clone_target = "https://github.com/DoodleScheduling/flux-build.git";
+        trusted = true;
+      }
     ];
 
     # Mac App Store apps

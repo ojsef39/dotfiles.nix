@@ -208,6 +208,32 @@
           position = 204;
         };
 
+        # Trivia folder
+        "Trivia" = {
+          id = "82631586-8f23-450c-a2b3-48b1c490b3f6";
+          container = containers.Personal.id;
+          workspace = spaces."Personal".id;
+          isGroup = true;
+          isFolderCollapsed = true;
+          position = 205;
+        };
+        "JetPunk" = {
+          id = "56cee429-97ce-4933-b78e-155dbdb16e92";
+          url = "https://www.jetpunk.com/";
+          container = containers.Personal.id;
+          workspace = spaces."Personal".id;
+          folderParentId = "82631586-8f23-450c-a2b3-48b1c490b3f6";
+          position = 206;
+        };
+        "WikiTrivia" = {
+          id = "7256579c-4d81-46ae-aa1d-4ab046264c87";
+          url = "https://wikitrivia.tomjwatson.com/";
+          container = containers.Personal.id;
+          workspace = spaces."Personal".id;
+          folderParentId = "82631586-8f23-450c-a2b3-48b1c490b3f6";
+          position = 207;
+        };
+
         # JHC workspace pins
         "GitHub PRs" = {
           id = "bd9ab8c6-bd49-4765-b776-3cd0360c4284";
