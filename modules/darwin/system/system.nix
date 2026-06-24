@@ -29,6 +29,9 @@
     startup.chime = lib.mkDefault true;
 
     defaults = {
+      trackpad = {
+        TrackpadFourFingerHorizSwipeGesture = 2; #NOTE: needed for agate wm
+      };
       SoftwareUpdate = {
         AutomaticallyInstallMacOSUpdates = true;
       };
