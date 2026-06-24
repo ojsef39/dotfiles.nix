@@ -30,7 +30,7 @@
 
     defaults = {
       trackpad = {
-        TrackpadFourFingerHorizSwipeGesture = 2; #NOTE: needed for agate wm
+        TrackpadThreeFingerHorizSwipeGesture = 0; #NOTE: needed for agate wm (carousel)
       };
       SoftwareUpdate = {
         AutomaticallyInstallMacOSUpdates = true;
