@@ -404,18 +404,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1782407107,
-        "narHash": "sha256-9JK5peSjmcG8Lav6dfdLJq2KI4ijI6imz202bsyRAGE=",
-        "owner": "ojsef39",
-        "repo": "home-manager",
-        "rev": "ee85417c9a9132b8403ee091effa3ba0c0532727",
-        "type": "github"
+        "lastModified": 1782423922,
+        "narHash": "sha256-qPNd6lUohHP5gcJhqQ7rLV87RwIx0xYR2A4Frb9Zjc4=",
+        "rev": "5d320ab301cfaaca7d32514f13815d19d109f5f4",
+        "revCount": 6992,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/nix-community/home-manager/0.1.6992%2Brev-5d320ab301cfaaca7d32514f13815d19d109f5f4/019f00d2-2231-70e3-aec4-50c296c9965e/source.tar.gz"
       },
       "original": {
-        "owner": "ojsef39",
-        "ref": "fix/github-copilot-cli-local-args",
-        "repo": "home-manager",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"
       }
     },
     "hyprlang": {

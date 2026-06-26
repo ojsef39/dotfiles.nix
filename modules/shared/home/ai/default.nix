@@ -7,11 +7,12 @@
   cfg = config.ai;
 in {
   imports = [
-    ./mcp.nix
     ./claude-code.nix
     ./copilot.nix
+    ./mcp.nix
     ./obsidian.nix
     ./opencode.nix
+    ./pi.nix
   ];
 
   options.ai = {
