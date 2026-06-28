@@ -1,52 +1,29 @@
--- agate-wm configuration.
--- Loaded on startup from $WM_CONFIG, $XDG_CONFIG_HOME/agate/init.lua,
--- ~/.config/agate/init.lua, or ./init.lua (this file, for development).
+-- agate injects its API as the gloachl `agate`, invisible to the linters — quiet
+-- the "undefined variable" noise from lua_ls and luacheck for this file.
+-- luacheck: ignore 113
+---@diagnostic disable: undefined-global
 
 -- Gaps and hyper-key definition.
 agate.config({
-	gaps = 8, -- space between tiles
-	outer_gaps = 8, -- inset from the screen edge
+	gaps = 4, -- space between tiles
+	outer_gaps = 4, -- inset from the screen edge
 	accordion_padding = 20, -- stacked-window "peek": how far each window fans out
-	-- "hyper" expands to this modifier set in keyspecs below.
 	hyper_key = { enabled = true, keys = { "ctrl", "alt", "cmd" } },
-	-- Small Screen Mode: on the built-in display (or any display narrower than
-	-- max_width points, when set), workspaces still on the default split layout
-	-- become a horizontal accordion — splitting a tiny screen isn't useful.
-	-- layout = "tabs" stacks windows full-size with no peek instead.
-	-- Plugging in a big external display switches the workspaces back.
-	small_screen = {
-		enabled = true,
-		layout = "h_accordion", -- or "tabs", "v_accordion", ...
-		max_width = 0, -- 0 = built-in display detection only
-	},
-	-- UX.
-	drag_preview = true, -- highlight the slot a dragged window will land in
-	space_indicator = true, -- active space number in the menu bar
-	-- Animate tiling frame changes: the final size applies instantly, the
-	-- position glides over (60 Hz, ease-out). Off = exact snapping.
-	animations = true,
-	animation_duration = 150, -- milliseconds; lower = faster, 0 disables
-	space_animation = "instant",
+	smart_gaps = true, -- disable gaps when only one tile is visible
 })
 
--- Trackpad gestures (the smooth-trackpad half of Small Screen Mode): a
--- three-finger swipe steps through the accordion, wrapping at the ends. A long
--- swipe keeps stepping, Hyprland-style. Works in any layout, not just small
--- mode. (Three-finger swipes must be free: set the system Mission Control /
--- page gestures to four fingers, or off, in Trackpad settings.)
-agate.gesture("3:right", function()
-	agate.cycle("next")
-end)
+-- Gestures
 agate.gesture("3:left", function()
-	agate.cycle("prev")
+	agate.focus("right")
 end)
-
--- The same cycling from the keyboard.
-agate.bind("hyper+tab", function()
-	agate.cycle("next")
+agate.gesture("3:down", function()
+	agate.focus("down")
 end)
-agate.bind("hyper+shift+tab", function()
-	agate.cycle("prev")
+agate.gesture("3:up", function()
+	agate.focus("up")
+end)
+agate.gesture("3:right", function()
+	agate.focus("left")
 end)
 
 -- Focus movement (i3-style hjkl).
@@ -61,6 +38,44 @@ agate.bind("hyper+k", function()
 end)
 agate.bind("hyper+l", function()
 	agate.focus("right")
+end)
+
+agate.bind("hyper+comma", function()
+	agate.focus_monitor("left")
+end)
+agate.bind("hyper+period", function()
+	agate.focus_monitor("right")
+end)
+
+agate.bind("hyper+shift+comma", function()
+	agate.move_to_monitor("left")
+end)
+agate.bind("hyper+shift+period", function()
+	agate.move_to_monitor("right")
+end)
+
+agate.bind("hyper+f", function()
+	agate.zoom_fullscreen()
+end)
+
+agate.bind("hyper+shift+f", function()
+	agate.native_fullscreen()
+end)
+
+-- Cycle through spaces.
+agate.bind("hyper+n", function()
+	agate.space_next()
+end)
+agate.bind("hyper+p", function()
+	agate.space_prev()
+end)
+
+-- Cycle through windows (accordion step), wrapping at the ends.
+agate.bind("hyper+tab", function()
+	agate.cycle("next")
+end)
+agate.bind("hyper+shift+tab", function()
+	agate.cycle("prev")
 end)
 
 -- Move the focused window to an adjacent slot.
@@ -95,9 +110,10 @@ end) -- horizontal stack
 agate.bind("hyper+g", function()
 	agate.join("right")
 end) -- stack with right neighbour
-agate.bind("hyper+shift+g", function()
-	agate.join("right", "v_split")
-end) -- split with right neighbour
+-- ungroup? https://github.com/frostplexx/agate-wm/issues/17
+-- agate.bind("hyper+shift+g", function()
+-- 	agate.join("right", "v_tiles")
+-- end) -- split with right neighbour
 
 -- Resize the focused tile.
 agate.bind("hyper+minus", function()
@@ -107,112 +123,25 @@ agate.bind("hyper+plus", function()
 	agate.resize("smart", 50)
 end)
 
--- Instant space switching — uses SLSManagedDisplaySetCurrentSpace directly,
--- not gesture emulation (which fails on macOS 26+).
-agate.bind("hyper+1", function()
-	agate.space(1)
-end)
-agate.bind("hyper+2", function()
-	agate.space(2)
-end)
-agate.bind("hyper+3", function()
-	agate.space(3)
-end)
-agate.bind("hyper+4", function()
-	agate.space(4)
-end)
-agate.bind("hyper+5", function()
-	agate.space(5)
-end)
-agate.bind("hyper+6", function()
-	agate.space(6)
-end)
-agate.bind("hyper+7", function()
-	agate.space(7)
-end)
-agate.bind("hyper+8", function()
-	agate.space(8)
-end)
-agate.bind("hyper+9", function()
-	agate.space(9)
-end)
+-- Per-monitor space navigation: hyper+1..9 switches the focused monitor to its
+-- Nth space; hyper+shift+N sends the focused window there and follows. These are
+-- plain numbers (NOT the named spaces below) so the keys never jump you to
+-- another display — use hyper+comma/period to change monitors.
+for i = 1, 9 do
+	agate.bind("hyper+" .. i, function()
+		agate.space(i)
+	end)
+	agate.bind("hyper+shift+" .. i, function()
+		agate.move_to_space(i)
+		agate.space(i)
+	end)
+end
 
--- Send the focused window to space N (does not follow focus).
-agate.bind("hyper+shift+1", function()
-	agate.move_to_space(1)
-	agate.space(1)
-end)
-agate.bind("hyper+shift+2", function()
-	agate.move_to_space(2)
-	agate.space(2)
-end)
-agate.bind("hyper+shift+3", function()
-	agate.move_to_space(3)
-	agate.space(3)
-end)
-agate.bind("hyper+shift+4", function()
-	agate.move_to_space(4)
-	agate.space(4)
-end)
-agate.bind("hyper+shift+5", function()
-	agate.move_to_space(5)
-	agate.space(5)
-end)
-agate.bind("hyper+shift+6", function()
-	agate.move_to_space(6)
-	agate.space(6)
-end)
-agate.bind("hyper+shift+7", function()
-	agate.move_to_space(7)
-	agate.space(7)
-end)
-agate.bind("hyper+shift+8", function()
-	agate.move_to_space(8)
-	agate.space(8)
-end)
-agate.bind("hyper+shift+9", function()
-	agate.move_to_space(9)
-	agate.space(9)
-end)
-
--- Cycle through spaces.
-agate.bind("hyper+n", function()
-	agate.space_next()
-end)
-agate.bind("hyper+p", function()
-	agate.space_prev()
-end)
-
-agate.bind("hyper+f", function()
-	agate.zoom_fullscreen()
-end)
-
-agate.bind("hyper+shift+f", function()
-	agate.native_fullscreen()
-end)
-
--- Multi-monitor. Windows on every display are tiled within that display's own
--- frame. Focus another monitor (its most-recently-used window becomes key), and
--- move the focused window to an adjacent monitor where it gets tiled too.
--- Directions: "next"/"prev" (cycle) or "left"/"right"/"up"/"down" (spatial).
-agate.bind("hyper+comma", function()
-	agate.focus_monitor("prev")
-end)
-agate.bind("hyper+period", function()
-	agate.focus_monitor("next")
-end)
-agate.bind("hyper+shift+comma", function()
-	agate.move_to_monitor("prev")
-end)
-agate.bind("hyper+shift+period", function()
-	agate.move_to_monitor("next")
-end)
--- A window can also be assigned to a specific space on a specific monitor:
--- agate.move_to_space(2, 2) sends it to space 2 of the second display.
-
--- Resolve displays by NAME, not spatial number (which flips when rearranged).
--- MSI G27CQ4 = main/middle · PHL 277E6 = left · Color LCD = built-in/right.
--- Returns each screen's monitor `id`, or nil when it isn't attached.
+-- Identify displays by NAME rather than by number, because `agate.monitors()`
+-- numbers displays by spatial position (left→right), which flips when you
+-- rearrange screens. MSI G27CQ4 = main/middle · PHL 277E6 = left · built-in
+-- ("Built-in"/"Color LCD") = right. Returns each screen's monitor `id`, or nil
+-- when it isn't attached.
 local function survey_displays()
 	local msi, builtin, phl = nil, nil, nil
 	for _, m in ipairs(agate.monitors()) do
@@ -227,45 +156,61 @@ local function survey_displays()
 	return msi, builtin, phl
 end
 
--- (Re)build the window assignment rules for the current display layout. Rules
--- (yabai-style) send a matching window to a monitor/space when it appears;
--- `app`/`title` are POSIX extended regexes (at least one required), last match
--- wins, `follow = false` routes in the background. Cleared first so re-running
--- on a display change doesn't pile duplicates up. The `or` fallbacks collapse
--- everything onto whatever screen is still attached when undocked.
-local function apply_rules()
-	agate.clear_rules()
+-- Window assignment rules (yabai-style): a matching window is sent to a space
+-- when it appears; `app`/`title` are POSIX extended regexes (at least one
+-- required), last match wins. These are STATIC — they reference named spaces by
+-- name, and agate resolves the name (and its monitor) each time a window appears,
+-- so a rule automatically follows the dynamic music/comms remapping below without
+-- being re-registered.
+agate.rule({ app = "^Zen Browser (Beta)$", space = "web" })
+agate.rule({ app = "^Moonlight$", space = "web" })
+agate.rule({ app = "^kitty$", space = "term" })
+agate.rule({ app = "^Obsidian$", space = "notes" })
+agate.rule({ app = "^Things$", space = "notes" })
+agate.rule({ app = "^Linear$", space = "notes" })
+agate.rule({ app = "^Firefox$", space = "watch", follow = false })
+agate.rule({ app = "^Vesktop$", space = "comms", follow = false })
+agate.rule({ app = "^Microsoft Teams$", space = "comms", follow = false })
+agate.rule({ app = "^Spotify$", space = "music", follow = false })
 
+-- (Re)declare the named spaces for the current display layout. Named spaces
+-- (`agate.name_space`) give a (monitor, space) slot a name, so the binds and
+-- rules above can say "music" instead of a monitor+number; the same name works in
+-- `agate.space`, `agate.move_to_space`, and `agate.rule{space=...}`. This is the
+-- only dynamic part: re-run on every display change (a name overwrites its old
+-- slot), so the music/comms spaces follow docking. `monitor` is the 1-based
+-- arrangement number from `agate.monitors()`; omit it to mean "the focused
+-- display".
+local function name_spaces()
 	local msi, builtin, phl = survey_displays()
-	local main = msi or builtin or phl -- middle (MSI when docked)
+	local main = msi or builtin or phl -- middle (MSI when docked, else whatever's attached)
 	local left = phl or builtin or msi -- Philips
 	local right = builtin or msi or phl -- built-in laptop screen
 	local has_external = msi ~= nil or phl ~= nil
 
-	-- Main display (MSI, middle).
-	agate.rule({ app = "^Zen Browser (Beta)$", monitor = main, space = 1 })
-	agate.rule({ app = "^Moonlight$", monitor = main, space = 1 })
-	agate.rule({ app = "^kitty$", monitor = main, space = 2 })
-	agate.rule({ app = "^Obsidian$", monitor = main, space = 3 })
-	agate.rule({ app = "^Things$", monitor = main, space = 3 })
-
+	-- The three primary spaces always live on the main (middle) display.
+	agate.name_space("web", { monitor = main, space = 1 }) -- Zen / Moonlight
+	agate.name_space("term", { monitor = main, space = 2 }) -- kitty
+	agate.name_space("notes", { monitor = main, space = 3 }) -- Obsidian / Things
 	if has_external then
-		agate.rule({ app = "^Firefox$", monitor = left, follow = false })
-		agate.rule({ app = "^Vesktop$", monitor = right, follow = false })
-		agate.rule({ app = "^Spotify$", monitor = right, space = 2, follow = false })
+		-- Docked: side apps get their own monitors.
+		agate.name_space("watch", { monitor = left, space = 1 }) -- Philips, left
+		agate.name_space("comms", { monitor = right, space = 1 }) -- built-in, right
+		agate.name_space("music", { monitor = right, space = 2 }) -- built-in, right
 	else
-		agate.rule({ app = "^Vesktop$", space = 4, follow = false })
-		agate.rule({ app = "^Spotify$", space = 4, follow = false })
-		agate.rule({ app = "^Firefox$", space = 9, follow = false })
+		-- Laptop only: collapse onto the built-in panel (matches the old layout).
+		agate.name_space("comms", { monitor = right, space = 4 })
+		agate.name_space("music", { monitor = right, space = 4 })
+		agate.name_space("watch", { monitor = right, space = 9 })
 	end
 end
 
--- Apply now, and re-apply whenever a display is plugged in or unplugged so the
--- placement tracks docking/undocking instead of going stale.
-apply_rules()
+-- Name the spaces now, and re-name them whenever a display is plugged in or
+-- unplugged so music/comms track docking/undocking.
+name_spaces()
 agate.on("monitors_changed", function(e)
-	print(string.format("agate: monitors changed -> %d connected; reapplying rules", e.count))
-	apply_rules()
+	print(string.format("agate: monitors changed -> %d connected; renaming spaces", e.count))
+	name_spaces()
 end)
 
 print("agate: config loaded")
