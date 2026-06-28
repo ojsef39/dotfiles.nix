@@ -1,16 +1,10 @@
-{
-  pkgs,
-  lib,
-  vars,
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   imports = [
     inputs.agate.homeManagerModules.default
   ];
 
   services.agate = {
     enable = true;
-    config = builtins.readFile ./agate.lua;
+    config = builtins.readFile ./init.lua;
   };
 }
