@@ -81,9 +81,13 @@ jobs:
           - os: macos-latest
             nix_cmd: "darwin"
             nix_host: "mac-ci"
+            config_attr: "darwinConfigurations"
+            settings_path: "config.determinateNix.customSettings"
           - os: ubuntu-latest
             nix_cmd: "os"
             nix_host: "josef-nd1-gpu0"
+            config_attr: "nixosConfigurations"
+            settings_path: "config.nix.settings"
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
@@ -121,4 +125,12 @@ jobs:
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
         run: |
-          nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build --no-nom -H ${{ matrix.nix_host }} .
+          # Derive substituters/keys from the host config itself so this pipeline
+          # never drifts from the caches declared in the dotfiles
+          attr=".#${{ matrix.config_attr }}.${{ matrix.nix_host }}.${{ matrix.settings_path }}"
+          subs=$(nix eval --raw "$attr.extra-substituters" --apply 'builtins.concatStringsSep " "')
+          keys=$(nix eval --raw "$attr.extra-trusted-public-keys" --apply 'builtins.concatStringsSep " "')
+          export NIX_CONFIG="extra-substituters = $subs
+          extra-trusted-substituters = $subs
+          extra-trusted-public-keys = $keys"
+          nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build -L --no-nom -H ${{ matrix.nix_host }} .
