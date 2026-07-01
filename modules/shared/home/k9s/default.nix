@@ -28,6 +28,38 @@
       ro = "roles";
       sec = "secrets";
     };
+    hotKeys = {
+      shift-1 = {
+        command = "pods";
+        description = "View pods";
+        shortCut = "Shift-1";
+      };
+      shift-2 = {
+        command = "deployments";
+        description = "View deployments";
+        shortCut = "Shift-2";
+      };
+      shift-3 = {
+        command = "statefulsets";
+        description = "View statefulsets";
+        shortCut = "Shift-3";
+      };
+      shift-4 = {
+        command = "configmaps";
+        description = "View configmaps";
+        shortCut = "Shift-4";
+      };
+      shift-5 = {
+        command = "secrets";
+        description = "View secrets";
+        shortCut = "Shift-5";
+      };
+      shift-6 = {
+        command = "jobs";
+        description = "View jobs";
+        shortCut = "Shift-6";
+      };
+    };
   };
   home.file = {
     "Library/Application Support/k9s/skins/catppuccin-macchiato.yaml" = {
