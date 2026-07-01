@@ -168,10 +168,12 @@ agate.rule({ app = "^kitty$", space = "term" })
 agate.rule({ app = "^Obsidian$", space = "notes" })
 agate.rule({ app = "^Things$", space = "notes" })
 agate.rule({ app = "^Linear$", space = "notes" })
-agate.rule({ app = "^Firefox$", space = "watch", follow = false })
+agate.rule({ title = "^Calendar | Microsoft Teams$", space = "notes" }) -- Meeting
+
 agate.rule({ app = "^Vesktop$", space = "comms", follow = false })
-agate.rule({ app = "^Microsoft Teams$", space = "comms", follow = false })
+agate.rule({ title = "^Microsoft Teams$", space = "comms", follow = false }) -- Chat
 agate.rule({ app = "^Spotify$", space = "music", follow = false })
+agate.rule({ app = "^Firefox$", space = "watch", follow = false })
 
 -- (Re)declare the named spaces for the current display layout. Named spaces
 -- (`agate.name_space`) give a (monitor, space) slot a name, so the binds and
@@ -200,7 +202,7 @@ local function name_spaces()
 	else
 		-- Laptop only: collapse onto the built-in panel (matches the old layout).
 		agate.name_space("comms", { monitor = right, space = 4 })
-		agate.name_space("music", { monitor = right, space = 4 })
+		agate.name_space("music", { monitor = right, space = 5 })
 		agate.name_space("watch", { monitor = right, space = 9 })
 	end
 end
