@@ -18,7 +18,7 @@ in {
   options.ai = {
     model = lib.mkOption {
       type = lib.types.str;
-      default = "claude-sonnet-4.6";
+      default = "claude-sonnet-5";
     };
 
     effortLevel = lib.mkOption {
