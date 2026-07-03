@@ -624,22 +624,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-25": {
-      "locked": {
-        "lastModified": 1781957159,
-        "narHash": "sha256-pYnY5BAVwcl2hT36/Bg0aPlh7rWybcqGIFbDtBeDaSs=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "49f7c21efea5cdbf280a54ec83413e5620f85124",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "release-26.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-copilot-cli": {
       "locked": {
         "lastModified": 1777727970,
@@ -882,7 +866,6 @@
         "nixcord": "nixcord",
         "nixkit": "nixkit",
         "nixpkgs": "nixpkgs_6",
-        "nixpkgs-25": "nixpkgs-25",
         "nixpkgs-copilot-cli": "nixpkgs-copilot-cli",
         "nixpkgs_fork": "nixpkgs_fork",
         "nvf": "nvf",
