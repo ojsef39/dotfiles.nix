@@ -29,7 +29,6 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-25.url = "github:nixos/nixpkgs/release-26.05"; # specific 25.x release
     nixpkgs_fork = {
       url = "github:ojsef39/nixpkgs/feat/dadav-helm-schema";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -128,10 +127,6 @@
           nixkit.overlays.default
           (
             _final: prev: let
-              pkgs-25 = import inputs.nixpkgs-25 {
-                inherit (prev.stdenv.hostPlatform) system;
-                config.allowUnfree = true;
-              };
               pkgs-copilot-cli = import inputs.nixpkgs-copilot-cli {
                 inherit (prev.stdenv.hostPlatform) system;
                 config.allowUnfree = true;
@@ -142,7 +137,6 @@
               inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
               # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
               inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
-              inherit (pkgs-25) firefox firefox-unwrapped;
               # NOTE: MCP allowlist broken above 1.0.40
               inherit (pkgs-copilot-cli) github-copilot-cli;
               # Override sops with fix for INI store backwards compatibility regression in 3.13.x
