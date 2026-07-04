@@ -818,11 +818,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1782841360,
-        "narHash": "sha256-S1f/S5Vv7wURVUtzPkmAFlKPVciaPLXxoeg7/GCnl28=",
+        "lastModified": 1783164413,
+        "narHash": "sha256-7DMamcvS35/tI+KZKXt45bHAq2Vnucl74Xetvp7DR3I=",
         "owner": "notashelf",
         "repo": "nvf",
-        "rev": "6fad9e9a998dd3a7783c839ce2928877d3e5a883",
+        "rev": "c8386ccfbc7053d454fa2d12d716c6ebb4167d51",
         "type": "github"
       },
       "original": {
