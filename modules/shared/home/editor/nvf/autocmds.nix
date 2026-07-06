@@ -42,6 +42,23 @@ in {
         end
       '';
     }
+    # Force '#' comments for helm. helm-ls.nvim's ftplugin/helm.lua sets
+    # commentstring to "{{/* %s */}}", and because it's lazy-loaded on the
+    # FileType event its ftplugin can run after this autocmd. Defer with
+    # vim.schedule so our value is applied last and wins deterministically.
+    {
+      event = ["FileType"];
+      pattern = ["helm"];
+      callback = lib.generators.mkLuaInline ''
+        function(args)
+          vim.schedule(function()
+            if vim.api.nvim_buf_is_valid(args.buf) then
+              vim.api.nvim_set_option_value("commentstring", "# %s", { buf = args.buf })
+            end
+          end)
+        end
+      '';
+    }
     # Highlight on yank
     {
       event = ["TextYankPost"];
