@@ -21,8 +21,6 @@ in {
     # packages from pkgs folder
     kubectl-debug
 
-    # Nix tools #
-    ##
     _1password-cli
     _1password-gui
     act
@@ -53,6 +51,7 @@ in {
     nix-update # https://github.com/Mic92/nix-update
     nixpkgs-review
     nmap
+    nurl
     progress
     python3
     retry
