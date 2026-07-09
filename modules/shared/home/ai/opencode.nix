@@ -52,7 +52,7 @@ in {
     # build does NOT reproduce a working `run`/TUI — the official CI build differs
     # in ways not worth chasing/maintaining for personal dotfiles (it would also
     # mean re-hashing a 12-min node_modules FOD on every bump). The official beta
-    # binary works as-is; we just re-sign and wrap it.
+    # binary works as-is; we just wrap it.
     #
     # Do NOT re-sign this binary. It's a Bun single-file executable: the JS/asset
     # payload is appended after the Mach-O. `codesign --force --sign -` doesn't
