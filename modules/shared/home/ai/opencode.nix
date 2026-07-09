@@ -8,10 +8,11 @@
   # opencode uses dashes and a provider prefix: "github/claude-sonnet-4-6"
   opencodeModel = "github/${builtins.replaceStrings ["."] ["-"] cfg.model}";
   modelOptions = {
-    reasoningEffort = cfg.effortLevel;
     textVerbosity = "low";
+    effort = cfg.effortLevel;
     thinking = {
-      type = "enabled";
+      type = "adaptive";
+      display = "summarized";
     };
   };
 
@@ -42,6 +43,58 @@ in {
 
   programs.opencode = {
     enable = true;
+
+    # opencode v2 via the official npm prebuilt (darwin-arm64, `beta` channel).
+    # Darwin-only: our macs get v2; other platforms keep stable nixpkgs opencode.
+    #
+    # Why prebuilt rather than a source override: v2's real interactive CLI
+    # diverges from what nixpkgs packages (packages/opencode), and a from-source
+    # build does NOT reproduce a working `run`/TUI — the official CI build differs
+    # in ways not worth chasing/maintaining for personal dotfiles (it would also
+    # mean re-hashing a 12-min node_modules FOD on every bump). The official beta
+    # binary works as-is; we just wrap it.
+    #
+    # Do NOT re-sign this binary. It's a Bun single-file executable: the JS/asset
+    # payload is appended after the Mach-O. `codesign --force --sign -` doesn't
+    # understand that trailer and truncates it (~900 KB), which drops the embedded
+    # opentui/TUI resources — `run` still works but the TUI renders blank. The
+    # binary's own Bun ad-hoc signature is accepted by Tahoe's kernel as-is (it
+    # runs fine) even though `codesign --verify` reports the appended data as
+    # "modified"; that verify complaint is harmless. Just wrap it (as nixpkgs
+    # does) to put ripgrep on PATH and disable the self-updater.
+    #
+    # Bump: pick a version from `npm view opencode-ai dist-tags` (beta/dev), set
+    # `version`, then update `hash` — `nix store prefetch-file <url>` prints it.
+    package = lib.mkIf pkgs.stdenv.isDarwin (
+      pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+        pname = "opencode-v2-prebuilt";
+        version = "0.0.0-beta-202607090949";
+
+        src = pkgs.fetchurl {
+          url = "https://registry.npmjs.org/opencode-darwin-arm64/-/opencode-darwin-arm64-${finalAttrs.version}.tgz";
+          hash = "sha256-iKBueWPMNfgPSZsrXA3U+mQ+0+7jRWwKdrLln8tMg+U=";
+        };
+        sourceRoot = "package";
+
+        nativeBuildInputs = [pkgs.makeBinaryWrapper];
+        dontConfigure = true;
+        dontBuild = true;
+        dontFixup = true; # keep the Bun binary byte-for-byte (no strip/re-sign)
+
+        installPhase = ''
+          runHook preInstall
+
+          install -Dm755 bin/opencode $out/bin/.opencode-wrapped
+          makeBinaryWrapper $out/bin/.opencode-wrapped $out/bin/opencode \
+            --prefix PATH : ${lib.makeBinPath [pkgs.ripgrep pkgs.sysctl]} \
+            --set OPENCODE_DISABLE_AUTOUPDATE true
+
+          runHook postInstall
+        '';
+
+        meta = pkgs.opencode.meta // {mainProgram = "opencode";};
+      })
+    );
     enableMcpIntegration = true;
     tui = {
       theme = "catppuccin";

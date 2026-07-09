@@ -71,6 +71,7 @@
         set -gx GCL_MAX_JOB_NAME_PADDING 30
         set -gx GCL_TIMESTAMPS true
         set -gx NIX_GIT_PATH "${baseLib.mkDotPath vars pkgs}"
+        set -gx NH_SHOW_ACTIVATION_LOGS 1
       ''
       + lib.optionalString pkgs.stdenv.isDarwin ''
         # macOS: nix config name is always "mac" regardless of hostname
