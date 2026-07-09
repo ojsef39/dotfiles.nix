@@ -10,7 +10,7 @@
   "packageRules": [
     {
       "matchManagers": ["nix"],
-      "matchDepNames": ["nixpkgs-copilot-cli"],
+      "matchDepNames": ["nixpkgs-copilot-cli", "nixpkgs_e0fb27b"],
       "enabled": false
     }
   ]
