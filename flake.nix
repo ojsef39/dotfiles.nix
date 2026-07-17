@@ -145,19 +145,6 @@
               # NOTE: MCP allowlist broken above 1.0.40
               inherit (pkgs-copilot-cli) github-copilot-cli;
               electron_40 = prev.electron_42;
-              # Override sops with fix for INI store backwards compatibility regression in 3.13.x
-              # Remove once https://github.com/getsops/sops/pull/2189 is merged and released
-              sops = prev.sops.overrideAttrs (old: {
-                patches =
-                  (old.patches or [])
-                  ++ [
-                    (prev.fetchpatch {
-                      name = "sops-ini-backwards-compat.patch";
-                      url = "https://github.com/getsops/sops/commit/669029ed035a8ab67c8bd602999ce373eb24c0dd.patch";
-                      hash = "sha256-pi+ORINKrdoUqTHgQ7fIW8An6bTaE1rDcHKfmHiI7dQ=";
-                    })
-                  ];
-              });
             }
           )
         ];
