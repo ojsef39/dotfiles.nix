@@ -318,7 +318,8 @@ in {
           ];
           extensions = [".fish"];
         };
-
+      }
+      // lib.optionalAttrs pkgs.stdenv.isDarwin {
         # Swift
         swift-format = {
           command = [

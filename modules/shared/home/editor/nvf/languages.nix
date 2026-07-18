@@ -87,7 +87,7 @@
             end,
           })
         '';
-        sourcekit = ''
+        sourcekit = lib.optionalString pkgs.stdenv.isDarwin ''
           vim.lsp.config.sourcekit = {
             cmd = { '${pkgs.sourcekit-lsp}/bin/sourcekit-lsp' },
             filetypes = { 'swift', 'objective-c', 'objective-cpp' },
