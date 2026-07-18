@@ -150,6 +150,10 @@
                   chmod -R u+w electron-dist
                 '';
               });
+              moonlight-qt = prev.moonlight-qt.overrideAttrs (old: {
+                qmakeFlags = (old.qmakeFlags or []) ++ ["QMAKE_LFLAGS+=-fuse-ld=lld"];
+                nativeBuildInputs = (old.nativeBuildInputs or []) ++ [prev.lld];
+              });
             }
           )
         ];
