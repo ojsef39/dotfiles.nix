@@ -865,6 +865,7 @@
         "nvf": "nvf",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "spicetify-nix": "spicetify-nix",
+        "virtualhere": "virtualhere",
         "zen-browser": "zen-browser"
       }
     },
@@ -986,6 +987,26 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "virtualhere": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777077535,
+        "narHash": "sha256-s4zNLr/yrIFSddwDaySbSmSu1J3j46ErtRVqnOhnkD0=",
+        "owner": "BatteredBunny",
+        "repo": "virtualhere-nixos",
+        "rev": "2c8e5a0e3816558d805c13f083af03a2ae381434",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BatteredBunny",
+        "repo": "virtualhere-nixos",
         "type": "github"
       }
     },
