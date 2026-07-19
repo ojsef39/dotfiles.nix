@@ -11,5 +11,6 @@
     obsidian # Note-taking
     stats
     utm # Virtualization
+    whatcable
   ];
 }

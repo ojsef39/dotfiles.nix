@@ -382,7 +382,7 @@ in {
             "markdownlint-cli2"
           ]; # nvf has deno_fmt, we want prettier + markdownlint
           scss = ["prettier"];
-          swift = ["swift-format"];
+          swift = lib.optionals pkgs.stdenv.isDarwin ["swift-format"];
           vue = ["prettier"];
           yaml = ["prettier"];
           # Note: python, nix, lua, sh, typescript, javascript, rust, css are handled in languages.nix
@@ -431,7 +431,7 @@ in {
             "inherit" = true;
           };
           "swift-format" = {
-            command = "${pkgs.swift-format}/bin/swift-format";
+            command = "${lib.optionalString pkgs.stdenv.isDarwin "${pkgs.swift-format}/bin/"}swift-format";
             stdin = true;
             args = [
               "format"
@@ -495,7 +495,7 @@ in {
         rust = ["clippy"];
         scss = ["stylelint"];
         sh = ["shellcheck"];
-        swift = ["swift-format"];
+        swift = lib.optionals pkgs.stdenv.isDarwin ["swift-format"];
         terraform = ["tflint"];
         typescript = ["eslint"];
         typescriptreact = ["eslint"];
@@ -561,7 +561,7 @@ in {
         };
 
         "swift-format" = {
-          cmd = "${pkgs.swift-format}/bin/swift-format";
+          cmd = "${lib.optionalString pkgs.stdenv.isDarwin "${pkgs.swift-format}/bin/"}swift-format";
           args = [
             "lint"
             "--strict"

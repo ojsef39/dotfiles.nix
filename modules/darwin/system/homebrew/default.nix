@@ -36,7 +36,6 @@
 
     # macOS-specific apps and those not available/stable in nixpkgs
     casks = [
-      "arc"
       "caffeine"
       "dockdoor"
       "dorso"

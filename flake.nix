@@ -144,18 +144,15 @@
               inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
               # NOTE: MCP allowlist broken above 1.0.40
               inherit (pkgs-copilot-cli) github-copilot-cli;
-              # Override sops with fix for INI store backwards compatibility regression in 3.13.x
-              # Remove once https://github.com/getsops/sops/pull/2189 is merged and released
-              sops = prev.sops.overrideAttrs (old: {
-                patches =
-                  (old.patches or [])
-                  ++ [
-                    (prev.fetchpatch {
-                      name = "sops-ini-backwards-compat.patch";
-                      url = "https://github.com/getsops/sops/commit/669029ed035a8ab67c8bd602999ce373eb24c0dd.patch";
-                      hash = "sha256-pi+ORINKrdoUqTHgQ7fIW8An6bTaE1rDcHKfmHiI7dQ=";
-                    })
-                  ];
+              vesktop = (prev.vesktop.override {electron_40 = prev.electron_42;}).overrideAttrs (_: {
+                preBuild = ''
+                  cp -r ${prev.electron_42.dist} electron-dist
+                  chmod -R u+w electron-dist
+                '';
+              });
+              moonlight-qt = prev.moonlight-qt.overrideAttrs (old: {
+                qmakeFlags = (old.qmakeFlags or []) ++ ["QMAKE_LFLAGS+=-fuse-ld=lld"];
+                nativeBuildInputs = (old.nativeBuildInputs or []) ++ [prev.lld];
               });
             }
           )
