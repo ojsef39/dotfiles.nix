@@ -41,6 +41,7 @@ in {
           "/System//Applications/System Settings.app"
           "/Applications/Yubico Authenticator.app"
           "/Applications/Claude.app"
+          "/System/Applications/iPhone Mirroring.app"
         ];
       };
     };
