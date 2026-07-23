@@ -148,12 +148,6 @@
               inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
               # NOTE: MCP allowlist broken above 1.0.40
               inherit (pkgs-copilot-cli) github-copilot-cli;
-              vesktop = (prev.vesktop.override {electron_40 = prev.electron_42;}).overrideAttrs (_: {
-                preBuild = ''
-                  cp -r ${prev.electron_42.dist} electron-dist
-                  chmod -R u+w electron-dist
-                '';
-              });
               moonlight-qt = prev.moonlight-qt.overrideAttrs (old: {
                 qmakeFlags = (old.qmakeFlags or []) ++ ["QMAKE_LFLAGS+=-fuse-ld=lld"];
                 nativeBuildInputs = (old.nativeBuildInputs or []) ++ [prev.lld];
