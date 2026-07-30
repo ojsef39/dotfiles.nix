@@ -166,7 +166,7 @@
       treesitter.enable = true;
       dap = {
         enable = true;
-        debugger = "debugpy";
+        debugger = ["debugpy"];
       };
       format = {
         enable = true;
