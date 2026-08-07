@@ -20,14 +20,6 @@
           };
         };
       };
-      nixd = {
-        settings = {
-          nixd = {
-            nixpkgs.expr = "import <nixpkgs> {}";
-            formatting.command = ["${pkgs.alejandra}/bin/alejandra"];
-          };
-        };
-      };
     };
 
     mappings = {
@@ -122,9 +114,9 @@
     # Nix - with nixd and alejandra
     nix = {
       enable = true;
+      extraDiagnostics.enable = true;
       lsp = {
         enable = true;
-        servers = ["nixd"];
       };
       treesitter.enable = true;
       format = {

@@ -183,152 +183,153 @@ in {
         cfg.lspServers);
 
       # Formatter Configuration
-      formatter = {
-        # JavaScript/TypeScript/JSON/YAML/CSS/HTML/Markdown
-        prettier = {
-          command = [
-            "${pkgs.prettier}/bin/prettier"
-            "--write"
-            "$FILE"
-          ];
-          extensions = [
-            ".js"
-            ".ts"
-            ".jsx"
-            ".tsx"
-            ".json"
-            ".json5"
-            ".jsonc"
-            ".yaml"
-            ".yml"
-            ".css"
-            ".scss"
-            ".less"
-            ".html"
-            ".md"
-            ".mdx"
-            ".graphql"
-            ".vue"
-          ];
-        };
-        "markdownlint-cli2" = {
-          command = [
-            "${pkgs.markdownlint-cli2}/bin/markdownlint-cli2"
-            "$FILE"
-          ];
-          extensions = [
-            ".md"
-            ".mdx"
-          ];
-        };
+      formatter =
+        {
+          # JavaScript/TypeScript/JSON/YAML/CSS/HTML/Markdown
+          prettier = {
+            command = [
+              "${pkgs.prettier}/bin/prettier"
+              "--write"
+              "$FILE"
+            ];
+            extensions = [
+              ".js"
+              ".ts"
+              ".jsx"
+              ".tsx"
+              ".json"
+              ".json5"
+              ".jsonc"
+              ".yaml"
+              ".yml"
+              ".css"
+              ".scss"
+              ".less"
+              ".html"
+              ".md"
+              ".mdx"
+              ".graphql"
+              ".vue"
+            ];
+          };
+          "markdownlint-cli2" = {
+            command = [
+              "${pkgs.markdownlint-cli2}/bin/markdownlint-cli2"
+              "$FILE"
+            ];
+            extensions = [
+              ".md"
+              ".mdx"
+            ];
+          };
 
-        # Nix
-        nixfmt.disabled = true;
-        alejandra = {
-          command = [
-            "${pkgs.alejandra}/bin/alejandra"
-            "$FILE"
-          ];
-          extensions = [".nix"];
-        };
+          # Nix
+          nixfmt.disabled = true;
+          alejandra = {
+            command = [
+              "${pkgs.alejandra}/bin/alejandra"
+              "$FILE"
+            ];
+            extensions = [".nix"];
+          };
 
-        # Lua
-        stylua = {
-          command = [
-            "${pkgs.stylua}/bin/stylua"
-            "-"
-            "$FILE"
-          ];
-          extensions = [".lua"];
-        };
+          # Lua
+          stylua = {
+            command = [
+              "${pkgs.stylua}/bin/stylua"
+              "-"
+              "$FILE"
+            ];
+            extensions = [".lua"];
+          };
 
-        # Go
-        gofmt = {
-          disabled = true;
-        };
-        gofumpt = {
-          command = [
-            "${pkgs.gofumpt}/bin/gofumpt"
-            "-w"
-            "$FILE"
-          ];
-          extensions = [".go"];
-        };
-        "goimports-reviser" = {
-          command = [
-            "${pkgs.goimports-reviser}/bin/goimports-reviser"
-            "$FILE"
-          ];
-          extensions = [".go"];
-        };
+          # Go
+          gofmt = {
+            disabled = true;
+          };
+          gofumpt = {
+            command = [
+              "${pkgs.gofumpt}/bin/gofumpt"
+              "-w"
+              "$FILE"
+            ];
+            extensions = [".go"];
+          };
+          "goimports-reviser" = {
+            command = [
+              "${pkgs.goimports-reviser}/bin/goimports-reviser"
+              "$FILE"
+            ];
+            extensions = [".go"];
+          };
 
-        # Python
-        ruff = {
-          command = [
-            "${pkgs.ruff}/bin/ruff"
-            "format"
-            "$FILE"
-          ];
-          extensions = [".py"];
-        };
+          # Python
+          ruff = {
+            command = [
+              "${pkgs.ruff}/bin/ruff"
+              "format"
+              "$FILE"
+            ];
+            extensions = [".py"];
+          };
 
-        # Rust
-        rustfmt = {
-          command = [
-            "${pkgs.rustfmt}/bin/rustfmt"
-            "$FILE"
-          ];
-          extensions = [".rs"];
-        };
+          # Rust
+          rustfmt = {
+            command = [
+              "${pkgs.rustfmt}/bin/rustfmt"
+              "$FILE"
+            ];
+            extensions = [".rs"];
+          };
 
-        # Shell
-        shfmt = {
-          command = [
-            "${pkgs.shfmt}/bin/shfmt"
-            "-i"
-            "2"
-            "-w"
-            "$FILE"
-          ];
-          extensions = [
-            ".sh"
-            ".bash"
-          ];
-        };
+          # Shell
+          shfmt = {
+            command = [
+              "${pkgs.shfmt}/bin/shfmt"
+              "-i"
+              "2"
+              "-w"
+              "$FILE"
+            ];
+            extensions = [
+              ".sh"
+              ".bash"
+            ];
+          };
 
-        # Terraform
-        terraform = {
-          command = [
-            "${pkgs.opentofu}/bin/tofu"
-            "fmt"
-            "$FILE"
-          ];
-          extensions = [
-            ".tf"
-            ".tfvars"
-          ];
-        };
+          # Terraform
+          terraform = {
+            command = [
+              "${pkgs.opentofu}/bin/tofu"
+              "fmt"
+              "$FILE"
+            ];
+            extensions = [
+              ".tf"
+              ".tfvars"
+            ];
+          };
 
-        # Fish
-        fish_indent = {
-          command = [
-            "${pkgs.fish}/bin/fish_indent"
-            "--write"
-            "$FILE"
-          ];
-          extensions = [".fish"];
+          # Fish
+          fish_indent = {
+            command = [
+              "${pkgs.fish}/bin/fish_indent"
+              "--write"
+              "$FILE"
+            ];
+            extensions = [".fish"];
+          };
+        }
+        // lib.optionalAttrs pkgs.stdenv.isDarwin {
+          # Swift
+          swift-format = {
+            command = [
+              "${pkgs.swift-format}/bin/swift-format"
+              "$FILE"
+            ];
+            extensions = [".swift"];
+          };
         };
-      }
-      // lib.optionalAttrs pkgs.stdenv.isDarwin {
-        # Swift
-        swift-format = {
-          command = [
-            "${pkgs.swift-format}/bin/swift-format"
-            "$FILE"
-          ];
-          extensions = [".swift"];
-        };
-      };
     };
   };
 }
