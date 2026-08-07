@@ -113,8 +113,8 @@
 
     # Nix - with nixd and alejandra
     nix = {
-      enableExtraDiagnostics = true;
       enable = true;
+      extraDiagnostics.enable = true;
       lsp = {
         enable = true;
       };
