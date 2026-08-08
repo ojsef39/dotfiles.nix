@@ -90,7 +90,6 @@ in {
         };
         fakeProfileThemes.enable = true;
         favoriteEmojiFirst.enable = true;
-        favoriteGifSearch.enable = true;
         fixImagesQuality.enable = true;
         fullSearchContext.enable = true;
         gameActivityToggle.enable = true;
