@@ -172,6 +172,8 @@ agate.rule({ title = "^Calendar | Microsoft Teams$", space = "notes" }) -- Meeti
 
 agate.rule({ app = "^Vesktop$", space = "comms", follow = false })
 agate.rule({ title = "^Microsoft Teams$", space = "comms", follow = false }) -- Chat
+agate.rule({ app = "^Signal$", space = "comms", follow = false })
+agate.rule({ app = "^WhatsApp$", space = "comms", follow = false })
 agate.rule({ app = "^Spotify$", space = "music", follow = false })
 agate.rule({ app = "^Firefox$", space = "watch", follow = false })
 
