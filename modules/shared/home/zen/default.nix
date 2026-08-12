@@ -277,6 +277,13 @@
           workspace = spaces."JHC".id;
           position = 206;
         };
+        "Renovate" = {
+          id = "165ff60e-6815-4c80-8c6b-26aa35174b33";
+          url = "https://renovate.jhofer.org/";
+          container = containers.Personal.id;
+          workspace = spaces."JHC".id;
+          position = 207;
+        };
         # HLA1 folder
         "HLA1" = {
           id = "9baf02c7-f996-4186-91a3-a93a23acdaa9";
@@ -284,7 +291,7 @@
           workspace = spaces."JHC".id;
           isGroup = true;
           isFolderCollapsed = true;
-          position = 207;
+          position = 208;
         };
         "deskvms" = {
           id = "e59e2f2b-6478-42c7-8bb0-1b932d0a43c0";
@@ -292,7 +299,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "9baf02c7-f996-4186-91a3-a93a23acdaa9";
-          position = 208;
+          position = 209;
         };
         "ups-a" = {
           id = "298b2ac7-dd3d-48fd-b571-f9bb91dc86db";
@@ -300,7 +307,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "9baf02c7-f996-4186-91a3-a93a23acdaa9";
-          position = 209;
+          position = 210;
         };
         "pve" = {
           id = "5b1cbe14-77a8-4a3c-af51-2b7da420b111";
@@ -308,7 +315,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "9baf02c7-f996-4186-91a3-a93a23acdaa9";
-          position = 210;
+          position = 211;
         };
         "pve-1-kvm" = {
           id = "ac1a9ea1-0135-496c-a7c9-5c2982e3be58";
@@ -316,7 +323,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "9baf02c7-f996-4186-91a3-a93a23acdaa9";
-          position = 211;
+          position = 212;
         };
         "bc1-cmc" = {
           id = "2cf2c1f8-889d-4db1-8828-e86e3e8202cb";
@@ -324,7 +331,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "9baf02c7-f996-4186-91a3-a93a23acdaa9";
-          position = 212;
+          position = 213;
         };
         "bc1-b1-p2-idrac" = {
           id = "690393bf-d699-4d06-be69-8426fde6f373";
@@ -332,7 +339,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "9baf02c7-f996-4186-91a3-a93a23acdaa9";
-          position = 213;
+          position = 214;
         };
         "bc1-b2-p3-idrac" = {
           id = "f344e89a-140c-472d-9ed7-5862c67b35cc";
@@ -340,7 +347,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "9baf02c7-f996-4186-91a3-a93a23acdaa9";
-          position = 214;
+          position = 215;
         };
 
         "Energy Watchdog" = {
@@ -348,21 +355,21 @@
           url = "https://grafana.hla1.jhofer.lan/d/energy-watchdog/energy-watchdog?from=now-12h&to=now&refresh=1m";
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
-          position = 215;
+          position = 216;
         };
         "Rack Temps" = {
           id = "10bdc242-5fb3-459f-ae32-aa711c297a86";
           url = "https://grafana.hla1.jhofer.lan/d/rack_temps/rack-temps?orgId=1&from=now-6h&to=now&timezone=browser&var-ds_prometheus=aef9f9k9lvwn4b&var-job=node-exporter-proxmox&var-nodename=pve-1&var-node=pve-1.hla1.jhofer.lan&var-temp_sensors=$__all&refresh=5m";
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
-          position = 216;
+          position = 217;
         };
         "Misc Overview" = {
           id = "950825df-59e8-4d51-a491-bb4226aecda2";
           url = "https://grafana.hla1.jhofer.lan/d/dcf5mhzhh7gyyoc/misc-overview?orgId=1&from=now-6h&to=now&timezone=browser&var-ds=aef9f9k9lvwn4b&refresh=30s";
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
-          position = 217;
+          position = 218;
         };
 
         # Satisfactory folder
@@ -372,7 +379,7 @@
           workspace = spaces."JHC".id;
           isGroup = true;
           isFolderCollapsed = true;
-          position = 218;
+          position = 219;
         };
         "satisfaction01-p1" = {
           id = "7b85e9fd-4b33-4321-bb5b-f747945cb0a7";
@@ -380,7 +387,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
-          position = 219;
+          position = 220;
         };
         "Satisfactory (Grafana)" = {
           id = "dbddfbf3-fe78-4122-a64a-bfbf87a7ddec";
@@ -388,7 +395,7 @@
           container = containers.Personal.id;
           workspace = spaces."JHC".id;
           folderParentId = "6a6d21ee-9ef3-456f-a4f2-78a82814ac75";
-          position = 220;
+          position = 221;
         };
       };
     in {
