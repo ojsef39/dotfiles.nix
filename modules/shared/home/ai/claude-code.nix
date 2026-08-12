@@ -9,9 +9,9 @@
 
   # Expand { "server-name" = [ "tool" ]; } into Claude Code permission strings.
   # Three naming conventions for server keys:
-  #   "some-server"        → mcp__plugin_claude-code-home-manager_some-server  (home-manager MCP)
-  #   "claude.ai/Server"   → mcp__claude_ai_Server                             (claude.ai remote MCP)
-  #   "@server"            → mcp__server                                       (direct via --mcp-config)
+  #   "some-server"        → mcp__plugin_hm_some-server  (home-manager MCP)
+  #   "claude.ai/Server"   → mcp__claude_ai_Server       (claude.ai remote MCP)
+  #   "@server"            → mcp__server                 (direct via --mcp-config)
   expandMcpCalls = calls:
     lib.flatten (lib.mapAttrsToList (server: tools: let
       id =
@@ -19,7 +19,7 @@
         then "mcp__claude_ai_${lib.removePrefix "claude.ai/" server}"
         else if lib.hasPrefix "@" server
         then "mcp__${lib.removePrefix "@" server}"
-        else "mcp__plugin_claude-code-home-manager_${builtins.replaceStrings ["/" "."] ["_" "_"] server}";
+        else "mcp__plugin_hm_${builtins.replaceStrings ["/" "."] ["_" "_"] server}";
     in
       map (tool: "${id}__${tool}") tools)
     calls);
