@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>JHOFER-Cloud/renovate-presets//default"],
   "nix": {
     "enabled": true
   },
@@ -10,7 +11,7 @@
   "packageRules": [
     {
       "matchManagers": ["nix"],
-      "matchDepNames": ["nixpkgs-copilot-cli", "nixpkgs_e0fb27b"],
+      "matchDepNames": ["nixpkgs-copilot-cli"],
       "enabled": false
     }
   ]

@@ -3,4 +3,5 @@
 result
 .direnv/bin
 .direnv
-/claude-vm.qcow2
+claude-vm.qcow2
+result-bin
