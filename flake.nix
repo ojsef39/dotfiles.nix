@@ -35,10 +35,6 @@
       # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
       # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
     };
-    nixpkgs_e0fb27b = {
-      url = "github:nixos/nixpkgs/e0fb27b";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz"; # latest master
       # url = "/Users/josefhofer/CodeProjects/github.com/nix-community/home-manager";
@@ -143,8 +139,7 @@
               # ⬇️ Leave here as example for building from source instead of nixpkg repo:
               # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
               inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
-              inherit (inputs.nixpkgs_e0fb27b.legacyPackages.${prev.stdenv.hostPlatform.system}) cachix;
-              # renovate = inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.renovate;
+              renovate = prev.renovate-jhc; # nixkit package built from github:JHOFER-Cloud/renovate
               inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
               # NOTE: MCP allowlist broken above 1.0.40
               inherit (pkgs-copilot-cli) github-copilot-cli;

@@ -5,7 +5,7 @@ applyTo: "**"
 
 ## GitHub
 
-Prefer the GitHub MCP server (`mcp__plugin_claude-code-home-manager_github-mcp-server__*`) over `gh` CLI calls for GitHub operations.
+Prefer the GitHub MCP server (`mcp__plugin_hm_github-mcp-server__*`) over `gh` CLI calls for GitHub operations.
 Only fall back to `gh` if the required operation has no MCP equivalent.
 
 ## Nix environment

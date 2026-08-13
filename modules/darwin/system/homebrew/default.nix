@@ -30,7 +30,6 @@
       "keyring"
       "mas"
       "ncdu"
-      "renovate"
       "yazi"
     ];
 

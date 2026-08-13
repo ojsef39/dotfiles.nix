@@ -36,7 +36,7 @@
             -v $PWD:/usr/src/app \
             -e LOG_LEVEL=debug \
             -e GITHUB_COM_TOKEN=$token \
-            renovate/renovate \
+            ghcr.io/jhofer-cloud/renovate \
             --platform=local
       '';
     };
