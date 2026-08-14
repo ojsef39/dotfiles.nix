@@ -28,6 +28,40 @@
       ro = "roles";
       sec = "secrets";
     };
+    views = {
+      # Re-check against internal/render/pod.go on k9s upgrades.
+      "v1/pods" = {
+        columns = [
+          "NAMESPACE"
+          "NAME"
+          "VS"
+          "PF"
+          "READY"
+          "STATUS"
+          "REASON:.status.reason"
+          "RESTARTS"
+          "LAST RESTART"
+          "CPU"
+          "CPU/RL"
+          "%CPU/R"
+          "%CPU/L"
+          "MEM"
+          "MEM/RL"
+          "%MEM/R"
+          "%MEM/L"
+          "GPU/RL"
+          "IP"
+          "NODE"
+          "SERVICE-ACCOUNT"
+          "NOMINATED NODE"
+          "READINESS GATES"
+          "QOS"
+          "LABELS"
+          "VALID"
+          "AGE"
+        ];
+      };
+    };
     hotKeys = {
       shift-1 = {
         command = "pods";
