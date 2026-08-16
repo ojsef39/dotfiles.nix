@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  customServices = vars.git.customServices or [];
+  customServices = vars.git.customServices;
   domainToLuaPattern = domain: "^" + builtins.replaceStrings ["." "-"] ["%." "%-"] domain;
   gitlinkerHosts = builtins.listToAttrs (
     map (s: {

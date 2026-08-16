@@ -5,7 +5,7 @@
   ...
 }: let
   # Convert Nix ignoreList to Lua table for cord
-  userIgnoreList = vars.nvim.cord.ignoreList or [];
+  userIgnoreList = vars.nvim.cord.ignoreList;
   cordIgnoreList = userIgnoreList ++ [vars.user.name];
   ignoreListToLua = ignoreList: let
     quotedItems = map (item: "'${item}'") ignoreList;

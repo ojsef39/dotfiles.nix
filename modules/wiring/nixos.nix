@@ -2,9 +2,12 @@
   config,
   inputs,
   ...
-}: {
+}: let
+  m = config.flake.modules;
+in {
   # NixOS counterpart of ./darwin.nix.
   flake.modules.nixos.base.imports = [
+    m.generic.base
     inputs.determinate.nixosModules.default
     inputs.nix-flatpak.nixosModules.nix-flatpak
     {nixpkgs.overlays = [inputs.virtualhere.overlays.default];}
@@ -29,8 +32,8 @@
             inputs.caelestia-shell.homeManagerModules.default
           ];
           users.${vars.user.name}.imports = [
-            config.flake.modules.homeManager.base
-            config.flake.modules.homeManager.nixos
+            m.homeManager.base
+            m.homeManager.nixos
           ];
         };
       }

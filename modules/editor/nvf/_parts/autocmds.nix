@@ -131,7 +131,7 @@ in {
     vim.opt.shadafile = shadafile
 
     -- Global variables from your config
-    vim.g.projects_dir = vim.env.HOME .. "/${vars.git.ghq or "CodeProjects"}"
+    vim.g.projects_dir = vim.env.HOME .. "/${vars.git.ghq}"
     vim.g.nix_dir = vim.env.HOME .. "/${vars.git.ghq}/github.com/ojsef39/dotfiles.nix"
 
     -- Toggle boolean function

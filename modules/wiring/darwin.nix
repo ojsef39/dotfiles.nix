@@ -2,11 +2,14 @@
   config,
   inputs,
   ...
-}: {
-  # Everything a consumer needs to get a working nix-darwin + home-manager base:
-  # the third-party system modules, the home-manager wiring, and the base
-  # home-manager aggregates mounted onto the configured user.
+}: let
+  m = config.flake.modules;
+in {
+  # The single module a downstream macOS flake imports. It pulls in the
+  # platform-agnostic base itself, so a consumer needs nothing but
+  # `base.modules.darwin.base` plus their own `vars`.
   flake.modules.darwin.base.imports = [
+    m.generic.base
     inputs.determinate.darwinModules.default
     inputs.home-manager.darwinModules.home-manager
     inputs.nixkit.darwinModules.default
@@ -28,8 +31,8 @@
             inputs.zen-browser.homeModules.beta
           ];
           users.${vars.user.name}.imports = [
-            config.flake.modules.homeManager.base
-            config.flake.modules.homeManager.darwin
+            m.homeManager.base
+            m.homeManager.darwin
           ];
         };
       }

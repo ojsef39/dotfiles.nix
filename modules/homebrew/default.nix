@@ -18,7 +18,7 @@
       taps = [];
 
       # Mac App Store apps
-      masApps = lib.mkIf (vars.masApps.enable or true) {
+      masApps = lib.mkIf vars.masApps.enable {
         "Reeder" = 6475002485;
         "The Unarchiver" = 425424353;
       };

@@ -5,7 +5,7 @@
     vars,
     ...
   }: let
-    customServices = vars.git.customServices or [];
+    customServices = vars.git.customServices;
     lazygitServices = builtins.listToAttrs (
       map (s: {
         name = s.domain;
@@ -186,7 +186,7 @@
                 "renovate[bot]" = "#f4dbd6"; # Rosewater
                 "*" = "#b7bdf8"; # Lavender
               }
-              // (vars.git.lazy.authorColors or {});
+              // vars.git.lazy.authorColors;
           };
         };
       };

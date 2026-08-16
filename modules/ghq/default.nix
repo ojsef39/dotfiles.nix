@@ -11,9 +11,9 @@
         export PATH=$PATH:/usr/bin:${pkgs.git}/bin
         ${pkgs.ghq}/bin/ghq get -u https://github.com/ojsef39/dotfiles.nix 2>&1 | grep -E "update|error:" || true
         hostname=$(${pkgs.inetutils}/bin/hostname)
-        if [[ $hostname == L???-* ]] && [[ -n "${vars.git.url or ""}" ]]; then
-          ${pkgs.ghq}/bin/ghq get -u https://${vars.git.url or ""}/${vars.user.name}/nix-work 2>&1 | grep -E "update|error:" || true
-          ${pkgs.ghq}/bin/ghq get -u https://${vars.git.url or ""}/${vars.user.name}/renovate-dependency-summary 2>&1 | grep -E "update|error:" || true
+        if [[ $hostname == L???-* ]] && [[ -n "${vars.git.url}" ]]; then
+          ${pkgs.ghq}/bin/ghq get -u https://${vars.git.url}/${vars.user.name}/nix-work 2>&1 | grep -E "update|error:" || true
+          ${pkgs.ghq}/bin/ghq get -u https://${vars.git.url}/${vars.user.name}/renovate-dependency-summary 2>&1 | grep -E "update|error:" || true
         fi
       '';
     };
