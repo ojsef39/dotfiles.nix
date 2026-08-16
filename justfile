@@ -64,7 +64,7 @@ update-refs:
 where aggregate:
     #!/usr/bin/env bash
     # Matches `flake.modules.<class>.<name>` (a definition) and `m.<class>.<name>`
-    # (a host importing it) — not bare occurrences of the word.
+    # (a host importing it), not bare occurrences of the word.
     def=$(grep -rlE "flake\.modules\.[a-zA-Z]+\.{{aggregate}}\b" --include='*.nix' modules || true)
     use=$(grep -rlE "\bm\.[a-zA-Z]+\.{{aggregate}}\b"            --include='*.nix' modules || true)
     if [ -z "$def$use" ]; then echo "nothing defines or imports '{{aggregate}}'"; exit 0; fi

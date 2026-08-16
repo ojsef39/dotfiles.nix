@@ -36,7 +36,7 @@ the personal-only extras:
 }
 ```
 
-Paths containing `/_` are skipped by import-tree — that is how
+Paths containing `/_` are skipped by import-tree. That is how
 `modules/editor/nvf/_parts/` stays out, since those files are `import`ed as
 plain functions rather than being modules.
 
@@ -70,7 +70,7 @@ $ just where josef-nd1-gpu0     # every file contributing to that aggregate
 $ just aggregates               # every published aggregate name
 ```
 
-Anything named after a machine lives in `modules/hosts/<name>/` — its assembly,
+Anything named after a machine lives in `modules/hosts/<name>/`: its assembly,
 bootloader, filesystems, dock layout, host-only packages. A file named after one
 host has no business in a feature directory, since by its own name it can never
 be reused. Feature modules that a single machine merely *enables* stay with their
@@ -97,8 +97,8 @@ modules = [
 
 `darwin.base` and `nixos.base` each import `generic.base` and the matching
 `homeManager.*` aggregates, so a consumer imports exactly one module. Anything
-not reachable from a `*.base` aggregate can never reach a downstream config —
-that is the "don't pollute work machines" boundary, and it is greppable rather
+not reachable from a `*.base` aggregate can never reach a downstream config.
+That is the "don't pollute work machines" boundary, and it is greppable rather
 than dependent on directory layout.
 
 ## Using this as a base for another config
@@ -143,14 +143,14 @@ nixpkgs in one closure, then import the aggregate and supply `vars`:
 That is the whole contract. No `specialArgs`: `inputs`, `baseLib` and `vars` are
 supplied by the imported modules themselves.
 
-`vars` is a typed option — see `modules/core/vars.nix` for the full set. Only
+`vars` is a typed option; see `modules/core/vars.nix` for the full set. Only
 `user.name`, `user.full_name`, `user.email` and `git.dotfiles` are required;
 everything else has a default, and a missing key gives a named option error
 rather than a stray `attribute ... missing`. The type is freeform, so you can
 keep your own private keys in the same attrset.
 
-To drop something from the base, use the module system rather than forking —
-base modules are written `enable`-style:
+To drop something from the base, use the module system rather than forking.
+Base modules are written `enable`-style:
 
 ```nix
 {lib, ...}: {

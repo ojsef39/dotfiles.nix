@@ -19,8 +19,8 @@ aggregates are part of the public surface:
 `darwin.base` and `nixos.base` each import `generic.base` and the matching
 `homeManager.*` aggregates, so a consumer imports exactly **one** module.
 
-Everything else — `generic.personal`, `homeManager.personal`, the per-host
-aggregates, and opt-in capabilities such as `nixos.nvidia` — is deliberately
+Everything else (`generic.personal`, `homeManager.personal`, the per-host
+aggregates, and opt-in capabilities such as `nixos.nvidia`) is deliberately
 unreachable from `*.base` and never reaches a downstream configuration.
 
 `lib` additionally exposes `mkHome`, `mkDotPath` and `mkOpAgentSock`.
@@ -73,8 +73,8 @@ has a default, and a missing key produces a named option error rather than a
 stray `attribute ... missing`. The type is freeform, so a consumer can keep its
 own private keys in the same attrset.
 
-To drop something from the base, use the module system rather than forking —
-base modules are written `enable`-style:
+To drop something from the base, use the module system rather than forking.
+Base modules are written `enable`-style:
 
 ```nix
 {lib, ...}: {
