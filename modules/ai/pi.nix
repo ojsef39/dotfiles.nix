@@ -73,6 +73,7 @@
       // lib.optionalAttrs (server.directTools != false) {inherit (server) directTools;};
   in {
     # TODO: upstream pi enableMcpIntegration if it works
+    # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/1775
     # Extend programs.pi-coding-agent with an mcpServers option so that other
     # modules (e.g. workkit) can register MCP servers for pi the same way they
     # do for claude-code, copilot, etc. — without needing home-manager upstream
