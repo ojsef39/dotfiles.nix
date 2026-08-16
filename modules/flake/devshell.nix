@@ -10,6 +10,17 @@ _: {
   in {
     formatter = pkgs.alejandra;
 
+    apps = {
+      md-build = {
+        type = "app";
+        program = "${md-build}/bin/md-build";
+      };
+      md-serve = {
+        type = "app";
+        program = "${md-serve}/bin/md-serve";
+      };
+    };
+
     devShells.default = pkgs.mkShell {
       packages = [
         pkgs.mdbook
