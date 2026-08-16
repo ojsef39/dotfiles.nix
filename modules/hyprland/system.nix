@@ -95,7 +95,7 @@
           __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         };
       systemPackages = with pkgs; [
-        # FIX: nautilis is kinda broken
+        # FIX: nautilus is kinda broken
         # labels: os:nix
         nautilus
         swaylock # Screen lock

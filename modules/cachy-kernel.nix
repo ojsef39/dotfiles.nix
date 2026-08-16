@@ -19,7 +19,7 @@
     # force override the default kernel package, if this file is imported its probably wanted
     boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
-    # NOTE: bellow might make sense for bare metal, in VMs it actually makes performance worse
+    # NOTE: below might make sense for bare metal, in VMs it actually makes performance worse
     # when creating modules for this, there should probably be a isVM flag to disable this
     # ADIOS IO Scheduler (CachyOS kernel — not in nixpkgs enum, use udev directly)
     # https://wiki.cachyos.org/configuration/general_system_tweaks/#adios-io-scheduler

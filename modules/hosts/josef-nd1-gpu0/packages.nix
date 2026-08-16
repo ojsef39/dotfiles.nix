@@ -4,7 +4,7 @@
     # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/507
     # - BeamMP
     # - audiorelay
-    # - vierualhere
+    # - virtualhere
     # labels: os:nix
     {pkgs, ...}: {
       services.flatpak = {
