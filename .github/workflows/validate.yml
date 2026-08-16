@@ -80,7 +80,7 @@ jobs:
         include:
           - os: macos-latest
             nix_cmd: "darwin"
-            nix_host: "mac-ci"
+            nix_host: "JosefsMacBookPro-ci"
             config_attr: "darwinConfigurations"
             settings_path: "config.determinateNix.customSettings"
           - os: ubuntu-latest

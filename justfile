@@ -5,7 +5,9 @@ alias u := upgrade
 
 # macOS need nh darwin switch and NixOS needs nh os switch
 nix_cmd := `if [ "$(uname)" = "Darwin" ]; then echo "darwin"; else echo "os"; fi`
-nix_host := `if [ "$(uname)" = "Darwin" ]; then echo "mac"; else echo "$(hostname)"; fi`
+# Configurations are named after the machine, so this needs no per-OS special
+# case. -s because macOS `hostname` returns the FQDN (JosefsMacBookPro.local).
+nix_host := `hostname -s`
 # Use GITHUB_TOKEN from 1Password to prevent rate limiting (only if op is available and connected)
 nix_flags := ```
   if [ "${GITHUB_ACTIONS:-}" != "true" ] && command -v op > /dev/null 2>&1; then
@@ -56,6 +58,23 @@ upgrade: update-refs lint
 update-refs:
     # Update current repository
     @kitten @ launch --type=overlay --title="update-nix-fetchgit-all" --copy-env --env SKIP_FF=1 fish -c "cd $NIX_GIT_PATH && update-nix-fetchgit-all"
+
+[group('nix')]
+[doc('List module files that define or import an aggregate, e.g. `just where nvidia`')]
+where aggregate:
+    #!/usr/bin/env bash
+    # Matches `flake.modules.<class>.<name>` (a definition) and `m.<class>.<name>`
+    # (a host importing it), not bare occurrences of the word.
+    def=$(grep -rlE "flake\.modules\.[a-zA-Z]+\.{{aggregate}}\b" --include='*.nix' modules || true)
+    use=$(grep -rlE "\bm\.[a-zA-Z]+\.{{aggregate}}\b"            --include='*.nix' modules || true)
+    if [ -z "$def$use" ]; then echo "nothing defines or imports '{{aggregate}}'"; exit 0; fi
+    if [ -n "$def" ]; then echo "defined by:";  echo "$def" | sed 's/^/  /'; fi
+    if [ -n "$use" ]; then echo "imported by:"; echo "$use" | sed 's/^/  /'; fi
+
+[group('nix')]
+[doc('List all published module aggregates')]
+aggregates:
+    @nix eval --json .#modules --apply 'm: builtins.mapAttrs (_: builtins.attrNames) m' | nix run nixpkgs#jq -- .
 
 [group('maintain')]
 [doc('Clean and optimise the nix store with nh')]
