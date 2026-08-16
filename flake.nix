@@ -4,7 +4,9 @@
 # - [x] Add basic nixos support
 # - [ ] btw plasma graphisch konfigurieren und dann einfach nix run github:nix-community/plasma-manager machen und das spuckt dann eine config aus
 # - [ ] Check if everything that should be shared is actually shared (and not duplicated in both mac and nixos config)
-#  - [ ] !! USE hosts/_personal DONT POLLUTE WORK MACHINES USING EXPOSED MODULES
+#  - [x] !! DONT POLLUTE WORK MACHINES USING EXPOSED MODULES
+#        -> personal config now goes in the `*.personal` aggregates, which are
+#           unreachable from the exported `*.base` ones. See README.md.
 #  - [!] https://github.com/niri-wm/niri -> doesnt work with sunshine https://github.com/niri-wm/niri/discussions/714
 #  - [x] Hyperland + https://github.com/caelestia-dots/shell
 #  - [?] Try to recreate bazzite?
