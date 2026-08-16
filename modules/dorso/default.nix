@@ -1,6 +1,6 @@
 {
   flake.modules.homeManager.darwin = _: {
-    # installed via mod/dw/brew
+    # installed via mod/brew
     targets.darwin.defaults = {
       # NOTE: Bundle identifier is still posturr
       # https://github.com/tldev/dorso/blob/main/build.sh#L15
