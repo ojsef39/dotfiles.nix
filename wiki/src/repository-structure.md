@@ -8,11 +8,11 @@ This flake follows the [dendritic pattern](https://github.com/mightyiam/dendriti
 ```graphql
 .
 ├── flake.nix             # Inputs, then: mkFlake (import-tree ./modules)
-├── vars/                 # Per-configuration identity (see modules/wiring/vars.nix)
+├── vars/                 # Per-configuration identity (see modules/core/vars.nix)
 ├── packages/             # Own package definitions
 └── modules/              # Every file here is a flake-parts module
     ├── flake/            # Flake-level plumbing: systems, lib, packages, devshell
-    ├── wiring/           # Cross-cutting glue
+    ├── core/             # Cross-cutting glue
     │   ├── aggregates.nix  # Declares every published aggregate
     │   ├── args.nix        # Supplies `inputs` / `baseLib` to exported modules
     │   ├── vars.nix        # Declares the `vars` option and its defaults

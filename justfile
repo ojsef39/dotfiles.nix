@@ -60,10 +60,16 @@ update-refs:
     @kitten @ launch --type=overlay --title="update-nix-fetchgit-all" --copy-env --env SKIP_FF=1 fish -c "cd $NIX_GIT_PATH && update-nix-fetchgit-all"
 
 [group('nix')]
-[doc('List every module file contributing to an aggregate, e.g. `just where josef-nd1-gpu0`')]
+[doc('List module files that define or import an aggregate, e.g. `just where nvidia`')]
 where aggregate:
-    @grep -rln 'flake\.modules\.[a-zA-Z]*\.\?{{aggregate}}\b' --include='*.nix' modules \
-      || echo "no module contributes to '{{aggregate}}'"
+    #!/usr/bin/env bash
+    # Matches `flake.modules.<class>.<name>` (a definition) and `m.<class>.<name>`
+    # (a host importing it) — not bare occurrences of the word.
+    def=$(grep -rlE "flake\.modules\.[a-zA-Z]+\.{{aggregate}}\b" --include='*.nix' modules || true)
+    use=$(grep -rlE "\bm\.[a-zA-Z]+\.{{aggregate}}\b"            --include='*.nix' modules || true)
+    if [ -z "$def$use" ]; then echo "nothing defines or imports '{{aggregate}}'"; exit 0; fi
+    if [ -n "$def" ]; then echo "defined by:";  echo "$def" | sed 's/^/  /'; fi
+    if [ -n "$use" ]; then echo "imported by:"; echo "$use" | sed 's/^/  /'; fi
 
 [group('nix')]
 [doc('List all published module aggregates')]

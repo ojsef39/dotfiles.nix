@@ -1,6 +1,6 @@
 # An aggregate name only exists if some file writes to it. These are imported by
-# ../wiring and ../hosts unconditionally, so they need to survive going empty —
-# delete `homeManager.nixos` below and wiring/nixos.nix fails with
+# ../core and ../hosts unconditionally, so they need to survive going empty —
+# delete `homeManager.nixos` below and core/nixos.nix fails with
 # `attribute 'nixos' missing`.
 #
 # Add a name here only if something imports it and it may be empty. Host names

@@ -6,15 +6,6 @@
   name = "JosefsMacBookPro";
   m = config.flake.modules;
 in {
-  # Personal macOS configuration.
-  #
-  # Named after the machine's actual hostname so `nh darwin switch` resolves it
-  # without an explicit -H. The hostname is also pinned declaratively below, so
-  # the config name and the machine agree by construction.
-  #
-  # No specialArgs: `vars`, `inputs` and `baseLib` all come from the imported
-  # modules themselves (see ../wiring/args.nix and ../wiring/vars.nix). A
-  # downstream flake assembles its own host exactly like this.
   flake.darwinConfigurations.${name} = inputs.darwin.lib.darwinSystem {
     modules = [
       m.darwin.base
@@ -26,7 +17,7 @@ in {
           localHostName = name;
         };
       }
-      {vars = import ../../vars/personal.nix;}
+      {vars = import ../../../vars/personal.nix;}
       m.generic.personal
       m.darwin.${name}
       (
@@ -39,9 +30,8 @@ in {
     ];
   };
 
-  # CI variant. Kept under a fixed name rather than tracking the hostname,
-  # because CI passes -H explicitly and never runs on the real machine.
-  flake.darwinConfigurations.mac-ci = config.flake.darwinConfigurations.${name}.extendModules {
+  # Same config, minus what cannot build on a GitHub runner.
+  flake.darwinConfigurations."${name}-ci" = config.flake.darwinConfigurations.${name}.extendModules {
     modules = [
       (
         {

@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.josef-nd1-gpu0 = {
+  flake.modules.nixos.cachyos-kernel = {
     inputs,
     pkgs,
     lib,

@@ -102,9 +102,10 @@
         hitoolbox.AppleFnUsageType = "Show Emoji & Symbols";
       };
 
+      # ANCHOR: remote-builders
       # Configure nix-daemon to use 1Password SSH agent for remote builders
       # Uses PlistBuddy to modify the Determinate-managed plist directly
-      # DOCS: included in wiki/src/external-usage.md
+      # DOCS: included in wiki/src/external-usage.md via the anchor above
       activationScripts = {
         preActivation.text = ''
           plist="/Library/LaunchDaemons/systems.determinate.nix-daemon.plist"
@@ -133,6 +134,7 @@
         #   };
         # };
       };
+      # ANCHOR_END: remote-builders
     };
     networking.applicationFirewall.enableStealthMode = true;
     # Add ability to used TouchID for sudo authentication

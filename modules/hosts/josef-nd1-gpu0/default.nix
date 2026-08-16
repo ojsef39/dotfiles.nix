@@ -35,6 +35,7 @@ in {
       m.generic.personal
 
       # Optional capabilities this machine has
+      m.nixos.cachyos-kernel
       m.nixos.nvidia
       {gpuType.rtx4080 = true;}
 

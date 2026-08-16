@@ -1,16 +1,8 @@
 {lib, ...}: {
-  # `vars` is the one thing a consuming configuration has to supply. Declaring it
-  # as an option rather than passing it through `specialArgs` means:
-  #   - a missing required key is a named option error, not `attribute 'ghq' missing`
-  #     thrown from somewhere deep inside an unrelated module
-  #   - optional keys carry their defaults here instead of being re-spelled as
-  #     `or` fallbacks at every use site
-  #   - a consumer can override one key (`vars.cache.community = true;`) without
-  #     restating the whole attrset
-  #
-  # `_module.args.vars` re-exposes it so modules keep their plain `{vars, ...}:`
-  # signature. The freeform type lets a downstream flake keep its own private
-  # keys in the same attrset without this repo having to know about them.
+  # The one thing a consuming configuration must supply. An option rather than a
+  # specialArg so missing keys are named errors, defaults live in one place, and
+  # a consumer can override a single key. Freeform: consumers may add own keys.
+  # `_module.args.vars` keeps the plain `{vars, ...}:` signature working.
   flake.modules.generic.base = {config, ...}: {
     options.vars = lib.mkOption {
       description = "Per-configuration identity and preferences.";

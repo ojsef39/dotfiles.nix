@@ -1,10 +1,6 @@
-# Nvidia support. The driver/graphics half applies to any Nvidia card; the
-# per-card tuning is selected by a `gpuType.<card>` toggle, so a second Nvidia
-# machine imports this same module and either picks its own card profile or
-# none at all.
-#
-# Optional capability: not part of `nixos.base`. A host opts in by importing
-# `nixos.nvidia` and setting the toggle for the card it actually has.
+# Opt-in capability: not in `nixos.base`, a host imports it explicitly.
+# Driver config is card-agnostic; per-card tuning hangs off a `gpuType.<card>`
+# toggle so another Nvidia machine reuses this and picks its own profile.
 {
   flake.modules.nixos.nvidia = {
     config,

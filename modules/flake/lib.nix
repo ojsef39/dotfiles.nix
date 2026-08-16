@@ -1,8 +1,5 @@
 _: {
-  # Small helpers shared by modules, also published as the flake's `lib` output
-  # so a downstream flake can reuse them.
-  #
-  # `scanPaths` used to live here; `import-tree` replaces it.
+  # Also published as the flake's `lib` output for downstream use.
   flake.lib = rec {
     # Return the 1Password SSH agent socket path for the given platform.
     # Usage: baseLib.mkOpAgentSock pkgs

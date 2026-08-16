@@ -40,8 +40,8 @@ Paths containing `/_` are skipped by import-tree — that is how
 `modules/editor/nvf/_parts/` stays out, since those files are `import`ed as
 plain functions rather than being modules.
 
-`modules/hosts/*.nix` only assemble a machine from aggregates; they need no
-edits when a feature is added. `modules/wiring/` holds the cross-cutting glue
+`modules/hosts/<name>/` holds one machine: the assembly plus anything true only
+of that machine. It needs no edits when a feature is added. `modules/core/` holds the cross-cutting glue
 (home-manager setup, overlays, the `vars` option).
 
 ## Module aggregates
@@ -59,7 +59,8 @@ edits when a feature is added. `modules/wiring/` holds the cross-cutting glue
 
 Configurations are named after the machine's hostname (which is pinned
 declaratively in the host file), so `nh` resolves the right one without an
-explicit `-H`. The exception is `mac-ci`, which CI always names explicitly.
+explicit `-H`. CI variants get a `-ci` suffix (`JosefsMacBookPro-ci`) and are
+always named explicitly, since they never run on the machine itself.
 
 Because a feature file declares its own audience, the files belonging to one
 machine are spread across feature directories by design. To find them:
@@ -69,9 +70,11 @@ $ just where josef-nd1-gpu0     # every file contributing to that aggregate
 $ just aggregates               # every published aggregate name
 ```
 
-Host *identity* — bootloader, filesystems, hostname — lives with the host in
-`modules/hosts/<name>/`. Feature config that merely happens to be enabled on one
-machine stays with its feature, written to that machine's aggregate.
+Anything named after a machine lives in `modules/hosts/<name>/` — its assembly,
+bootloader, filesystems, dock layout, host-only packages. A file named after one
+host has no business in a feature directory, since by its own name it can never
+be reused. Feature modules that a single machine merely *enables* stay with their
+feature.
 
 Hardware that another machine could plausibly also have is an **opt-in
 capability** instead: its own aggregate under `modules/hardware/`, which a host
@@ -140,7 +143,7 @@ nixpkgs in one closure, then import the aggregate and supply `vars`:
 That is the whole contract. No `specialArgs`: `inputs`, `baseLib` and `vars` are
 supplied by the imported modules themselves.
 
-`vars` is a typed option — see `modules/wiring/vars.nix` for the full set. Only
+`vars` is a typed option — see `modules/core/vars.nix` for the full set. Only
 `user.name`, `user.full_name`, `user.email` and `git.dotfiles` are required;
 everything else has a default, and a missing key gives a named option error
 rather than a stray `attribute ... missing`. The type is freeform, so you can

@@ -1,9 +1,13 @@
 {
   flake.modules.nixos.josef-nd1-gpu0 = {
+    config,
+    lib,
     pkgs,
     vars,
     ...
-  }: {
+  }: let
+    onNvidia = lib.elem "nvidia" config.services.xserver.videoDrivers;
+  in {
     programs = {
       hyprland = {
         enable = true;
@@ -47,7 +51,7 @@
     };
 
     environment = {
-      etc = {
+      etc = lib.mkIf onNvidia {
         "nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json" = {
           text = ''
             {
@@ -78,15 +82,18 @@
           '';
         };
       };
-      sessionVariables = {
-        GBM_BACKEND = "nvidia-drm";
-        LIBVA_DRIVER_NAME = "nvidia";
-        NIXOS_OZONE_WL = "1";
-        NVD_BACKEND = "direct";
-        WLR_NO_HARDWARE_CURSORS = "1";
-        XDG_SESSION_TYPE = "wayland";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      };
+      sessionVariables =
+        {
+          NIXOS_OZONE_WL = "1";
+          XDG_SESSION_TYPE = "wayland";
+        }
+        // lib.optionalAttrs onNvidia {
+          GBM_BACKEND = "nvidia-drm";
+          LIBVA_DRIVER_NAME = "nvidia";
+          NVD_BACKEND = "direct";
+          WLR_NO_HARDWARE_CURSORS = "1";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        };
       systemPackages = with pkgs; [
         # FIX: nautilis is kinda broken
         # labels: os:nix
