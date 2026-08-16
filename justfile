@@ -5,7 +5,9 @@ alias u := upgrade
 
 # macOS need nh darwin switch and NixOS needs nh os switch
 nix_cmd := `if [ "$(uname)" = "Darwin" ]; then echo "darwin"; else echo "os"; fi`
-nix_host := `if [ "$(uname)" = "Darwin" ]; then echo "mac"; else echo "$(hostname)"; fi`
+# Configurations are named after the machine, so this needs no per-OS special
+# case. -s because macOS `hostname` returns the FQDN (JosefsMacBookPro.local).
+nix_host := `hostname -s`
 # Use GITHUB_TOKEN from 1Password to prevent rate limiting (only if op is available and connected)
 nix_flags := ```
   if [ "${GITHUB_ACTIONS:-}" != "true" ] && command -v op > /dev/null 2>&1; then
@@ -56,6 +58,17 @@ upgrade: update-refs lint
 update-refs:
     # Update current repository
     @kitten @ launch --type=overlay --title="update-nix-fetchgit-all" --copy-env --env SKIP_FF=1 fish -c "cd $NIX_GIT_PATH && update-nix-fetchgit-all"
+
+[group('nix')]
+[doc('List every module file contributing to an aggregate, e.g. `just where josef-nd1-gpu0`')]
+where aggregate:
+    @grep -rln 'flake\.modules\.[a-zA-Z]*\.\?{{aggregate}}\b' --include='*.nix' modules \
+      || echo "no module contributes to '{{aggregate}}'"
+
+[group('nix')]
+[doc('List all published module aggregates')]
+aggregates:
+    @nix eval --json .#modules --apply 'm: builtins.mapAttrs (_: builtins.attrNames) m' | nix run nixpkgs#jq -- .
 
 [group('maintain')]
 [doc('Clean and optimise the nix store with nh')]

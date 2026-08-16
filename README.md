@@ -54,7 +54,43 @@ edits when a feature is added. `modules/wiring/` holds the cross-cutting glue
 | `homeManager.base` | cross-platform home config | ✅ |
 | `homeManager.darwin` / `homeManager.nixos` | platform-specific home config | ✅ |
 | `generic.personal` / `homeManager.personal` | ojsef39's machines only | ❌ |
-| `darwin.mac`, `nixos.josef-nd1-gpu0`, `homeManager.josef-nd1-gpu0` | one machine only | ❌ |
+| `nixos.nvidia`, … | opt-in capability, imported by the hosts that want it | ❌ |
+| `darwin.JosefsMacBookPro`, `nixos.josef-nd1-gpu0`, `homeManager.josef-nd1-gpu0` | one machine only | ❌ |
+
+Configurations are named after the machine's hostname (which is pinned
+declaratively in the host file), so `nh` resolves the right one without an
+explicit `-H`. The exception is `mac-ci`, which CI always names explicitly.
+
+Because a feature file declares its own audience, the files belonging to one
+machine are spread across feature directories by design. To find them:
+
+```console
+$ just where josef-nd1-gpu0     # every file contributing to that aggregate
+$ just aggregates               # every published aggregate name
+```
+
+Host *identity* — bootloader, filesystems, hostname — lives with the host in
+`modules/hosts/<name>/`. Feature config that merely happens to be enabled on one
+machine stays with its feature, written to that machine's aggregate.
+
+Hardware that another machine could plausibly also have is an **opt-in
+capability** instead: its own aggregate under `modules/hardware/`, which a host
+imports explicitly. Variants within one capability are options rather than
+separate modules, so the host reads as an inventory of what the machine is:
+
+```nix
+# modules/hosts/josef-nd1-gpu0/default.nix
+modules = [
+  m.nixos.base
+  m.generic.personal
+
+  # Optional capabilities this machine has
+  m.nixos.nvidia
+  {gpuType.rtx4080 = true;}
+
+  m.nixos.josef-nd1-gpu0
+];
+```
 
 `darwin.base` and `nixos.base` each import `generic.base` and the matching
 `homeManager.*` aggregates, so a consumer imports exactly one module. Anything

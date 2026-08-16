@@ -1,27 +1,40 @@
-# Declares every module aggregate this flake publishes, so each name always
-# exists even when no feature file currently contributes to it. Without this a
-# temporarily-empty aggregate becomes an `attribute ... missing` error at the
-# point of use rather than a no-op.
+# An aggregate name only exists if some file writes to it. These are imported by
+# ../wiring and ../hosts unconditionally, so they need to survive going empty —
+# delete `homeManager.nixos` below and wiring/nixos.nix fails with
+# `attribute 'nixos' missing`.
+#
+# Add a name here only if something imports it and it may be empty. Host names
+# and optional capabilities (`nixos.nvidia`) need no entry: the files writing to
+# them create them, and nothing imports them unless a host asks.
 #
 # Audience is encoded in the name:
-#   base      - reusable, part of the public surface a downstream flake imports
-#   personal  - only for own machines, never exported
-#   <host>    - only for that one machine
+#   base        - reusable, the public surface a downstream flake imports
+#   personal    - only for own machines, never exported
+#   <hostname>  - only for that one machine
+#   <optional>  - an opt-in capability, e.g. `nvidia`
+#
+# List aggregates: `just aggregates`
+# Find every file contributing to one: `just where <name>`
 _: {
   flake.modules = {
-    generic.base = {};
-    generic.personal = {};
+    generic = {
+      base = {};
+      personal = {};
+    };
 
-    darwin.base = {};
-    darwin.mac = {};
+    darwin = {
+      base = {};
+    };
 
-    nixos.base = {};
-    nixos.josef-nd1-gpu0 = {};
+    nixos = {
+      base = {};
+    };
 
-    homeManager.base = {};
-    homeManager.darwin = {};
-    homeManager.nixos = {};
-    homeManager.personal = {};
-    homeManager.josef-nd1-gpu0 = {};
+    homeManager = {
+      base = {};
+      darwin = {};
+      nixos = {};
+      personal = {};
+    };
   };
 }

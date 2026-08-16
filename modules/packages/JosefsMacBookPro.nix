@@ -1,5 +1,5 @@
 {
-  flake.modules.darwin.mac = {pkgs, ...}: {
+  flake.modules.darwin.JosefsMacBookPro = {pkgs, ...}: {
     environment.systemPackages = with pkgs; [
       # Personal packages
       fluxcd

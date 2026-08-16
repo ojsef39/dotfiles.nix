@@ -1,5 +1,5 @@
 {
-  flake.modules.darwin.mac = {
+  flake.modules.darwin.JosefsMacBookPro = {
     config,
     vars,
     ...

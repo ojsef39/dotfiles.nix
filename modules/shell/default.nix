@@ -69,9 +69,6 @@
           set -gx NH_SHOW_ACTIVATION_LOGS 1
         ''
         + lib.optionalString pkgs.stdenv.isDarwin ''
-          # macOS: nix config name is always "mac" regardless of hostname
-          set -gx NIX_CONFIG_NAME mac
-
           # macOS: make tools trust the homebrew CA bundle
           set -gx PYTHON /usr/bin/python3
           set -gx NODE_EXTRA_CA_CERTS /opt/homebrew/etc/ca-certificates/cert.pem

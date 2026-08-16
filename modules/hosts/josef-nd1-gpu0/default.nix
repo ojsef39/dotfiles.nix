@@ -11,8 +11,13 @@ in {
     modules = [
       m.nixos.base
       {networking.hostName = name;}
-      {vars = import ../../vars/personal.nix;}
+      {vars = import ../../../vars/personal.nix;}
       m.generic.personal
+
+      # Optional capabilities this machine has
+      m.nixos.nvidia
+      {gpuType.rtx4080 = true;}
+
       m.nixos.${name}
       (
         {vars, ...}: {
