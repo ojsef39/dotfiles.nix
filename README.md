@@ -76,10 +76,10 @@ host has no business in a feature directory, since by its own name it can never
 be reused. Feature modules that a single machine merely *enables* stay with their
 feature.
 
-Hardware that another machine could plausibly also have is an **opt-in
-capability** instead: its own aggregate under `modules/hardware/`, which a host
-imports explicitly. Variants within one capability are options rather than
-separate modules, so the host reads as an inventory of what the machine is:
+Anything another machine could plausibly also have is an **opt-in capability**
+instead: it writes to its own aggregate name, which a host imports explicitly.
+Variants within one capability are options rather than separate modules, so the
+host reads as an inventory of what the machine is:
 
 ```nix
 # modules/hosts/josef-nd1-gpu0/default.nix
@@ -100,6 +100,22 @@ modules = [
 not reachable from a `*.base` aggregate can never reach a downstream config.
 That is the "don't pollute work machines" boundary, and it is greppable rather
 than dependent on directory layout.
+
+### Why folders never encode audience
+
+The aggregate name is the *only* place that records who a module is for, and
+whether it applies automatically or has to be opted into. Directories say what a
+module is about and nothing else.
+
+Keeping that in one place matters because it changes over time. If `steam.nix`
+moves from `nixos.josef-nd1-gpu0` into some later `nixos.gaming` bundle, only the
+aggregate name changes; the file stays in `modules/steam.nix` where you would
+look for it. A folder such as `opt-in/` would have to be reorganised on every
+re-bundling, and would quietly go stale when it wasn't.
+
+`modules/hosts/` is the one deliberate exception, on the grounds that a file
+named after a machine can never be reused by a different one, so its path can
+safely say so.
 
 ## Using this as a base for another config
 

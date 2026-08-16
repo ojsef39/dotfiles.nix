@@ -31,7 +31,7 @@ This flake follows the [dendritic pattern](https://github.com/mightyiam/dendriti
     │       ├── host.nix      # Bootloader, filesystems
     │       ├── hardware.nix  # hardware-configuration
     │       └── packages.nix
-    ├── hardware/           # Opt-in capabilities a host imports, e.g. nvidia.nix
+    ├── hardware/           # Hardware features, e.g. nvidia.nix
     ├── k9s.nix             # A feature small enough to be one file
     └── git/                # A feature with several files or assets
         ├── default.nix
