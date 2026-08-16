@@ -6,7 +6,8 @@
   }: let
     cfg = config.ai;
     # claude-code uses dashes: "claude-sonnet-4-6"
-    claudeModel = builtins.replaceStrings ["."] ["-"] cfg.model;
+    # claudeModel = builtins.replaceStrings ["."] ["-"] cfg.model;
+    claudeModel = "opus";
 
     # Expand { "server-name" = [ "tool" ]; } into Claude Code permission strings.
     # Three naming conventions for server keys:
@@ -54,7 +55,7 @@
         tui = "fullscreen";
         agentPushNotifEnabled = true;
         model = claudeModel;
-        advisorModel = "opus";
+        # advisorModel = "opus";
         inherit (cfg) effortLevel;
       };
     };
