@@ -89,7 +89,7 @@ modules = [
 
   # Optional capabilities this machine has
   m.nixos.nvidia
-  {gpuType.rtx4080 = true;}
+  {gpuType.rtx5080 = true;}
 
   m.nixos.josef-nd1-gpu0
 ];
