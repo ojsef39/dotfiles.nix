@@ -9,7 +9,7 @@
     ...
   }: {
     options.gpuType = {
-      rtx4080 = lib.mkEnableOption "RTX 4080 power and clock tuning";
+      rtx5080 = lib.mkEnableOption "RTX 5080 power and clock tuning";
     };
 
     config = {
@@ -39,7 +39,7 @@
       };
 
       # Systemd service to configure NVIDIA GPU settings at boot
-      systemd.services.nvidia-gpu-settings = lib.mkIf config.gpuType.rtx4080 {
+      systemd.services.nvidia-gpu-settings = lib.mkIf config.gpuType.rtx5080 {
         description = "Configure NVIDIA GPU settings (persistence, power limit, clock speed)";
         after = ["multi-user.target"];
         wantedBy = ["multi-user.target"];
