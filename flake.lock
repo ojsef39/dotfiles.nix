@@ -737,16 +737,16 @@
     },
     "nixpkgs_fork": {
       "locked": {
-        "lastModified": 1780480339,
-        "narHash": "sha256-QqP47aQQ/HdlbGmJFUoIxCOZ6ezs3tbMriHt3qYzX8E=",
+        "lastModified": 1786970059,
+        "narHash": "sha256-WislCq2AjNtSsHWlzb3Pa07ZAJ61C60N1krNTFwrmfc=",
         "owner": "ojsef39",
         "repo": "nixpkgs",
-        "rev": "fc5a23429c44b3f57e15283d75f2eda1a5765f65",
+        "rev": "87ba13623e6079311ae1bfde27a5ed2c123ddbfc",
         "type": "github"
       },
       "original": {
         "owner": "ojsef39",
-        "ref": "feat/dadav-helm-schema",
+        "ref": "helm-schema-split-fork",
         "repo": "nixpkgs",
         "type": "github"
       }
