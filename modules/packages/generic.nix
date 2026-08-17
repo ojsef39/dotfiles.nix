@@ -4,7 +4,7 @@
       plugins = [
         pkgs.kubernetes-helmPlugins.helm-unittest
         pkgs.helm-docs
-        pkgs.helm-schema-gen
+        pkgs.helm-schema-dadav
       ];
     };
   in {

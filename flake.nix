@@ -18,7 +18,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs_fork = {
-      url = "github:ojsef39/nixpkgs/feat/dadav-helm-schema";
+      url = "github:ojsef39/nixpkgs/helm-schema-split-fork";
       inputs.nixpkgs.follows = "nixpkgs";
       # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";
       # url = "/Users/josefhofer/CodeProjects/github.com/ojsef39/nixpkgs";

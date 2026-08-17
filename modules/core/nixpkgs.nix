@@ -22,7 +22,10 @@
         in {
           # ⬇️ Leave here as example for building from source instead of nixpkg repo:
           # nh = inputs.nh.packages.${prev.stdenv.hostPlatform.system}.default;
-          inherit (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}) helm-schema-gen;
+          inherit
+            (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.kubernetes-helmPlugins)
+            helm-schema-dadav
+            ;
           renovate = prev.renovate-jhc; # nixkit package built from github:JHOFER-Cloud/renovate
           inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
           # NOTE: MCP allowlist broken above 1.0.40
