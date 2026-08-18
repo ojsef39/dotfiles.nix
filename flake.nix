@@ -51,7 +51,7 @@
     nixkit = {
       url = "https://flakehub.com/f/JHOFER-Cloud/frostplexx-nixkit/0.1.tar.gz";
       # url = "/Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs"; #NOTE: CI-built binaries only match nixkit's own nixpkgs
     };
     agate = {
       url = "github:frostplexx/agate-wm";

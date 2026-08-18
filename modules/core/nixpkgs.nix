@@ -26,7 +26,7 @@
             (inputs.nixpkgs_fork.legacyPackages.${prev.stdenv.hostPlatform.system}.kubernetes-helmPlugins)
             helm-schema-dadav
             ;
-          renovate = prev.renovate-jhc; # nixkit package built from github:JHOFER-Cloud/renovate
+          renovate = inputs.nixkit.packages.${prev.stdenv.hostPlatform.system}.renovate-jhc; # nixkit package built from github:JHOFER-Cloud/renovate
           inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
           # NOTE: MCP allowlist broken above 1.0.40
           inherit (pkgs-copilot-cli) github-copilot-cli;
