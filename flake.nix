@@ -49,8 +49,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixkit = {
-      # url = "https://flakehub.com/f/JHOFER-Cloud/frostplexx-nixkit/0.1.tar.gz";
-      url = "github:frostplexx/nixkit/feat/macmousefix";
+      url = "https://flakehub.com/f/JHOFER-Cloud/frostplexx-nixkit/0.1.tar.gz";
       # url = "/Users/josefhofer/CodeProjects/github.com/frostplexx/nixkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
