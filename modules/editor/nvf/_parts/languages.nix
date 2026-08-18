@@ -111,12 +111,13 @@
       format.enable = false; # Using custom conform config for goimports-reviser
     };
 
-    # Nix - with nixd and alejandra
+    # Nix
     nix = {
       enable = true;
       extraDiagnostics.enable = true;
       lsp = {
         enable = true;
+        servers = ["nil" "nixd"];
       };
       treesitter.enable = true;
       format = {
