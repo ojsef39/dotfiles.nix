@@ -9,6 +9,7 @@
         };
       };
       kernelPackages = pkgs.linuxPackages;
+      kernelParams = ["tsc=reliable" "clocksource=tsc"];
     };
 
     # Mount Games disk (removable)

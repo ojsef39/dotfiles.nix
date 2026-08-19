@@ -8,9 +8,9 @@
     # labels: os:nix
     {pkgs, ...}: {
       services.flatpak = {
-        enable = true;
+        enable = false;
         packages = [
-          "com.geeks3d.furmark"
+          # "com.geeks3d.furmark" # XWAYLAND GRRRR!!! (doesnt work)
         ];
       };
       environment.systemPackages = with pkgs; [

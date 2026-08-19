@@ -17,7 +17,8 @@
     };
     nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
     # force override the default kernel package, if this file is imported its probably wanted
-    boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+    # boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+    boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-lts;
 
     # NOTE: below might make sense for bare metal, in VMs it actually makes performance worse
     # when creating modules for this, there should probably be a isVM flag to disable this
