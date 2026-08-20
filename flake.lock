@@ -517,23 +517,19 @@
     "nixkit": {
       "inputs": {
         "flake-parts": "flake-parts_5",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1786623578,
-        "narHash": "sha256-sUolYARWcU0nzkjq78BybYp+XdKNDwQLvsBIRgpPLEU=",
-        "owner": "frostplexx",
-        "repo": "nixkit",
-        "rev": "ff7ecfca15c04b363871cd4736c4a50b31383284",
-        "type": "github"
+        "lastModified": 1786996574,
+        "narHash": "sha256-GtytJ/TxdQX3g95L4Vy7IgC/EZuERa2Iu+vzqg0Ki3s=",
+        "rev": "0b96cacb30497f9d78cd19af8a15f17aedef393c",
+        "revCount": 331,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.331%2Brev-0b96cacb30497f9d78cd19af8a15f17aedef393c/01a01363-5260-7631-82ff-285be6daf965/source.tar.gz"
       },
       "original": {
-        "owner": "frostplexx",
-        "ref": "feat/macmousefix",
-        "repo": "nixkit",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://flakehub.com/f/JHOFER-Cloud/frostplexx-nixkit/0.1.tar.gz"
       }
     },
     "nixpkgs": {
@@ -723,6 +719,22 @@
     },
     "nixpkgs_6": {
       "locked": {
+        "lastModified": 1787001381,
+        "narHash": "sha256-Ue1Yo8gfHdD4TMtNewhA4tkSYeFqXThju0nCyJc3ALo=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ec2d622de0773551768cf98f3fc50cbcc003b9c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_7": {
+      "locked": {
         "lastModified": 1786410043,
         "narHash": "sha256-JTbODJPDcd3d8U7lO4MVUU3Yo0jz2KQSAHXka+IWBEo=",
         "rev": "8e2eeb9477c9d40009a5bd51cd3eef2f5abb26f1",
@@ -809,7 +821,7 @@
         "nix-index-database": "nix-index-database",
         "nixcord": "nixcord",
         "nixkit": "nixkit",
-        "nixpkgs": "nixpkgs_6",
+        "nixpkgs": "nixpkgs_7",
         "nixpkgs-copilot-cli": "nixpkgs-copilot-cli",
         "nixpkgs_fork": "nixpkgs_fork",
         "nvf": "nvf",
