@@ -30,10 +30,6 @@
           inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
           # NOTE: MCP allowlist broken above 1.0.40
           inherit (pkgs-copilot-cli) github-copilot-cli;
-          moonlight-qt = prev.moonlight-qt.overrideAttrs (old: {
-            qmakeFlags = (old.qmakeFlags or []) ++ ["QMAKE_LFLAGS+=-fuse-ld=lld"];
-            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [prev.lld];
-          });
         }
       )
     ];

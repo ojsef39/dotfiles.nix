@@ -6,7 +6,7 @@
       gemini-cli
       # wireshark # broken
       ## media stuff
-      yt-dlp
+      # yt-dlp
       moonlight-qt
     ];
   };
