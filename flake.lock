@@ -980,11 +980,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785292177,
-        "narHash": "sha256-zW1I8h1OX2BAb5PS73zml5Y5KnpENwycC8U2Vkp91ZI=",
+        "lastModified": 1787360823,
+        "narHash": "sha256-9ktYCUaS+JuyQ6jED2i0FtbNm7EGARaiNTfGMh8hlM0=",
         "owner": "BatteredBunny",
         "repo": "virtualhere-nixos",
-        "rev": "ac3b6ed1f7acca8f2ef5ab4fc65ec055de8dda31",
+        "rev": "c296e72427c4777b51eedce01872c0e639720007",
         "type": "github"
       },
       "original": {
