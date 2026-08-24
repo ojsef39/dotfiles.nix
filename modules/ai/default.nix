@@ -136,6 +136,10 @@
           "projects_list"
           "projects_get"
         ];
+        "nixos" = [
+          "nix"
+          "nix_versions"
+        ];
         "io.github.upstash/context7" = [
           "resolve-library-id"
           "query-docs"
