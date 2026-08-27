@@ -1,7 +1,8 @@
 {
   flake.modules.homeManager.personal = {
-    vars,
     lib,
+    pkgs,
+    vars,
     ...
   }: {
     programs.fish = {
@@ -30,7 +31,7 @@
           set -gx PATH $old_path
         '';
 
-        renovate_summary_debug = ''
+        renovate_debug = ''
           set -l token (gh auth token)
 
           if test -z "$token"
@@ -38,12 +39,14 @@
               return 1
           end
 
-          podman run --rm -it \
-              -v $PWD:/usr/src/app \
-              -e LOG_LEVEL=debug \
-              -e GITHUB_COM_TOKEN=$token \
-              ghcr.io/jhofer-cloud/renovate \
-              --platform=local
+          LOG_LEVEL=debug GITHUB_COM_TOKEN=$token ${pkgs.renovate}/bin/renovate --platform=local
+
+          # podman run --rm -it \
+          #     -v $PWD:/usr/src/app \
+          #     -e LOG_LEVEL=debug \
+          #     -e GITHUB_COM_TOKEN=$token \
+          #     ghcr.io/jhofer-cloud/renovate \
+          #     --platform=local
         '';
       };
 
