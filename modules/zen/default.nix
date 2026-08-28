@@ -105,6 +105,15 @@
             ];
             sizes = [70 30];
           };
+          "Hass Energy + Energy Watchdog" = {
+            id = "hass-energy-energy-watchdog-split";
+            gridType = "vsep";
+            tabs = [
+              pins."Hass Energy".id
+              pins."Energy Watchdog".id
+            ];
+            sizes = [50 50];
+          };
           "Rack Temps + Misc Overview" = {
             id = "rack-temps-misc-overview-split";
             gridType = "vsep";
