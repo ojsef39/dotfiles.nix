@@ -139,31 +139,30 @@
       position = 215;
     };
     # --- END HLA1 folder ---
-
-    "Hass Energy" = {
-      id = "2a1e9dd9-a47d-43b8-8a4c-88855d4d827e";
-      url = "https://home-assistant.hla1.jhofer.lan/energy/overview";
+    "Energy Watchdog" = {
+      id = "2e07fe68-3d8d-44ed-8b16-d38526614779";
+      url = "https://grafana.hla1.jhofer.lan/d/energy-watchdog/energy-watchdog?from=now-12h&to=now&refresh=1m";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 216;
     };
-    "Energy Watchdog" = {
-      id = "2e07fe68-3d8d-44ed-8b16-d38526614779";
-      url = "https://grafana.hla1.jhofer.lan/d/energy-watchdog/energy-watchdog?from=now-12h&to=now&refresh=1m";
+    "Nut Dog" = {
+      id = "2a1e9dd9-a47d-43b8-8a4c-88855d4d827e";
+      url = "https://grafana.hla1.jhofer.lan/d/nut-dog/nut-dog?from=now-6h&to=now";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 217;
     };
     "Rack Temps" = {
       id = "10bdc242-5fb3-459f-ae32-aa711c297a86";
-      url = "https://grafana.hla1.jhofer.lan/d/rack_temps/rack-temps?orgId=1&from=now-6h&to=now&timezone=browser&var-ds_prometheus=aef9f9k9lvwn4b&var-job=node-exporter-proxmox&var-nodename=pve-1&var-node=pve-1.hla1.jhofer.lan&var-temp_sensors=$__all&refresh=5m";
+      url = "https://grafana.hla1.jhofer.lan/d/rack_temps/rack-temps?from=now-6h&to=now";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 218;
     };
     "Misc Overview" = {
       id = "950825df-59e8-4d51-a491-bb4226aecda2";
-      url = "https://grafana.hla1.jhofer.lan/d/dcf5mhzhh7gyyoc/misc-overview?orgId=1&from=now-6h&to=now&timezone=browser&var-ds=aef9f9k9lvwn4b&refresh=30s";
+      url = "https://grafana.hla1.jhofer.lan/d/dcf5mhzhh7gyyoc/misc-overview?from=now-6h&to=now";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 219;
