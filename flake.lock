@@ -335,12 +335,12 @@
         ]
       },
       "locked": {
-        "lastModified": 1788229478,
-        "narHash": "sha256-G0F2rFORVcFkEvVdE/qWQTnYekIc77YP5/vRF9nZlxU=",
-        "rev": "1dc2d1f720ab17fc7981e087346bf54b26d284b1",
-        "revCount": 7198,
+        "lastModified": 1788317453,
+        "narHash": "sha256-BTVJDWIuGa5ffxQEG5WujOOm3eXPw3gZX42Wvm32gb8=",
+        "rev": "b8350fcdf54ccf553e46408053b1ac5b7038c18b",
+        "revCount": 7203,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/nix-community/home-manager/0.1.7198%2Brev-1dc2d1f720ab17fc7981e087346bf54b26d284b1/01a05ac9-6fd5-7920-92c1-d1a9a058632e/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/nix-community/home-manager/0.1.7203%2Brev-b8350fcdf54ccf553e46408053b1ac5b7038c18b/01a0601c-b4e4-79f0-9814-9bfa4b369d43/source.tar.gz"
       },
       "original": {
         "type": "tarball",
