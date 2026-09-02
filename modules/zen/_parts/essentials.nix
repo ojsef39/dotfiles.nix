@@ -14,10 +14,10 @@
       isEssential = true;
       position = 102;
     };
-    "Jelly" = {
-      id = "513d0b0f-42e5-4c98-b180-619441698aef";
+    "Home Assistant" = {
+      id = "9933639d-f544-4a78-8beb-5616a437eba4";
       container = containers.Personal.id;
-      url = "https://jelly.jhofer.de";
+      url = "https://home-assistant.hla1.jhofer.org/home/overview";
       isEssential = true;
       position = 103;
     };

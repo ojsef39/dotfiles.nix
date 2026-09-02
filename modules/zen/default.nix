@@ -105,12 +105,12 @@
             ];
             sizes = [70 30];
           };
-          "Hass Energy + Energy Watchdog" = {
-            id = "hass-energy-energy-watchdog-split";
+          "Energy Watchdog + Nut Dog" = {
+            id = "energy-watchdog-nut-dog-split";
             gridType = "vsep";
             tabs = [
-              pins."Hass Energy".id
               pins."Energy Watchdog".id
+              pins."Nut Dog".id
             ];
             sizes = [50 50];
           };
