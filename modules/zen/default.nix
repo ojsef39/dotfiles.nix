@@ -53,6 +53,11 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/simplelogin/latest.xpi";
           installation_mode = "force_installed";
         };
+        "holy-shelf@jhofer.de" = {
+          name = "Holy Shelf";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/holy-shelf/latest.xpi";
+          installation_mode = "force_installed";
+        };
       };
     in {
       enable = true;
@@ -104,7 +109,10 @@
               pins."BetterStack".id
               pins."Status".id
             ];
-            sizes = [70 30];
+            sizes = [
+              70
+              30
+            ];
           };
           "Energy Watchdog + Nut Dog" = {
             id = "energy-watchdog-nut-dog-split";
@@ -113,7 +121,10 @@
               pins."Energy Watchdog".id
               pins."Nut Dog".id
             ];
-            sizes = [50 50];
+            sizes = [
+              50
+              50
+            ];
           };
           "Rack Temps + Misc Overview" = {
             id = "rack-temps-misc-overview-split";
@@ -122,7 +133,10 @@
               pins."Rack Temps".id
               pins."Misc Overview".id
             ];
-            sizes = [70 30];
+            sizes = [
+              70
+              30
+            ];
           };
         };
 
