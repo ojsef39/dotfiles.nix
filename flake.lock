@@ -552,12 +552,12 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1788526892,
-        "narHash": "sha256-wyGNJLlw3tttadiItRr7QIJo4LEzTPWS5rIxfK7KBUQ=",
-        "rev": "95e7d2750b1d94179f6c994c905b09b2d7155b7a",
-        "revCount": 402,
+        "lastModified": 1788983321,
+        "narHash": "sha256-i1mdEvJdCe2YhHPsCs1+GHxg/j5Y3YuFD7sRNYTSiGg=",
+        "rev": "e8910e79c9c29bf1af681d8c7cac83a15fd8048e",
+        "revCount": 417,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.402%2Brev-95e7d2750b1d94179f6c994c905b09b2d7155b7a/01a06c87-1e29-7643-a3f0-46b47572f68c/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.417%2Brev-e8910e79c9c29bf1af681d8c7cac83a15fd8048e/01a089d0-1868-7b62-b159-885db3d5a714/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -736,11 +736,11 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1788316716,
-        "narHash": "sha256-bc7rSpXIdn9QWGNqfWcPZWOhEVF8NoeAZkWq0XWnf/k=",
+        "lastModified": 1788881743,
+        "narHash": "sha256-2V9GZGvPfrNzxFozhI9dcqV+c3QdA8YZrvAAzqEB+dI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "3ed67ec0a4d3c7ab4ae1f04f8ee8df07bfa506a2",
+        "rev": "d6524aaca2ff07876657ae2b323f24be4874944b",
         "type": "github"
       },
       "original": {
