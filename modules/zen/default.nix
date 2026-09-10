@@ -16,12 +16,13 @@
           private_browsing = true;
         };
 
-        "{d634138d-c276-4fc8-924b-40a0ea21d284}" = {
-          name = "1Password";
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/1password-x-password-manager/latest.xpi";
+        "{25fc87fa-4d31-4fee-b5c1-c32a7844c063}" = {
+          name = "1Password (Beta)";
+          install_url = "https://c.1password.com/dist/1P/b5x/firefox/beta/latest.xpi";
           installation_mode = "force_installed";
           private_browsing = true;
         };
+
         "clipper@obsidian.md" = {
           name = "Obsidian Web Clipper";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/web-clipper-obsidian/latest.xpi";
@@ -50,6 +51,11 @@
         "addon@simplelogin" = {
           name = "SimpleLogin";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/simplelogin/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "holy-shelf@jhofer.de" = {
+          name = "Holy Shelf";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/holy-shelf/latest.xpi";
           installation_mode = "force_installed";
         };
       };
@@ -103,7 +109,10 @@
               pins."BetterStack".id
               pins."Status".id
             ];
-            sizes = [70 30];
+            sizes = [
+              70
+              30
+            ];
           };
           "Energy Watchdog + Nut Dog" = {
             id = "energy-watchdog-nut-dog-split";
@@ -112,7 +121,10 @@
               pins."Energy Watchdog".id
               pins."Nut Dog".id
             ];
-            sizes = [50 50];
+            sizes = [
+              50
+              50
+            ];
           };
           "Rack Temps + Misc Overview" = {
             id = "rack-temps-misc-overview-split";
@@ -121,7 +133,10 @@
               pins."Rack Temps".id
               pins."Misc Overview".id
             ];
-            sizes = [70 30];
+            sizes = [
+              70
+              30
+            ];
           };
         };
 
