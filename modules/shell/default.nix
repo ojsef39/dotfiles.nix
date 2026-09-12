@@ -10,6 +10,7 @@
     # Required packages
     home.packages = with pkgs; [
       age
+      archive-linear-issue
       coreutils
       cowsay
       eza
