@@ -83,10 +83,11 @@
         essentials = import ./_parts/essentials.nix shared;
         personal = import ./_parts/space_personal.nix shared;
         jhc = import ./_parts/space_jhc.nix shared;
+        todo = import ./_parts/space_todo.nix shared;
         work = import ./_parts/space_work.nix shared;
 
-        spaces = personal.spaces // jhc.spaces // work.spaces;
-        pins = essentials.pins // personal.pins // jhc.pins // work.pins;
+        spaces = personal.spaces // jhc.spaces // todo.spaces // work.spaces;
+        pins = essentials.pins // personal.pins // todo.pins // jhc.pins // work.pins;
       in {
         inherit containers spaces pins;
         spacesForce = true;

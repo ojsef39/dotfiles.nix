@@ -1,18 +1,18 @@
 # Pins for this space are defined in the nix-work repo.
 {containers, ...}: let
   spaces = {
-    "Work" = {
-      id = "450c7d65-0b3f-41ca-8dca-7b46638bfe96";
-      icon = "chrome://browser/skin/zen-icons/selectable/briefcase.svg";
-      container = containers."Work".id;
-      position = 4000;
+    "ToDo" = {
+      id = "574b2a07-ae22-4df7-8a7c-31e28a7e707a";
+      icon = "chrome://browser/skin/zen-icons/selectable/checkbox.svg";
+      container = containers."Personal".id;
+      position = 3000;
       theme = {
         type = "gradient";
         colors = [
           {
-            red = 30;
-            green = 30;
-            blue = 27;
+            red = 47;
+            green = 21;
+            blue = 26;
             algorithm = "floating";
             type = "explicit-lightness";
           }
