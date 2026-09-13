@@ -1,60 +1,62 @@
 {
-  flake.modules.homeManager.personal = {pkgs, ...}: let
-    kubernetesMcpConfig = pkgs.writeText "kubernetes-mcp-server.toml" ''
-      read_only = true
-
-      [[denied_resources]]
-      group = ""
-      version = "v1"
-      kind = "Secret"
-    '';
-
+  flake.modules.homeManager.personal = {
+    pkgs,
+    lib,
+    ...
+  }: let
     caBundle =
       if pkgs.stdenv.isDarwin
       then "/opt/homebrew/etc/ca-certificates/cert.pem"
       else "/etc/ssl/certs/ca-bundle.crt";
 
-    # Workaround for anthropics/claude-code#32549: Claude Code deduplicates MCP servers
-    # by command path only, so two servers with the same binary are collapsed into one.
-    # Thin wrappers give each server a distinct store path.
-    mkWrapper = name:
-      pkgs.writeShellScriptBin "prometheus-mcp-server-${name}" ''
-        exec ${pkgs.prometheus-mcp-server}/bin/prometheus-mcp-server "$@"
-      '';
+    # Radar is an HTTP MCP server, so there is no process for op run to wrap and
+    # no env in which to put a CA bundle. mcp-remote bridges it back to stdio,
+    # which restores both.
+    mkRadar = env: {
+      command = "${pkgs._1password-cli}/bin/op";
+      args = [
+        "run"
+        "--"
+        "${pkgs.mcp-remote}/bin/mcp-remote"
+        "https://kube-radar.${env}.k8.hla1.jhofer.lan/mcp"
+        "--header"
+        "Cookie:radar_session=\${RADAR_MCP_TOKEN}"
+      ];
+      env = {
+        RADAR_MCP_TOKEN = lib.mkDefault "op://JHC/radar-mcp/token";
+        NODE_EXTRA_CA_CERTS = caBundle;
+      };
+    };
   in {
-    ai.allowedMcpCalls = {
-      "kubernetes-mcp-server" = [
-        "configuration_contexts_list"
-        "configuration_view"
-        "events_list"
-        "namespaces_list"
-        "nodes_log"
-        "nodes_stats_summary"
-        "nodes_top"
-        "pods_get"
-        "pods_list"
-        "pods_list_in_namespace"
-        "pods_log"
-        "pods_top"
-        "resources_get"
-        "resources_list"
+    ai.allowedMcpCalls = let
+      radarReadTools = [
+        "diagnose"
+        "discover_metrics"
+        "get_changes"
+        "get_cluster_audit"
+        "get_cluster_upgrade_readiness"
+        "get_dashboard"
+        "get_events"
+        "get_helm_release"
+        "get_neighborhood"
+        "get_pod_logs"
+        "get_prometheus_rules"
+        "get_resource"
+        "get_subject_permissions"
+        "get_topology"
+        "get_workload_logs"
+        "issues"
+        "list_helm_releases"
+        "list_namespaces"
+        "list_packages"
+        "list_resources"
+        "query_prometheus"
+        "search"
+        "top_resources"
       ];
-      "prometheus/talos-dev-hla1" = [
-        "talos_dev_hla1_execute_query"
-        "talos_dev_hla1_execute_range_query"
-        "talos_dev_hla1_get_metric_metadata"
-        "talos_dev_hla1_get_targets"
-        "talos_dev_hla1_health_check"
-        "talos_dev_hla1_list_metrics"
-      ];
-      "prometheus/talos-live-hla1" = [
-        "talos_live_hla1_execute_query"
-        "talos_live_hla1_execute_range_query"
-        "talos_live_hla1_get_metric_metadata"
-        "talos_live_hla1_get_targets"
-        "talos_live_hla1_health_check"
-        "talos_live_hla1_list_metrics"
-      ];
+    in {
+      "radar/talos-dev-hla1" = radarReadTools;
+      "radar/talos-live-hla1" = radarReadTools;
       "claude.ai/Linear" = [
         "extract_images"
         "get_attachment"
@@ -87,30 +89,8 @@
     };
 
     programs.mcp.servers = {
-      "kubernetes-mcp-server" = {
-        command = "${pkgs.kubernetes-mcp-server}/bin/kubernetes-mcp-server";
-        args = ["--config" "${kubernetesMcpConfig}"];
-      };
-      "prometheus/talos-live-hla1" = {
-        command = "${mkWrapper "talos-live-hla1"}/bin/prometheus-mcp-server-talos-live-hla1";
-        args = [];
-        env = {
-          PROMETHEUS_URL = "https://thanos-query.live.k8.hla1.jhofer.lan";
-          TOOL_PREFIX = "talos_live_hla1";
-          REQUESTS_CA_BUNDLE = caBundle;
-          SSL_CERT_FILE = caBundle;
-        };
-      };
-      "prometheus/talos-dev-hla1" = {
-        command = "${mkWrapper "talos-dev-hla1"}/bin/prometheus-mcp-server-talos-dev-hla1";
-        args = [];
-        env = {
-          PROMETHEUS_URL = "https://thanos-query.dev.k8.hla1.jhofer.lan";
-          TOOL_PREFIX = "talos_dev_hla1";
-          REQUESTS_CA_BUNDLE = caBundle;
-          SSL_CERT_FILE = caBundle;
-        };
-      };
+      "radar/talos-dev-hla1" = mkRadar "dev";
+      "radar/talos-live-hla1" = mkRadar "live";
     };
   };
 }
