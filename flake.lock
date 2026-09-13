@@ -491,11 +491,11 @@
     },
     "nix-flatpak": {
       "locked": {
-        "lastModified": 1783368811,
-        "narHash": "sha256-0H8jDwR4Kegb3heaTrH1ftbgKfZVDT8JE+46uXxDy/Q=",
+        "lastModified": 1789296110,
+        "narHash": "sha256-8wVBx1J5hR1DzUyzlrm2DkMXx7RJbATh3+R+qBBILlI=",
         "owner": "gmodena",
         "repo": "nix-flatpak",
-        "rev": "20d42f0ee98c9fe9f85e8d1de474f1409ed10d05",
+        "rev": "0f392e302963bce69787c495aa95ef1d50dda889",
         "type": "github"
       },
       "original": {
