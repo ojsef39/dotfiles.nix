@@ -67,7 +67,7 @@
     };
     "Renovate" = {
       id = "165ff60e-6815-4c80-8c6b-26aa35174b33";
-      url = "https://renovate.jhofer.org/";
+      url = "https://renovate.jhofer.org/?filter=running";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 207;
