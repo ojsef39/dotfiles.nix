@@ -77,7 +77,7 @@
         };
 
         # Every space owns its own file in ./_parts (skipped by import-tree),
-        # exporting `{spaces, pins}`. The nix-work repo adds work pins on top.
+        # exporting `{spaces, pins, joinedTabs}`. The nix-work repo adds work pins on top.
         shared = {inherit containers;};
 
         essentials = import ./_parts/essentials.nix shared;
@@ -88,58 +88,12 @@
 
         spaces = personal.spaces // jhc.spaces // todo.spaces // work.spaces;
         pins = essentials.pins // personal.pins // todo.pins // jhc.pins // work.pins;
+        joinedTabs = personal.joinedTabs // jhc.joinedTabs // todo.joinedTabs // work.joinedTabs;
       in {
-        inherit containers spaces pins;
+        inherit containers spaces pins joinedTabs;
         spacesForce = true;
         containersForce = true;
         pinsForce = false;
-
-        joinedTabs = {
-          "Mastodon + Chaos Social" = {
-            id = "mastodon-chaos-social-split";
-            gridType = "vsep";
-            tabs = [
-              pins."Mastodon".id
-              pins."Chaos Social".id
-            ];
-          };
-          "BetterStack + Status" = {
-            id = "betterstack-status-split";
-            gridType = "vsep";
-            tabs = [
-              pins."BetterStack".id
-              pins."Status".id
-            ];
-            sizes = [
-              70
-              30
-            ];
-          };
-          "Energy Watchdog + Nut Dog" = {
-            id = "energy-watchdog-nut-dog-split";
-            gridType = "vsep";
-            tabs = [
-              pins."Energy Watchdog".id
-              pins."Nut Dog".id
-            ];
-            sizes = [
-              50
-              50
-            ];
-          };
-          "Rack Temps + Misc Overview" = {
-            id = "rack-temps-misc-overview-split";
-            gridType = "vsep";
-            tabs = [
-              pins."Rack Temps".id
-              pins."Misc Overview".id
-            ];
-            sizes = [
-              70
-              30
-            ];
-          };
-        };
 
         # Get Key IDs using jq -c '.shortcuts[] | {id, key, keycode, action}' ~/Library/Application\ Support/Zen/Profiles/default/zen-keyboard-shortcuts.json | fzf
         # https://github.com/0xc000022070/zen-browser-flake#configuration-options

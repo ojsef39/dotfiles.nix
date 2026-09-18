@@ -79,4 +79,15 @@
     };
     # --- END Trivia folder ---
   };
-in {inherit spaces pins;}
+
+  joinedTabs = {
+    "Mastodon + Chaos Social" = {
+      id = "mastodon-chaos-social-split";
+      gridType = "vsep";
+      tabs = [
+        pins."Mastodon".id
+        pins."Chaos Social".id
+      ];
+    };
+  };
+in {inherit spaces pins joinedTabs;}

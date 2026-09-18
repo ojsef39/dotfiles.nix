@@ -164,21 +164,21 @@
     };
     "Nut Dog" = {
       id = "2a1e9dd9-a47d-43b8-8a4c-88855d4d827e";
-      url = "https://grafana.hla1.jhofer.lan/d/nut-dog/nut-dog?from=now-6h&to=now";
+      url = "https://grafana.hla1.jhofer.lan/d/nut-dog/nut-dog?from=now-6h&to=now&refresh=1m";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 219;
     };
     "Rack Temps" = {
       id = "10bdc242-5fb3-459f-ae32-aa711c297a86";
-      url = "https://grafana.hla1.jhofer.lan/d/rack_temps/rack-temps?from=now-6h&to=now";
+      url = "https://grafana.hla1.jhofer.lan/d/rack_temps/rack-temps?from=now-6h&to=now&refresh=1m";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 220;
     };
     "Misc Overview" = {
       id = "950825df-59e8-4d51-a491-bb4226aecda2";
-      url = "https://grafana.hla1.jhofer.lan/d/dcf5mhzhh7gyyoc/misc-overview?from=now-6h&to=now";
+      url = "https://grafana.hla1.jhofer.lan/d/dcf5mhzhh7gyyoc/misc-overview?from=now-6h&to=now&refresh=1m";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 221;
@@ -211,4 +211,43 @@
     };
     # --- END Satisfactory folder ---
   };
-in {inherit spaces pins;}
+
+  joinedTabs = {
+    "BetterStack + Status" = {
+      id = "betterstack-status-split";
+      gridType = "vsep";
+      tabs = [
+        pins."BetterStack".id
+        pins."Status".id
+      ];
+      sizes = [
+        70
+        30
+      ];
+    };
+    "Energy Watchdog + Nut Dog" = {
+      id = "energy-watchdog-nut-dog-split";
+      gridType = "vsep";
+      tabs = [
+        pins."Energy Watchdog".id
+        pins."Nut Dog".id
+      ];
+      sizes = [
+        50
+        50
+      ];
+    };
+    "Rack Temps + Misc Overview" = {
+      id = "rack-temps-misc-overview-split";
+      gridType = "vsep";
+      tabs = [
+        pins."Rack Temps".id
+        pins."Misc Overview".id
+      ];
+      sizes = [
+        65
+        35
+      ];
+    };
+  };
+in {inherit spaces pins joinedTabs;}

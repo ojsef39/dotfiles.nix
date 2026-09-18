@@ -25,4 +25,5 @@
 in {
   inherit spaces;
   pins = {};
+  joinedTabs = {};
 }
