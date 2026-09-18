@@ -94,7 +94,7 @@ jobs:
       # If more space is needed, see https://github.com/jlumbroso/free-disk-space/issues/23
       - name: Free disk space
         if: matrix.os == 'ubuntu-latest'
-        uses: jlumbroso/free-disk-space@3f13feab2962a87273d379ebc36ea159527e6cc9 # v1.3.2
+        uses: jlumbroso/free-disk-space@ceedf095f4ec1a097402bc6bd80831f2e1a6fde6 # v2.0.0
 
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3.22.4
