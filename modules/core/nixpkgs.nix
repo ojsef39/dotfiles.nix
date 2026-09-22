@@ -9,7 +9,7 @@
         _final: prev:
           import ../../packages {
             pkgs = prev;
-            inherit vars;
+            inherit inputs vars;
           }
       )
       inputs.nixkit.overlays.default

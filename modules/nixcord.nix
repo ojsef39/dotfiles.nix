@@ -3,6 +3,7 @@
     config,
     pkgs,
     vars,
+    inputs,
     ...
   }: let
     # FIX: Investigate Vesktop aarpc broken on linux?
@@ -135,10 +136,7 @@
     home.file =
       {
         ${themePath} = {
-          source = builtins.fetchurl {
-            url = "https://raw.githubusercontent.com/refact0r/midnight-discord/refs/heads/master/themes/flavors/midnight-catppuccin-macchiato.theme.css";
-            sha256 = "08bki3fpndw0ziyp746iwakh8bwsky4qa680vw1qj5g3ylhb9pw7";
-          };
+          source = "${inputs.midnight-discord}/themes/flavors/${themeFile}";
           force = true;
         };
       }

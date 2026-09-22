@@ -97,9 +97,6 @@
         })
       );
       enableMcpIntegration = true;
-      tui = {
-        theme = "catppuccin";
-      };
       settings = {
         model = lib.mkDefault opencodeModel;
         instructions = ["${cfg.instructionsDir}/*.md"];

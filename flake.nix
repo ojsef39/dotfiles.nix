@@ -90,6 +90,28 @@
     };
     # Pinned to 1.0.40; versions after this break MCP integration.
     nixpkgs-copilot-cli.url = "github:NixOS/nixpkgs/3df3d1dbd49472b0cb5b921ef9f3cab8ee39f5f6";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # ==== Pinned sources ====
+    archive-linear-issue = {
+      url = "github:ddikman/archive-linear-issue";
+      flake = false;
+    };
+    catppuccin-wallpapers = {
+      url = "github:orangci/walls-catppuccin-mocha";
+      flake = false;
+    };
+    fish-completion-sync = {
+      url = "github:pfgray/fish-completion-sync";
+      flake = false;
+    };
+    midnight-discord = {
+      url = "github:refact0r/midnight-discord";
+      flake = false;
+    };
   };
 
   # Dendritic pattern: see README.md for the module aggregates this flake

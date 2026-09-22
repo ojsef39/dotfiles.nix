@@ -40,7 +40,7 @@ deploy-update: lint
 
 [group('nix')]
 [doc('Upgrade refs and deploy')]
-upgrade: update-refs lint
+upgrade: lint
     @git pull --rebase --autostash || true
     @git add .
     @nh {{nix_cmd}} switch -a -H {{nix_host}} $NIX_GIT_PATH -- {{nix_flags}}
@@ -52,12 +52,6 @@ upgrade: update-refs lint
         git commit -m "chore(deps): updated inputs and/or refs" || true; \
     fi
 
-
-[group('nix')]
-[doc('Update every fetcher with its newest commit and hash')]
-update-refs:
-    # Update current repository
-    @kitten @ launch --type=overlay --title="update-nix-fetchgit-all" --copy-env --env SKIP_FF=1 fish -c "cd $NIX_GIT_PATH && update-nix-fetchgit-all"
 
 [group('nix')]
 [doc('List module files that define or import an aggregate, e.g. `just where nvidia`')]

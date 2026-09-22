@@ -30,6 +30,7 @@ in {
             inputs.spicetify-nix.homeManagerModules.default
             inputs.zen-browser.homeModules.beta
             inputs.caelestia-shell.homeManagerModules.default
+            inputs.catppuccin.homeModules.catppuccin
           ];
           users.${vars.user.name}.imports = [
             m.homeManager.base

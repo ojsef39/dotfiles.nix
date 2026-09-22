@@ -4,20 +4,19 @@
     inputs,
     ...
   }: let
-    # TODO: dendritic pattern with flake-parts
-    # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/506
-    # examples/resources:
-    # https://github.com/frostplexx/dotfiles.nix/pull/694
-    # https://youtu.be/-TRbzkw6Hjs?si=BcNzUCxE9QJJwDwd
     rose-pine-hyprcursor = inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default;
-
-    catppuccin-hyprland = pkgs.fetchurl {
-      # Pinned: upstream replaced the .conf themes with .lua themes for Hyprland 0.55+,
-      # so the file no longer exists on main.
-      url = "https://raw.githubusercontent.com/catppuccin/hyprland/b57375545f5da1f7790341905d1049b1873a8bb3/themes/macchiato.conf";
-      sha256 = "1f8fr5sf220g4pc7vcg2cs51rzp49a7dgr8rlwspybvmz9wdc3c8";
-    };
   in {
+    # NOTE: catppuccin/nix's hyprland module needs `configType = "lua"`, which
+    # this config is not ready for: under Lua, binds take dispatcher objects
+    # (`hl.bind(keys, hl.dsp.…)`) and monitors take a table, so all 52 binds
+    # plus monitor/env would need translating. Until then the three colours
+    # below are inlined — Catppuccin Macchiato blue/mauve/surface0.
+    catppuccin = {
+      hyprland.enable = false;
+      # Cursors are rose-pine here, not catppuccin.
+      cursors.enable = false;
+    };
+
     nix.settings = {
       extra-substituters = ["https://hyprland.cachix.org"];
       extra-trusted-substituters = ["https://hyprland.cachix.org"];
@@ -57,8 +56,8 @@
           gaps_in = 4;
           gaps_out = 8;
           border_size = 2;
-          "col.active_border" = "$blue $mauve 45deg";
-          "col.inactive_border" = "$surface0";
+          "col.active_border" = "rgb(8aadf4) rgb(c6a0f6) 45deg"; # blue, mauve
+          "col.inactive_border" = "rgb(363a4f)"; # surface0
           layout = "dwindle";
           allow_tearing = false;
         };
@@ -127,8 +126,6 @@
           "caelestia shell -d"
           "systemctl --user start sunshine"
         ];
-
-        source = ["${catppuccin-hyprland}"];
 
         # ── Keybindings ─────────────────────────────────────────
         bind = [

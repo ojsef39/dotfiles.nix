@@ -49,7 +49,6 @@
       retry
       rsync
       speedtest-cli
-      update-nix-fetchgit # https://github.com/expipiplus1/update-nix-fetchgit
       virt-viewer
       wget
       whois

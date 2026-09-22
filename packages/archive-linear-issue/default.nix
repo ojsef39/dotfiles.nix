@@ -5,13 +5,11 @@
 #   archive-linear-issue                     # usage error, no op prompt bypass
 #   archive-linear-issue JHC-1               # token pulled from 1Password
 #   LINEAR_API_KEY=lin_api_x archive-linear-issue JHC-1   # env wins, no op read
-{pkgs}: let
-  src = pkgs.fetchFromGitHub {
-    owner = "ddikman";
-    repo = "archive-linear-issue";
-    rev = "2e76afdf696767bc0c3bdde91af0ec28bdcff3cb";
-    hash = "sha256-d52MtXY92OwPq8Mkv3cCV/hv/NbaK2SCoaU5HiVe+tw=";
-  };
+{
+  pkgs,
+  inputs,
+}: let
+  src = inputs.archive-linear-issue;
 in
   pkgs.writeShellApplication {
     name = "archive-linear-issue";
