@@ -43,6 +43,7 @@ in {
           nixpkgs.overlays = lib.mkAfter [
             (_: prev: {
               kubectl-debug = prev.runCommandLocal "kubectl-debug-ci-stub" {} "mkdir -p $out";
+              hypr-kinetic-scroll = prev.runCommandLocal "hypr-kinetic-scroll-stub" {} "mkdir -p $out";
             })
           ];
         }

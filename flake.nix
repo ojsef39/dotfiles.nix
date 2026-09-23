@@ -112,6 +112,10 @@
       url = "github:refact0r/midnight-discord";
       flake = false;
     };
+    hypr-kinetic-scroll = {
+      url = "github:savonovv/hypr-kinetic-scroll";
+      flake = false;
+    };
   };
 
   # Dendritic pattern: see README.md for the module aggregates this flake

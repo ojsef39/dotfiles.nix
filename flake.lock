@@ -419,6 +419,22 @@
         "type": "github"
       }
     },
+    "hypr-kinetic-scroll": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785254141,
+        "narHash": "sha256-2RI9RSoXhri9tr9DAsB/Zen96DzKsj/wLRbQQKEZ1Yc=",
+        "owner": "savonovv",
+        "repo": "hypr-kinetic-scroll",
+        "rev": "657a8a7cb1cc0a24a06e2dc0947df3e8f4e729ca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "savonovv",
+        "repo": "hypr-kinetic-scroll",
+        "type": "github"
+      }
+    },
     "hyprlang": {
       "inputs": {
         "nixpkgs": [
@@ -920,6 +936,7 @@
         "fish-completion-sync": "fish-completion-sync",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
+        "hypr-kinetic-scroll": "hypr-kinetic-scroll",
         "import-tree": "import-tree",
         "midnight-discord": "midnight-discord",
         "nix-cachyos-kernel": "nix-cachyos-kernel",

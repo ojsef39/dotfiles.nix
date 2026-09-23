@@ -32,6 +32,7 @@
     wayland.windowManager.hyprland = {
       enable = true;
       configType = "hyprlang";
+      plugins = [pkgs.hypr-kinetic-scroll];
 
       settings = {
         # ── Monitor ──────────────────────────────────────────────
@@ -48,6 +49,19 @@
           touchpad = {
             natural_scroll = true;
             scroll_factor = 0.4;
+          };
+        };
+
+        # ── Kinetic scroll (macOS-like touchpad momentum) ────────
+        plugin = {
+          "kinetic-scroll" = {
+            enabled = 1;
+            decel = 0.92;
+            min_velocity = 0.5;
+            interval_ms = 16;
+            delta_multiplier = 1.25;
+            disable_in_browser = 1;
+            stop_on_target_change = 1;
           };
         };
 
