@@ -43,7 +43,7 @@
         input = {
           kb_layout = "de";
           follow_mouse = 1;
-          sensitivity = -0.3;
+          sensitivity = 0.5;
           scroll_factor = 0.27;
           touchpad = {
             natural_scroll = true;
