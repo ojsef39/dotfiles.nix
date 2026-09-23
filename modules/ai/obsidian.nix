@@ -96,7 +96,7 @@
       vaultPath = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
         default =
-          if pkgs.stdenv.isDarwin
+          if pkgs.stdenv.hostPlatform.isDarwin
           then "/Users/${vars.user.name}/Documents/Obsidian Vault"
           else null;
         description = "Absolute path to the Obsidian vault. null disables Obsidian instructions for AI tools.";

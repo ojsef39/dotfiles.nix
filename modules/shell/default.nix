@@ -72,7 +72,7 @@
           set -gx NIX_GIT_PATH "${baseLib.mkDotPath vars pkgs}"
           set -gx NH_SHOW_ACTIVATION_LOGS 1
         ''
-        + lib.optionalString pkgs.stdenv.isDarwin ''
+        + lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
           # macOS: make tools trust the homebrew CA bundle
           set -gx PYTHON /usr/bin/python3
           set -gx NODE_EXTRA_CA_CERTS /opt/homebrew/etc/ca-certificates/cert.pem
@@ -308,7 +308,7 @@
       };
 
       plugins = with pkgs.fishPlugins;
-        (lib.optionals pkgs.stdenv.isDarwin [
+        (lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
           {
             name = "macos";
             inherit (macos) src;

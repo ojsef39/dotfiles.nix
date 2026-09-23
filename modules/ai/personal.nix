@@ -5,7 +5,7 @@
     ...
   }: let
     caBundle =
-      if pkgs.stdenv.isDarwin
+      if pkgs.stdenv.hostPlatform.isDarwin
       then "/opt/homebrew/etc/ca-certificates/cert.pem"
       else "/etc/ssl/certs/ca-bundle.crt";
 

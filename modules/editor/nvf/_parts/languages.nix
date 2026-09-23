@@ -8,7 +8,7 @@
     enable = true;
     formatOnSave = true;
     lspkind.enable = true;
-    lightbulb.enable = pkgs.stdenv.isDarwin;
+    lightbulb.enable = pkgs.stdenv.hostPlatform.isDarwin;
     lspSignature.enable = false; # Conflicts with blink-cmp
 
     servers = {
@@ -79,7 +79,7 @@
             end,
           })
         '';
-        sourcekit = lib.optionalString pkgs.stdenv.isDarwin ''
+        sourcekit = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
           vim.lsp.config.sourcekit = {
             cmd = { '${pkgs.sourcekit-lsp}/bin/sourcekit-lsp' },
             filetypes = { 'swift', 'objective-c', 'objective-cpp' },
