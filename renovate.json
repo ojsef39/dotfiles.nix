@@ -13,6 +13,12 @@
       "matchManagers": ["nix"],
       "matchDepNames": ["nixpkgs-copilot-cli"],
       "enabled": false
+    },
+    {
+      "description": "Third-party code, review before merging",
+      "matchManagers": ["nix"],
+      "matchDepNames": ["archive-linear-issue"],
+      "automerge": false
     }
   ]
 }

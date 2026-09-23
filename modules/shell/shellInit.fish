@@ -1,4 +1,4 @@
-fish_config theme choose "Catppuccin Macchiato"
+# The catppuccin port selects the fish theme (see modules/catppuccin.nix).
 
 # Set PATH
 fish_add_path /opt/homebrew/bin

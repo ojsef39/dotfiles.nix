@@ -4,6 +4,10 @@
     lib,
     ...
   }: {
+    # The port adds its own plugin and extraConfig, which collides with the
+    # plugin list and tpm setup here.
+    catppuccin.tmux.enable = false;
+
     programs = {
       tmux = {
         enable = lib.mkDefault true;

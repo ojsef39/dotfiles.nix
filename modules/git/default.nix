@@ -3,6 +3,7 @@
     lib,
     pkgs,
     vars,
+    config,
     ...
   }: let
     customServices = vars.git.customServices;
@@ -30,7 +31,7 @@
           signByDefault = true;
           format = "ssh";
           signer =
-            if pkgs.stdenv.isDarwin
+            if pkgs.stdenv.hostPlatform.isDarwin
             then "/Applications/Nix Apps/1Password.app/Contents/MacOS/op-ssh-sign"
             else "${pkgs._1password-gui}/bin/op-ssh-sign";
         };
@@ -82,7 +83,9 @@
         enable = lib.mkDefault true;
         enableGitIntegration = true;
         options = {
-          features = "side-by-side";
+          # delta takes a space-separated feature list, but the catppuccin port
+          # also defines `features`; combine them instead of losing either.
+          features = lib.mkForce "side-by-side catppuccin-${config.catppuccin.delta.flavor}";
         };
       };
       lazygit = {
@@ -93,7 +96,6 @@
         #   src = pkgs.fetchFromGitHub {
         #     owner = "jesseduffield";
         #     repo = "lazygit";
-        #     # pinned to master branch (update-nix-fetchgit-all)
         #     rev = "1d8073075710fe7998ebd1a37857639757f38c7b"; # master
         #     sha256 = "1plx37vwwbdc56ahhyafimdnr4b4241dhklcbmy9460hqjjdmf9n";
         #   };

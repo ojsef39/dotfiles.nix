@@ -29,6 +29,7 @@ in {
             inputs.nixkit.homeModules.default
             inputs.spicetify-nix.homeManagerModules.default
             inputs.zen-browser.homeModules.beta
+            inputs.catppuccin.homeModules.catppuccin
           ];
           users.${vars.user.name}.imports = [
             m.homeManager.base

@@ -20,6 +20,22 @@
         "type": "github"
       }
     },
+    "archive-linear-issue": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1779781571,
+        "narHash": "sha256-d52MtXY92OwPq8Mkv3cCV/hv/NbaK2SCoaU5HiVe+tw=",
+        "owner": "ddikman",
+        "repo": "archive-linear-issue",
+        "rev": "2e76afdf696767bc0c3bdde91af0ec28bdcff3cb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ddikman",
+        "repo": "archive-linear-issue",
+        "type": "github"
+      }
+    },
     "caelestia-cli": {
       "inputs": {
         "caelestia-shell": [
@@ -62,6 +78,42 @@
       "original": {
         "owner": "caelestia-dots",
         "repo": "shell",
+        "type": "github"
+      }
+    },
+    "catppuccin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789553013,
+        "narHash": "sha256-W5dvgFOuVs24X3G5tUb8C2IHU7ICXNvyGPiWWFjfbuo=",
+        "owner": "catppuccin",
+        "repo": "nix",
+        "rev": "89b3eacf59d6b5eefbc2d69c3a4eb5aaf66d63bc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "nix",
+        "type": "github"
+      }
+    },
+    "catppuccin-wallpapers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1762937381,
+        "narHash": "sha256-N+MZHSRcwOldS5Ai8B3YfKquKs9oeUW/GkV1iKM5+i8=",
+        "owner": "orangci",
+        "repo": "walls-catppuccin-mocha",
+        "rev": "7bfdf10d16ad3a689f9f0cf3a0930da3d1a245a8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "orangci",
+        "repo": "walls-catppuccin-mocha",
         "type": "github"
       }
     },
@@ -161,6 +213,22 @@
       "original": {
         "type": "file",
         "url": "https://install.determinate.systems/determinate-nixd/tag/v3.22.5/x86_64-linux"
+      }
+    },
+    "fish-completion-sync": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1690910715,
+        "narHash": "sha256-wmtMUVi/NmbvJtrPbORPhAwXgnILvm4rjOtjl98GcWA=",
+        "owner": "pfgray",
+        "repo": "fish-completion-sync",
+        "rev": "f75ed04e98b3b39af1d3ce6256ca5232305565d8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pfgray",
+        "repo": "fish-completion-sync",
+        "type": "github"
       }
     },
     "flake-compat": {
@@ -410,6 +478,22 @@
         "type": "github"
       }
     },
+    "midnight-discord": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788227032,
+        "narHash": "sha256-T0IVLbZGwc/+vxSR8PwJt2EDmrECphDAl7dPw6B17QM=",
+        "owner": "refact0r",
+        "repo": "midnight-discord",
+        "rev": "85dd67148cbbbfa027cb091e41a479a16ab16a65",
+        "type": "github"
+      },
+      "original": {
+        "owner": "refact0r",
+        "repo": "midnight-discord",
+        "type": "github"
+      }
+    },
     "mnw": {
       "locked": {
         "lastModified": 1780772958,
@@ -552,12 +636,12 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1790063325,
-        "narHash": "sha256-mJMwsjuMDRyVi7Ppn1SytO5O1SE9c9qUR3vQlE61E9o=",
-        "rev": "66fb6f30ace48e5e6eb82c63e3c3f2707c8c56d4",
-        "revCount": 448,
+        "lastModified": 1790152737,
+        "narHash": "sha256-yK0AjcVVSkWR+RVzQJpCK+CfcuQTc8eR9sa8q7esjlA=",
+        "rev": "59cc1a72b1d45bab881bbd4c094a416d1cb046d5",
+        "revCount": 451,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.448%2Brev-66fb6f30ace48e5e6eb82c63e3c3f2707c8c56d4/01a0ca2e-3ded-7a92-a86f-cbfc9d4d8065/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.451%2Brev-59cc1a72b1d45bab881bbd4c094a416d1cb046d5/01a0cd91-a1df-7e21-99e7-730e952da894/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -826,13 +910,18 @@
     "root": {
       "inputs": {
         "agate": "agate",
+        "archive-linear-issue": "archive-linear-issue",
         "caelestia-shell": "caelestia-shell",
+        "catppuccin": "catppuccin",
+        "catppuccin-wallpapers": "catppuccin-wallpapers",
         "claude-code": "claude-code",
         "darwin": "darwin",
         "determinate": "determinate",
+        "fish-completion-sync": "fish-completion-sync",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
+        "midnight-discord": "midnight-discord",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nix-flatpak": "nix-flatpak",
         "nix-index-database": "nix-index-database",

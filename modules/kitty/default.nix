@@ -84,7 +84,7 @@
 
         # Set font size based on system because on linux wayland, font zise 13 is huge for some reason
         font_size =
-          if pkgs.stdenv.isDarwin
+          if pkgs.stdenv.hostPlatform.isDarwin
           then "14"
           else "10";
         modify_font = "cell_height 100%";
@@ -149,18 +149,14 @@
         # fix MXL switch escape
         "f12" = "send_text all \\x1c";
       };
+      # The catppuccin theme is set via programs.kitty.themeFile by
+      # catppuccin/nix (see modules/catppuccin.nix).
       extraConfig = ''
-        include ${config.xdg.configHome}/kitty/themes/catppuccin-macchiato.conf
         include ${config.xdg.configHome}/kitty/quick-access-terminal.conf
       '';
     };
 
     xdg.configFile = {
-      "kitty/themes/catppuccin-macchiato.conf".source = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/catppuccin/kitty/refs/heads/main/themes/macchiato.conf";
-        hash = "sha256-ox4pxH3dU4ijU5+o2qePSYYv9YhT7dinHvnZgrGOPyU=";
-      };
-
       "kitty/quick-access-terminal.conf".source = ./quick-access-terminal.conf;
 
       # Watcher for auto-saving sessions

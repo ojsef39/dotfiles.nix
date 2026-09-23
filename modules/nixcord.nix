@@ -3,19 +3,20 @@
     config,
     pkgs,
     vars,
+    inputs,
     ...
   }: let
     # FIX: Investigate Vesktop aarpc broken on linux?
     # seems to work on cachyos; external arRPC detects games but Vesktop doesnt show it
     #Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/698
-    useVesktop = pkgs.stdenv.isDarwin;
+    useVesktop = pkgs.stdenv.hostPlatform.isDarwin;
     themeFile = "midnight-catppuccin-macchiato.theme.css";
     vesktopThemePath =
-      if pkgs.stdenv.isDarwin
+      if pkgs.stdenv.hostPlatform.isDarwin
       then "/Users/${vars.user.name}/Library/Application Support/vesktop/themes/${themeFile}"
       else "${config.xdg.configHome}/vesktop/themes/${themeFile}";
     discordThemePath =
-      if pkgs.stdenv.isDarwin
+      if pkgs.stdenv.hostPlatform.isDarwin
       then "/Users/${vars.user.name}/Library/Application Support/Vencord/themes/${themeFile}"
       else "${config.xdg.configHome}/Vencord/themes/${themeFile}";
     themePath =
@@ -33,7 +34,7 @@
           minimizeToTray = true;
           arRPC = true;
           customTitleBar =
-            if pkgs.stdenv.isDarwin
+            if pkgs.stdenv.hostPlatform.isDarwin
             then true
             else false;
         };
@@ -135,10 +136,7 @@
     home.file =
       {
         ${themePath} = {
-          source = builtins.fetchurl {
-            url = "https://raw.githubusercontent.com/refact0r/midnight-discord/refs/heads/master/themes/flavors/midnight-catppuccin-macchiato.theme.css";
-            sha256 = "08bki3fpndw0ziyp746iwakh8bwsky4qa680vw1qj5g3ylhb9pw7";
-          };
+          source = "${inputs.midnight-discord}/themes/flavors/${themeFile}";
           force = true;
         };
       }

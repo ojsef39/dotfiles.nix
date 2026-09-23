@@ -35,13 +35,11 @@
         installBatSyntax = true;
         installVimSyntax = true;
         package =
-          if pkgs.stdenv.isDarwin
+          if pkgs.stdenv.hostPlatform.isDarwin
           then pkgs.ghostty-bin
           else pkgs.ghostty;
 
         settings = {
-          theme = "Catppuccin Macchiato";
-
           font-family = "Maple Mono NF";
           font-size = 14;
           font-thicken = true;

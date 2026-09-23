@@ -67,7 +67,7 @@
     };
     "Renovate" = {
       id = "165ff60e-6815-4c80-8c6b-26aa35174b33";
-      url = "https://renovate.jhofer.org/";
+      url = "https://renovate.jhofer.org/?filter=running";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 207;
@@ -106,13 +106,29 @@
       folderParentId = pins."HLA1".id;
       position = 211;
     };
+    "kube-radar-dev" = {
+      id = "f48d7302-f312-4383-9bb5-c933a8d7923f";
+      url = "https://kube-radar.dev.k8.hla1.jhofer.lan";
+      container = containers.Personal.id;
+      workspace = spaces."JHC".id;
+      folderParentId = pins."HLA1".id;
+      position = 212;
+    };
+    "kube-radar-live" = {
+      id = "329d19d4-cde0-484e-8291-81e8399df48c";
+      url = "https://kube-radar.live.k8.hla1.jhofer.lan";
+      container = containers.Personal.id;
+      workspace = spaces."JHC".id;
+      folderParentId = pins."HLA1".id;
+      position = 213;
+    };
     "pve-1-kvm" = {
       id = "ac1a9ea1-0135-496c-a7c9-5c2982e3be58";
       url = "https://pve-1-kvm.hla1.jhofer.lan";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       folderParentId = pins."HLA1".id;
-      position = 212;
+      position = 214;
     };
     "bc1-cmc" = {
       id = "2cf2c1f8-889d-4db1-8828-e86e3e8202cb";
@@ -120,7 +136,7 @@
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       folderParentId = pins."HLA1".id;
-      position = 213;
+      position = 215;
     };
     "bc1-b1-p2-idrac" = {
       id = "690393bf-d699-4d06-be69-8426fde6f373";
@@ -128,7 +144,7 @@
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       folderParentId = pins."HLA1".id;
-      position = 214;
+      position = 216;
     };
     "bc1-b2-p3-idrac" = {
       id = "f344e89a-140c-472d-9ed7-5862c67b35cc";
@@ -136,7 +152,7 @@
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       folderParentId = pins."HLA1".id;
-      position = 215;
+      position = 217;
     };
     # --- END HLA1 folder ---
     "Energy Watchdog" = {
@@ -144,28 +160,28 @@
       url = "https://grafana.hla1.jhofer.lan/d/energy-watchdog/energy-watchdog?from=now-12h&to=now&refresh=1m";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
-      position = 216;
+      position = 218;
     };
     "Nut Dog" = {
       id = "2a1e9dd9-a47d-43b8-8a4c-88855d4d827e";
-      url = "https://grafana.hla1.jhofer.lan/d/nut-dog/nut-dog?from=now-6h&to=now";
-      container = containers.Personal.id;
-      workspace = spaces."JHC".id;
-      position = 217;
-    };
-    "Rack Temps" = {
-      id = "10bdc242-5fb3-459f-ae32-aa711c297a86";
-      url = "https://grafana.hla1.jhofer.lan/d/rack_temps/rack-temps?from=now-6h&to=now";
-      container = containers.Personal.id;
-      workspace = spaces."JHC".id;
-      position = 218;
-    };
-    "Misc Overview" = {
-      id = "950825df-59e8-4d51-a491-bb4226aecda2";
-      url = "https://grafana.hla1.jhofer.lan/d/dcf5mhzhh7gyyoc/misc-overview?from=now-6h&to=now";
+      url = "https://grafana.hla1.jhofer.lan/d/nut-dog/nut-dog?from=now-6h&to=now&refresh=1m";
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       position = 219;
+    };
+    "Rack Temps" = {
+      id = "10bdc242-5fb3-459f-ae32-aa711c297a86";
+      url = "https://grafana.hla1.jhofer.lan/d/rack_temps/rack-temps?from=now-6h&to=now&refresh=1m";
+      container = containers.Personal.id;
+      workspace = spaces."JHC".id;
+      position = 220;
+    };
+    "Misc Overview" = {
+      id = "950825df-59e8-4d51-a491-bb4226aecda2";
+      url = "https://grafana.hla1.jhofer.lan/d/dcf5mhzhh7gyyoc/misc-overview?from=now-6h&to=now&refresh=1m";
+      container = containers.Personal.id;
+      workspace = spaces."JHC".id;
+      position = 221;
     };
 
     # --- START Satisfactory folder ---
@@ -175,7 +191,7 @@
       workspace = spaces."JHC".id;
       isGroup = true;
       isFolderCollapsed = true;
-      position = 220;
+      position = 222;
     };
     "satisfaction01-p1" = {
       id = "7b85e9fd-4b33-4321-bb5b-f747945cb0a7";
@@ -183,7 +199,7 @@
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       folderParentId = pins."Satisfactory".id;
-      position = 221;
+      position = 223;
     };
     "Satisfactory (Grafana)" = {
       id = "dbddfbf3-fe78-4122-a64a-bfbf87a7ddec";
@@ -191,8 +207,47 @@
       container = containers.Personal.id;
       workspace = spaces."JHC".id;
       folderParentId = pins."Satisfactory".id;
-      position = 222;
+      position = 224;
     };
     # --- END Satisfactory folder ---
   };
-in {inherit spaces pins;}
+
+  joinedTabs = {
+    "BetterStack + Status" = {
+      id = "betterstack-status-split";
+      gridType = "vsep";
+      tabs = [
+        pins."BetterStack".id
+        pins."Status".id
+      ];
+      sizes = [
+        70
+        30
+      ];
+    };
+    "Energy Watchdog + Nut Dog" = {
+      id = "energy-watchdog-nut-dog-split";
+      gridType = "vsep";
+      tabs = [
+        pins."Energy Watchdog".id
+        pins."Nut Dog".id
+      ];
+      sizes = [
+        50
+        50
+      ];
+    };
+    "Rack Temps + Misc Overview" = {
+      id = "rack-temps-misc-overview-split";
+      gridType = "vsep";
+      tabs = [
+        pins."Rack Temps".id
+        pins."Misc Overview".id
+      ];
+      sizes = [
+        65
+        35
+      ];
+    };
+  };
+in {inherit spaces pins joinedTabs;}

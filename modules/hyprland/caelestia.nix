@@ -1,12 +1,5 @@
 {
-  flake.modules.homeManager.josef-nd1-gpu0 = {pkgs, ...}: let
-    catppuccin-wallpapers = pkgs.fetchFromGitHub {
-      owner = "orangci";
-      repo = "walls-catppuccin-mocha";
-      rev = "7bfdf10d16ad3a689f9f0cf3a0930da3d1a245a8";
-      sha256 = "0bzs76iqhxa53azlayb8rwmaxakwv0fz08lh9dfykh2w4hfikqrp";
-    };
-  in {
+  flake.modules.homeManager.josef-nd1-gpu0 = {inputs, ...}: {
     programs.caelestia = {
       enable = true;
       systemd.enable = false; # Started from hyprland directly
@@ -25,7 +18,7 @@
           idle.timeouts = [];
           apps.terminal = ["kitty"];
         };
-        paths.wallpaperDir = "${catppuccin-wallpapers}";
+        paths.wallpaperDir = "${inputs.catppuccin-wallpapers}";
         theme = {
           preset = "custom";
           fonts = {

@@ -259,7 +259,7 @@
             };
           }
         ]
-        ++ lib.optionals pkgs.stdenv.isDarwin [
+        ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
           {
             name = "sourcekit";
             command = "${pkgs.sourcekit-lsp}/bin/sourcekit-lsp";

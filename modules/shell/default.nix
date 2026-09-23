@@ -5,11 +5,15 @@
     vars,
     config,
     baseLib,
+    inputs,
     ...
   }: {
+    catppuccin.fzf.enable = false;
+
     # Required packages
     home.packages = with pkgs; [
       age
+      archive-linear-issue
       coreutils
       cowsay
       eza
@@ -68,7 +72,7 @@
           set -gx NIX_GIT_PATH "${baseLib.mkDotPath vars pkgs}"
           set -gx NH_SHOW_ACTIVATION_LOGS 1
         ''
-        + lib.optionalString pkgs.stdenv.isDarwin ''
+        + lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
           # macOS: make tools trust the homebrew CA bundle
           set -gx PYTHON /usr/bin/python3
           set -gx NODE_EXTRA_CA_CERTS /opt/homebrew/etc/ca-certificates/cert.pem
@@ -304,7 +308,7 @@
       };
 
       plugins = with pkgs.fishPlugins;
-        (lib.optionals pkgs.stdenv.isDarwin [
+        (lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
           {
             name = "macos";
             inherit (macos) src;
@@ -313,12 +317,7 @@
         ++ [
           {
             name = "fish-completion-sync";
-            src = pkgs.fetchFromGitHub {
-              owner = "pfgray";
-              repo = "fish-completion-sync";
-              rev = "4f058ad2986727a5f510e757bc82cbbfca4596f0";
-              sha256 = "sha256-kHpdCQdYcpvi9EFM/uZXv93mZqlk1zCi2DRhWaDyK5g=";
-            };
+            src = inputs.fish-completion-sync;
           }
           {
             name = "tide";
@@ -359,20 +358,7 @@
       };
       bat = {
         enable = true;
-        config = {
-          theme = "catppuccin-macchiato";
-        };
-        themes = {
-          catppuccin-macchiato = {
-            src = pkgs.fetchFromGitHub {
-              owner = "catppuccin";
-              repo = "bat";
-              rev = "6810349b28055dce54076712fc05fc68da4b8ec0";
-              sha256 = "1y5sfi7jfr97z1g6vm2mzbsw59j1jizwlmbadvmx842m0i5ak5ll";
-            };
-            file = "themes/Catppuccin Macchiato.tmTheme";
-          };
-        };
+        # Theme and source come from catppuccin/nix (see modules/catppuccin.nix).
       };
       direnv = {
         enable = true;
@@ -386,25 +372,10 @@
       };
     };
 
-    xdg.configFile = {
-      "fish/themes/Catppuccin Macchiato.theme" = {
-        text = builtins.readFile (
-          pkgs.fetchFromGitHub {
-            owner = "catppuccin";
-            repo = "fish";
-            rev = "5fc5ae9c2ec22eb376cb03ce76f0d262a38960f3";
-            sha256 = "19qd700wj0h7k68fs27qa1b1qzs8ccd8rw6qpml3ccyffxhmd8yw";
-          }
-          + "/themes/catppuccin-macchiato.theme"
-        );
-      };
-    };
-
     # Ensure tmux plugin manager is installed
     home = {
       file.".tmux/plugins/tpm".source = pkgs.fetchgit {
         url = "https://github.com/tmux-plugins/tpm";
-        # version comment so 'update-nix-fetchgit-all' doesnt update this
         rev = "c628645dfa7c4fc16acfb7a73c9d7a98697b472c"; # v3.1.0
         sha256 = "1a05bs5cwhxlmjzhf6m9rmsis2an91qyyysfn2yx2h10lr7jw613";
         leaveDotGit = false;

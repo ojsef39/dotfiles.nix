@@ -66,7 +66,7 @@
       #
       # Bump: pick a version from `npm view opencode-ai dist-tags` (beta/dev), set
       # `version`, then update `hash` — `nix store prefetch-file <url>` prints it.
-      package = lib.mkIf pkgs.stdenv.isDarwin (
+      package = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
         pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
           pname = "opencode-v2-prebuilt";
           version = "0.0.0-beta-202607090949";
@@ -97,9 +97,6 @@
         })
       );
       enableMcpIntegration = true;
-      tui = {
-        theme = "catppuccin";
-      };
       settings = {
         model = lib.mkDefault opencodeModel;
         instructions = ["${cfg.instructionsDir}/*.md"];
@@ -321,7 +318,7 @@
               extensions = [".fish"];
             };
           }
-          // lib.optionalAttrs pkgs.stdenv.isDarwin {
+          // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
             # Swift
             swift-format = {
               command = [
