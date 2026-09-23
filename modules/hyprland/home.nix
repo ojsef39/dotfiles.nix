@@ -32,7 +32,6 @@
     wayland.windowManager.hyprland = {
       enable = true;
       configType = "hyprlang";
-      plugins = [pkgs.hypr-kinetic-scroll];
 
       settings = {
         # ── Monitor ──────────────────────────────────────────────
@@ -44,7 +43,7 @@
         input = {
           kb_layout = "de";
           follow_mouse = 1;
-          sensitivity = 0.5;
+          sensitivity = -0.5;
           scroll_factor = 0.27;
           touchpad = {
             natural_scroll = true;
@@ -230,7 +229,12 @@
         # Window rules in block form below (extraConfig).
       };
 
+      # NOTE: not `plugins = [...]` — home-manager loads those via exec-once, which
+      # doesn't re-run on reload, so a rebuild leaves the old store path loaded.
+      # The `plugin` keyword is diffed by Hyprland on every reload.
       extraConfig = ''
+        plugin = ${pkgs.hypr-kinetic-scroll}/lib/libhypr-kinetic-scroll.so
+
         windowrule {
           name = suppress_maximize
           match:class = .*
