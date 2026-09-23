@@ -51,6 +51,7 @@
           type = "command";
           command = "$HOME/.claude/statusline.sh";
         };
+        tui = "fullscreen";
         agentPushNotifEnabled = true;
         model = claudeModel;
         advisorModel = "opus";

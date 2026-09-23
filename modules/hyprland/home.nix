@@ -43,11 +43,24 @@
         input = {
           kb_layout = "de";
           follow_mouse = 1;
-          sensitivity = -0.3;
-          scroll_factor = 0.27;
+          sensitivity = -0.5;
+          scroll_factor = 0.4;
           touchpad = {
             natural_scroll = true;
             scroll_factor = 0.4;
+          };
+        };
+
+        # ── Kinetic scroll (macOS-like touchpad momentum) ────────
+        plugin = {
+          "kinetic-scroll" = {
+            enabled = 1;
+            decel = 0.92;
+            min_velocity = 0.5;
+            interval_ms = 16;
+            delta_multiplier = 1.25;
+            disable_in_browser = 1;
+            stop_on_target_change = 1;
           };
         };
 
@@ -216,7 +229,12 @@
         # Window rules in block form below (extraConfig).
       };
 
+      # NOTE: not `plugins = [...]` — home-manager loads those via exec-once, which
+      # doesn't re-run on reload, so a rebuild leaves the old store path loaded.
+      # The `plugin` keyword is diffed by Hyprland on every reload.
       extraConfig = ''
+        plugin = ${pkgs.hypr-kinetic-scroll}/lib/libhypr-kinetic-scroll.so
+
         windowrule {
           name = suppress_maximize
           match:class = .*
