@@ -15,7 +15,7 @@
 
       # Extensions
       enabledExtensions = with spicePkgs.extensions; [
-        betterGenres
+        # betterGenres #NOTE: moved to https://code.vexcited.com/spicetify/genres and migrated to v3 spicetify which is not installable via nix
         fullScreen
         hidePodcasts
         history
