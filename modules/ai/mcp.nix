@@ -20,6 +20,10 @@
           args = ["run" "--" "${pkgs.context7-mcp}/bin/context7-mcp"];
           env.CONTEXT7_API_KEY = lib.mkDefault "op://Personal/Context7/api_key";
         };
+        # NOTE: Only works if oAuth is supported
+        "hass-hla1" = {
+          url = "https://home-assistant.hla1.jhofer.org/api/mcp";
+        };
       };
     };
   };
