@@ -205,7 +205,7 @@ local function name_spaces()
         -- Laptop only: collapse onto the built-in panel (matches the old layout).
         agate.name_space("comms", { monitor = right, space = 4 })
         agate.name_space("music", { monitor = right, space = 5 })
-        agate.name_space("watch", { monitor = right, space = 9 })
+        agate.name_space("watch", { monitor = right, space = 6 })
     end
 end
 
