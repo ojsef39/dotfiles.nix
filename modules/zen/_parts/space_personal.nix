@@ -23,6 +23,13 @@
   };
 
   pins = {
+    "Paper" = {
+      id = "c5665b23-6dda-4102-8a46-ade964d5fe04";
+      url = "https://paper.jhofer.de";
+      container = containers.Personal.id;
+      workspace = spaces."Personal".id;
+      position = 200;
+    };
     "JustWatch" = {
       id = "9ebdef2c-6c7c-467a-9d81-28bebdb17654";
       url = "https://www.justwatch.com/de/lists/tv-show-tracking";
