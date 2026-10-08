@@ -514,11 +514,11 @@
     "midnight-discord": {
       "flake": false,
       "locked": {
-        "lastModified": 1788227032,
-        "narHash": "sha256-T0IVLbZGwc/+vxSR8PwJt2EDmrECphDAl7dPw6B17QM=",
+        "lastModified": 1791419064,
+        "narHash": "sha256-Wt6C2xaGE8/SSq+ak14Bl8EW9x7tK9gMAWWMBMN9C68=",
         "owner": "refact0r",
         "repo": "midnight-discord",
-        "rev": "85dd67148cbbbfa027cb091e41a479a16ab16a65",
+        "rev": "1c45ad3b073f88a385bb088cea0943c9c8f69ec8",
         "type": "github"
       },
       "original": {
