@@ -26,7 +26,10 @@
   in {
     programs.nixcord = {
       enable = true;
-      discord.enable = !useVesktop;
+      discord = {
+        enable = !useVesktop;
+        silenceNoModClientWarning = true;
+      };
       vesktop = {
         enable = useVesktop;
         settings = {
@@ -68,10 +71,6 @@
           anonymiseFileNames = {
             enable = true;
             anonymiseByDefault = true;
-          };
-          appleMusicRichPresence = {
-            enable = true;
-            activityType = 2;
           };
           betterGifPicker.enable = true;
           betterRoleContext.enable = true;
@@ -115,7 +114,6 @@
           readAllNotificationsButton.enable = true;
           reverseImageSearch.enable = true;
           sendTimestamps.enable = true;
-          summaries.enable = true;
           shikiCodeblocks = {
             enable = true;
             theme = "https://cdn.jsdelivr.net/gh/shikijs/textmate-grammars-themes@bc5436518111d87ea58eb56d97b3f9bec30e6b83/packages/tm-themes/themes/catppuccin-macchiato.json";
