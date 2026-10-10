@@ -670,12 +670,12 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1791528221,
-        "narHash": "sha256-d5qGpupVzf1c6zSY9ky0+Adt3gqJ81sd7PN2jp0wTvc=",
-        "rev": "6da55f1d50e12959bfeaafbfb737e85f3156a81e",
-        "revCount": 473,
+        "lastModified": 1791575322,
+        "narHash": "sha256-ZlxutPJ0arm+EnzU88FzpiIv/iYJJOvsIAYzqXDsCDQ=",
+        "rev": "5b2e2a14aa79ea2d4026dbf5181d4ba84c1e2c8b",
+        "revCount": 474,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.473%2Brev-6da55f1d50e12959bfeaafbfb737e85f3156a81e/01a121bd-ae12-7220-8e7a-8bcf2beb0af0/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/frostplexx-nixkit/0.1.474%2Brev-5b2e2a14aa79ea2d4026dbf5181d4ba84c1e2c8b/01a12452-4f5f-7770-ac05-96c8d5c19f43/source.tar.gz"
       },
       "original": {
         "type": "tarball",
