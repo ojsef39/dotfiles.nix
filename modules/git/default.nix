@@ -180,15 +180,15 @@
               unstagedChangesColor = ["#ed8796"];
               defaultFgColor = ["#cad3f5"];
               searchingActiveBorderColor = ["#eed49f"];
+              authorColors =
+                {
+                  "${vars.user.full_name}" = "#ee99a0"; # Maroon
+                  "jhcloud-bot" = "#f4dbd6"; # Rosewater
+                  "renovate[bot]" = "#f4dbd6"; # Rosewater
+                  "*" = "#b7bdf8"; # Lavender
+                }
+                // vars.git.lazy.authorColors;
             };
-            authorColors =
-              {
-                "${vars.user.full_name}" = "#ee99a0"; # Maroon
-                "jhcloud-bot" = "#f4dbd6"; # Rosewater
-                "renovate[bot]" = "#f4dbd6"; # Rosewater
-                "*" = "#b7bdf8"; # Lavender
-              }
-              // vars.git.lazy.authorColors;
           };
         };
       };
