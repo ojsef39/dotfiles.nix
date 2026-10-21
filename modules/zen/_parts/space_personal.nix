@@ -30,9 +30,9 @@
       workspace = spaces."Personal".id;
       position = 200;
     };
-    "JustWatch" = {
+    "Trakt" = {
       id = "9ebdef2c-6c7c-467a-9d81-28bebdb17654";
-      url = "https://www.justwatch.com/de/lists/tv-show-tracking";
+      url = "https://app.trakt.tv/home";
       container = containers.Personal.id;
       workspace = spaces."Personal".id;
       position = 201;

@@ -132,7 +132,7 @@
         ];
         # Fails activation on schema changes to detect potential regressions
         # Find this in about:config or prefs.js of your profile
-        keyboardShortcutsVersion = 20;
+        keyboardShortcutsVersion = 21;
 
         settings = {
           # Zen-specific preferences
