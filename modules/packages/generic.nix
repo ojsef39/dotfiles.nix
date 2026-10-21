@@ -49,6 +49,7 @@
       retry
       rsync
       speedtest-cli
+      timer
       virt-viewer
       wget
       whois
