@@ -97,6 +97,9 @@
       sunshine.path = [steam-run-url];
     };
 
+    # sunshineVD runs as root and would otherwise write __pycache__ into its store path
+    systemd.services.sunshineVD.environment.PYTHONDONTWRITEBYTECODE = "1";
+
     # Fix permissions for uinput device, required for mouse/keyboard input
     hardware.uinput.enable = true;
     users.users.${vars.user.name}.extraGroups = ["uinput"];
