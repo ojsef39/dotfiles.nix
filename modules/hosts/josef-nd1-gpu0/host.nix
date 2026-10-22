@@ -8,7 +8,7 @@
           canTouchEfiVariables = true;
         };
       };
-      kernelPackages = pkgs.linuxPackages;
+      kernelPackages = pkgs.linuxPackages_latest;
       kernelParams = ["tsc=reliable" "clocksource=tsc"];
     };
 
