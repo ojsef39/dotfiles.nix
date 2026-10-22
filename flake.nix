@@ -35,7 +35,6 @@
     determinate = {
       url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
     };
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release"; # Do not override its nixpkgs input, otherwise there can be mismatch between patches and kernel version
     nvf = {
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
