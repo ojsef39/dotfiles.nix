@@ -35,6 +35,7 @@
         "get_changes"
         "get_cluster_audit"
         "get_cluster_upgrade_readiness"
+        "get_cost"
         "get_dashboard"
         "get_events"
         "get_helm_release"
@@ -42,6 +43,8 @@
         "get_pod_logs"
         "get_prometheus_rules"
         "get_resource"
+        "get_rightsizing"
+        "get_runtime_versions"
         "get_subject_permissions"
         "get_topology"
         "get_workload_logs"
@@ -53,6 +56,7 @@
         "query_prometheus"
         "search"
         "top_resources"
+        "wait_for"
       ];
     in {
       "radar/talos-dev-hla1" = radarReadTools;
