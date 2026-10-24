@@ -54,6 +54,8 @@
         settings = {
           sunshine_name = config.networking.hostName;
           port = 48100;
+          # auto-probing hangs on portalgrab (xdph has no RemoteDesktop portal)
+          capture = "kms";
         };
 
         applications = {
