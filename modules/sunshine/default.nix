@@ -56,6 +56,8 @@
           port = 48100;
           # auto-probing hangs on portalgrab (xdph has no RemoteDesktop portal)
           capture = "kms";
+          csrf_allowed_origins = "https://josef-nd1-gpu0:48101";
+          external_ip = "dyn-v4-gw-hla1.hofer.network";
         };
 
         applications = {
@@ -105,5 +107,10 @@
     # Fix permissions for uinput device, required for mouse/keyboard input
     hardware.uinput.enable = true;
     users.users.${vars.user.name}.extraGroups = ["uinput"];
+
+    # libvirtualhid needs /dev/uhid to emulate a DualSense, otherwise it falls back to Xbox
+    services.udev.extraRules = ''
+      SUBSYSTEM=="misc", KERNEL=="uhid", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uhid"
+    '';
   };
 }
