@@ -3,7 +3,7 @@
 #   jhcode claude /mcp               # slash-command as positional
 #   jhcode claude --resume foo       # multi-token flag passthrough
 #   jhcode claude                    # Test websearch (tool disabled, exa used)
-#   jhcode opencode -p "say hi"      # opencode model selection + flag
+#   jhcode opencode --prompt "say hi" # opencode model selection + flag
 {pkgs}:
 pkgs.writeShellApplication {
   name = "jhcode";
@@ -35,8 +35,8 @@ pkgs.writeShellApplication {
       opencode [-m MODEL] [args...]
         Injects a "jhc" provider (with auto-discovered models) via
         OPENCODE_CONFIG_CONTENT — merges with home-manager-managed global
-        config, no file written. Then exec opencode --model jhc/<picked>
-        with remaining args.
+        config, no file written; it also selects jhc/<picked> as the model.
+        Then exec opencode with remaining args.
 
     Env overrides: JHC_AI_BASE_URL, JHC_AI_OP_REF, JHC_AI_MODEL, JHC_AI_HAIKU_MODEL
     EOF
@@ -153,7 +153,8 @@ pkgs.writeShellApplication {
           }' <<< "$models_json")
         export OPENCODE_CONFIG_CONTENT
 
-        exec opencode --model "jhc/$MODEL" "''${REMAINING[@]}"
+        # opencode v2 has no root --model flag; the injected config selects the model.
+        exec opencode "''${REMAINING[@]}"
         ;;
       *)
         usage
