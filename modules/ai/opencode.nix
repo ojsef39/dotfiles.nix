@@ -6,20 +6,17 @@
     ...
   }: let
     cfg = config.ai;
-    # opencode uses dashes and a provider prefix: "github/claude-sonnet-4-6"
-    opencodeModel = "github/${builtins.replaceStrings ["."] ["-"] cfg.model}";
-    modelOptions = {
-      textVerbosity = "low";
-      effort = cfg.effortLevel;
-      thinking = {
-        type = "adaptive";
-        display = "summarized";
-      };
-    };
+    # V2 agents take effort as a model variant: "provider/model#variant".
+    # Agent `request.body` is NOT sent to the model in V2, so V1-style agent
+    # `options` (effort/thinking/textVerbosity) would silently do nothing.
+    opencodeModel = "github-copilot/${cfg.model}";
+    agentModel = "${opencodeModel}#${cfg.effortLevel}";
+
+    rule = action: resource: effect: {inherit action resource effect;};
 
     # opencode names each MCP tool `<sanitize(server)>_<sanitize(tool)>` and looks
     # up that exact string in the permission ruleset. `sanitize` in
-    # packages/opencode/src/mcp/index.ts replaces every char outside [a-zA-Z0-9_-]
+    # packages/core/src/tool/mcp.ts replaces every char outside [a-zA-Z0-9_-]
     # with `_`, so mirror that here.
     sanitize = s: let
       isAllowed = c: builtins.match "[a-zA-Z0-9_-]" c != null;
@@ -30,155 +27,91 @@
         else "_") (lib.stringToCharacters s));
 
     expandMcpCalls = calls:
-      builtins.listToAttrs (lib.flatten (lib.mapAttrsToList (server: tools:
-        map (tool: {
-          name = "${sanitize server}_${sanitize tool}";
-          value = "allow";
-        })
-        tools)
-      calls));
+      lib.flatten (lib.mapAttrsToList (server: tools:
+        map (tool: rule "${sanitize server}_${sanitize tool}" "*" "allow") tools)
+      calls);
   in {
-    home.sessionVariables = {
-      OPENCODE_ENABLE_EXA = "1"; # enables https://opencode.ai/docs/de/tools/#websearch
-    };
-
     programs.opencode = {
       enable = true;
-
-      # opencode v2 via the official npm prebuilt (darwin-arm64, `beta` channel).
-      # Darwin-only: our macs get v2; other platforms keep stable nixpkgs opencode.
-      #
-      # Why prebuilt rather than a source override: v2's real interactive CLI
-      # diverges from what nixpkgs packages (packages/opencode), and a from-source
-      # build does NOT reproduce a working `run`/TUI — the official CI build differs
-      # in ways not worth chasing/maintaining for personal dotfiles (it would also
-      # mean re-hashing a 12-min node_modules FOD on every bump). The official beta
-      # binary works as-is; we just wrap it.
-      #
-      # Do NOT re-sign this binary. It's a Bun single-file executable: the JS/asset
-      # payload is appended after the Mach-O. `codesign --force --sign -` doesn't
-      # understand that trailer and truncates it (~900 KB), which drops the embedded
-      # opentui/TUI resources — `run` still works but the TUI renders blank. The
-      # binary's own Bun ad-hoc signature is accepted by Tahoe's kernel as-is (it
-      # runs fine) even though `codesign --verify` reports the appended data as
-      # "modified"; that verify complaint is harmless. Just wrap it (as nixpkgs
-      # does) to put ripgrep on PATH and disable the self-updater.
-      #
-      # Bump: pick a version from `npm view opencode-ai dist-tags` (beta/dev), set
-      # `version`, then update `hash` — `nix store prefetch-file <url>` prints it.
-      package = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
-        pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
-          pname = "opencode-v2-prebuilt";
-          version = "0.0.0-beta-202607090949";
-
-          src = pkgs.fetchurl {
-            url = "https://registry.npmjs.org/opencode-darwin-arm64/-/opencode-darwin-arm64-${finalAttrs.version}.tgz";
-            hash = "sha256-iKBueWPMNfgPSZsrXA3U+mQ+0+7jRWwKdrLln8tMg+U=";
-          };
-          sourceRoot = "package";
-
-          nativeBuildInputs = [pkgs.makeBinaryWrapper];
-          dontConfigure = true;
-          dontBuild = true;
-          dontFixup = true; # keep the Bun binary byte-for-byte (no strip/re-sign)
-
-          installPhase = ''
-            runHook preInstall
-
-            install -Dm755 bin/opencode $out/bin/.opencode-wrapped
-            makeBinaryWrapper $out/bin/.opencode-wrapped $out/bin/opencode \
-              --prefix PATH : ${lib.makeBinPath [pkgs.ripgrep pkgs.sysctl]} \
-              --set OPENCODE_DISABLE_AUTOUPDATE true
-
-            runHook postInstall
-          '';
-
-          meta = pkgs.opencode.meta // {mainProgram = "opencode";};
-        })
-      );
       enableMcpIntegration = true;
+      # Check the generated opencode.json against the package's own schema at build time.
+      validateFiles.config = true;
+
+      # Native V2 config shape (https://opencode.ai/v2/docs/migrate-v1).
       settings = {
         model = lib.mkDefault opencodeModel;
         instructions = ["${cfg.instructionsDir}/*.md"];
-        autoupdate = false;
-        disabled_providers = ["xai"];
-        # opencode's build agent ships with `"*": "allow"` baked into its
-        # defaults (packages/opencode/src/agent/agent.ts), so any unlisted
-        # permission key runs silently — including MCP write tools. We override
-        # `*` to `ask` here to match the deny-by-default model claude-code uses,
-        # then explicitly allow opencode's safe built-ins (which previously
-        # relied on the `*` catchall) plus the user's allowlist.
+        update = "disable";
+        policies = [(rule "provider.use" "xai" "deny")];
+        # Exa works keyless (EXA_API_KEY optional); pinning it skips the first-search provider prompt.
+        websearch.provider = "exa";
+
+        experimental.todo = true;
+
+        # Every agent's built-in defaults start with `* allow`, so unlisted
+        # actions — including MCP write tools — would run silently. Override to
+        # `ask` to match claude-code's deny-by-default, then allow safe built-ins
+        # plus the shared allowlists. Rules are ordered; the last match wins.
         #
-        # `question` and `plan_enter` need re-allowing because the build agent
-        # specifically toggles them allow in its merge step, and our user-level
-        # `*: ask` lands later in the merged ruleset, shadowing those tunings.
-        permission =
-          {
-            "*" = "ask";
+        # Merge order is: built-in agent rules -> these global rules -> per-agent
+        # config rules. So the global `* ask` also clobbers built-in agent tunings
+        # (Plan's `edit deny`, Explore's `* deny`, ...); `agents` below re-asserts
+        # them. Never put `edit allow` here: it would make Plan writable.
+        permissions =
+          [
+            (rule "*" "*" "ask")
+            (rule "read" "*" "allow")
+            (rule "read" "*.env" "ask")
+            (rule "read" "*.env.*" "ask")
+            (rule "read" "*.env.example" "allow")
+            (rule "glob" "*" "allow")
+            (rule "grep" "*" "allow")
+            (rule "skill" "*" "allow")
+            (rule "todowrite" "*" "allow")
+            (rule "webfetch" "*" "allow")
+            (rule "websearch" "*" "allow")
+            # V2 allows paths outside the project by default; V1 asked.
+            (rule "external_directory" "*" "ask")
+          ]
+          ++ map (p: rule "shell" p "allow") cfg.allowedBashCommands
+          ++ expandMcpCalls cfg.allowedMcpCalls;
 
-            # safe built-ins — keep normal coding silent
-            edit = "allow"; # covers edit / write / apply_patch (all use this key)
-            glob = "allow";
-            grep = "allow";
-            list = "allow";
-            lsp = "allow";
-            skill = "allow";
-            task = "allow";
-            todowrite = "allow";
-            webfetch = "allow";
-            websearch = "allow";
-
-            # re-establish build-agent overrides shadowed by our `*: ask`
-            plan_enter = "allow";
-            question = "allow";
-
-            bash =
-              {
-                "*" = "ask";
-              }
-              // builtins.listToAttrs (map (p: {
-                  name = p;
-                  value = "allow";
-                })
-                cfg.allowedBashCommands);
-          }
-          // expandMcpCalls cfg.allowedMcpCalls;
-
-        agent = {
+        agents = {
           build = {
-            model = "github-copilot/${cfg.model}";
-            options =
-              {
-                textVerbosity = "low";
-              }
-              // modelOptions;
+            model = agentModel;
+            permissions = [
+              (rule "edit" "*" "allow")
+              (rule "question" "*" "allow")
+              (rule "subagent" "*" "allow")
+            ];
           };
           plan = {
-            # model = "github-copilot/claude-opus-4.6";
-            model = "github-copilot/${cfg.model}";
-            options = modelOptions;
+            model = agentModel;
+            permissions = [
+              (rule "question" "*" "allow")
+              (rule "edit" "*" "deny")
+              (rule "edit" "~/.opencode/plan/*" "allow")
+            ];
           };
+          general.permissions = [
+            (rule "edit" "*" "allow")
+            (rule "question" "*" "deny")
+            (rule "subagent" "*" "deny")
+          ];
+          explore.permissions = [
+            (rule "edit" "*" "deny")
+            (rule "subagent" "*" "deny")
+          ];
           code-reviewer = {
             description = "Reviews code for best practices and potential issues";
             mode = "subagent";
-            model = "github-copilot/${cfg.model}";
-            prompt = "You are a code reviewer. Focus on security, performance, and maintainability.";
-            tools = {
-              write = false;
-              edit = false;
-            };
+            model = agentModel;
+            system = "You are a code reviewer. Focus on security, performance, and maintainability.";
+            permissions = [(rule "edit" "*" "deny")];
           };
         };
 
-        # LSP Configuration
-        lsp = builtins.listToAttrs (map (s: {
-            inherit (s) name;
-            value = {
-              command = [s.command] ++ s.args;
-              inherit (s) extensions;
-            };
-          })
-          cfg.lspServers);
+        # No `lsp` block: V2 accepts it but runs no language servers.
 
         # Formatter Configuration
         formatter =

@@ -40,13 +40,19 @@ pkgs.writeShellApplication {
     USER_HOME=$(eval echo "~${vars.user.name}")
     CACHIX_CONFIG="$USER_HOME/.config/cachix/cachix.dhall"
     if [[ -f "$CACHIX_CONFIG" ]]; then
-      TOKEN=$(awk '/authToken/{getline; gsub(/[" ]/, ""); print}' "$CACHIX_CONFIG")
-      echo "$TOKEN" | cachix authtoken --stdin
+      CACHIX_AUTH_TOKEN=$(awk '/authToken/{getline; gsub(/[" ]/, ""); print}' "$CACHIX_CONFIG")
+      export CACHIX_AUTH_TOKEN
     else
       echo "No CACHIX_AUTH_TOKEN and no config at $CACHIX_CONFIG"
       exit 1
     fi
 
-    cachix push "$CACHIX_NAME" "''${FILTERED_PATHS[@]}"
+    # Retry transient failures; persistent ones (e.g. expired token) still fail the build
+    for attempt in 1 2 3; do
+      cachix push "$CACHIX_NAME" "''${FILTERED_PATHS[@]}" && exit 0
+      echo "cachix push failed (attempt $attempt/3)" >&2
+      sleep $((attempt * 5))
+    done
+    exit 1
   '';
 }
