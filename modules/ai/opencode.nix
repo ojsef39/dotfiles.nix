@@ -45,10 +45,8 @@
         policies = [(rule "provider.use" "xai" "deny")];
         # Exa works keyless (EXA_API_KEY optional); pinning it skips the first-search provider prompt.
         websearch.provider = "exa";
-        # Todos are off by default in V2; the option only exists since v2.1.0.
-        experimental = lib.optionalAttrs (lib.versionAtLeast (lib.getVersion config.programs.opencode.package) "2.1.0") {
-          todo = true;
-        };
+
+        experimental.todo = true;
 
         # Every agent's built-in defaults start with `* allow`, so unlisted
         # actions — including MCP write tools — would run silently. Override to

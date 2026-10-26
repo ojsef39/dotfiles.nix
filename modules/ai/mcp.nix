@@ -3,7 +3,18 @@
     pkgs,
     lib,
     ...
-  }: {
+  }: let
+    # TODO: drop once nixpkgs-unstable has https://github.com/NixOS/nixpkgs/pull/578808 merged:
+    # mcp v2 marks fastmcp-slim broken. Guarded since older nixpkgs has no mcp_1.
+    # https://nixpkgs-tracker.ocfox.me/?pr=578808
+    mcp-nixos =
+      if pkgs.python3Packages ? mcp_1
+      then
+        pkgs.mcp-nixos.override {
+          python3Packages = pkgs.python3Packages.overrideScope (final: _: {mcp = final.mcp_1;});
+        }
+      else pkgs.mcp-nixos;
+  in {
     programs.mcp = {
       enable = true;
       servers = {
@@ -13,7 +24,7 @@
           env.GITHUB_PERSONAL_ACCESS_TOKEN = lib.mkDefault "op://Personal/GITHUB_TOKEN/mcp";
         };
         "nixos" = {
-          command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+          command = "${mcp-nixos}/bin/mcp-nixos";
         };
         "io.github.upstash/context7" = {
           command = "${pkgs._1password-cli}/bin/op";
