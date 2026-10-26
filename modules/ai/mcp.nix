@@ -5,6 +5,7 @@
     ...
   }: let
     # TODO: drop once nixpkgs-unstable has https://github.com/NixOS/nixpkgs/pull/578808 merged:
+    # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/2417
     # mcp v2 marks fastmcp-slim broken. Guarded since older nixpkgs has no mcp_1.
     # https://nixpkgs-tracker.ocfox.me/?pr=578808
     mcp-nixos =
