@@ -20,6 +20,18 @@
           };
         };
       };
+      # jsonls can't parse JSON5 syntax; this fork of it can (formatting stays with prettier)
+      better-json5 = {
+        cmd = [(lib.getExe pkgs.better-json5-lsp) "--stdio"];
+        filetypes = ["json5"];
+        init_options.provideFormatter = false;
+        settings = {
+          json5 = {
+            schemas = lib.generators.mkLuaInline "require('schemastore').json.schemas()";
+            validate.enable = true;
+          };
+        };
+      };
     };
 
     mappings = {
