@@ -30,7 +30,6 @@
   in {
     ai.allowedMcpCalls = let
       radarReadTools = [
-        "diagnose"
         "discover_metrics"
         "get_changes"
         "get_cluster_audit"
