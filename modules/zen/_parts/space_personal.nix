@@ -25,7 +25,7 @@
   pins = {
     "Paper" = {
       id = "c5665b23-6dda-4102-8a46-ade964d5fe04";
-      url = "https://paper.jhofer.de";
+      url = "https://paper.jhofer.lan";
       container = containers.Personal.id;
       workspace = spaces."Personal".id;
       position = 200;
