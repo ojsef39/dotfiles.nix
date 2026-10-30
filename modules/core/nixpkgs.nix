@@ -4,6 +4,16 @@
   # feature files would leave that order at the mercy of import-tree.
   flake.modules.generic.base = {vars, ...}: {
     nixpkgs.overlays = [
+      # Must precede ./packages: the coderabbit wrapper needs coderabbit-cli in prev
+      (_final: prev: {
+        inherit
+          (import inputs.nixpkgs-coderabbit-cli {
+            inherit (prev.stdenv.hostPlatform) system;
+            config.allowUnfree = true;
+          })
+          coderabbit-cli
+          ;
+      })
       # Packages from ./packages that need `vars` (e.g. kubectl-debug's image name)
       (
         _final: prev:

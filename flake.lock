@@ -673,6 +673,22 @@
         "url": "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.zst"
       }
     },
+    "nixpkgs-coderabbit-cli": {
+      "locked": {
+        "lastModified": 1792529336,
+        "narHash": "sha256-toVLyYCKUh5K4HjHX4MdOyiw4Oxtwce56EYQJzkzS4s=",
+        "owner": "lucperkins",
+        "repo": "nixpkgs",
+        "rev": "283f07b5d628587aea33e02a6e5cc5785220a692",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lucperkins",
+        "repo": "nixpkgs",
+        "rev": "283f07b5d628587aea33e02a6e5cc5785220a692",
+        "type": "github"
+      }
+    },
     "nixpkgs-copilot-cli": {
       "locked": {
         "lastModified": 1777727970,
@@ -884,6 +900,7 @@
         "nixcord": "nixcord",
         "nixkit": "nixkit",
         "nixpkgs": "nixpkgs_6",
+        "nixpkgs-coderabbit-cli": "nixpkgs-coderabbit-cli",
         "nixpkgs-copilot-cli": "nixpkgs-copilot-cli",
         "nixpkgs_fork": "nixpkgs_fork",
         "nvf": "nvf",
