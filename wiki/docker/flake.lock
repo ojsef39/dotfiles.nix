@@ -20,12 +20,12 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1793225069,
-        "narHash": "sha256-sx1f99WGrDfJ83KKuQrqGPmot0rnDgmpLJDzpU2oHQQ=",
-        "rev": "e62746b0b472753ef019baceab6f1e2e52014980",
-        "revCount": 1104102,
+        "lastModified": 1793345420,
+        "narHash": "sha256-e/yiZ31gXRROBDcnOtT3YwDQ73NVG9Cepccbt86LIn8=",
+        "rev": "885ba4d038f10c3d17d7a92e8c3cc185b99c9158",
+        "revCount": 1105041,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/NixOS-nixpkgs/0.1.1104102%2Brev-e62746b0b472753ef019baceab6f1e2e52014980/01a18626-8854-7f23-8ad9-2f363811bebd/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/JHOFER-Cloud/NixOS-nixpkgs/0.1.1105041%2Brev-885ba4d038f10c3d17d7a92e8c3cc185b99c9158/01a19073-754f-7142-b8c1-f5be09ec0059/source.tar.gz"
       },
       "original": {
         "type": "tarball",
