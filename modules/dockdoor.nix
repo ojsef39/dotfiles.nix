@@ -1,7 +1,7 @@
 {
-  flake.modules.homeManager.darwin = _: {
+  flake.modules.darwin.personal = {vars, ...}: {
     # installed via mod/brew
-    targets.darwin.defaults = {
+    home-manager.users.${vars.user.name}.targets.darwin.defaults = {
       "com.ethanbills.DockDoor" = {
         # Auto-update settings
         SUAutomaticallyUpdate = 1;

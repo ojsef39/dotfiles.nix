@@ -25,7 +25,6 @@ in {
           };
           sharedModules = [
             inputs.nix-index-database.homeModules.default
-            inputs.nixcord.homeModules.nixcord
             inputs.nixkit.homeModules.default
             inputs.spicetify-nix.homeManagerModules.default
             inputs.zen-browser.homeModules.beta

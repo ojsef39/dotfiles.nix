@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.base = {
+  flake.modules.homeManager.personal = {
     config,
     lib,
     pkgs,
@@ -115,6 +115,11 @@
     };
 
     config = {
+      ai.allowedMcpCalls."@exa" = [
+        "web_search_exa"
+        "web_fetch_exa"
+      ];
+
       programs.pi-coding-agent = {
         enable = true;
 

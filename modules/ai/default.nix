@@ -86,7 +86,6 @@
         "gh run watch *"
         "git status"
         "pwd"
-        "send-away *"
         "send-cooking"
       ];
 
@@ -143,10 +142,6 @@
         "io.github.upstash/context7" = [
           "resolve-library-id"
           "query-docs"
-        ];
-        "@exa" = [
-          "web_search_exa"
-          "web_fetch_exa"
         ];
       };
 

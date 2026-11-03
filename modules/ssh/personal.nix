@@ -6,8 +6,6 @@
   }: let
     opAgentSock = baseLib.mkOpAgentSock pkgs;
   in {
-    home.file.".config/1Password/ssh/agent.toml".source = ./1password-agent.toml;
-
     programs.ssh = {
       settings = {
         # GitHub

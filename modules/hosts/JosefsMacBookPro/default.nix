@@ -19,6 +19,7 @@ in {
       }
       {vars = import ../../../vars/personal.nix;}
       m.generic.personal
+      m.darwin.personal
       m.darwin.${name}
       (
         {vars, ...}: {

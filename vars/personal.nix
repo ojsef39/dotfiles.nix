@@ -8,6 +8,7 @@ rec {
   git = {
     ghq = "CodeProjects";
     dotfiles = "github.com/ojsef39/dotfiles.nix";
+    signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAnnOOtnSeqQ3+XjO2jaC5k0pk5BIZVB4YI3KukF4o83"; # id_ed25519_new
     lazy = {
       # authorColors = {
       #   "test[bot]" = "#f4dbd6"; # Rosewater
@@ -23,5 +24,10 @@ rec {
   };
   kitty.project_selector = "~/.config";
   cache.community = true;
+  cachix.push = true;
+  onePassword.sshVaults = [
+    "Personal"
+    "JHC"
+  ];
   masApps.enable = false;
 }

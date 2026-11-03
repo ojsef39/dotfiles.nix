@@ -8,7 +8,6 @@
     # https://github.com/LnL7/nix-darwin/blob/master/modules/homebrew.nix
     homebrew = {
       enable = true;
-      caskArgs.no_quarantine = true;
       onActivation = {
         autoUpdate = true;
         upgrade = true;
@@ -37,17 +36,21 @@
       # macOS-specific apps and those not available/stable in nixpkgs
       casks = [
         "caffeine"
-        "dockdoor"
-        "dorso"
-        "firefox"
-        "poe"
         "postman"
         "raycast"
         "scroll-reverser"
         "the-unarchiver"
-        "tor-browser"
         "yubico-authenticator"
       ];
     };
+  };
+
+  flake.modules.darwin.personal = _: {
+    homebrew.casks = [
+      "dockdoor"
+      "dorso"
+      "firefox"
+      "tor-browser"
+    ];
   };
 }

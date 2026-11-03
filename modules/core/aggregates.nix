@@ -24,6 +24,7 @@ _: {
 
     darwin = {
       base = {};
+      personal = {};
     };
 
     nixos = {

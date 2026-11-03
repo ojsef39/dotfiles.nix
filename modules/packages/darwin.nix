@@ -3,7 +3,6 @@
     environment.systemPackages = with pkgs; [
       # CLI utilities
       # _1password-cli  # Password manager
-      aichat
       container
       mist-cli
 
@@ -11,6 +10,12 @@
       mist
       obsidian # Note-taking
       stats
+    ];
+  };
+
+  flake.modules.darwin.personal = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
+      aichat
       utm # Virtualization
       whatcable
     ];

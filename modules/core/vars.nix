@@ -55,6 +55,11 @@
                   default = [];
                   description = "Extra forges for git/nvim, as {domain, provider} pairs.";
                 };
+                signingKey = lib.mkOption {
+                  type = lib.types.nullOr lib.types.str;
+                  default = null;
+                  description = "SSH public key commits are signed with (via 1Password). null disables signing.";
+                };
                 lazy.authorColors = lib.mkOption {
                   type = lib.types.attrsOf lib.types.str;
                   default = {};
@@ -74,10 +79,22 @@
                 description = "Trust the community binary caches (nix-community, claude-code).";
               };
 
+              cachix.push = lib.mkOption {
+                type = lib.types.bool;
+                default = false;
+                description = "Push every local build to ojsef39.cachix.org via the post-build hook.";
+              };
+
               cachix.ignorePatterns = lib.mkOption {
                 type = lib.types.listOf lib.types.str;
                 default = [];
                 description = "Extra store path patterns the cachix push hook skips.";
+              };
+
+              onePassword.sshVaults = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [];
+                description = "1Password vaults whose keys the SSH agent offers, in order. Empty leaves agent.toml unmanaged.";
               };
 
               masApps.enable = lib.mkOption {

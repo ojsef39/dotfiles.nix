@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.base = {config, ...}: let
+  flake.modules.homeManager.personal = {config, ...}: let
     cfg = config.ai;
   in {
     home.file = {
