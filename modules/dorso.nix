@@ -1,7 +1,7 @@
 {
-  flake.modules.homeManager.darwin = _: {
+  flake.modules.darwin.personal = {vars, ...}: {
     # installed via mod/brew
-    targets.darwin.defaults = {
+    home-manager.users.${vars.user.name}.targets.darwin.defaults = {
       # NOTE: Bundle identifier is still posturr
       # https://github.com/tldev/dorso/blob/main/build.sh#L15
       "com.thelazydeveloper.posturr" = {

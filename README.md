@@ -53,7 +53,7 @@ of that machine. It needs no edits when a feature is added. `modules/core/` hold
 | `nixos.base` | NixOS system + home-manager wiring | ✅ |
 | `homeManager.base` | cross-platform home config | ✅ |
 | `homeManager.darwin` / `homeManager.nixos` | platform-specific home config | ✅ |
-| `generic.personal` / `homeManager.personal` | ojsef39's machines only | ❌ |
+| `generic.personal` / `darwin.personal` / `homeManager.personal` | ojsef39's machines only | ❌ |
 | `nixos.nvidia`, … | opt-in capability, imported by the hosts that want it | ❌ |
 | `darwin.JosefsMacBookPro`, `nixos.josef-nd1-gpu0`, `homeManager.josef-nd1-gpu0` | one machine only | ❌ |
 

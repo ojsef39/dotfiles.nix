@@ -22,7 +22,9 @@
     # NOTE: stable path — the daemon caches nix.conf, a store path here goes dangling on GC
     cachixHookPath = "/etc/nix/cachix-push-hook";
   in {
-    environment.etc."nix/cachix-push-hook".source = "${cachixHook}/bin/cachix-push-hook";
+    environment.etc = lib.mkIf vars.cachix.push {
+      "nix/cachix-push-hook".source = "${cachixHook}/bin/cachix-push-hook";
+    };
 
     _module.args.nixSettings = {
       experimental-features = [
@@ -70,6 +72,8 @@
       lazy-trees = true;
       extra-experimental-features = ["parallel-eval external-builders"];
       eval-cores = 0;
+    }
+    // lib.optionalAttrs vars.cachix.push {
       post-build-hook = cachixHookPath;
     };
 

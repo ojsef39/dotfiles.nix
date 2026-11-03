@@ -13,7 +13,6 @@
     # Required packages
     home.packages = with pkgs; [
       age
-      archive-linear-issue
       coreutils
       cowsay
       eza
@@ -21,10 +20,8 @@
       fzf
       git
       gping
-      jhcode
       nodejs
       python3
-      send-away
       send-cooking
       sops
       tmux
@@ -417,5 +414,13 @@
         };
       };
     };
+
+    # The alias's --wraps can't expand $NIX_GIT_PATH, so just's own completion
+    # never finds the justfile and only offers flags. Drop the wrap (its ~40
+    # flags bury the recipes) and complete recipe names only.
+    xdg.configFile."fish/completions/snix.fish".text = ''
+      complete -c snix --erase --wraps 'just -f $NIX_GIT_PATH/justfile'
+      complete -c snix -f -a '(just -f $NIX_GIT_PATH/justfile --summary 2>/dev/null | string split " ")'
+    '';
   };
 }

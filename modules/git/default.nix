@@ -26,8 +26,8 @@
         enable = lib.mkDefault true;
         lfs.enable = lib.mkDefault true;
 
-        signing = {
-          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAnnOOtnSeqQ3+XjO2jaC5k0pk5BIZVB4YI3KukF4o83"; # id_ed25519_new
+        signing = lib.mkIf (vars.git.signingKey != null) {
+          key = vars.git.signingKey;
           signByDefault = true;
           format = "ssh";
           signer =
@@ -43,6 +43,7 @@
           };
 
           init.defaultBranch = "main";
+          ghq.root = "~/${vars.git.ghq}";
           push.autoSetupRemote = lib.mkDefault true;
           pull.rebase = lib.mkDefault true;
 
@@ -114,22 +115,6 @@
           git.overrideGpg = true;
           services = lazygitServices;
           customCommands = [
-            # AI Commit using opencode
-            {
-              key = "C";
-              command = "git commit -m '{{ .Form.title }}'";
-              context = "files";
-              loadingText = "Generating commit messages...";
-              prompts = [
-                {
-                  # command = ''/bin/bash -c "git diff HEAD | opencode run --model 'github-copilot/github-copilot/gpt-4.1' 'Generate a conventional commit title from the following git diff:' {}" '';
-                  key = "title";
-                  type = "input";
-                  suggestions.command = ''/bin/bash -c "git diff HEAD | opencode run --model 'github-copilot/gpt-4.1' 'Generate a set of conventional commit titles from the following git diff, separated by new lines! Do not return anything except the commits:' {}" '';
-                  title = "Commit Message:";
-                }
-              ];
-            }
             {
               key = "p";
               prompts = [

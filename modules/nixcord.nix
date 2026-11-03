@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.base = {
+  flake.modules.homeManager.personal = {
     config,
     pkgs,
     vars,
@@ -24,6 +24,8 @@
       then vesktopThemePath
       else discordThemePath;
   in {
+    imports = [inputs.nixcord.homeModules.nixcord];
+
     programs.nixcord = {
       enable = true;
       discord = {

@@ -18,6 +18,8 @@ nix_flags := ```
   fi
   ```
 
+# Explicit, so it stays the default when another justfile imports this one.
+[default]
 [doc('HELP')]
 default:
     @just --list --list-prefix "    " --list-heading $'🔧 Available Commands:\n'
@@ -88,7 +90,7 @@ repair:
 [group('maintain')]
 [doc('Selectively rollback flake inputs')]
 rollback:
-    @./scripts/flake-rollback.fish
+    @{{quote(source_directory() / "scripts/flake-rollback.fish")}}
 
 [group('lint')]
 [doc('Lint all nix files using statix and deadnix')]

@@ -2,9 +2,19 @@
   flake.modules.homeManager.base = {
     lib,
     pkgs,
+    vars,
     baseLib,
     ...
   }: {
+    # https://developer.1password.com/docs/ssh/agent/config
+    xdg.configFile."1Password/ssh/agent.toml" = lib.mkIf (vars.onePassword.sshVaults != []) {
+      text = lib.concatMapStringsSep "\n" (vault: ''
+        [[ssh-keys]]
+        vault = ${builtins.toJSON vault}
+      '')
+      vars.onePassword.sshVaults;
+    };
+
     programs.ssh = {
       enable = lib.mkDefault true;
       enableDefaultConfig = false;

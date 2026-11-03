@@ -87,45 +87,6 @@ in {
     };
   };
 
-  # Copilot AI assistant
-  assistant = {
-    copilot = {
-      enable = true;
-      cmp.enable = true;
-      mappings.suggestion = {
-        accept = "<C-j>";
-        acceptWord = "<C-l>";
-        acceptLine = "<C-k>";
-        next = "<C-n>";
-        prev = "<C-p>";
-        dismiss = "<C-h>";
-      };
-      setupOpts = {
-        suggestion = {
-          enabled = true;
-          auto_trigger = true;
-          debounce = 75;
-        };
-        filetypes = {
-          "*" = true;
-          help = false;
-          gitrebase = false;
-          hgcommit = false;
-          svn = false;
-          cvs = false;
-        };
-        should_attach = lib.generators.mkLuaInline ''
-          function(_, bufname)
-            if string.match(bufname, "%.env") then
-              return false
-            end
-            return true
-          end
-        '';
-      };
-    };
-  };
-
   # Git
   git = {
     enable = true;
