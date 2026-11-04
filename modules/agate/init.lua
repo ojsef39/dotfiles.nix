@@ -139,15 +139,15 @@ end
 
 -- Identify displays by NAME rather than by number, because `agate.monitors()`
 -- numbers displays by spatial position (left→right), which flips when you
--- rearrange screens. MSI G27CQ4 = main/middle · PHL 277E6 = left · built-in
--- ("Built-in"/"Color LCD") = right. Returns each screen's monitor `id`, or nil
+-- rearrange screens. MSI G27CQ4 (home) / DELL P2723DE (work) = main/middle ·
+-- PHL 277E6 = left · built-in ("Built-in"/"Color LCD") = right. Returns each screen's monitor `id`, or nil
 -- when it isn't attached.
 local function survey_displays()
     local msi, builtin, phl = nil, nil, nil
     for _, m in ipairs(agate.monitors()) do
         if m.name:find("Built-in", 1, true) or m.name:find("Color LCD", 1, true) then
             builtin = m.id
-        elseif m.name:find("MSI", 1, true) then
+        elseif m.name:find("MSI", 1, true) or m.name:find("DELL", 1, true) then
             msi = m.id
         elseif m.name:find("PHL", 1, true) then
             phl = m.id
