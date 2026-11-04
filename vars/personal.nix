@@ -29,5 +29,6 @@ rec {
     "Personal"
     "JHC"
   ];
+  # TODO: masapps disabled?
   masApps.enable = false;
 }

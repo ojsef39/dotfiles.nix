@@ -20,6 +20,7 @@
       masApps = lib.mkIf vars.masApps.enable {
         "Reeder" = 6475002485;
         "The Unarchiver" = 425424353;
+        "Things 3" = 904280696;
       };
 
       # Homebrew formulae (CLI tools)
