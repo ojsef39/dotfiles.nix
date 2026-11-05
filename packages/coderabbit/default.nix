@@ -23,7 +23,8 @@ writeShellApplication {
       # git@host:owner/repo.git, https://host/owner/repo, ssh://git@host/owner/repo
       owner=$(sed -E 's#^.*[:/]([^/:]+)/[^/]+/?$#\1#' <<<"$remote")
       owner=''${owner,,}
-      current=$(jq -r '.currentOrg.name' "$auth")
+      # Non-fatal: a broken auth.json must not block the CLI itself
+      current=$(jq -r '.currentOrg.name' "$auth" 2>/dev/null || true)
 
       if [[ -n "$owner" && "$owner" != "''${current,,}" ]]; then
         tmp=$(mktemp "$auth.XXXXXX")
