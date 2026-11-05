@@ -132,7 +132,8 @@
                 if opts.workspace == item then
                   return true
                 end
-                if opts.repo_url and opts.repo_url:find(item, 1, true) then
+                -- An empty entry would match every remote
+                if item ~= "" and opts.repo_url and opts.repo_url:find(item, 1, true) then
                   return true
                 end
               end
