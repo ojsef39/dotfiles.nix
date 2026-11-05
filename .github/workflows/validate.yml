@@ -149,7 +149,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
-      # flakevuln clones the repo; skip LFS like Nix does (also a missing LFS object breaks it)
+      # flakevuln clones the repo; skip LFS like Nix does, the scan doesn't need the files
       GIT_LFS_SKIP_SMUDGE: "1"
     permissions:
       contents: read
@@ -192,6 +192,8 @@ jobs:
           CATEGORY: flakevuln-${{ matrix.name }}
           PR_REF: refs/pull/${{ github.event.pull_request.number }}/merge
         run: |
+          # Without pipefail a failed `gh api` yields an empty list and the gate passes
+          set -euo pipefail
           alerts() {
             gh api --paginate "repos/$GITHUB_REPOSITORY/code-scanning/alerts?ref=$1&per_page=100" --jq '.[]' |
               jq -s --arg cat "$CATEGORY" '[.[] | select(.most_recent_instance.category == $cat)
