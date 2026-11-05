@@ -6,14 +6,7 @@
     lib,
     vars,
     ...
-  }: let
-    # Convert Nix ignoreList to Lua table for cord
-    userIgnoreList = vars.nvim.cord.ignoreList;
-    cordIgnoreList = userIgnoreList ++ [vars.user.name];
-    ignoreListToLua = ignoreList: let
-      quotedItems = map (item: "'${item}'") ignoreList;
-    in "{ ${lib.concatStringsSep ", " quotedItems} }";
-  in {
+  }: {
     programs.nvf.settings.vim = {
       # Copilot AI assistant
       assistant = {
@@ -132,18 +125,15 @@
         cord = {
           package = pkgs.vimPlugins.cord-nvim;
           setup = ''
-            local ignoreList = ${ignoreListToLua cordIgnoreList}
-            local is_ignoreListed = function(opts)
-              -- Check workspace name
-              for _, item in ipairs(ignoreList) do
+            local allowList = ${lib.generators.toLua {} vars.nvim.cord.allowList}
+            -- Only workspaces matching the allowList (by name or git remote) are reported
+            local is_allowed = function(opts)
+              for _, item in ipairs(allowList) do
                 if opts.workspace == item then
                   return true
                 end
-              end
-              -- Check git remote
-              local remote = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "")
-              for _, item in ipairs(ignoreList) do
-                if remote:find(item, 1, true) then
+                -- An empty entry would match every remote
+                if item ~= "" and opts.repo_url and opts.repo_url:find(item, 1, true) then
                   return true
                 end
               end
@@ -156,13 +146,13 @@
               },
               text = {
                 viewing = function(opts)
-                  return is_ignoreListed(opts) and 'Viewing a file' or ('Viewing ' .. opts.filename)
+                  return is_allowed(opts) and ('Viewing ' .. opts.filename) or 'Viewing a file'
                 end,
                 editing = function(opts)
-                  return is_ignoreListed(opts) and 'Editing a file' or ('Editing ' .. opts.filename)
+                  return is_allowed(opts) and ('Editing ' .. opts.filename) or 'Editing a file'
                 end,
                 workspace = function(opts)
-                  return is_ignoreListed(opts) and 'In a secret workspace' or ('Working on ' .. opts.workspace)
+                  return is_allowed(opts) and ('Working on ' .. opts.workspace) or 'In a secret workspace'
                 end,
               },
               idle = {

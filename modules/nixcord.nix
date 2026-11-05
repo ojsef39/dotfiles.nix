@@ -1,5 +1,7 @@
 {
-  flake.modules.homeManager.personal = {
+  # Opt-in: not in base or personal, so a downstream flake can import
+  # `homeManager.nixcord` explicitly or leave Discord out.
+  flake.modules.homeManager.nixcord = {
     config,
     pkgs,
     vars,

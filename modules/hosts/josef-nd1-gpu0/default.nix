@@ -43,6 +43,7 @@ in {
         {vars, ...}: {
           home-manager.users.${vars.user.name}.imports = [
             m.homeManager.personal
+            m.homeManager.nixcord
             m.homeManager.${name}
           ];
         }

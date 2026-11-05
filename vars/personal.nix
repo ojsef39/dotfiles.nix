@@ -32,4 +32,5 @@ rec {
   # TODO: masapps disabled?
   # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/2467
   masApps.enable = false;
+  nvim.cord.allowList = ["github.com/ojsef39/"];
 }

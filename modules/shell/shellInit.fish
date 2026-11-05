@@ -22,7 +22,7 @@ end
 
 # Ensure fastfetch doesnt get on my nerves
 if test -z "$SKIP_FF"
-    if test -n "$KITTY_LISTEN_ON"; and command -sq jq
+    if test -S (string replace -r '^unix:' '' -- "$KITTY_LISTEN_ON"); and command -sq jq
         set _kitty_total_tab_count_output (kitty @ --to "$KITTY_LISTEN_ON" ls | jq 'map(try .tabs | length) | add // 0' 2>/dev/null)
         if test $status -eq 0; and test "$_kitty_total_tab_count_output" -eq "$_kitty_total_tab_count_output" 2>/dev/null
             if test "$_kitty_total_tab_count_output" -eq 1
