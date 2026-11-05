@@ -76,13 +76,10 @@ jobs:
   test-configurations:
     name: Test Nix Configurations
     needs: [security-check, lint]
-    # Still run when security-check is skipped (scheduled runs)
-    if: ${{ !cancelled() && !failure() }}
     runs-on: ${{ matrix.os }}
     permissions:
       id-token: write
       contents: read
-      security-events: write
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -142,88 +139,78 @@ jobs:
           export NIX_CONFIG="extra-substituters = $subs
           extra-trusted-substituters = $subs
           extra-trusted-public-keys = $keys"
-          nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build -L --no-nom -H ${{ matrix.nix_host }} -o result-system .
+          nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build -L --no-nom -H ${{ matrix.nix_host }} .
 
-      # Only the vulnix NVD cache is worth keeping (Grype DB is ~3 GB and changes daily).
-      # Saved only outside PRs so Renovate branches don't each store a copy.
-      - name: Restore vulnix cache
-        uses: actions/cache/restore@v4
+
+  # Evaluation-only (build-time closure), so it needs no build and runs in parallel
+  # with test-configurations. Darwin evaluates fine on Linux (no IFD).
+  cve-scan:
+    name: CVE Scan (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: nixos
+            target: nixosConfigurations.josef-nd1-gpu0.config.system.build.toplevel
+          - name: darwin
+            target: darwinConfigurations.JosefsMacBookPro-ci.system
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Scan with flakevuln
+        id: flakevuln
+        uses: tiiuae/flakevuln@680ffb867974ea6539be4a1509c8f7a7be262df8
         with:
-          path: ~/.cache/vulnix
-          key: vulnix-${{ runner.os }}-${{ github.run_id }}
-          restore-keys: vulnix-${{ runner.os }}-
-
-      - name: CVE scan
-        run: |
-          nix run github:tiiuae/sbomnix/v1.9.0#vulnxscan -- \
-            --format sarif --sarif-location flake.lock --out vulns.sarif ./result-system \
-            2> vulnxscan.log || { cat vulnxscan.log >&2; exit 1; }
-          cat vulnxscan.log >&2
-          # vulnxscan only logs a failed vulnix run (its argv shows up as ['vulnix', ...])
-          # and carries on with Grype/OSV, which would upload an incomplete report.
-          if grep -qF "['vulnix'" vulnxscan.log; then
-            echo "::error::vulnix failed, refusing to upload an incomplete CVE report"
-            exit 1
-          fi
-          echo "CVE findings: $(jq '.runs[0].results | length' vulns.sarif)" >> "$GITHUB_STEP_SUMMARY"
-
-      # Code scanning only blocks a PR on alerts inside its diff, and every finding
-      # sits on flake.lock, so a .nix-only change would slip through. Instead compare
-      # against the last main/scheduled scan: new high/critical findings fail the job.
-      - name: Restore CVE baseline
-        if: github.event_name == 'pull_request'
-        uses: actions/cache/restore@v4
-        with:
-          path: vulns-baseline.sarif
-          key: vulnxscan-baseline-${{ matrix.nix_host }}-${{ github.run_id }}
-          restore-keys: vulnxscan-baseline-${{ matrix.nix_host }}-
-
-      - name: Fail on new high/critical CVEs
-        if: github.event_name == 'pull_request'
-        run: |
-          if [[ ! -f vulns-baseline.sarif ]]; then
-            echo "::warning::No CVE baseline from main yet, skipping new-finding check"
-            exit 0
-          fi
-          nix run github:tiiuae/sbomnix/v1.9.0#vulnxscan-diff -- \
-            --previous vulns-baseline.sarif --current vulns.sarif --markdown diff.md --max-chars 60000
-          cat diff.md >> "$GITHUB_STEP_SUMMARY"
-          # vulnxscan/package-v1 = CVE + package, ignoring version, so a version bump
-          # of an already-known finding does not count as new. Counted per key, so an
-          # extra concurrent version with the same CVE still does.
-          new=$(jq -r --slurpfile base vulns-baseline.sarif '
-            def key: .partialFingerprints["vulnxscan/package-v1"];
-            (reduce ($base[0].runs[].results[] | key) as $k ({}; .[$k] += 1)) as $known
-            | [.runs[].results[] | select(.level == "error")]
-            | group_by(key)[]
-            | .[($known[.[0] | key] // 0):][]
-            | .message.text' vulns.sarif)
-          if [[ -n "$new" ]]; then
-            echo "::error::New high/critical CVEs compared to main:"
-            echo "$new"
-            exit 1
-          fi
-
-      - name: Save CVE baseline
-        if: github.event_name != 'pull_request'
-        run: cp vulns.sarif vulns-baseline.sarif
-
-      - name: Upload CVE baseline cache
-        if: github.event_name != 'pull_request'
-        uses: actions/cache/save@v4
-        with:
-          path: vulns-baseline.sarif
-          key: vulnxscan-baseline-${{ matrix.nix_host }}-${{ github.run_id }}
-
-      - name: Save vulnix cache
-        if: github.event_name != 'pull_request'
-        uses: actions/cache/save@v4
-        with:
-          path: ~/.cache/vulnix
-          key: vulnix-${{ runner.os }}-${{ github.run_id }}
+          targets: ${{ matrix.target }}
+          sarif-location: flake.lock
+          strict-scanner: true
 
       - name: Upload CVE results to code scanning
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: vulns.sarif
-          category: vulnxscan-${{ matrix.nix_host }}
+          sarif_file: ${{ steps.flakevuln.outputs.sarif }}
+          category: flakevuln-${{ matrix.name }}
+
+      # Code scanning only blocks a PR on alerts inside its diff, and every finding
+      # sits on flake.lock, so a .nix-only change would slip through. Instead treat
+      # main's alerts (open or dismissed in the Security tab) as known and fail on
+      # PR alerts beyond them. Keyed on CVE + package, ignoring version, so a version
+      # bump of a known finding passes but an extra concurrent version does not.
+      - name: Fail on new high/critical CVEs
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CATEGORY: flakevuln-${{ matrix.name }}
+          PR_REF: refs/pull/${{ github.event.pull_request.number }}/merge
+        run: |
+          alerts() {
+            gh api --paginate "repos/$GITHUB_REPOSITORY/code-scanning/alerts?ref=$1&per_page=100" --jq '.[]' |
+              jq -s --arg cat "$CATEGORY" '[.[] | select(.most_recent_instance.category == $cat)
+                | .key = .rule.id + " " + (.most_recent_instance.message.text | capture("affects (?<p>\\S+)").p)]'
+          }
+          main_runs=$(gh api "repos/$GITHUB_REPOSITORY/code-scanning/analyses?ref=refs/heads/main&per_page=100" \
+            --jq "[.[] | select(.category == \"$CATEGORY\")] | length")
+          if [[ "$main_runs" == 0 ]]; then
+            echo "::warning::No $CATEGORY scan on main yet, skipping new-finding check"
+            exit 0
+          fi
+          alerts refs/heads/main > main.json
+          alerts "$PR_REF" > pr.json
+          new=$(jq -r --slurpfile main main.json '
+            (reduce ($main[0][] | select(.state == "open" or .state == "dismissed") | .key) as $k
+              ({}; .[$k] += 1)) as $known
+            | [.[] | select(.state == "open" and (.rule.security_severity_level | IN("high", "critical")))]
+            | group_by(.key)[]
+            | .[($known[.[0].key] // 0):][]
+            | "\(.html_url) \(.most_recent_instance.message.text)"' pr.json)
+          if [[ -n "$new" ]]; then
+            echo "::error::New high/critical CVEs compared to main (dismiss them in the Security tab if they don't apply):"
+            echo "$new"
+            exit 1
+          fi
