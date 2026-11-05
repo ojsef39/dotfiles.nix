@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - "main"
+  schedule:
+    # Daily CVE scan; 04:00 UTC = 05:00 CET / 06:00 CEST
+    - cron: "0 4 * * *"
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,6 +19,8 @@ concurrency:
 jobs:
   security-check:
     name: GitGuardian Security Scan
+    # Nothing new to scan on scheduled runs
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -70,10 +76,13 @@ jobs:
   test-configurations:
     name: Test Nix Configurations
     needs: [security-check, lint]
+    # Still run when security-check is skipped (scheduled runs)
+    if: ${{ !cancelled() && !failure() }}
     runs-on: ${{ matrix.os }}
     permissions:
       id-token: write
       contents: read
+      security-events: write
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -133,4 +142,32 @@ jobs:
           export NIX_CONFIG="extra-substituters = $subs
           extra-trusted-substituters = $subs
           extra-trusted-public-keys = $keys"
-          nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build -L --no-nom -H ${{ matrix.nix_host }} .
+          nix run nixpkgs#nh -- ${{ matrix.nix_cmd }} build -L --no-nom -H ${{ matrix.nix_host }} -o result-system .
+
+      # Only the vulnix NVD cache is worth keeping (Grype DB is ~3 GB and changes daily).
+      # Saved only outside PRs so Renovate branches don't each store a copy.
+      - name: Restore vulnix cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.cache/vulnix
+          key: vulnix-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: vulnix-${{ runner.os }}-
+
+      - name: CVE scan
+        run: |
+          nix run github:tiiuae/sbomnix/v1.9.0#vulnxscan -- \
+            --format sarif --sarif-location flake.lock --out vulns.sarif ./result-system
+          echo "CVE findings: $(jq '.runs[0].results | length' vulns.sarif)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Save vulnix cache
+        if: github.event_name != 'pull_request'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/vulnix
+          key: vulnix-${{ runner.os }}-${{ github.run_id }}
+
+      - name: Upload CVE results to code scanning
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: vulns.sarif
+          category: vulnxscan-${{ matrix.nix_host }}
