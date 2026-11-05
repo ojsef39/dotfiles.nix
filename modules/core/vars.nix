@@ -103,10 +103,10 @@
                 description = "Install Mac App Store apps via homebrew.";
               };
 
-              nvim.cord.ignoreList = lib.mkOption {
+              nvim.cord.allowList = lib.mkOption {
                 type = lib.types.listOf lib.types.str;
                 default = [];
-                description = "Repos nvim's Discord presence must not report.";
+                description = "Workspace names or git remote substrings nvim's Discord presence may report; everything else is hidden.";
               };
             };
           }
