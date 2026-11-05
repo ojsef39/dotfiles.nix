@@ -189,12 +189,14 @@ jobs:
             --previous vulns-baseline.sarif --current vulns.sarif --markdown diff.md --max-chars 60000
           cat diff.md >> "$GITHUB_STEP_SUMMARY"
           # vulnxscan/package-v1 = CVE + package, ignoring version, so a version bump
-          # of an already-known finding does not count as new
+          # of an already-known finding does not count as new. Counted per key, so an
+          # extra concurrent version with the same CVE still does.
           new=$(jq -r --slurpfile base vulns-baseline.sarif '
-            [$base[0].runs[].results[].partialFingerprints["vulnxscan/package-v1"]] as $known
-            | .runs[].results[]
-            | select(.level == "error")
-            | select(.partialFingerprints["vulnxscan/package-v1"] as $k | $known | index($k) | not)
+            def key: .partialFingerprints["vulnxscan/package-v1"];
+            (reduce ($base[0].runs[].results[] | key) as $k ({}; .[$k] += 1)) as $known
+            | [.runs[].results[] | select(.level == "error")]
+            | group_by(key)[]
+            | .[($known[.[0] | key] // 0):][]
             | .message.text' vulns.sarif)
           if [[ -n "$new" ]]; then
             echo "::error::New high/critical CVEs compared to main:"
