@@ -168,10 +168,10 @@ agate.rule({ app = "^kitty$", space = "term" })
 agate.rule({ app = "^Obsidian$", space = "notes" })
 agate.rule({ app = "^Things$", space = "notes" })
 agate.rule({ app = "^Linear$", space = "notes" })
+agate.rule({ app = "^Microsoft Teams$", space = "comms", follow = false }) -- Chat
 agate.rule({ title = "^Calendar | Microsoft Teams$", space = "notes" }) -- Meeting
 
 agate.rule({ app = "^Vesktop$", space = "comms", follow = false })
-agate.rule({ title = "^Microsoft Teams$", space = "comms", follow = false }) -- Chat
 agate.rule({ app = "^Signal$", space = "comms", follow = false })
 agate.rule({ app = "^WhatsApp$", space = "comms", follow = false })
 agate.rule({ app = "^Spotify$", space = "music", follow = false })
