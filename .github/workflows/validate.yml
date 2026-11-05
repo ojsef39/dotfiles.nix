@@ -156,8 +156,62 @@ jobs:
       - name: CVE scan
         run: |
           nix run github:tiiuae/sbomnix/v1.9.0#vulnxscan -- \
-            --format sarif --sarif-location flake.lock --out vulns.sarif ./result-system
+            --format sarif --sarif-location flake.lock --out vulns.sarif ./result-system \
+            2> vulnxscan.log || { cat vulnxscan.log >&2; exit 1; }
+          cat vulnxscan.log >&2
+          # vulnxscan only logs a failed vulnix run (its argv shows up as ['vulnix', ...])
+          # and carries on with Grype/OSV, which would upload an incomplete report.
+          if grep -qF "['vulnix'" vulnxscan.log; then
+            echo "::error::vulnix failed, refusing to upload an incomplete CVE report"
+            exit 1
+          fi
           echo "CVE findings: $(jq '.runs[0].results | length' vulns.sarif)" >> "$GITHUB_STEP_SUMMARY"
+
+      # Code scanning only blocks a PR on alerts inside its diff, and every finding
+      # sits on flake.lock, so a .nix-only change would slip through. Instead compare
+      # against the last main/scheduled scan: new high/critical findings fail the job.
+      - name: Restore CVE baseline
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@v4
+        with:
+          path: vulns-baseline.sarif
+          key: vulnxscan-baseline-${{ matrix.nix_host }}-${{ github.run_id }}
+          restore-keys: vulnxscan-baseline-${{ matrix.nix_host }}-
+
+      - name: Fail on new high/critical CVEs
+        if: github.event_name == 'pull_request'
+        run: |
+          if [[ ! -f vulns-baseline.sarif ]]; then
+            echo "::warning::No CVE baseline from main yet, skipping new-finding check"
+            exit 0
+          fi
+          nix run github:tiiuae/sbomnix/v1.9.0#vulnxscan-diff -- \
+            --previous vulns-baseline.sarif --current vulns.sarif --markdown diff.md --max-chars 60000
+          cat diff.md >> "$GITHUB_STEP_SUMMARY"
+          # vulnxscan/package-v1 = CVE + package, ignoring version, so a version bump
+          # of an already-known finding does not count as new
+          new=$(jq -r --slurpfile base vulns-baseline.sarif '
+            [$base[0].runs[].results[].partialFingerprints["vulnxscan/package-v1"]] as $known
+            | .runs[].results[]
+            | select(.level == "error")
+            | select(.partialFingerprints["vulnxscan/package-v1"] as $k | $known | index($k) | not)
+            | .message.text' vulns.sarif)
+          if [[ -n "$new" ]]; then
+            echo "::error::New high/critical CVEs compared to main:"
+            echo "$new"
+            exit 1
+          fi
+
+      - name: Save CVE baseline
+        if: github.event_name != 'pull_request'
+        run: cp vulns.sarif vulns-baseline.sarif
+
+      - name: Upload CVE baseline cache
+        if: github.event_name != 'pull_request'
+        uses: actions/cache/save@v4
+        with:
+          path: vulns-baseline.sarif
+          key: vulnxscan-baseline-${{ matrix.nix_host }}-${{ github.run_id }}
 
       - name: Save vulnix cache
         if: github.event_name != 'pull_request'
