@@ -148,6 +148,9 @@ jobs:
     name: CVE Scan (${{ matrix.name }})
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    env:
+      # flakevuln clones the repo; skip LFS like Nix does (also a missing LFS object breaks it)
+      GIT_LFS_SKIP_SMUDGE: "1"
     permissions:
       contents: read
       actions: read
