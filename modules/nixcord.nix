@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.personal = {
+  flake.modules.homeManager.base = {
     config,
     pkgs,
     vars,
