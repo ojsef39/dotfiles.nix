@@ -6,12 +6,7 @@
     lib,
     vars,
     ...
-  }: let
-    # Convert Nix allowList to Lua table for cord
-    allowListToLua = allowList: let
-      quotedItems = map (item: "'${item}'") allowList;
-    in "{ ${lib.concatStringsSep ", " quotedItems} }";
-  in {
+  }: {
     programs.nvf.settings.vim = {
       # Copilot AI assistant
       assistant = {
@@ -130,7 +125,7 @@
         cord = {
           package = pkgs.vimPlugins.cord-nvim;
           setup = ''
-            local allowList = ${allowListToLua vars.nvim.cord.allowList}
+            local allowList = ${lib.generators.toLua {} vars.nvim.cord.allowList}
             -- Only workspaces matching the allowList (by name or git remote) are reported
             local is_allowed = function(opts)
               for _, item in ipairs(allowList) do
