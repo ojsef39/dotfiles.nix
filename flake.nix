@@ -91,7 +91,7 @@
     nixpkgs-copilot-cli.url = "github:NixOS/nixpkgs/3df3d1dbd49472b0cb5b921ef9f3cab8ee39f5f6";
     # TODO: drop once coderabbit-cli is in nixpkgs
     # Issue URL: https://github.com/ojsef39/dotfiles.nix/issues/2489
-    nixpkgs-coderabbit-cli.url = "github:lucperkins/nixpkgs/283f07b5d628587aea33e02a6e5cc5785220a692";
+    nixpkgs-coderabbit-cli.url = "github:lucperkins/nixpkgs/coderabbit-cli";
     catppuccin = {
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";

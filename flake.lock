@@ -684,8 +684,8 @@
       },
       "original": {
         "owner": "lucperkins",
+        "ref": "coderabbit-cli",
         "repo": "nixpkgs",
-        "rev": "283f07b5d628587aea33e02a6e5cc5785220a692",
         "type": "github"
       }
     },
