@@ -12,13 +12,12 @@ local extra_dirs = { home .. "/.config" } -- vars.kitty.project_selector
 -- Paths are listed relative to $HOME
 local function enumerate_projects()
     local projects = {}
-    -- A missing or unreadable ghq root only empties that part of the list
+    -- find exits non-zero on any unreadable subdir (e.g. a root-owned .cache),
+    -- so keep whatever it printed and only log the error
     local result, err = rex.exec(
         { "/usr/bin/find", ghq_root, "-maxdepth", "5", "-type", "d", "-name", ".git", "-prune" })
-    local repos = ""
-    if result and result.ok then
-        repos = result.stdout
-    else
+    local repos = result and result.stdout or ""
+    if not (result and result.ok) then
         rex.log("warn", "sessionizer: could not list repos in " .. ghq_root .. ": "
             .. tostring(err or (result and result.stderr)))
     end
