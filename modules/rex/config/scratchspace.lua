@@ -43,7 +43,9 @@ rex.action({
     run = function()
         local session_name = names[math.random(#names)] .. "-" .. names[math.random(#names)]
 
-        local tempdir = rex.exec({ "mktemp", "-d", "-t", session_name })
+        -- An explicit template works with both BSD (macOS) and GNU mktemp
+        local tmp_root = (os.getenv("TMPDIR") or "/tmp"):gsub("/+$", "")
+        local tempdir = rex.exec({ "mktemp", "-d", tmp_root .. "/" .. session_name .. ".XXXXXX" })
         local cwd = (tempdir and tempdir.stdout or ""):gsub("%s+$", "")
         if cwd == "" then
             error("scratchspace: mktemp failed, no scratch session created", 0)
