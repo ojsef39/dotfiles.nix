@@ -30,6 +30,20 @@
           inherit (inputs.claude-code.packages.${prev.stdenv.hostPlatform.system}) claude-code;
           # NOTE: MCP allowlist broken above 1.0.40
           inherit (pkgs-copilot-cli) github-copilot-cli;
+          # Hashes from upstream fix NixOS/nixpkgs@c399e1b7. Only applies while the
+          # pinned nixpkgs still has the old hash, so it goes inert once that lands.
+          opencode =
+            if prev.opencode.node_modules.outputHash == "sha256-xfOVcw1+waLVNhFDwzOtzxrUSQEogvn88YomydOlhwc="
+            then
+              prev.opencode.overrideAttrs (old: {
+                node_modules = old.node_modules.overrideAttrs {
+                  outputHash =
+                    if prev.stdenv.hostPlatform.isLinux
+                    then "sha256-prx9dX7kUvs/E3zopkaPk5LXh3xJAy5sZeum/W8L7cA="
+                    else "sha256-dIveiaiPFGSItwLyeMuPDxTE9gpvvnlTCB/+nG24qCc=";
+                };
+              })
+            else prev.opencode;
         }
       )
     ];

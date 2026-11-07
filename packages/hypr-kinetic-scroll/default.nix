@@ -2,6 +2,7 @@
 # kinetic (inertial) touchpad scrolling for Hyprland. ABI-tied to the
 # Hyprland build it's compiled against, so this must track pkgs.hyprland.
 {
+  lib,
   stdenv,
   pkg-config,
   hyprland,
@@ -53,6 +54,13 @@ stdenv.mkDerivation {
     libxcb-errors
     lua5_5
   ];
+
+  # Hyprland 0.57 moved CWindow::m_class to metadata().appID().
+  # TODO: drop once upstream builds against 0.57
+  postPatch = lib.optionalString (lib.versionAtLeast hyprland.version "0.57") ''
+    substituteInPlace kinetic.cpp --replace-fail 'PWIN->m_class' 'PWIN->metadata().appID()'
+    sed -i '1a #include <hyprland/src/desktop/view/window/WindowMetadata.hpp>' kinetic.cpp
+  '';
 
   installPhase = ''
     runHook preInstall
