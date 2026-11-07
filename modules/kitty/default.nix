@@ -98,8 +98,9 @@
       };
 
       keybindings = {
-        "ctrl+shift+-" = "launch --location=hsplit --cwd=current";
-        "ctrl+shift++" = "launch --location=vsplit --cwd=current";
+        # Same split keys as Rex: cmd+d right, cmd+shift+d down
+        "cmd+d" = "launch --location=vsplit --cwd=current";
+        "cmd+shift+d" = "launch --location=hsplit --cwd=current";
         "f4" = "launch --location=split";
         "f1" = "launch --stdin-source=@screen_scrollback --stdin-add-formatting less +G -R";
         "ctrl+shift+h" = "move_window left";

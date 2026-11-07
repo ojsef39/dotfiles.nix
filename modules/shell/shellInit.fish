@@ -4,6 +4,10 @@
 fish_add_path /opt/homebrew/bin
 fish_add_path $HOME/Library/Python/3.12/bin
 fish_add_path $HOME/.local/bin
+# Rex prepends its bin dir to PATH for new panes, but the PATH rebuild drops it
+if set -q REX_BIN_DIR; and not contains -- $REX_BIN_DIR $PATH
+    set -gx PATH $REX_BIN_DIR $PATH
+end
 
 # Fish / Tide configuration
 set -U fish_greeting " "
@@ -28,6 +32,12 @@ if test -z "$SKIP_FF"
             if test "$_kitty_total_tab_count_output" -eq 1
                 _fish_greeting
             end
+        end
+    else if set -q REX_BLOCK; and command -sq rex; and command -sq jq
+        # Rex: greet only in the first pane (the whole server holds one block)
+        set _rex_block_count (rex block ls --json 2>/dev/null | jq '.blocks | length' 2>/dev/null)
+        if test "$_rex_block_count" = 1
+            _fish_greeting
         end
     end
 end
