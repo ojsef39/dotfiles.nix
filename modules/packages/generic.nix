@@ -44,6 +44,7 @@
       nmap
       nurl
       progress
+      psleep
       python3
       renovate # nixkit's renovate-jhc (JHOFER-Cloud fork), see flake.nix overlay
       retry
