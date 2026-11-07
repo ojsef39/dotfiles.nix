@@ -378,26 +378,23 @@
         leaveDotGit = false;
       };
 
-      activation.configureTide = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        kitty_socket=$(ls /tmp/mykitty-* 2>/dev/null | head -1 || true)
-        if [ -n "$kitty_socket" ] && [ -S "$kitty_socket" ] && ${pkgs.kitty}/bin/kitten @ --to "unix:$kitty_socket" ls 2>/dev/null >/dev/null; then
-          # Kitty is accessible - run tide configuration (failures will propagate)
-          ${pkgs.kitty}/bin/kitten @ --to "unix:$kitty_socket" launch --type=overlay --title="Tide Configuration" --copy-env --env SKIP_FF=1 ${pkgs.fish}/bin/fish -c "
-            set tide_output (tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Many icons' --transient=Yes 2>&1)
-
-            if string match -q '*Invalid*' \$tide_output
-              echo 'There was an issue with Tide configuration:'
-              echo \$tide_output
-              sleep 2
-              exit 1
-            else
-              echo 'Tide configuration complete.'
-              sleep 1
-            end
-          "
+      # `tide configure --auto` needs no terminal, so run it right here instead
+      # of in a terminal overlay.
+      # After linkGeneration, so the tide plugin files are in place on a first
+      # activation. Skipped on dry runs: it rewrites fish universal variables.
+      activation.configureTide = lib.hm.dag.entryAfter ["writeBoundary" "linkGeneration"] ''
+        if [[ -v DRY_RUN ]]; then
+          echo "Would run tide configure --auto"
         else
-          # Kitty not accessible (no socket or can't connect)
-          echo "Kitty not accessible, skipping tide configuration"
+          # tide exits 0 even for an invalid option, so check its output as well
+          tide_status=0
+          tide_output=$(SKIP_FF=1 ${pkgs.fish}/bin/fish -c "tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Many icons' --transient=Yes" </dev/null 2>&1) || tide_status=$?
+          if [ "$tide_status" -ne 0 ] || printf '%s' "$tide_output" | grep -q 'Invalid'; then
+            echo "There was an issue with Tide configuration:"
+            printf '%s\n' "$tide_output"
+            exit 1
+          fi
+          echo "Tide configuration complete."
         fi
       '';
 
