@@ -46,58 +46,68 @@
       colorSpace = "srgb";
     };
 
+    # The colors are written out instead of fetched and parsed from the theme
+    # file: reading a fetched file during evaluation is import-from-derivation,
+    # which the CVE scan in CI does not allow.
     mkRexTheme = {
       name,
       id,
       appearance,
-      file,
-    }: let
-      themeFile = pkgs.fetchurl file;
-      lines = lib.splitString "\n" (builtins.readFile themeFile);
-
-      namedColor = key: let
-        prefix = "${key} = ";
-        line = lib.findFirst (line: lib.hasPrefix prefix line) (throw "${file.name}: no ${key}") lines;
-      in
-        toRexColor (lib.removePrefix "#" (lib.removePrefix prefix line));
-
-      ansiPalette = let
-        entries = map (line: {
-          name = builtins.head (builtins.match "palette = ([0-9]+)=.*" line);
-          value = toRexColor (lib.removePrefix "#" (builtins.elemAt (builtins.match "palette = [0-9]+=(.*)" line) 0));
-        }) (lib.filter (line: lib.hasPrefix "palette = " line) lines);
-        byIndex = lib.listToAttrs entries;
-      in
-        lib.genList (index: byIndex.${toString index}) 16;
-    in {
+      fileName,
+      colors,
+    }: {
       inherit id name appearance;
       palette = {
-        ansi = ansiPalette;
-        background = namedColor "background";
-        foreground = namedColor "foreground";
-        cursor = namedColor "cursor-color";
-        cursorText = namedColor "cursor-text";
-        selectionBackground = namedColor "selection-background";
-        selectionForeground = namedColor "selection-foreground";
+        ansi = map toRexColor colors.ansi;
+        background = toRexColor colors.background;
+        foreground = toRexColor colors.foreground;
+        cursor = toRexColor colors.cursor;
+        cursorText = toRexColor colors.cursorText;
+        selectionBackground = toRexColor colors.selectionBackground;
+        selectionForeground = toRexColor colors.selectionForeground;
         paletteBase = {};
         paletteOverrides = {};
         paletteGenerate = false;
         paletteHarmonious = false;
       };
-      source.ghosttyFile.fileName = file.name;
+      source.ghosttyFile.fileName = fileName;
       createdAt = 0;
     };
 
     # Fixed ID so Workspace.darkThemeID / lightThemeID can point at it.
-    # Macchiato for both appearances, like the Ghostty/kitty config.
+    # Macchiato for both appearances, like the Ghostty/kitty config. Colors from
+    # catppuccin/ghostty@b0b03cc themes/catppuccin-macchiato.conf.
     catppuccinMacchiato = mkRexTheme {
       name = "Catppuccin Macchiato";
       id = "custom-3E8D6F21-9A4C-4B7E-8D15-6C2F0A9B4E77";
       appearance = "dark";
-      file = {
-        name = "catppuccin-macchiato.conf";
-        url = "https://raw.githubusercontent.com/catppuccin/ghostty/b0b03ccee7ae8f16b13bd4fdfe267616defdb2b7/themes/catppuccin-macchiato.conf";
-        hash = "sha256-s8jPvV3IclD2naA8Ut9mcwyPAeaYPeBWlZk3EthsFCE=";
+      fileName = "catppuccin-macchiato.conf";
+      colors = {
+        # ANSI 0-15
+        ansi = [
+          "494d64"
+          "ed8796"
+          "a6da95"
+          "eed49f"
+          "8aadf4"
+          "f5bde6"
+          "8bd5ca"
+          "a5adcb"
+          "5b6078"
+          "ed8796"
+          "a6da95"
+          "eed49f"
+          "8aadf4"
+          "f5bde6"
+          "8bd5ca"
+          "b8c0e0"
+        ];
+        background = "24273a";
+        foreground = "cad3f5";
+        cursor = "f4dbd6";
+        cursorText = "181926";
+        selectionBackground = "3a3e53";
+        selectionForeground = "cad3f5";
       };
     };
 
