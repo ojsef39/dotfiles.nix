@@ -1,5 +1,36 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
+  # nvf pins smart-splits v2, which predates pluggable mux backends.
+  lazy.plugins.smart-splits.package = lib.mkForce (pkgs.fetchFromGitHub {
+    owner = "smart-splits-nvim";
+    repo = "smart-splits.nvim";
+    rev = "6a03b298635205802ee1d390826f02414a13290d";
+    hash = "sha256-6gB1vSxJposF5MyuoVcbxkp3tlhkueENSruQWDVEGig=";
+    name = "smart-splits";
+  });
+
   extraPlugins = {
+    # Lets smart-splits.nvim move/resize across Rex panes
+    smart-splits-backend-rex = {
+      package = pkgs.fetchFromGitHub {
+        owner = "rawnly";
+        repo = "smart-splits-backend-rex";
+        rev = "45785cf5d15dd5e0e6cf25ab9682a146acb93379";
+        hash = "sha256-lqLdyVticzh0uv0dX1LBhfep3doRpKuidkp8QbzVG6Y=";
+        name = "smart-splits-backend-rex";
+      };
+      # rex isn't on PATH; Rex exports its bin dir to every pane it opens
+      setup = ''
+        local rex_bin_dir = os.getenv("REX_BIN_DIR")
+        require('smart-splits-backend-rex').setup {
+          bin = rex_bin_dir and (rex_bin_dir .. "/rex") or "rex",
+        }
+      '';
+    };
+
     schemastore = {
       package = pkgs.vimPlugins.SchemaStore-nvim;
     };
@@ -59,7 +90,15 @@
       package = pkgs.vimPlugins.lazygit-nvim;
       setup = ''
         vim.g.lazygit_floating_window_border_chars = { "", "", "", "", "", "", "", "" }
-        vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
+        vim.keymap.set("n", "<leader>gg", function()
+          -- Inside Rex, open lazygit as a Rex float (lazygit_float action)
+          local rex_bin = os.getenv("REX_BIN_DIR")
+          if os.getenv("REX_SESSION") and rex_bin then
+            vim.system({ rex_bin .. "/rex", "do", "lazygit_float" })
+            return
+          end
+          vim.cmd("LazyGit")
+        end, { desc = "LazyGit" })
       '';
     };
 

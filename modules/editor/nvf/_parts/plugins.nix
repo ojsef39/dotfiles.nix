@@ -237,6 +237,8 @@ in {
 
     smart-splits = {
       enable = true;
+      # Rex panes as the multiplexer (package + backend in plugins-custom.nix)
+      setupOpts.mux.backend = "smart-splits-backend-rex";
       keymaps = {
         # Resizing
         resize_left = "<A-h>";
