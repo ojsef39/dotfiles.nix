@@ -2,7 +2,7 @@
 -- Project picker (frostplexx's sessionizer, fed like the old kitty
 -- project_selector.sh): every git repo under the ghq root plus every
 -- directory in ~/.config. Picking one opens a new session there.
-require "utils/picker"
+local picker = require "utils/picker"
 
 local home = os.getenv("HOME")
 local ghq_root = home .. "/CodeProjects" -- vars.git.ghq
@@ -12,12 +12,17 @@ local extra_dirs = { home .. "/.config" } -- vars.kitty.project_selector
 -- Paths are listed relative to $HOME
 local function enumerate_projects()
     local projects = {}
+    -- A missing or unreadable ghq root only empties that part of the list
     local result, err = rex.exec(
         { "/usr/bin/find", ghq_root, "-maxdepth", "5", "-type", "d", "-name", ".git", "-prune" })
-    if not result then
-        error("Failed to enumerate projects: " .. tostring(err))
+    local repos = ""
+    if result and result.ok then
+        repos = result.stdout
+    else
+        rex.log("warn", "sessionizer: could not list repos in " .. ghq_root .. ": "
+            .. tostring(err or (result and result.stderr)))
     end
-    for line in result.stdout:gmatch("[^\r\n]+") do
+    for line in repos:gmatch("[^\r\n]+") do
         table.insert(projects, (line:gsub("/%.git$", ""):gsub("^" .. home:gsub("%p", "%%%0") .. "/", "")))
     end
     for _, dir in ipairs(extra_dirs) do
@@ -73,7 +78,7 @@ rex.action({
                 -- Shows the new session. Needs Remote Control turned on in Rex Settings;
                 -- the session exists either way.
                 local app_client = app_client_id()
-                local select_err
+                local _, select_err
                 if app_client then
                     _, select_err = rex.call("client.perform", {
                         client_id = app_client,

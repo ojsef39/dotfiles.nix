@@ -4,15 +4,7 @@
 -- and cannot send non-US characters such as "–" at all. A key event that
 -- carries the text arrives as typed.
 
-local function focused_block_id(ctx)
-    local view = rex.session.view({})
-    for _, window in ipairs(view and view.windows or {}) do
-        if window.window_id == view.active_window_id and window.focused_block_id then
-            return window.focused_block_id
-        end
-    end
-    return ctx.block_id
-end
+local focused_block_id = require("utils/focus").focused_block_id
 
 rex.action({
     name = "send_text",

@@ -125,8 +125,23 @@ local function resolve_position(position, width, padding)
 end
 
 
-function picker(opts)
-    local opts = opts or {}
+local floating_layer_with_label = require("utils/focus").floating_layer_with_label
+
+-- label -> id of that label's latest picker, so its callback can be dropped
+-- when the picker closes without a selection (toggled shut, dismissed)
+local picker_id_by_label = {}
+
+local function forget_picker(label)
+    local id = picker_id_by_label[label]
+    if id then
+        picker_callbacks[id] = nil
+        picker_id_by_label[label] = nil
+    end
+end
+
+
+local function picker(opts)
+    opts = opts or {}
     local prompt = opts.prompt or "Select an option: "
     local items = opts.items or {}
     local on_select = opts.on_select or function(item) print("Selected: " .. item) end
@@ -134,6 +149,20 @@ function picker(opts)
     local width = opts.width or nil -- fraction of the window width, e.g. 0.5 for 50%
     local padding = opts.padding or 0 -- fraction of the window size inset from every edge
     local label = opts.label or "picker"
+
+    -- Toggle like the other floats: a second press closes the open picker
+    -- and drops its pending selection callback.
+    local open_layer = floating_layer_with_label(label)
+    if open_layer then
+        local _, close_err = rex.session.close_layer({ layer_id = open_layer.layer_id })
+        if close_err then
+            error(close_err)
+        end
+        forget_picker(label)
+        return
+    end
+    -- A previous picker with this label was closed without a selection
+    forget_picker(label)
 
     -- rex.wait and rex.sleep only exist in scripts run with "rex do".
     local is_script = rex.wait ~= nil
@@ -146,6 +175,7 @@ function picker(opts)
     else
         picker_counter = picker_counter + 1
         local picker_id = tostring(os.time()) .. "-" .. tostring(picker_counter)
+        picker_id_by_label[label] = picker_id
         local rex_path = find_rex_executable()
         if not rex_path then
             os.remove(selection_path)
@@ -171,6 +201,7 @@ function picker(opts)
 
     if err then
         os.remove(selection_path)
+        forget_picker(label)
         error(err)
     end
 
@@ -191,3 +222,6 @@ function picker(opts)
         on_select(selection)
     end
 end
+
+
+return picker

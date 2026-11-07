@@ -2,6 +2,9 @@
 -- No key: run "New Scratch Session" from the command palette.
 local terminal = "com.superlogical.terminal"
 
+-- Without a seed every server start would draw the same names
+math.randomseed(os.time())
+
 -- Random names for scratch sessions, to avoid collisions with existing sessions
 local names = {
     "apple", "brick", "crane", "daisy", "eagle", "flint", "grove", "haste",
@@ -40,8 +43,13 @@ rex.action({
     run = function()
         local session_name = names[math.random(#names)] .. "-" .. names[math.random(#names)]
 
-        local tempdir = rex.exec({ "mktemp", "-d", "-t", session_name })
+        -- An explicit template works with both BSD (macOS) and GNU mktemp
+        local tmp_root = (os.getenv("TMPDIR") or "/tmp"):gsub("/+$", "")
+        local tempdir = rex.exec({ "mktemp", "-d", tmp_root .. "/" .. session_name .. ".XXXXXX" })
         local cwd = (tempdir and tempdir.stdout or ""):gsub("%s+$", "")
+        if cwd == "" then
+            error("scratchspace: mktemp failed, no scratch session created", 0)
+        end
 
         local created, err = rex.call("session.create", {
             label = " scratch: " .. session_name,
