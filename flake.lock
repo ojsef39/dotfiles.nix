@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782977808,
-        "narHash": "sha256-bizPRjR71Gy3KHkhwujoBVOgmvX6r3z9xYYu1X6kWOY=",
+        "lastModified": 1794083299,
+        "narHash": "sha256-+/UlK2nDKHx0CBmZ4L+KobDHHtUb0JRWwVbi/eHaqQM=",
         "owner": "frostplexx",
         "repo": "agate-wm",
-        "rev": "55551ad77029c587418bf8a32d6630dff4efabb4",
+        "rev": "a6463b7cad43b56456ca1ac759466ac8c7dfa3f2",
         "type": "github"
       },
       "original": {
