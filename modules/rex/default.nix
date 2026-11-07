@@ -120,6 +120,9 @@
         config.lib.file.mkOutOfStoreSymlink
         "${config.home.homeDirectory}/${vars.git.ghq}/${vars.git.dotfiles}/modules/rex/config";
 
+      # `rex-track <command>` reports working/done/error for any command (OSC 7501)
+      home.packages = [pkgs.rex-track];
+
       # Rex's Claude Code session hook: what `rex skill setup` would add, but
       # ~/.claude/settings.json is a read-only store link. Tells Claude which Rex
       # session and pane it runs in (the skill itself Rex installs on its own).
