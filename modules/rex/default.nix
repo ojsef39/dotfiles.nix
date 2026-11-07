@@ -121,7 +121,8 @@
         "${config.home.homeDirectory}/${vars.git.ghq}/${vars.git.dotfiles}/modules/rex/config";
 
       # `rex-track <command>` reports working/done/error for any command (OSC 7501)
-      home.packages = [pkgs.rex-track];
+      # `rex-k9s` opens k9s on talos-dev and talos-live side by side
+      home.packages = [pkgs.rex-track pkgs.rex-k9s];
 
       # Rex's Claude Code session hook: what `rex skill setup` would add, but
       # ~/.claude/settings.json is a read-only store link. Tells Claude which Rex
