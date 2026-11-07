@@ -592,6 +592,12 @@ in {
           right = "<S-l>";
           down = "<S-j>";
           up = "<S-k>";
+          # No line moves: their default <M-h/j/k/l> are smart-splits' resize
+          # keys, which rex's ctrl+shift+arrows forward into nvim
+          line_left = "";
+          line_right = "";
+          line_down = "";
+          line_up = "";
         };
       };
     };

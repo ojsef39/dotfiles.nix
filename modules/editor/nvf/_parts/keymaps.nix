@@ -367,6 +367,23 @@ _: {
       desc = "Move selection down";
       silent = true;
     }
+    # Left/right like mini.move's <S-h>/<S-l>
+    {
+      key = "<S-Left>";
+      action = "function() require('mini.move').move_selection('left') end";
+      lua = true;
+      mode = "v";
+      desc = "Move selection left";
+      silent = true;
+    }
+    {
+      key = "<S-Right>";
+      action = "function() require('mini.move').move_selection('right') end";
+      lua = true;
+      mode = "v";
+      desc = "Move selection right";
+      silent = true;
+    }
 
     # Visual mode - indent
     {
