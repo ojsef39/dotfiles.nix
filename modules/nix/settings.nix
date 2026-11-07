@@ -26,56 +26,57 @@
       "nix/cachix-push-hook".source = "${cachixHook}/bin/cachix-push-hook";
     };
 
-    _module.args.nixSettings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      trusted-users = [
-        "root"
-        "@wheel"
-        vars.user.name
-      ];
-      extra-substituters =
-        [
-          "https://cache.nixos.org"
-          "https://ojsef39.cachix.org"
-          "https://nixkit.cachix.org"
-          "https://nvf.cachix.org"
-        ]
-        ++ lib.optionals vars.cache.community [
-          "https://nix-community.cachix.org"
-          "https://claude-code.cachix.org"
+    _module.args.nixSettings =
+      {
+        experimental-features = [
+          "nix-command"
+          "flakes"
         ];
-      extra-trusted-substituters =
-        [
-          "https://cache.nixos.org"
-          "https://ojsef39.cachix.org"
-          "https://nixkit.cachix.org"
-          "https://nvf.cachix.org"
-        ]
-        ++ lib.optionals vars.cache.community [
-          "https://nix-community.cachix.org"
-          "https://claude-code.cachix.org"
+        trusted-users = [
+          "root"
+          "@wheel"
+          vars.user.name
         ];
-      extra-trusted-public-keys =
-        [
-          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-          "ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y="
-          "nixkit.cachix.org-1:d3yhZjbGSL6QTgzZsxE3lRLIQ8jGmH7/XxiD/5hGmfA="
-          "nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI="
-        ]
-        ++ lib.optionals vars.cache.community [
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
-        ];
-      lazy-trees = true;
-      extra-experimental-features = ["parallel-eval external-builders"];
-      eval-cores = 0;
-    }
-    // lib.optionalAttrs vars.cachix.push {
-      post-build-hook = cachixHookPath;
-    };
+        extra-substituters =
+          [
+            "https://cache.nixos.org"
+            "https://ojsef39.cachix.org"
+            "https://nixkit.cachix.org"
+            "https://nvf.cachix.org"
+          ]
+          ++ lib.optionals vars.cache.community [
+            "https://nix-community.cachix.org"
+            "https://claude-code.cachix.org"
+          ];
+        extra-trusted-substituters =
+          [
+            "https://cache.nixos.org"
+            "https://ojsef39.cachix.org"
+            "https://nixkit.cachix.org"
+            "https://nvf.cachix.org"
+          ]
+          ++ lib.optionals vars.cache.community [
+            "https://nix-community.cachix.org"
+            "https://claude-code.cachix.org"
+          ];
+        extra-trusted-public-keys =
+          [
+            "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+            "ojsef39.cachix.org-1:Pe8zOhPVMt4fa/2HYlquHkTnGX3EH7lC9xMyCA2zM3Y="
+            "nixkit.cachix.org-1:d3yhZjbGSL6QTgzZsxE3lRLIQ8jGmH7/XxiD/5hGmfA="
+            "nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI="
+          ]
+          ++ lib.optionals vars.cache.community [
+            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+            "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
+          ];
+        lazy-trees = true;
+        extra-experimental-features = ["parallel-eval external-builders"];
+        eval-cores = 0;
+      }
+      // lib.optionalAttrs vars.cachix.push {
+        post-build-hook = cachixHookPath;
+      };
 
     nixpkgs.config = {
       allowBroken = false;
