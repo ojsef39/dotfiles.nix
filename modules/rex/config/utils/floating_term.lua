@@ -16,20 +16,56 @@ local function focused_cwd(ctx)
 end
 
 
--- Run a program through an interactive fish so it gets the env from
--- interactiveShellInit (EDITOR=nvim etc.); SKIP_FF=1 skips fastfetch, like kitty did.
-local function in_fish(program)
-    return { "/usr/bin/env", "SKIP_FF=1", "fish", "-i", "-c", program }
+-- The pane that has focus right now, floats included
+local function focused_block(ctx)
+    local view = rex.session.view({})
+    for _, window in ipairs(view and view.windows or {}) do
+        if window.window_id == view.active_window_id and window.focused_block_id then
+            return window.focused_block_id
+        end
+    end
+    return ctx.block_id
 end
 
 
-local function open_float(ctx, command, label)
+-- When a float closes, Rex moves focus to whatever pane is nearest, not the one
+-- the float was opened from. Remember that pane per float label.
+local return_to = {}
+
+local function focus_block(block_id)
+    if block_id then
+        rex.session.focus_block({ block_id = block_id }) -- the pane may be gone; ignore
+    end
+end
+
+
+-- Run a program through an interactive fish so it gets the env from
+-- interactiveShellInit (EDITOR=nvim etc.); SKIP_FF=1 skips fastfetch, like kitty did.
+-- With job control on, the program gets its own foreground process group, so
+-- Rex sees it as the pane's foreground process (smart_splits passes ctrl+h/j/k/l
+-- through to lazygit only then), and fish still runs afterwards to focus the
+-- pane the float was opened from again once the program quits.
+local function in_fish(program, return_block)
+    local script = "status job-control full; " .. program
+    if return_block then
+        script = script .. string.format(
+            '; "$REX_BIN_DIR/rex" api call session.focus_block "{\\"session_id\\":\\"$REX_SESSION\\",\\"block_id\\":\\"%s\\"}" >/dev/null 2>&1',
+            return_block)
+    end
+    return { "/usr/bin/env", "SKIP_FF=1", "fish", "-i", "-c", script }
+end
+
+
+-- `program` is a fish command line, or nil for a plain shell
+local function open_float(ctx, program, label)
+    local origin = focused_block(ctx)
+    return_to[label] = origin
     local _, err = rex.session.new_layer({
         bounds = bounds,
         layout = rex.layout.block({
             flavor = terminal .. ".shell",
             label = label,
-            options = { command = command, cwd = focused_cwd(ctx) },
+            options = { command = program and in_fish(program, origin) or nil, cwd = focused_cwd(ctx) },
         }),
         focus = true,
     })
@@ -113,8 +149,10 @@ rex.action({
     title = "Lazygit Terminal",
     keywords = "lazygit git float",
     run = function(ctx)
-        if not close_float("lazygit_float") then
-            open_float(ctx, in_fish("lazygit"), "lazygit_float")
+        if close_float("lazygit_float") then
+            focus_block(return_to.lazygit_float)
+        else
+            open_float(ctx, "lazygit", "lazygit_float")
         end
     end,
 })
@@ -126,8 +164,10 @@ rex.action({
     title = "Yazi Terminal",
     keywords = "yazi files file manager float",
     run = function(ctx)
-        if not close_float("yazi_float") then
-            open_float(ctx, in_fish("yazi"), "yazi_float")
+        if close_float("yazi_float") then
+            focus_block(return_to.yazi_float)
+        else
+            open_float(ctx, "yazi", "yazi_float")
         end
     end,
 })

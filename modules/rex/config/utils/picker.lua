@@ -125,6 +125,25 @@ local function resolve_position(position, width, padding)
 end
 
 
+-- The floating layer in the active window that holds a block labeled `label`
+local function open_picker_layer(label)
+    local view = rex.session.view({})
+    for _, window in ipairs(view and view.windows or {}) do
+        if window.window_id == view.active_window_id then
+            for _, layer in ipairs(window.layers or {}) do
+                if layer.kind == "floating" then
+                    for _, block in ipairs(layer.blocks or {}) do
+                        if block.label == label then
+                            return layer
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+
 function picker(opts)
     local opts = opts or {}
     local prompt = opts.prompt or "Select an option: "
@@ -134,6 +153,14 @@ function picker(opts)
     local width = opts.width or nil -- fraction of the window width, e.g. 0.5 for 50%
     local padding = opts.padding or 0 -- fraction of the window size inset from every edge
     local label = opts.label or "picker"
+
+    -- Toggle like the other floats: a second press closes the open picker
+    -- (its pending selection callback is simply never called).
+    local open_layer = open_picker_layer(label)
+    if open_layer then
+        rex.session.close_layer({ layer_id = open_layer.layer_id })
+        return
+    end
 
     -- rex.wait and rex.sleep only exist in scripts run with "rex do".
     local is_script = rex.wait ~= nil
