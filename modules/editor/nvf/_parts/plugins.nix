@@ -237,6 +237,9 @@ in {
 
     smart-splits = {
       enable = true;
+      # Multiplexer backends in priority order (plugins in plugins-custom.nix):
+      # Rex inside Rex (REX_SESSION), kitty in kitty (KITTY_LISTEN_ON)
+      setupOpts.mux.backend = ["smart-splits-backend-rex" "smart-splits-backend-kitty"];
       keymaps = {
         # Resizing
         resize_left = "<A-h>";
@@ -590,6 +593,12 @@ in {
           right = "<S-l>";
           down = "<S-j>";
           up = "<S-k>";
+          # No line moves: their default <M-h/j/k/l> are smart-splits' resize
+          # keys, which rex's ctrl+shift+arrows forward into nvim
+          line_left = "";
+          line_right = "";
+          line_down = "";
+          line_up = "";
         };
       };
     };

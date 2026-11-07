@@ -4,9 +4,9 @@ pkgs.writeShellApplication {
   runtimeInputs = pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [pkgs.libnotify];
   text = ''
     if [[ "$(uname)" == "Darwin" ]]; then
-      osascript -e 'display notification "IM DONE COOKING!" with title "Kitty"'
+      osascript -e 'display notification "IM DONE COOKING!" with title "AI"'
     else
-      notify-send "Kitty" "IM DONE COOKING!"
+      notify-send "AI" "IM DONE COOKING!"
     fi
   '';
 }

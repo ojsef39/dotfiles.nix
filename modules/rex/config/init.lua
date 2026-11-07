@@ -1,0 +1,6 @@
+require "utils/floating_term"
+require "utils/send_text"
+require "scratchspace"
+require "sessionizer"
+require "smart_splits"
+require "keybindings"

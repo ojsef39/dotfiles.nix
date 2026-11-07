@@ -165,6 +165,7 @@ end
 agate.rule({ app = "^Zen Browser \\(Beta\\)$", space = "web" }) -- parens are regex groups, must be escaped
 agate.rule({ app = "^Moonlight$", space = "web" })
 agate.rule({ app = "^kitty$", space = "term" })
+agate.rule({ app = "^Rex Beta$", space = "term" })
 agate.rule({ app = "^Obsidian$", space = "notes" })
 agate.rule({ app = "^Things$", space = "notes" })
 agate.rule({ app = "^Linear$", space = "notes" })

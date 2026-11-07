@@ -1,5 +1,21 @@
 {
-  flake.modules.homeManager.base = _: {
+  flake.modules.homeManager.base = {
+    config,
+    lib,
+    pkgs,
+    ...
+  }: {
+    # catppuccin's theme paints #24273a; "reset" uses the terminal's default
+    # background, so Rex's pane glass shows through (kitty made that color
+    # transparent itself). catppuccin links the file directly, so patch a copy.
+    xdg.configFile."yazi/theme.toml".source = let
+      inherit (config.catppuccin.yazi) flavor accent;
+    in
+      lib.mkForce (pkgs.runCommand "catppuccin-yazi-transparent.toml" {} ''
+        sed 's/^overall = .*/overall = { bg = "reset" }/' \
+          ${config.catppuccin.sources.yazi}/${flavor}/catppuccin-${flavor}-${accent}.toml > $out
+      '');
+
     programs = {
       # Terminal file manager
       yazi = {
