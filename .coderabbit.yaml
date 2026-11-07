@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://www.coderabbit.ai/integrations/schema.v2.json
+inheritance: true
+
+reviews:
+  auto_review:
+    # Title convention only: case-insensitive substring matching, not diff inspection.
+    # Matching titles skip automatic review even when the PR includes mixed changes.
+    # Issue-link-only PRs with other titles do not match this filter.
+    ignore_title_keywords:
+      - "docs(todos): add issue links"
