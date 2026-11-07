@@ -8,16 +8,7 @@ local vim_programs = { "^n?vim" }
 -- (lazygit uses ctrl+j/k to move commits)
 local focus_passthrough_programs = { "^n?vim", "^lazygit$" }
 
--- The pane that has focus, floats included
-local function focused_block_id(ctx)
-    local view = rex.session.view({})
-    for _, window in ipairs(view and view.windows or {}) do
-        if window.window_id == view.active_window_id and window.focused_block_id then
-            return window.focused_block_id
-        end
-    end
-    return ctx.block_id
-end
+local focused_block_id = require("utils/focus").focused_block_id
 
 -- Send `keyspec` ("ctrl+j", "alt+h": one modifier and one letter) straight to
 -- `block_id`. pane.send_key through rex.client.queue does not reach a program
@@ -163,7 +154,7 @@ rex.action({
         -- Remember where we are even if it was reached with the mouse
         mark_focused(block_id)
         local target = recent_neighbor(block_id, args.direction)
-        local err
+        local _, err
         if target then
             _, err = rex.session.focus_block({ block_id = target })
         else

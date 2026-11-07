@@ -381,8 +381,10 @@
       # `tide configure --auto` needs no terminal, so run it right here instead
       # of in a terminal overlay.
       activation.configureTide = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        tide_output=$(SKIP_FF=1 ${pkgs.fish}/bin/fish -c "tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Many icons' --transient=Yes" </dev/null 2>&1 || true)
-        if printf '%s' "$tide_output" | grep -q 'Invalid'; then
+        # tide exits 0 even for an invalid option, so check its output as well
+        tide_status=0
+        tide_output=$(SKIP_FF=1 ${pkgs.fish}/bin/fish -c "tide configure --auto --style=Lean --prompt_colors='16 colors' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Compact --icons='Many icons' --transient=Yes" </dev/null 2>&1) || tide_status=$?
+        if [ "$tide_status" -ne 0 ] || printf '%s' "$tide_output" | grep -q 'Invalid'; then
           echo "There was an issue with Tide configuration:"
           printf '%s\n' "$tide_output"
           exit 1

@@ -16,16 +16,7 @@ local function focused_cwd(ctx)
 end
 
 
--- The pane that has focus right now, floats included
-local function focused_block(ctx)
-    local view = rex.session.view({})
-    for _, window in ipairs(view and view.windows or {}) do
-        if window.window_id == view.active_window_id and window.focused_block_id then
-            return window.focused_block_id
-        end
-    end
-    return ctx.block_id
-end
+local focus = require("utils/focus")
 
 
 -- When a float closes, Rex moves focus to whatever pane is nearest, not the one
@@ -58,7 +49,7 @@ end
 
 -- `program` is a fish command line, or nil for a plain shell
 local function open_float(ctx, program, label)
-    local origin = focused_block(ctx)
+    local origin = focus.focused_block_id(ctx)
     return_to[label] = origin
     local _, err = rex.session.new_layer({
         bounds = bounds,
@@ -75,30 +66,13 @@ local function open_float(ctx, program, label)
 end
 
 
-local function floating_block(view, label)
-    for _, window in ipairs(view.windows or {}) do
-        if window.window_id == view.active_window_id then
-            for _, layer in ipairs(window.layers or {}) do
-                if layer.kind == "floating" then
-                    for _, block in ipairs(layer.blocks or {}) do
-                        if block.label == label then
-                            return layer
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
-
 local function close_float(label)
     local view, err = rex.session.view({})
     if err then
         error(err)
     end
 
-    local layer = floating_block(view, label)
+    local layer = focus.floating_layer_with_label(label, view)
     if not layer then
         return false
     end
@@ -116,7 +90,7 @@ local function toggle_float(ctx, command, label)
         error(err)
     end
 
-    local layer = floating_block(view, label)
+    local layer = focus.floating_layer_with_label(label, view)
     if layer then
         local minimized = layer.state == "minimized"
         local _, set_err = rex.session.set_layer_state({

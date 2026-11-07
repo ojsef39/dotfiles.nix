@@ -125,27 +125,11 @@ local function resolve_position(position, width, padding)
 end
 
 
--- The floating layer in the active window that holds a block labeled `label`
-local function open_picker_layer(label)
-    local view = rex.session.view({})
-    for _, window in ipairs(view and view.windows or {}) do
-        if window.window_id == view.active_window_id then
-            for _, layer in ipairs(window.layers or {}) do
-                if layer.kind == "floating" then
-                    for _, block in ipairs(layer.blocks or {}) do
-                        if block.label == label then
-                            return layer
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
+local floating_layer_with_label = require("utils/focus").floating_layer_with_label
 
 
-function picker(opts)
-    local opts = opts or {}
+local function picker(opts)
+    opts = opts or {}
     local prompt = opts.prompt or "Select an option: "
     local items = opts.items or {}
     local on_select = opts.on_select or function(item) print("Selected: " .. item) end
@@ -156,7 +140,7 @@ function picker(opts)
 
     -- Toggle like the other floats: a second press closes the open picker
     -- (its pending selection callback is simply never called).
-    local open_layer = open_picker_layer(label)
+    local open_layer = floating_layer_with_label(label)
     if open_layer then
         rex.session.close_layer({ layer_id = open_layer.layer_id })
         return
@@ -218,3 +202,6 @@ function picker(opts)
         on_select(selection)
     end
 end
+
+
+return picker
