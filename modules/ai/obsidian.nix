@@ -70,7 +70,9 @@
 
       ### Writing runbooks
 
-      When the user asks for a runbook, write it under the runbook folder above.
+      When the user asks for a runbook, write it under the runbook folder above,
+      unless the current repo's CLAUDE.md / AGENTS.md says where runbooks go.
+      Then follow the repo's rules instead.
 
       ${
         if cfg.obsidian.runbookTemplate == null

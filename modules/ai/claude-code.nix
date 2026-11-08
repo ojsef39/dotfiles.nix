@@ -54,6 +54,7 @@
         };
         tui = "fullscreen";
         agentPushNotifEnabled = true;
+        autoMemoryEnabled = false;
         model = claudeModel;
         # advisorModel = "opus";
         inherit (cfg) effortLevel;
