@@ -8,6 +8,9 @@ fish_add_path $HOME/.local/bin
 if set -q REX_BIN_DIR; and not contains -- $REX_BIN_DIR $PATH
     set -gx PATH $REX_BIN_DIR $PATH
 end
+# done plugin: skip commands that already notify through Rex (claude, rex-track).
+# First pattern is done's default; this runs after the plugin set it, so restate it.
+set -g __done_exclude '^git (?!push|pull|fetch)' '(^|[;&|]\s*)(claude|rex-track)(\s|$)'
 
 # Fish / Tide configuration
 set -U fish_greeting " "
