@@ -320,10 +320,6 @@
             name = "tide";
             inherit (tide) src;
           }
-          {
-            name = "done";
-            inherit (done) src;
-          }
         ];
 
       # We'll store more complex initialization in a separate file
