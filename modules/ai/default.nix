@@ -3,9 +3,28 @@
     config,
     lib,
     pkgs,
+    vars,
     ...
   }: let
     cfg = config.ai;
+
+    ghqRoot = "${config.home.homeDirectory}/${vars.git.ghq}";
+    baseRepo = "github.com/ojsef39/dotfiles.nix";
+
+    dotfilesInstructions = pkgs.writeTextDir "dotfiles.instructions.md" ''
+      ---
+      description: "Where these instructions are managed."
+      applyTo: "**"
+      ---
+
+      ## Managing these instructions
+
+      These global instructions are managed in the base dotfiles repo `${ghqRoot}/${baseRepo}`: `modules/ai/instructions/*.instructions.md` for the base set, feature-specific ones generated in `modules/ai/*.nix` (e.g. `obsidian.nix`, `personal.nix`). Edit them there, never the generated files under `~/.claude`.
+      ${lib.optionalString (vars.git.dotfiles != baseRepo) ''
+
+        This machine's own dotfiles repo is `${ghqRoot}/${vars.git.dotfiles}`. Instructions that only apply to this machine go there.
+      ''}
+    '';
   in {
     options.ai = {
       model = lib.mkOption {
@@ -81,6 +100,8 @@
         name = "ai-instructions";
         paths = [./instructions] ++ cfg.extraInstructionsDirs;
       };
+
+      extraInstructionsDirs = [dotfilesInstructions];
 
       allowedBashCommands = [
         "gh run watch *"
