@@ -161,8 +161,8 @@
         "rex.server.run-mode" = "bundled";
 
         "Workspace.activePaneBorderOpacity" = 0.5;
-        "Workspace.activePaneBorderTransition" = "move";
-        "Workspace.animationStyle" = "off";
+        "Workspace.activePaneBorderTransition" = "instant";
+        "Workspace.animationStyle" = "snappy";
         "Workspace.darkThemeID" = catppuccinMacchiato.id;
         "Workspace.darkUsesExtendedThemePalette" = false;
         "Workspace.hiddenChromeButtons" = ["commandPalette" "newTab"];
