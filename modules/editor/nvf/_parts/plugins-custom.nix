@@ -36,12 +36,9 @@
         hash = "sha256-lqLdyVticzh0uv0dX1LBhfep3doRpKuidkp8QbzVG6Y=";
         name = "smart-splits-backend-rex";
       };
-      # rex isn't on PATH; Rex exports its bin dir to every pane it opens
+      # rex is on PATH via REX_BIN_DIR (see modules/shell/shellInit.fish)
       setup = ''
-        local rex_bin_dir = os.getenv("REX_BIN_DIR")
-        require('smart-splits-backend-rex').setup {
-          bin = rex_bin_dir and (rex_bin_dir .. "/rex") or "rex",
-        }
+        require('smart-splits-backend-rex').setup {}
 
         -- Leave nvim through the rex config's smart_splits_focus action instead
         -- of the backend's own focus script, so it returns to the pane you came
@@ -121,9 +118,8 @@
         vim.g.lazygit_floating_window_border_chars = { "", "", "", "", "", "", "", "" }
         vim.keymap.set("n", "<leader>gg", function()
           -- Inside Rex, open lazygit as a Rex float (lazygit_float action)
-          local rex_bin = os.getenv("REX_BIN_DIR")
-          if os.getenv("REX_SESSION") and rex_bin then
-            vim.system({ rex_bin .. "/rex", "do", "lazygit_float" })
+          if os.getenv("REX_SESSION") and vim.fn.executable("rex") == 1 then
+            vim.system({ "rex", "do", "lazygit_float" })
             return
           end
           vim.cmd("LazyGit")

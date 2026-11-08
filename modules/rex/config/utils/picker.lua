@@ -19,23 +19,6 @@ local function read_first_line(path)
 end
 
 
-local function find_rex_executable()
-    -- The pane runs the caller's shell environment, which needn't have rex on its
-    -- PATH. The CLI and the server are one binary, so ask the server for its own.
-    local status = rex.call("server.status")
-    if not status or not status.pid then
-        return nil
-    end
-
-    local result = rex.exec({ "/bin/ps", "-o", "comm=", "-p", tostring(status.pid) })
-    if not result or not result.ok then
-        return nil
-    end
-
-    return result.stdout:gsub("%s+$", "")
-end
-
-
 -- The configuration file cannot wait for a selection: blocking its Lua state stops
 -- Rex.app from taking input, and it receives no events. So its pane hands the
 -- result back with client.action, which runs the action below with a client in
@@ -65,10 +48,11 @@ rex.action({
 })
 
 
-local function build_callback_command(prompt, items, selection_path, rex_path, payload)
-    local script = 'prompt=$1; out=$2; rex=$3; payload=$4; shift 4; ' .. fzf_pipeline
-        .. '; exec "$rex" api call client.action "$payload"'
-    local command = { "/bin/sh", "-c", script, "sh", prompt, selection_path, rex_path, payload }
+-- rex needn't be on the pane's PATH, but Rex exports its bin dir to every pane
+local function build_callback_command(prompt, items, selection_path, payload)
+    local script = 'prompt=$1; out=$2; payload=$3; shift 3; ' .. fzf_pipeline
+        .. '; exec "$REX_BIN_DIR/rex" api call client.action "$payload"'
+    local command = { "/bin/sh", "-c", script, "sh", prompt, selection_path, payload }
     for _, item in ipairs(items) do
         table.insert(command, item)
     end
@@ -176,14 +160,9 @@ local function picker(opts)
         picker_counter = picker_counter + 1
         local picker_id = tostring(os.time()) .. "-" .. tostring(picker_counter)
         picker_id_by_label[label] = picker_id
-        local rex_path = find_rex_executable()
-        if not rex_path then
-            os.remove(selection_path)
-            error("picker: cannot find the rex executable to hand the selection back with")
-        end
         picker_callbacks[picker_id] = on_select
         command = build_callback_command(
-            prompt, items, selection_path, rex_path, build_payload(picker_id, selection_path))
+            prompt, items, selection_path, build_payload(picker_id, selection_path))
     end
 
     local result, err = rex.session.new_layer({
