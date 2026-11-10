@@ -37,9 +37,8 @@ end
 -- Run a program through an interactive fish so it gets the env from
 -- interactiveShellInit (EDITOR=nvim etc.); SKIP_FF=1 skips fastfetch, like kitty did.
 -- With job control on, the program gets its own foreground process group, so
--- Rex sees it as the pane's foreground process (smart_splits passes ctrl+h/j/k/l
--- through to lazygit only then), and fish still runs afterwards to focus the
--- pane the float was opened from again once the program quits.
+-- Rex sees it as the pane's foreground process, and fish still runs afterwards
+-- to focus the pane the float was opened from again once the program quits.
 local function in_fish(program, return_block)
     local script = "status job-control full; " .. program
     if return_block then
