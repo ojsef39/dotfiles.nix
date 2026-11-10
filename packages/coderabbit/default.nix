@@ -1,10 +1,10 @@
 # coderabbit keeps one global active org in ~/.coderabbit/auth.json.
 # This wrapper switches it to the git remote owner before every call
-# (except `auth ...`) and says so on stderr.
+# (except `auth ...` other than `auth status`) and says so on stderr.
 # TESTING — smoke-test these on every change:
-#   cd <JHOFER-Cloud repo> && coderabbit --version   # prints "switched org ojsef39 → JHOFER-Cloud"
-#   coderabbit auth status                           # Organization : JHOFER-Cloud
+#   cd <JHOFER-Cloud repo> && coderabbit auth status # prints "switched org ojsef39 → JHOFER-Cloud", Organization : JHOFER-Cloud
 #   cd <ojsef39 repo> && coderabbit --version        # switches back
+#   coderabbit auth org --agent                      # no switch message
 {
   lib,
   writeShellApplication,
@@ -19,7 +19,7 @@ writeShellApplication {
     auth="$HOME/.coderabbit/auth.json"
     remote=$(git remote get-url origin 2>/dev/null || true)
 
-    if [[ "''${1:-}" != auth && -f "$auth" && -n "$remote" ]]; then
+    if [[ ("''${1:-}" != auth || "''${2:-}" == status) && -f "$auth" && -n "$remote" ]]; then
       # git@host:owner/repo.git, https://host/owner/repo, ssh://git@host/owner/repo
       owner=$(sed -E 's#^.*[:/]([^/:]+)/[^/]+/?$#\1#' <<<"$remote")
       owner=''${owner,,}
