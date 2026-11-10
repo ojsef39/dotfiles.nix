@@ -152,6 +152,8 @@
           "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = true;
           "browser.fixup.domainsuffixwhitelist.lan" = true;
           "browser.tabs.warnOnClose" = true;
+          "browser.download.always_ask_before_handling_new_types" = true;
+          "browser.download.open_pdf_attachments_inline" = true;
 
           # Permissions
           "permissions.default.shortcuts" = 1; # 0=Allow, 1=Block (https://github.com/zen-browser/desktop/issues/8894#issuecomment-3674583799)
