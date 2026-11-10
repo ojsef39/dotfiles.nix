@@ -1,5 +1,6 @@
-{
+{inputs, ...}: {
   flake.modules.generic.base = {pkgs, ...}: let
+    rom = inputs.rom.packages.${pkgs.stdenv.hostPlatform.system}.default;
     helm-with-plugins = pkgs.wrapHelm pkgs.kubernetes-helm {
       plugins = [
         pkgs.kubernetes-helmPlugins.helm-unittest
@@ -36,7 +37,6 @@
       neovide
       nh
       nix-init # https://github.com/nix-community/nix-init
-      nix-output-monitor
       nix-tree
       nix-update # https://github.com/Mic92/nix-update
       nixpkgs-review
@@ -47,6 +47,7 @@
       python3
       renovate # nixkit's renovate-jhc (JHOFER-Cloud fork), see flake.nix overlay
       retry
+      rom # https://github.com/manic-systems/rom (nix output monitor)
       rsync
       speedtest-cli
       timer

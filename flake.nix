@@ -35,6 +35,10 @@
     determinate = {
       url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
     };
+    rom = {
+      url = "github:manic-systems/rom";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nvf = {
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
