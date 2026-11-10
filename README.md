@@ -1,21 +1,19 @@
-# dotfiles.nix
+<p align="center">
+    <a href="http://www.hexley.com/license.html">
+    <img src="https://github.com/user-attachments/assets/3db65c06-1c36-4ddd-bcb9-66beaae39d5d" width=225/>
+    </a>
+    <h1 align="center"><code>dotfiles.nix</code></h1>
+    <div align="center">
+    <a href="https://dotfiles.jhofer.de" title="Go to project documentation"><img src="https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge" height=20/></a>
+    <img src="https://github.com/ojsef39/dotfiles.nix/actions/workflows/validate.yml/badge.svg" height=20/>
+    <img src="https://img.shields.io/github/repo-size/ojsef39/dotfiles.nix" height=20/>
+    <img src="https://img.shields.io/github/license/ojsef39/dotfiles.nix" height=20/>
+    </div>
+</p>
 
-[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://dotfiles.jhofer.de "Go to project documentation")
-[![Build Status](https://github.com/ojsef39/dotfiles.nix/actions/workflows/validate.yml/badge.svg)](https://github.com/ojsef39/dotfiles.nix/actions/workflows/validate.yml)
-![GitHub repo size](https://img.shields.io/github/repo-size/ojsef39/dotfiles.nix)
-![GitHub License](https://img.shields.io/github/license/ojsef39/dotfiles.nix)
-
-My central Nix configuration for macOS (and potentially Linux) systems. This
+My central Nix configuration for macOS and Linux systems. This
 repository serves as the single source of truth for my system configuration and
 dotfiles, managing everything from system settings to user applications.
-
-> [!NOTE]
-> Formerly `nix-base`. The `nix-personal` repository has been merged into this
-> one.
-
-<h1 align="center">
-  <br><img src="https://nixcademy.com/_astro/nix-snowflake.DGxu8h81_1Dx4i6.svg" height="192px">
-</h1>
 
 ## Layout
 
@@ -46,16 +44,16 @@ of that machine. It needs no edits when a feature is added. `modules/core/` hold
 
 ## Module aggregates
 
-| Aggregate | Scope | Exported |
-| --- | --- | --- |
-| `generic.base` | cross-platform system config | ✅ |
-| `darwin.base` | nix-darwin system + home-manager wiring | ✅ |
-| `nixos.base` | NixOS system + home-manager wiring | ✅ |
-| `homeManager.base` | cross-platform home config | ✅ |
-| `homeManager.darwin` / `homeManager.nixos` | platform-specific home config | ✅ |
-| `generic.personal` / `darwin.personal` / `homeManager.personal` | ojsef39's machines only | ❌ |
-| `nixos.nvidia`, … | opt-in capability, imported by the hosts that want it | ❌ |
-| `darwin.JosefsMacBookPro`, `nixos.josef-nd1-gpu0`, `homeManager.josef-nd1-gpu0` | one machine only | ❌ |
+| Aggregate                                                                       | Scope                                                 | Exported |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------- | -------- |
+| `generic.base`                                                                  | cross-platform system config                          | ✅       |
+| `darwin.base`                                                                   | nix-darwin system + home-manager wiring               | ✅       |
+| `nixos.base`                                                                    | NixOS system + home-manager wiring                    | ✅       |
+| `homeManager.base`                                                              | cross-platform home config                            | ✅       |
+| `homeManager.darwin` / `homeManager.nixos`                                      | platform-specific home config                         | ✅       |
+| `generic.personal` / `darwin.personal` / `homeManager.personal`                 | ojsef39's machines only                               | ❌       |
+| `nixos.nvidia`, …                                                               | opt-in capability, imported by the hosts that want it | ❌       |
+| `darwin.JosefsMacBookPro`, `nixos.josef-nd1-gpu0`, `homeManager.josef-nd1-gpu0` | one machine only                                      | ❌       |
 
 Configurations are named after the machine's hostname (which is pinned
 declaratively in the host file), so `nh` resolves the right one without an
@@ -66,14 +64,14 @@ Because a feature file declares its own audience, the files belonging to one
 machine are spread across feature directories by design. To find them:
 
 ```console
-$ just where josef-nd1-gpu0     # every file contributing to that aggregate
-$ just aggregates               # every published aggregate name
+just where josef-nd1-gpu0     # every file contributing to that aggregate
+just aggregates               # every published aggregate name
 ```
 
 Anything named after a machine lives in `modules/hosts/<name>/`: its assembly,
 bootloader, filesystems, dock layout, host-only packages. A file named after one
 host has no business in a feature directory, since by its own name it can never
-be reused. Feature modules that a single machine merely *enables* stay with their
+be reused. Feature modules that a single machine merely _enables_ stay with their
 feature.
 
 Anything another machine could plausibly also have is an **opt-in capability**
@@ -103,7 +101,7 @@ than dependent on directory layout.
 
 ### Why folders never encode audience
 
-The aggregate name is the *only* place that records who a module is for, and
+The aggregate name is the _only_ place that records who a module is for, and
 whether it applies automatically or has to be opted into. Directories say what a
 module is about and nothing else.
 
