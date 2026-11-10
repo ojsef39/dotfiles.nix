@@ -35,6 +35,7 @@ Never touch secrets yourself. Don't read secret stores or files holding credenti
 
 - Default to no comments. If the lines you edit had none, don't add one.
 - A comment is only for a non-obvious WHY that outlives the conversation, or a real TODO. Max 2 lines, also in new files.
+- One TODO per follow-up task: extend the existing TODO instead of adding a second one for the same removal or upgrade.
 - Never put chat content in files or commits: what we're trying, why something was not changed, rationale that only makes sense with the conversation. That goes in chat; metric-based rationale for a value change goes in the commit body.
 - Commit messages: technical, 1-3 lines or a few bullets, what the commit does. No stories.
 
