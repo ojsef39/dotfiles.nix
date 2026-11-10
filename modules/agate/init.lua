@@ -162,7 +162,7 @@ end
 -- name, and agate resolves the name (and its monitor) each time a window appears,
 -- so a rule automatically follows the dynamic music/comms remapping below without
 -- being re-registered.
-agate.rule({ app = "^Zen Browser \\(Beta\\)$", space = "web" }) -- parens are regex groups, must be escaped
+agate.rule({ app = "^[Zz]en$", space = "web" })
 agate.rule({ app = "^Moonlight$", space = "web" })
 agate.rule({ app = "^kitty$", space = "term" })
 agate.rule({ app = "^Rex Beta$", space = "term" })

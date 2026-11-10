@@ -4,9 +4,6 @@
 local default_resize_amount = 3
 
 local vim_programs = { "^n?vim" }
--- Programs that get ctrl+h/j/k/l themselves instead of Rex moving focus
--- (lazygit uses ctrl+j/k to move commits)
-local focus_passthrough_programs = { "^n?vim", "^lazygit$" }
 
 local focused_block_id = require("utils/focus").focused_block_id
 
@@ -144,9 +141,9 @@ rex.action({
     args = { direction = "string", key = "string?", passthrough = "boolean?" },
     run = function(ctx, args)
         local block_id = focused_block_id(ctx)
-        if args.passthrough ~= false and foreground_matches(block_id, focus_passthrough_programs) then
+        if args.passthrough ~= false and foreground_matches(block_id, vim_programs) then
             if not args.key then
-                error("smart_splits_focus: no key given to forward to the program", 0)
+                error("smart_splits_focus: no key given to forward to Neovim", 0)
             end
             send_key_to(ctx, block_id, args.key)
             return
