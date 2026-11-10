@@ -197,7 +197,7 @@
         "Workspace.appIconVisibility" = "dockOnly";
         "Workspace.shellIconTheme" = "themed";
         "Workspace.showsActivePaneBorder" = true;
-        "Workspace.showsIdleProgramsInActivity" = false;
+        "Workspace.showsIdleProgramsInActivity" = true;
         "Workspace.showsPaneHeaders" = false;
         "Workspace.sidebarCollapsed" = false;
         "Workspace.sidebarPosition" = "left";
