@@ -120,10 +120,6 @@
         config.lib.file.mkOutOfStoreSymlink
         "${config.home.homeDirectory}/${vars.git.ghq}/${vars.git.dotfiles}/modules/rex/config";
 
-      # `rex-track <command>` reports working/done/error for any command (OSC 7501)
-      # `rex-k9s` opens k9s on talos-dev and talos-live side by side
-      home.packages = [pkgs.rex-track pkgs.rex-k9s];
-
       # Rex's Claude Code session hook: what `rex skill setup` would add, but
       # ~/.claude/settings.json is a read-only store link. Tells Claude which Rex
       # session and pane it runs in (the skill itself Rex installs on its own).
@@ -139,33 +135,39 @@
         }
       ];
 
-      # Rex Beta's download link is invite-only, so it lives in a sops file. Only
-      # installs when missing: Rex updates itself (RexAppUpdateAutomation below).
-      home.activation.rexInstall = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        if [ ! -d "/Applications/Rex Beta.app" ]; then
-          rexTmp=$(/usr/bin/mktemp -d)
-          if rexAgeKey=$(${pkgs._1password-cli}/bin/op read op://Personal/SOPS_AGE_KEY_FILE/credential) \
-            && rexUrl=$(SOPS_AGE_KEY="$rexAgeKey" ${pkgs.sops}/bin/sops -d --extract '["REX_DMG_URL"]' ${./download.env}) \
-            && [ -n "$rexUrl" ] \
-            && run /usr/bin/curl -fsSL -o "$rexTmp/rex.dmg" "$rexUrl" \
-            && run /usr/bin/hdiutil attach -quiet -nobrowse -readonly -mountpoint "$rexTmp/mnt" "$rexTmp/rex.dmg" \
-            && run /usr/bin/ditto "$rexTmp/mnt/Rex Beta.app" "/Applications/Rex Beta.app"; then
-            verboseEcho "Installed Rex Beta"
-          else
-            warnEcho "Rex Beta not installed: decrypting the URL or downloading the dmg failed"
-          fi
-          [ -d "$rexTmp/mnt" ] && /usr/bin/hdiutil detach -quiet "$rexTmp/mnt" || true
-          /bin/rm -rf "$rexTmp"
-        fi
-      '';
+      home = {
+        # `rex-track <command>` reports working/done/error for any command (OSC 7501)
+        # `rex-k9s` opens k9s on talos-dev and talos-live side by side
+        packages = [pkgs.rex-track pkgs.rex-k9s];
 
-      # The themes cannot go through targets.darwin.defaults: Rex keeps imported
-      # themes as JSON data, which a plist attrset cannot express. Writing the key
-      # replaces any themes imported in the app.
-      home.activation.rexTheme = lib.hm.dag.entryAfter ["writeBoundary" "setDarwinDefaults"] ''
-        themeHex=$(printf '%s' ${lib.escapeShellArg rexThemeJSON} | ${pkgs.coreutils}/bin/od -An -v -tx1 | ${pkgs.coreutils}/bin/tr -d ' \n')
-        run /usr/bin/defaults write com.superlogical.rex 'Workspace.customThemes' -data "$themeHex"
-      '';
+        # Rex Beta's download link is invite-only, so it lives in a sops file. Only
+        # installs when missing: Rex updates itself (RexAppUpdateAutomation below).
+        activation.rexInstall = lib.hm.dag.entryAfter ["writeBoundary"] ''
+          if [ ! -d "/Applications/Rex Beta.app" ]; then
+            rexTmp=$(/usr/bin/mktemp -d)
+            if rexAgeKey=$(${pkgs._1password-cli}/bin/op read op://Personal/SOPS_AGE_KEY_FILE/credential) \
+              && rexUrl=$(SOPS_AGE_KEY="$rexAgeKey" ${pkgs.sops}/bin/sops -d --extract '["REX_DMG_URL"]' ${./download.env}) \
+              && [ -n "$rexUrl" ] \
+              && run /usr/bin/curl -fsSL -o "$rexTmp/rex.dmg" "$rexUrl" \
+              && run /usr/bin/hdiutil attach -quiet -nobrowse -readonly -mountpoint "$rexTmp/mnt" "$rexTmp/rex.dmg" \
+              && run /usr/bin/ditto "$rexTmp/mnt/Rex Beta.app" "/Applications/Rex Beta.app"; then
+              verboseEcho "Installed Rex Beta"
+            else
+              warnEcho "Rex Beta not installed: decrypting the URL or downloading the dmg failed"
+            fi
+            [ -d "$rexTmp/mnt" ] && /usr/bin/hdiutil detach -quiet "$rexTmp/mnt" || true
+            /bin/rm -rf "$rexTmp"
+          fi
+        '';
+
+        # The themes cannot go through targets.darwin.defaults: Rex keeps imported
+        # themes as JSON data, which a plist attrset cannot express. Writing the key
+        # replaces any themes imported in the app.
+        activation.rexTheme = lib.hm.dag.entryAfter ["writeBoundary" "setDarwinDefaults"] ''
+          themeHex=$(printf '%s' ${lib.escapeShellArg rexThemeJSON} | ${pkgs.coreutils}/bin/od -An -v -tx1 | ${pkgs.coreutils}/bin/tr -d ' \n')
+          run /usr/bin/defaults write com.superlogical.rex 'Workspace.customThemes' -data "$themeHex"
+        '';
+      };
 
       # Rex stores its preferences as flat, dotted keys next to app state in one
       # domain. Only preferences are set here; `defaults import` merges.

@@ -5,3 +5,4 @@ result
 .direnv
 claude-vm.qcow2
 result-bin
+.cache/
