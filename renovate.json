@@ -17,7 +17,7 @@
     {
       "description": "Third-party code, review before merging",
       "matchManagers": ["nix"],
-      "matchDepNames": ["archive-linear-issue"],
+      "matchDepNames": ["archive-linear-issue", "catppuccin-wallpapers"],
       "automerge": false
     }
   ]
