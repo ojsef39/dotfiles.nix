@@ -10,6 +10,7 @@
   flake.modules.homeManager.base = {
     lib,
     pkgs,
+    vars,
     ...
   }: let
     # Rex keeps imported themes under Workspace.customThemes as JSON data, in
@@ -110,9 +111,23 @@
     };
 
     rexThemeJSON = builtins.toJSON [catppuccinMacchiato];
+
+    # Paths relative to $HOME, read by sessionizer.lua
+    extraDirs = map (d: lib.removePrefix "~/" d) (lib.splitString " " vars.kitty.project_selector);
+    rexVarsLua = ''
+      return {
+        ghq = ${builtins.toJSON vars.git.ghq},
+        extra_dirs = { ${lib.concatMapStringsSep ", " builtins.toJSON extraDirs} },
+      }
+    '';
   in
     lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-      xdg.configFile."rex".source = ./config;
+      xdg.configFile."rex" = {
+        source = ./config;
+        recursive = true;
+      };
+      xdg.configFile."rex/utils/vars.lua".text = rexVarsLua;
+
       ai.allowedBashCommands = ["rex session rename *"];
 
       # Rex's Claude Code session hook: what `rex skill setup` would add, but
