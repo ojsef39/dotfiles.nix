@@ -167,6 +167,7 @@
       # domain. Only preferences are set here; `defaults import` merges.
       targets.darwin.defaults."com.superlogical.rex" = {
         RexAppUpdateAutomation = "install";
+        RexAppUpdateChannel = "preview";
 
         "rex.agents.names-sessions" = true;
         # Needed for the experimental cursor shaders (Workspace.cursorShader)
@@ -198,7 +199,7 @@
         "Workspace.sidebarCollapsed" = false;
         "Workspace.sidebarPosition" = "left";
         "Workspace.sidebarSwipe" = "optionSwipe";
-        # Workspace.tabStyle left unset: toggle with shift+cmd+s, Rex remembers it
+        "Workspace.tabStyle" = "vertical";
         "Workspace.terminalCopyOnSelect" = false;
         "Workspace.terminalCursorStyle" = "block";
         # Cursor trail like kitty's cursor_trail / Neovide. Rex also ships:
