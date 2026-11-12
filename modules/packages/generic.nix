@@ -25,7 +25,6 @@
       ghq
       gitlab-ci-local
       go
-      gomplate
       helm-with-plugins
       hwatch
       just
