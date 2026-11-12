@@ -120,6 +120,16 @@
         extra_dirs = { ${lib.concatMapStringsSep ", " builtins.toJSON extraDirs} },
       }
     '';
+
+    # Allow rules can't cover a command containing `$VAR` ("A variable in this
+    # command can't be checked before it runs"), so approve the exact shape here.
+    rexRenameAllow = pkgs.writeShellScript "rex-rename-allow" ''
+      cmd=$(${pkgs.jq}/bin/jq -r '.tool_input.command // empty')
+      re='^rex session rename "\$REX_SESSION" [a-z0-9-]+$'
+      if [[ $cmd =~ $re ]]; then
+        echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"allow","permissionDecisionReason":"rex session rename"}}'
+      fi
+    '';
   in
     lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       xdg.configFile."rex" = {
@@ -129,6 +139,19 @@
       xdg.configFile."rex/utils/vars.lua".text = rexVarsLua;
 
       ai.allowedBashCommands = ["rex session rename *"];
+
+      programs.claude-code.settings.hooks.PreToolUse = [
+        {
+          matcher = "Bash";
+          hooks = [
+            {
+              type = "command";
+              "if" = "Bash(rex session rename *)";
+              command = "${rexRenameAllow}";
+            }
+          ];
+        }
+      ];
 
       # Rex's Claude Code session hook: what `rex skill setup` would add, but
       # ~/.claude/settings.json is a read-only store link. Tells Claude which Rex
