@@ -879,6 +879,26 @@
         "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
       }
     },
+    "rom": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794262940,
+        "narHash": "sha256-JQD1UryzH/lxACzNR1gjYoXEAVOtgapN4ae5JLBDT64=",
+        "owner": "manic-systems",
+        "repo": "rom",
+        "rev": "d328d435c995eb42d1a6c1320b8eeb391bb95f9e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "manic-systems",
+        "repo": "rom",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agate": "agate",
@@ -904,6 +924,7 @@
         "nixpkgs-copilot-cli": "nixpkgs-copilot-cli",
         "nixpkgs_fork": "nixpkgs_fork",
         "nvf": "nvf",
+        "rom": "rom",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "spicetify-nix": "spicetify-nix",
         "virtualhere": "virtualhere",

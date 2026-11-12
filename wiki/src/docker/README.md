@@ -8,8 +8,8 @@ Example flake showing `buildLayeredImage` and `buildImage` with Ubuntu base.
 cd wiki/docker && nix develop -c $SHELL
 ```
 
-or with [nix-output-monitor](https://github.com/maralorn/nix-output-monitor)
-(`nom develop -c $SHELL`) for a nice overview of the build progress
+or with [rom](https://github.com/manic-systems/rom)
+(`rom develop -- -c $SHELL`) for a nice overview of the build progress
 
 This will build and load two Docker images:
 

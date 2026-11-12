@@ -66,7 +66,8 @@ Never touch secrets yourself. Don't read secret stores or files holding credenti
 
 - Hands-on walkthroughs (commands the user runs, checks, test plans): one step per reply, wait for its output before the next.
 - Don't paste diffs into chat for review. Name the changed files and the intent; the user reviews in lazygit.
-- Several open PRs at once: before switching to another PR, check that CodeRabbit finished reviewing the latest push on all of them and say which ones it is still on. Wait 1-2 minutes after its check goes green, and read the full review body (outside-diff-range and additional comments live only there), not just inline comments.
+- Several open PRs at once: before switching to another PR, check that CodeRabbit finished reviewing the latest push on all of them and say which ones it is still on. Wait 1-2 minutes after its check goes green.
+- Every round of PR feedback, read all three sources before fixing anything: inline review threads, every review body (outside-diff-range and additional comments live only there) and the PR conversation comments (CodeRabbit sometimes posts findings only there). Even when the user points at one comment, list every open finding against the current HEAD, then fix all still-valid ones in one pass.
 
 ## Xcode / Expo iOS builds
 
