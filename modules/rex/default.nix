@@ -8,10 +8,8 @@
 # - f1 scrollback-in-less, ctrl+shift+r layout rotate, tmux copy-mode tables.
 {
   flake.modules.homeManager.base = {
-    config,
     lib,
     pkgs,
-    vars,
     ...
   }: let
     # Rex keeps imported themes under Workspace.customThemes as JSON data, in
@@ -114,11 +112,7 @@
     rexThemeJSON = builtins.toJSON [catppuccinMacchiato];
   in
     lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-      # Out-of-store symlink to the repo checkout, so the Lua config can be
-      # edited and reloaded (ctrl+space r) without a rebuild.
-      xdg.configFile."rex".source =
-        config.lib.file.mkOutOfStoreSymlink
-        "${config.home.homeDirectory}/${vars.git.ghq}/${vars.git.dotfiles}/modules/rex/config";
+      xdg.configFile."rex".source = ./config;
 
       # Rex's Claude Code session hook: what `rex skill setup` would add, but
       # ~/.claude/settings.json is a read-only store link. Tells Claude which Rex
