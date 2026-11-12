@@ -4,9 +4,14 @@
 -- directory in ~/.config. Picking one opens a new session there.
 local picker = require "utils/picker"
 
+local vars = require "utils/vars" -- generated from the flake vars (default.nix)
+
 local home = os.getenv("HOME")
-local ghq_root = home .. "/CodeProjects" -- vars.git.ghq
-local extra_dirs = { home .. "/.config" } -- vars.kitty.project_selector
+local ghq_root = home .. "/" .. vars.ghq
+local extra_dirs = {}
+for _, dir in ipairs(vars.extra_dirs) do
+    table.insert(extra_dirs, home .. "/" .. dir)
+end
 
 
 -- Paths are listed relative to $HOME

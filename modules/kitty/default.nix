@@ -177,7 +177,7 @@
         text = ''
           #!/bin/bash
           ghq_root=~/${vars.git.ghq}
-          project_dirs=(${vars.kitty.project_selector})
+          project_dirs=(${vars.git.projectDirs})
 
           # Parse command line arguments
           no_nvim=false
