@@ -113,7 +113,7 @@
     rexThemeJSON = builtins.toJSON [catppuccinMacchiato];
 
     # Paths relative to $HOME, read by sessionizer.lua
-    extraDirs = map (d: lib.removePrefix "~/" d) (lib.splitString " " vars.kitty.project_selector);
+    extraDirs = map (d: lib.removePrefix "~/" d) (lib.splitString " " vars.git.projectDirs);
     rexVarsLua = ''
       return {
         ghq = ${builtins.toJSON vars.git.ghq},

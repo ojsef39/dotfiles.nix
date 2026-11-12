@@ -41,6 +41,11 @@
                   default = "CodeProjects";
                   description = "Directory under $HOME that ghq clones into.";
                 };
+                projectDirs = lib.mkOption {
+                  type = lib.types.str;
+                  default = "~/.config";
+                  description = "Space separated dirs whose subfolders the kitty and Rex project pickers offer next to the ghq repos.";
+                };
                 dotfiles = lib.mkOption {
                   type = lib.types.str;
                   description = "ghq-style path of the dotfiles repo itself, e.g. github.com/ojsef39/dotfiles.nix.";
@@ -65,12 +70,6 @@
                   default = {};
                   description = "lazygit author name to colour mapping.";
                 };
-              };
-
-              kitty.project_selector = lib.mkOption {
-                type = lib.types.str;
-                default = "~/.config";
-                description = "Space separated dirs offered by the kitty project selector.";
               };
 
               cache.community = lib.mkOption {

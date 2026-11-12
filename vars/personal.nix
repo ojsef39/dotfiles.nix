@@ -7,6 +7,7 @@ rec {
   };
   git = {
     ghq = "CodeProjects";
+    projectDirs = "~/.config";
     dotfiles = "github.com/ojsef39/dotfiles.nix";
     signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAnnOOtnSeqQ3+XjO2jaC5k0pk5BIZVB4YI3KukF4o83"; # id_ed25519_new
     lazy = {
@@ -22,7 +23,6 @@ rec {
       }
     ];
   };
-  kitty.project_selector = "~/.config";
   cache.community = true;
   cachix.push = true;
   onePassword.sshVaults = [
