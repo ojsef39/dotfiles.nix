@@ -113,6 +113,7 @@
   in
     lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       xdg.configFile."rex".source = ./config;
+      ai.allowedBashCommands = ["rex session rename *"];
 
       # Rex's Claude Code session hook: what `rex skill setup` would add, but
       # ~/.claude/settings.json is a read-only store link. Tells Claude which Rex
