@@ -32,6 +32,7 @@
         "mas"
         "ncdu"
         "yazi"
+        "firefox"
       ];
 
       # macOS-specific apps and those not available/stable in nixpkgs
@@ -50,7 +51,6 @@
     homebrew.casks = [
       "dockdoor"
       "dorso"
-      "firefox"
       "tor-browser"
     ];
   };
