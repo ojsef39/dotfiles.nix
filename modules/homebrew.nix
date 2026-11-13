@@ -32,12 +32,12 @@
         "mas"
         "ncdu"
         "yazi"
-        "firefox"
       ];
 
       # macOS-specific apps and those not available/stable in nixpkgs
       casks = [
         "caffeine"
+        "firefox"
         "postman"
         "raycast"
         "scroll-reverser"
