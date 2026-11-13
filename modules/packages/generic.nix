@@ -3,9 +3,10 @@
     rom = inputs.rom.packages.${pkgs.stdenv.hostPlatform.system}.default;
     helm-with-plugins = pkgs.wrapHelm pkgs.kubernetes-helm {
       plugins = [
-        pkgs.kubernetes-helmPlugins.helm-unittest
         pkgs.helm-docs
         pkgs.helm-schema-dadav
+        pkgs.kubernetes-helmPlugins.helm-diff
+        pkgs.kubernetes-helmPlugins.helm-unittest
       ];
     };
   in {
