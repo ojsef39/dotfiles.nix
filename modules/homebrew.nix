@@ -38,6 +38,7 @@
       casks = [
         "caffeine"
         "firefox"
+        "flux-app"
         "postman"
         "raycast"
         "scroll-reverser"
