@@ -23,4 +23,8 @@ Example: empty grep output doesn't necessarily mean clean; it can also mean your
 When a long task finishes or you need to alert the user:
 
 - **Inside Rex** (`REX_SESSION` is set): don't run `send-cooking`, Rex already notifies when you finish or need input.
+
+## Rex session naming
+
+Run the rename as a standalone Bash call, exactly `rex session rename "$REX_SESSION" <label>`. Never chain it (`;`, `&&`, `|`, `cd ... &&`) or add redirects or other commands: only the exact form is allowlisted, anything else prompts for approval.
 - **Default**: run `send-cooking` to send a local macOS alert.
