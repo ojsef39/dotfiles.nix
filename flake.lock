@@ -597,11 +597,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1794658885,
-        "narHash": "sha256-Xz2IPM2IMNm0ztW5qXfeFazfxD/asZS1Rkz1sckNUMo=",
+        "lastModified": 1794680765,
+        "narHash": "sha256-w3J7qpuYIj+BYIlXDxBs5j7dfJv1kaa1GLvumq+JbfQ=",
         "owner": "4evy",
         "repo": "nixcord",
-        "rev": "1fd806254f5be790861b70f16c2ff9053dda6fcd",
+        "rev": "36c0dce4adf1b2e8f5efec257ca1a303e680c36a",
         "type": "github"
       },
       "original": {
