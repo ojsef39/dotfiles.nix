@@ -88,10 +88,7 @@
           "top_resources"
           "wait_for"
         ];
-      in {
-        "radar/talos-dev-hla1" = radarReadTools;
-        "radar/talos-live-hla1" = radarReadTools;
-        "claude.ai/Linear" = [
+        linearTools = [
           "extract_images"
           "get_attachment"
           "get_diff"
@@ -120,16 +117,38 @@
           "list_users"
           "search_documentation"
         ];
+      in {
+        "radar/talos-dev-hla1" = radarReadTools;
+        "radar/talos-live-hla1" = radarReadTools;
+        "claude.ai/Linear" = linearTools;
+        "linear" = linearTools;
       };
     };
 
-    programs.mcp.servers = {
+    ai.mcpServers = {
       # NOTE: Only works if oAuth is supported
       "hass-hla1" = {
         url = "https://home-assistant.hla1.jhofer.org/api/mcp";
       };
+      # Linear's hosted MCP (https://mcp.linear.app/mcp), bridged to stdio via
+      # mcp-remote and authenticated with the Linear API key as a bearer token.
+      "linear" = {
+        command = "${pkgs._1password-cli}/bin/op";
+        args = [
+          "run"
+          "--"
+          "${pkgs.mcp-remote}/bin/mcp-remote"
+          "https://mcp.linear.app/mcp"
+          "--header"
+          "Authorization: Bearer \${LINEAR_API_KEY}"
+        ];
+        env.LINEAR_API_KEY = lib.mkDefault "op://JHC/LinearAPI/password";
+      };
       "radar/talos-dev-hla1" = mkRadar "dev";
       "radar/talos-live-hla1" = mkRadar "live";
     };
+
+    # claude-code uses the claude.ai Linear connector instead.
+    ai.mcpExclude.claude-code = ["linear"];
   };
 }

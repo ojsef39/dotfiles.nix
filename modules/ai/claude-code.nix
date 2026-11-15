@@ -34,6 +34,7 @@
     programs.claude-code = {
       enable = true;
       enableMcpIntegration = true;
+      mcpServers = cfg.mcpPartialServers.claude-code;
       rulesDir = cfg.instructionsDir;
       lspServers = builtins.listToAttrs (map (s: {
           inherit (s) name;
