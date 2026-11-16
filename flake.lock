@@ -886,11 +886,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794819204,
-        "narHash": "sha256-2K7l8gFHHQTid10Ncpj20Dg23ZS7I9pcq5sBj+p4pSE=",
+        "lastModified": 1794823413,
+        "narHash": "sha256-Hq4zkcYDy14tDySkEdKqjBCZGIs/Un6VC/9aggYFDKs=",
         "owner": "manic-systems",
         "repo": "rom",
-        "rev": "b0d4891b9c867821ec5606a784690f2fb80fec5a",
+        "rev": "cbbc079bd982e91ff24e8577712b139760074398",
         "type": "github"
       },
       "original": {
