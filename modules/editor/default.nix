@@ -10,6 +10,7 @@
         fd
         fzf
         git
+        glow # md viewer
         jc
         maple-mono.NF
         nixfmt
