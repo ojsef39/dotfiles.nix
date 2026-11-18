@@ -123,12 +123,23 @@
       programs.pi-coding-agent = {
         enable = true;
 
-        mcpServers.exa = {
-          command = "${pkgs._1password-cli}/bin/op";
-          args = ["run" "--" "npx" "-y" "exa-mcp-server"];
-          env.EXA_API_KEY = "op://Personal/Exa/api_key";
-          lifecycle = "keep-alive";
-        };
+        mcpServers =
+          lib.mapAttrs (_:
+            lib.intersectAttrs {
+              command = null;
+              args = null;
+              url = null;
+              env = null;
+            })
+          cfg.mcpPartialServers.pi
+          // {
+            exa = {
+              command = "${pkgs._1password-cli}/bin/op";
+              args = ["run" "--" "npx" "-y" "exa-mcp-server"];
+              env.EXA_API_KEY = "op://Personal/Exa/api_key";
+              lifecycle = "keep-alive";
+            };
+          };
 
         settings = {
           compaction = {

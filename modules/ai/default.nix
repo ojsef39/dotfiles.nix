@@ -7,6 +7,8 @@
     ...
   }: let
     cfg = config.ai;
+    harnesses = ["claude-code" "copilot" "opencode" "pi"];
+    excludedMcpServers = lib.unique (lib.concatLists (lib.attrValues cfg.mcpExclude));
 
     ghqRoot = "${config.home.homeDirectory}/${vars.git.ghq}";
     baseRepo = "github.com/ojsef39/dotfiles.nix";
@@ -63,7 +65,30 @@
         default = [];
       };
 
-      # Keys are server names from programs.mcp.servers; values are tool names without
+      # MCP servers for all harnesses, in programs.mcp.servers format.
+      mcpServers = lib.mkOption {
+        type = lib.types.attrsOf (pkgs.formats.json {}).type;
+        default = {};
+      };
+
+      # Per harness, names from mcpServers it should not get.
+      mcpExclude = lib.genAttrs harnesses (_:
+        lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [];
+        });
+
+      # Servers excluded somewhere stay out of programs.mcp.servers; each harness
+      # module adds its entry from here to its own server list instead.
+      mcpPartialServers = lib.mkOption {
+        internal = true;
+        readOnly = true;
+        default = lib.genAttrs harnesses (h:
+          lib.filterAttrs (n: _: lib.elem n excludedMcpServers && !lib.elem n cfg.mcpExclude.${h})
+          cfg.mcpServers);
+      };
+
+      # Keys are server names from ai.mcpServers; values are tool names without
       # any tool-specific prefix. Each AI tool's config applies its own prefix format.
       # NOTE: copilot has no documentation on this
       allowedMcpCalls = lib.mkOption {
@@ -94,6 +119,8 @@
         });
       };
     };
+
+    config.programs.mcp.servers = lib.filterAttrs (n: _: !lib.elem n excludedMcpServers) cfg.mcpServers;
 
     config.ai = {
       instructionsDir = pkgs.symlinkJoin {

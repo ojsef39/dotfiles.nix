@@ -30,16 +30,42 @@
       lib.flatten (lib.mapAttrsToList (server: tools:
         map (tool: rule "${sanitize server}_${sanitize tool}" "*" "allow") tools)
       calls);
+
+    # Same shape home-manager's opencode module writes for programs.mcp.servers.
+    toOpencodeMcp = s:
+      if s ? url
+      then
+        {
+          type = "remote";
+          inherit (s) url;
+        }
+        // lib.optionalAttrs (s ? headers) {inherit (s) headers;}
+      else
+        {
+          type = "local";
+          command = [s.command] ++ (s.args or []);
+        }
+        // lib.optionalAttrs (s ? env) {environment = s.env;};
   in {
     programs.opencode = {
       enable = true;
       enableMcpIntegration = true;
-      # Check the generated opencode.json against the package's own schema at build time.
-      validateFiles.config = true;
+      # Check the generated config files against the package's own schemas at build time.
+      validateFiles = {
+        config = true;
+        cli = true;
+      };
+
+      # CLI settings, written to cli.json (separate from the server config above).
+      # Disable copy-on-select so mouse selection doesn't clobber the clipboard.
+      cli = {
+        terminal.copy = "manual";
+      };
 
       # Native V2 config shape (https://opencode.ai/v2/docs/migrate-v1).
       settings = {
         model = lib.mkDefault opencodeModel;
+        mcp = lib.mapAttrs (_: toOpencodeMcp) cfg.mcpPartialServers.opencode;
         instructions = ["${cfg.instructionsDir}/*.md"];
         update = "disable";
         policies = [(rule "provider.use" "xai" "deny")];

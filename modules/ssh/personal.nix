@@ -5,9 +5,17 @@
     ...
   }: let
     opAgentSock = baseLib.mkOpAgentSock pkgs;
+    # ssh runs ProxyCommand with $SHELL (fish), so the parameter expansion needs sh.
+    kubevirtVm = env: {
+      ProxyCommand = "sh -c 'h=\${0%%.vm-${env}}; exec ${pkgs.kubevirt}/bin/virtctl --context admin@talos-${env} -n \${h##*.} port-forward --stdio=true vmi/\${h%%.*} %p' %h";
+    };
   in {
     programs.ssh = {
       settings = {
+        # JHC KubeVirt VMs: ssh <user>@<vm>.<namespace>.vm-live
+        "*.vm-dev" = kubevirtVm "dev";
+        "*.vm-live" = kubevirtVm "live";
+
         # GitHub
         "github.com" = {
           User = "git";

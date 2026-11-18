@@ -19,6 +19,7 @@
     programs.github-copilot-cli = {
       enable = true;
       enableMcpIntegration = true;
+      mcpServers = cfg.mcpPartialServers.copilot;
       settings = {
         inherit (cfg) model effortLevel;
         allowed_urls = map (d: "https://${d}") cfg.allowedDomains;
