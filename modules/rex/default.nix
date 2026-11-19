@@ -138,35 +138,37 @@
       };
       xdg.configFile."rex/utils/vars.lua".text = rexVarsLua;
 
-      ai.allowedBashCommands = ["rex session rename *"];
+      ai = {
+        allowedBashCommands = ["rex session rename *"];
 
-      ai.claude.settings.hooks.PreToolUse = [
-        {
-          matcher = "Bash";
-          hooks = [
-            {
-              type = "command";
-              "if" = "Bash(rex session rename *)";
-              command = "${rexRenameAllow}";
-            }
-          ];
-        }
-      ];
+        claude.settings.hooks.PreToolUse = [
+          {
+            matcher = "Bash";
+            hooks = [
+              {
+                type = "command";
+                "if" = "Bash(rex session rename *)";
+                command = "${rexRenameAllow}";
+              }
+            ];
+          }
+        ];
 
-      # Rex's Claude Code session hook: what `rex skill setup` would add, but
-      # ~/.claude/settings.json is a read-only store link. Tells Claude which Rex
-      # session and pane it runs in (the skill itself Rex installs on its own).
-      ai.claude.settings.hooks.SessionStart = [
-        {
-          hooks = [
-            {
-              type = "command";
-              command = "/bin/sh -c 'rex __internal session-start --agent claude 2>/dev/null || true'";
-              timeout = 5;
-            }
-          ];
-        }
-      ];
+        # Rex's Claude Code session hook: what `rex skill setup` would add, but
+        # ~/.claude/settings.json is a read-only store link. Tells Claude which Rex
+        # session and pane it runs in (the skill itself Rex installs on its own).
+        claude.settings.hooks.SessionStart = [
+          {
+            hooks = [
+              {
+                type = "command";
+                command = "/bin/sh -c 'rex __internal session-start --agent claude 2>/dev/null || true'";
+                timeout = 5;
+              }
+            ];
+          }
+        ];
+      };
 
       home = {
         # `rex-track <command>` reports working/done/error for any command (OSC 7501)
