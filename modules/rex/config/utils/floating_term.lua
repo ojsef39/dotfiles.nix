@@ -1,3 +1,5 @@
+-- SPDX-FileCopyrightText: 2026 Daniel Inama (frostplexx/dotfiles.nix), modified by Josef Hofer
+-- SPDX-License-Identifier: Apache-2.0
 ---@diagnostics disable: undefined-global, unused-local, unused-function
 -- Toggleable floating panes (from frostplexx/dotfiles.nix)
 local terminal = "com.superlogical.terminal"

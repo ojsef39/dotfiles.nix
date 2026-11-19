@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2024 Daniel Inama (frostplexx/dotfiles.nix), modified by Josef Hofer
+# SPDX-License-Identifier: Apache-2.0
 {
   # Opt-in: not in base or personal, so a downstream flake can import
   # `homeManager.nixcord` explicitly or leave Discord out.

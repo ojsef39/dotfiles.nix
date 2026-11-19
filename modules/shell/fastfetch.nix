@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025 Daniel Inama (frostplexx/dotfiles.nix), modified by Josef Hofer
+# SPDX-License-Identifier: Apache-2.0
 {
   flake.modules.homeManager.base = _: {
     programs.fastfetch = {
