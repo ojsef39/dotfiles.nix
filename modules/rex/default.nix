@@ -140,7 +140,7 @@
 
       ai.allowedBashCommands = ["rex session rename *"];
 
-      programs.claude-code.settings.hooks.PreToolUse = [
+      ai.claude.settings.hooks.PreToolUse = [
         {
           matcher = "Bash";
           hooks = [
@@ -156,7 +156,7 @@
       # Rex's Claude Code session hook: what `rex skill setup` would add, but
       # ~/.claude/settings.json is a read-only store link. Tells Claude which Rex
       # session and pane it runs in (the skill itself Rex installs on its own).
-      programs.claude-code.settings.hooks.SessionStart = [
+      ai.claude.settings.hooks.SessionStart = [
         {
           hooks = [
             {

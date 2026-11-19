@@ -31,6 +31,30 @@
         map (tool: "${id}__${tool}") tools)
       calls);
   in {
+    ai.claude.globalConfigFiles = ["${config.home.homeDirectory}/.claude.json"];
+
+    ai.claude.settings = {
+      env = {
+        ENABLE_LSP_TOOL = "1";
+      };
+      permissions = {
+        allow =
+          map (d: "WebFetch(domain:${d})") cfg.allowedDomains
+          ++ map (p: "Bash(${p})") cfg.allowedBashCommands
+          ++ expandMcpCalls cfg.allowedMcpCalls;
+      };
+      statusLine = {
+        type = "command";
+        command = "$HOME/.claude/statusline.sh";
+      };
+      tui = "fullscreen";
+      agentPushNotifEnabled = true;
+      autoMemoryEnabled = false;
+      model = claudeModel;
+      # advisorModel = "opus";
+      inherit (cfg) effortLevel;
+    };
+
     programs.claude-code = {
       enable = true;
       enableMcpIntegration = true;
@@ -44,27 +68,7 @@
           };
         })
         cfg.lspServers);
-      settings = {
-        env = {
-          ENABLE_LSP_TOOL = "1";
-        };
-        permissions = {
-          allow =
-            map (d: "WebFetch(domain:${d})") cfg.allowedDomains
-            ++ map (p: "Bash(${p})") cfg.allowedBashCommands
-            ++ expandMcpCalls cfg.allowedMcpCalls;
-        };
-        statusLine = {
-          type = "command";
-          command = "$HOME/.claude/statusline.sh";
-        };
-        tui = "fullscreen";
-        agentPushNotifEnabled = true;
-        autoMemoryEnabled = false;
-        model = claudeModel;
-        # advisorModel = "opus";
-        inherit (cfg) effortLevel;
-      };
+      settings = cfg.claude.settings;
     };
 
     home.file.".claude/statusline.sh" = {
@@ -73,11 +77,12 @@
     };
 
     home.activation.claudeGlobalConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      file="$HOME/.claude.json"
-      lock="$file.lock"
-      if [[ -v DRY_RUN ]]; then
-        verboseEcho "claudeGlobalConfig: would merge globalConfig into $file"
-      else
+      for file in ${lib.escapeShellArgs cfg.claude.globalConfigFiles}; do
+        lock="$file.lock"
+        if [[ -v DRY_RUN ]]; then
+          verboseEcho "claudeGlobalConfig: would merge globalConfig into $file"
+          continue
+        fi
         # Same lock dir Claude Code takes via proper-lockfile when saving this file.
         tries=0
         until mkdir "$lock" 2>/dev/null; do
@@ -100,7 +105,7 @@
             fi
           )
         fi
-      fi
+      done
     '';
   };
 }

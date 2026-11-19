@@ -96,6 +96,21 @@
         default = {};
       };
 
+      claude = {
+        # Shared by every Claude Code config dir built from this repo; machine
+        # modules add dir-specific keys to programs.claude-code.settings instead.
+        settings = lib.mkOption {
+          inherit (pkgs.formats.json {}) type;
+          default = {};
+        };
+
+        # Files that get the globalConfig merge (CLAUDE_CONFIG_DIR moves ~/.claude.json).
+        globalConfigFiles = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [];
+        };
+      };
+
       # Shared LSP server definitions consumed by opencode, copilot, and claude-code.
       lspServers = lib.mkOption {
         default = [];
