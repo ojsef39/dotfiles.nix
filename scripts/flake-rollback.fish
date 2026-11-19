@@ -1,4 +1,6 @@
 #!/usr/bin/env fish
+# SPDX-FileCopyrightText: 2026 Daniel Inama (frostplexx/dotfiles.nix), modified by Josef Hofer
+# SPDX-License-Identifier: Apache-2.0
 
 # Nix Flake Input Revert Tool
 # Helps revert specific flake inputs to their previous versions

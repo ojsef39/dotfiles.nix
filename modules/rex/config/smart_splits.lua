@@ -1,3 +1,5 @@
+-- SPDX-FileCopyrightText: 2026 Daniel Inama (frostplexx/dotfiles.nix), modified by Josef Hofer
+-- SPDX-License-Identifier: Apache-2.0
 -- Neovim and Rex panes behave as one grid for smart-splits.nvim (based on
 -- frostplexx/dotfiles.nix). When nvim is in the foreground the key is forwarded
 -- to it, otherwise Rex moves focus / resizes itself.

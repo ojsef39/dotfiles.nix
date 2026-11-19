@@ -1,3 +1,5 @@
+-- SPDX-FileCopyrightText: 2026 Daniel Inama (frostplexx/dotfiles.nix), modified by Josef Hofer
+-- SPDX-License-Identifier: Apache-2.0
 -- Scratch sessions in a fresh temp dir (from frostplexx/dotfiles.nix).
 -- No key: run "New Scratch Session" from the command palette.
 local terminal = "com.superlogical.terminal"

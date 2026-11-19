@@ -1,3 +1,5 @@
+-- SPDX-FileCopyrightText: 2026 Daniel Inama (frostplexx/dotfiles.nix), modified by Josef Hofer
+-- SPDX-License-Identifier: Apache-2.0
 ---@diagnostics disable: undefined-global, unused-local, unused-function
 -- Project picker (frostplexx's sessionizer, fed like the old kitty
 -- project_selector.sh): every git repo under the ghq root plus every

@@ -172,4 +172,9 @@ Base modules are written `enable`-style:
 }
 ```
 
-`base.lib` additionally exposes `mkHome`, `mkDotPath` and `mkOpAgentSock`.
+`base.lib` additionally exposes `mkHome`, `mkDotPath` and `mkOpAgentSock`
+
+---
+
+“NixOS Logo” by Simon Frankau, Tim Cuthbertson, and Daniel Baker (maintained by the NixOS Marketing Team), from nixos/branding, licensed under CC BY 4.0. <br>
+Hexley DarwinOS Mascot Copyright 2000 by Jon Hooper All Rights Reserved.

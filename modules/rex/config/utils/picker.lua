@@ -1,3 +1,5 @@
+-- SPDX-FileCopyrightText: 2026 Daniel Inama (frostplexx/dotfiles.nix), modified by Josef Hofer
+-- SPDX-License-Identifier: Apache-2.0
 -- A universal and reusable picker (from frostplexx/dotfiles.nix).
 -- It uses a rex floating pane + fzf
 
