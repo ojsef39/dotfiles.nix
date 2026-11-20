@@ -480,11 +480,11 @@
     "midnight-discord": {
       "flake": false,
       "locked": {
-        "lastModified": 1794868611,
-        "narHash": "sha256-B9/p4yIiXBgoktE7S8wCpmj8F8+XWJGgeetKxyxBwXc=",
+        "lastModified": 1795133842,
+        "narHash": "sha256-faSVPGEpkjLppv7PnmdrM5/T+V4ukeyeU9CIpGukN4Q=",
         "owner": "refact0r",
         "repo": "midnight-discord",
-        "rev": "1b428496cb2628b06a47b99720fb664ed6048ef1",
+        "rev": "e8d9b43c151450219fae8c009af3e82b8f495575",
         "type": "github"
       },
       "original": {
