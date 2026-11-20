@@ -166,7 +166,18 @@ in {
     };
   };
 
-  comments.comment-nvim.enable = true;
+  comments.comment-nvim = {
+    enable = true;
+    # Comment.nvim picks the commentstring from the treesitter language at the cursor, and the
+    # helm parser's injections can report html for the whole file. Use the buffer option instead.
+    setupOpts.pre_hook = lib.generators.mkLuaInline ''
+      function()
+        if vim.bo.filetype == "helm" then
+          return vim.bo.commentstring
+        end
+      end
+    '';
+  };
 
   # TODO/Notes
   notes = {
