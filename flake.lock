@@ -675,11 +675,11 @@
     },
     "nixpkgs-coderabbit-cli": {
       "locked": {
-        "lastModified": 1792529336,
-        "narHash": "sha256-toVLyYCKUh5K4HjHX4MdOyiw4Oxtwce56EYQJzkzS4s=",
+        "lastModified": 1795374481,
+        "narHash": "sha256-gkerko+5GZvjMs6XELcjTVwVwt2vq4koMnGoJX4kWfo=",
         "owner": "lucperkins",
         "repo": "nixpkgs",
-        "rev": "283f07b5d628587aea33e02a6e5cc5785220a692",
+        "rev": "4f80536832de12500d5559ac0699666344299905",
         "type": "github"
       },
       "original": {
