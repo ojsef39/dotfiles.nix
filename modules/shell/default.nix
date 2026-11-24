@@ -123,6 +123,23 @@
           man -k . 2>/dev/null | SKIP_FF=1 fzf --preview 'man {1}' --preview-window=right:70%:wrap | awk '{print $1}' | xargs man
         '';
 
+        confirm = {
+          description = "Ask y/N, return 0 on yes";
+          body = ''
+            set -l prompt (string join ' ' -- $argv)
+            test -n "$prompt"; or set prompt 'Continue?'
+            while true
+              read -l -n 1 -P "$prompt [y/N] " reply </dev/tty; or return 1
+              switch $reply
+                case y Y
+                  return 0
+                case "" n N
+                  return 1
+              end
+            end
+          '';
+        };
+
         wtf = ''
           # Find the path to nix-base for the sops.yaml file
           set nix_base_path (_find_nix_base)
