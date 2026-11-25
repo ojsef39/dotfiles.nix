@@ -6,6 +6,7 @@
         pkgs.helm-docs
         pkgs.helm-schema-dadav
         pkgs.kubernetes-helmPlugins.helm-diff
+        pkgs.kubernetes-helmPlugins.helm-secrets
         pkgs.kubernetes-helmPlugins.helm-unittest
       ];
     };
