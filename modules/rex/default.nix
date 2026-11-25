@@ -177,20 +177,20 @@
         # `rex-k9s` opens k9s on talos-dev and talos-live side by side
         packages = [pkgs.rex-track pkgs.rex-k9s];
 
-        # Rex Beta's download link is invite-only, so it lives in a sops file. Only
+        # Rex's download link is invite-only, so it lives in a sops file. Only
         # installs when missing: Rex updates itself (RexAppUpdateAutomation below).
         activation.rexInstall = lib.hm.dag.entryAfter ["writeBoundary"] ''
-          if [ ! -d "/Applications/Rex Beta.app" ]; then
+          if [ ! -d "/Applications/Rex.app" ]; then
             rexTmp=$(/usr/bin/mktemp -d)
             if rexAgeKey=$(${pkgs._1password-cli}/bin/op read op://Personal/SOPS_AGE_KEY_FILE/credential) \
               && rexUrl=$(SOPS_AGE_KEY="$rexAgeKey" ${pkgs.sops}/bin/sops -d --extract '["REX_DMG_URL"]' ${./download.env}) \
               && [ -n "$rexUrl" ] \
               && run /usr/bin/curl -fsSL -o "$rexTmp/rex.dmg" "$rexUrl" \
               && run /usr/bin/hdiutil attach -quiet -nobrowse -readonly -mountpoint "$rexTmp/mnt" "$rexTmp/rex.dmg" \
-              && run /usr/bin/ditto "$rexTmp/mnt/Rex Beta.app" "/Applications/Rex Beta.app"; then
-              verboseEcho "Installed Rex Beta"
+              && run /usr/bin/ditto "$rexTmp/mnt/Rex.app" "/Applications/Rex.app"; then
+              verboseEcho "Installed Rex"
             else
-              warnEcho "Rex Beta not installed: decrypting the URL or downloading the dmg failed"
+              warnEcho "Rex not installed: decrypting the URL or downloading the dmg failed"
             fi
             [ -d "$rexTmp/mnt" ] && /usr/bin/hdiutil detach -quiet "$rexTmp/mnt" || true
             /bin/rm -rf "$rexTmp"
