@@ -11,3 +11,7 @@
 # Examples
 
 - [Docker](./docker/README.md)
+
+# Runbooks
+
+- [1Password: multi-line secrets](./runbooks/1password-multiline-secrets.md)

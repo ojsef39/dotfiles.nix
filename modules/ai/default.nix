@@ -22,6 +22,8 @@
       ## Managing these instructions
 
       These global instructions are managed in the base dotfiles repo `${ghqRoot}/${baseRepo}`: `modules/ai/instructions/*.instructions.md` for the base set, feature-specific ones generated in `modules/ai/*.nix` (e.g. `obsidian.nix`, `personal.nix`). Edit them there, never the generated files under `~/.claude`.
+
+      General runbooks (not specific to the homelab or work) live in `${ghqRoot}/${baseRepo}/wiki/src/runbooks/`. Check there before solving a tooling problem, and write new general runbooks there, linked in `wiki/src/SUMMARY.md`.
       ${lib.optionalString (vars.git.dotfiles != baseRepo) ''
 
         This machine's own dotfiles repo is `${ghqRoot}/${vars.git.dotfiles}`. Instructions that only apply to this machine go there.
